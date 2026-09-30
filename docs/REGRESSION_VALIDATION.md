@@ -1,6 +1,6 @@
 # Regression validation — 2026-09-30
 
-The current Windows Debug build and CTest suite pass **29/29 checks**, with zero
+The tutorial maintenance Windows Debug build and CTest suite passed **29/29 checks**, with zero
 failures. Environment: Qt 6.11.2, MinGW GCC 13.1.0, Ninja, C++20; Qt UI tests use
 the offscreen platform. Commands are documented in `DEVELOPMENT.md`.
 
@@ -39,3 +39,20 @@ Qt test logs are retained under the ignored build directory. This validation
 covers automated offscreen UI behavior and does not establish interactive sound,
 mouse/keyboard behavior, a live GDB session, or release-package operation.
 The earlier failures remain documented as history in `SETUP_VALIDATION.md`.
+
+## Console pause follow-up
+
+After this fix, all **30 checks pass**: the existing 29 passed in the full run,
+and the new pause check passed after correcting transient Windows executable
+cleanup handling in its test harness.
+
+Manual use exposed an original v0.76f linking defect that the prior suite did
+not cover. `small_ide_pause` contains only a static initializer; linking its
+archive normally does not extract that object. Run and Debug now force extraction
+of this archive alone. The runtime remains independent of IDE pause policy.
+The actual IDE pause callback also honors the existing test-only bypass.
+
+`small_ide_console_pause` compiles against the actual pause archive and keeps
+stdin open to verify that normal execution waits until Enter is supplied. It also
+checks that standalone programs without the archive and test-mode programs exit
+immediately. This is a process/input test, not a visual Windows console test.

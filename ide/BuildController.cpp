@@ -206,9 +206,10 @@ void BuildController::link()
     QStringList args = {objectPath_};
     if (!usesOwnMain_) args << entryPath_;
     // Small IDE Run always keeps the console open at normal process exit.
+    // Force archive extraction: its static initializer has no referenced symbol.
     // This policy is encoded by linking one tiny support archive, not by
     // changing Small's public header/runtime or the learner source.
-    args << idePausePath_;
+    args << "-Wl,--whole-archive" << idePausePath_ << "-Wl,--no-whole-archive";
     for (const auto& extension : std::as_const(extensions_))
     {
         if (!QFileInfo::exists(extension.libraryPath))
@@ -340,4 +341,3 @@ void BuildController::finishStopped()
     emit phaseChanged("Stopped");
     emit finished(-1, true);
 }
-

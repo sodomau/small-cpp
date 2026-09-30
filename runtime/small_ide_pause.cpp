@@ -6,6 +6,8 @@ namespace
 void PauseConsoleAtExit()
 {
 #ifdef _WIN32
+    if (std::getenv("SMALL_TEST_NO_CONSOLE_PAUSE"))
+        return;
     std::cout << "\nPress Enter to exit...";
     std::cout.flush();
     std::cin.clear();

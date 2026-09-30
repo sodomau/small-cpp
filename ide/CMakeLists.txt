@@ -240,6 +240,9 @@ if(SMALL_BUILD_TESTS)
 
     find_package(Python3 QUIET COMPONENTS Interpreter)
     if(Python3_Interpreter_FOUND)
+        add_test(NAME small_ide_console_pause
+            COMMAND "${Python3_EXECUTABLE}" "${SMALL_ROOT}/tests/test_ide_pause.py"
+                    "${CMAKE_CXX_COMPILER}" "$<TARGET_FILE:small_ide_pause>")
         add_test(NAME small_tutorial_content
             COMMAND "${Python3_EXECUTABLE}" "${SMALL_ROOT}/tools/verify_tutorial.py")
         add_test(NAME small_example_catalog
