@@ -1,3 +1,5 @@
+Development: [workflow and build instructions](docs/DEVELOPMENT.md) · [setup validation](docs/SETUP_VALIDATION.md) · [design philosophy](docs/PHILOSOPHY.md)
+
 # Small C++ IDE v0.76f — IdePauseFile Build Fix
 
 Fixes the generated `SmallBuildConfig.h`: it now explicitly contains
@@ -215,4 +217,3 @@ portable package.
 
 Tutorial content format/loader simplification. The current tutorial content is
 still the existing JSON + Markdown + C++ structure.
-

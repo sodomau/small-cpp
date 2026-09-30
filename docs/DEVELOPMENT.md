@@ -31,6 +31,11 @@ Equivalent PowerShell commands from the repository root:
 $env:PATH = 'C:\Qt\Tools\mingw1310_64\bin;C:\Qt\6.11.2\mingw_64\bin;C:\Qt\Tools\Ninja;' + $env:PATH
 & C:\Qt\Tools\CMake\bin\cmake.exe -S ide -B build/local-debug -G Ninja -DCMAKE_BUILD_TYPE=Debug -DSMALL_BUILD_TESTS=ON -DCMAKE_PREFIX_PATH=C:/Qt/6.11.2/mingw_64 -DCMAKE_CXX_COMPILER=C:/Qt/Tools/mingw1310_64/bin/g++.exe -DCMAKE_MAKE_PROGRAM=C:/Qt/Tools/Ninja/ninja.exe
 & C:\Qt\Tools\CMake\bin\cmake.exe --build build/local-debug --parallel 4
+& C:\Qt\6.11.2\mingw_64\bin\windeployqt.exe --release --no-translations build/local-debug/bin/Debug/small_qt_test.exe
+Copy-Item -LiteralPath C:\Qt\6.11.2\mingw_64\plugins\platforms\qoffscreen.dll,C:\Qt\6.11.2\mingw_64\plugins\platforms\qminimal.dll -Destination build/local-debug/bin/Debug/platforms
+Get-ChildItem -LiteralPath build/local-debug/bin/Debug -Filter '*.dll' | Copy-Item -Destination build/local-debug
+$env:QT_PLUGIN_PATH = 'C:\Qt\6.11.2\mingw_64\plugins'
+$env:PYTHONUTF8 = '1'
 & C:\Qt\Tools\CMake\bin\ctest.exe --test-dir build/local-debug --output-on-failure
 ```
 
@@ -38,6 +43,16 @@ If Python is not on PATH, pass its executable with `-DPython3_EXECUTABLE=...`.
 Run Python validation in UTF-8 mode: `python -X utf8 tools/verify_build_config.py`.
 Qt GUI tests use the offscreen platform configured in CMake. Keep Qt and MinGW
 bin directories on PATH for runtime DLL discovery.
+This Qt installation supplies release Qt DLLs even when the application is built
+with debug symbols, hence `windeployqt --release`. The local DLL deployment also
+supports restricted test processes; all deployed files remain ignored under `build/`.
+
+The bundled Git on this machine has its HTTPS helper under `clangarm64/bin` rather
+than the default helper directory. If Git reports `remote-https is not a git command`,
+set `GIT_EXEC_PATH` for that shell to the installed Git directory containing
+`git-remote-https.exe`. With a normal Git for Windows installation this workaround
+is unnecessary. GitHub authentication is handled by Git Credential Manager; never
+put a token into the repository or remote URL.
 
 Examples and tutorial programs have optional compilation targets:
 
@@ -81,7 +96,8 @@ Official project guidance: https://learn.chatgpt.com/docs/projects
 
 The untouched v0.76f archive initially fails the test-enabled build because
 `tests/test_qt.cpp` uses `DetectEntryPoint` without including `EntryPoint.h`.
-The import commit preserves this baseline; a separate test-only fix adds the include.
+The import commit preserves this baseline; a separate test-only fix adds the include
+and updates extension detection calls to supply discovered installed extensions.
 
 Several historical Python validators refer to removed tutorial catalogs or
 pre-consolidation lesson files, or assert an old version string. Use UTF-8 mode
