@@ -138,9 +138,15 @@ void DebugController::handleRecord(const QString&r){
             }
         }
     }
-    if(r.startsWith("*stopped")){executionStopped(r);return;}if(r.contains("^error")){emit phaseChanged("Debugger error");return;}if(pending_==Pending::RefreshLocals&&r.contains("^done,variables=[")){locals_.clear();QRegularExpression re(R"re(\{name="([^"]+)"(?:,arg="[^"]+")?,type="([^"]*)"(?:,value="([^"]*)")?\})re");auto it=re.globalMatch(r);while(it.hasNext()){auto m=it.next();DebugVariable v{m.captured(1),m.captured(3)};if(v.value.isEmpty()&&m.captured(2)=="String")v.value="<String>";locals_<<v;}localStringIndex_=-1;evalNextLocalString();}
+    if(r.startsWith("*stopped")){executionStopped(r);return;}if(r.contains("^error")){
+        if(pending_==Pending::EvalLocalString){
+            locals_[localStringIndex_].value="<unavailable>";
+            evalNextLocalString();
+        }else emit phaseChanged("Debugger error");
+        return;
+    }if(pending_==Pending::RefreshLocals&&r.contains("^done,variables=[")){locals_.clear();QRegularExpression re(R"re(\{name="([^"]+)"(?:,arg="[^"]+")?,type="([^"]*)"(?:,value="([^"]*)")?\})re");auto it=re.globalMatch(r);while(it.hasNext()){auto m=it.next();DebugVariable v{m.captured(1),m.captured(3)};if(v.value.isEmpty()&&(m.captured(2)=="String"||m.captured(2)=="Small::String"))v.value="<String>";locals_<<v;}localStringIndex_=-1;evalNextLocalString();}
 else if(pending_==Pending::RefreshGlobals&&r.startsWith("~\"")){/* console chunks handled below */}
-else if(pending_==Pending::EvalLocalString&&r.contains("^done,value=")){QString val=miField(r,"value");QRegularExpression q("\"([^\"]*)\"$");auto m=q.match(val);locals_[localStringIndex_].value=m.hasMatch()?"\""+m.captured(1)+"\"":val;evalNextLocalString();}
+else if(pending_==Pending::EvalLocalString&&r.contains("^done,value=")){QString val=miField(r,"value");const int quote=val.indexOf(QLatin1Char('"'));locals_[localStringIndex_].value=quote>=0?val.mid(quote):val;evalNextLocalString();}
 else if(pending_==Pending::EvalGlobal&&r.contains("^done,value=")){QString val=miField(r,"value");globals_[globalIndex_].value=val;if(++globalIndex_<globals_.size())evalNextGlobal();else{pending_=Pending::None;emit variablesChanged(locals_,globals_);}}
 
 }
@@ -198,7 +204,8 @@ void DebugController::executionStopped(const QString& r)
     refreshVariables();
 }
 void DebugController::refreshVariables(){sendMi("-stack-list-variables --simple-values",Pending::RefreshLocals);}
-void DebugController::evalNextLocalString(){ for(int i=localStringIndex_+1;i<locals_.size();++i){if(locals_[i].value=="<String>"){localStringIndex_=i;sendMi("-data-evaluate-expression \""+locals_[i].name+".c_str()\"",Pending::EvalLocalString);return;}}requestGlobals();}
+// Read the bundled libstdc++ string buffer without calling an inline c_str() in the inferior.
+void DebugController::evalNextLocalString(){ for(int i=localStringIndex_+1;i<locals_.size();++i){if(locals_[i].value=="<String>"){localStringIndex_=i;sendMi("-data-evaluate-expression \""+locals_[i].name+".data_._M_dataplus._M_p\"",Pending::EvalLocalString);return;}}requestGlobals();}
 void DebugController::requestGlobals(){globals_.clear();globalNames_.clear(); // inexpensive source scan: top-level simple declarations; GDB evaluates values.
  int depth=0;QRegularExpression re("^\\s*(?:static\\s+)?(?:bool|int|double|float|char|String)\\s+([A-Za-z_]\\w*)\\s*(?:=|;)");for(const QString&line:sourceSnapshot_.split('\n')){auto m=re.match(line);if(depth==0&&m.hasMatch())globalNames_<<m.captured(1);for(QChar c:line){if(c=='{')++depth;else if(c=='}')--depth;}}for(auto&n:globalNames_)globals_<<DebugVariable{n,{}};globalIndex_=0;if(globals_.isEmpty()){emit variablesChanged(locals_,globals_);pending_=Pending::None;}else evalNextGlobal();}
 void DebugController::evalNextGlobal(){sendMi("-data-evaluate-expression \""+globals_[globalIndex_].name+"\"",Pending::EvalGlobal);}

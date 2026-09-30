@@ -56,3 +56,19 @@ The actual IDE pause callback also honors the existing test-only bypass.
 stdin open to verify that normal execution waits until Enter is supplied. It also
 checks that standalone programs without the archive and test-mode programs exit
 immediately. This is a process/input test, not a visual Windows console test.
+
+## First public package: String debugger follow-up (2026-09-30)
+
+Portable-package QA exposed a pre-existing defect: GDB reports the class as
+`Small::String`, while the controller recognized only `String`. Its attempted
+inline `c_str()` call was also unsuitable when that function was not emitted.
+The controller now recognizes both spellings and reads the bundled GCC
+libstdc++ string buffer without executing a function in the paused program.
+Failed String reads report an unavailable value and continue refreshing variables.
+
+A live GDB regression pauses after initializing String variables and checks
+text, an empty string and embedded quotes, then resumes to a clean exit.
+The full Release CTest suite passed **30/30** after the main fix; the final
+quote/error-handling refinement was verified with the live String regression.
+The current buffer expression targets the supported GCC/libstdc++ kit; it
+must be revisited for a different standard-library implementation.

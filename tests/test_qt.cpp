@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include "BuildController.h"
+#include "DebugController.h"
 #include "CodeEditor.h"
 #include "Diagnostics.h"
 #include "EntryPoint.h"
@@ -382,6 +383,35 @@ int main(int argc, char* argv[])
         QCOMPARE(finished.first().at(0).toInt(), 0);
         QVERIFY(!started.isEmpty());
         QVERIFY(!build.isBusy());
+    }
+
+    void debuggerDisplaysStringValues()
+    {
+        DebugController debug;
+        QSignalSpy failed(&debug, &DebugController::buildError);
+        QSignalSpy finished(&debug, &DebugController::finished);
+        bool valuesReady = false;
+        QString label, empty;
+        connect(&debug, &DebugController::variablesChanged, this,
+                [&](const QList<DebugVariable>& locals, const QList<DebugVariable>&) {
+            if (!debug.isStopped()) return;
+            for (const auto& value : locals) {
+                if (value.name == "label") label = value.value;
+                if (value.name == "empty") empty = value.value;
+            }
+            valuesReady = true;
+        });
+        debug.start("void SmallMain()\n{\n String label=\"hello \\\"world\\\"\";\n String empty;\n Print(label);\n}\n",
+                    {}, "StringDebug.cpp", {5});
+        QTRY_VERIFY_WITH_TIMEOUT(valuesReady || !failed.isEmpty(), 30000);
+        QVERIFY2(failed.isEmpty(), qPrintable(failed.isEmpty() ? QString{} : failed.first().first().toString()));
+        QVERIFY2(label.startsWith(QStringLiteral("\"hello ")), qPrintable(label));
+        QVERIFY2(label.contains(QStringLiteral("world")), qPrintable(label));
+        QVERIFY(label.endsWith(QLatin1Char('"')));
+        QCOMPARE(empty, QStringLiteral("\"\""));
+        debug.continueRun();
+        QTRY_VERIFY_WITH_TIMEOUT(!finished.isEmpty(), 10000);
+        QVERIFY(!debug.isBusy());
     }
 
     void stopDuringCompilation()
