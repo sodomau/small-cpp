@@ -92,6 +92,58 @@ private slots:
         SmallSettings().clear();
     }
 
+    void externalStyleSheetReloadRestoreAndFailure()
+    {
+        QTemporaryDir directory;
+        QVERIFY(directory.isValid());
+        const QString path = directory.filePath("custom.qss");
+        writeFile(path, "QPlainTextEdit { background-color: #123456; color: #ffffff; }");
+        MainWindow window;
+        auto* document = current(window);
+        document->appendPlainText("// keep my work");
+        const QString source = document->toPlainText();
+        const QString defaultStyle = window.styleSheet();
+        QString error;
+        QVERIFY(window.loadStyleSheet(path, &error));
+        QVERIFY(error.isEmpty());
+        QCOMPARE(document->palette().color(QPalette::Base), QColor("#123456"));
+        QCOMPARE(SmallSettings().value("appearance/styleSheetPath").toString(), path);
+        action(window, "actionThemeDark")->trigger();
+        QCOMPARE(document->palette().color(QPalette::Base), QColor("#123456"));
+        action(window, "actionNew")->trigger();
+        QCOMPARE(current(window)->palette().color(QPalette::Base), QColor("#123456"));
+        action(window, "actionApiReference")->trigger();
+        QPointer<QWidget> api;
+        for (auto* widget : QApplication::topLevelWidgets())
+            if (widget->objectName() == "apiBrowser") api = widget;
+        QVERIFY(api);
+        QVERIFY(api->styleSheet().contains("#123456"));
+        {
+            MainWindow restored;
+            QCOMPARE(current(restored)->palette().color(QPalette::Base), QColor("#123456"));
+        }
+        writeFile(path, "QPlainTextEdit { background-color: #654321; }");
+        action(window, "actionReloadStyleSheet")->trigger();
+        QCOMPARE(document->palette().color(QPalette::Base), QColor("#654321"));
+        QVERIFY(api->styleSheet().contains("#654321"));
+        const QString loadedStyle = window.styleSheet();
+        QVERIFY(!window.loadStyleSheet(directory.filePath("missing.qss"), &error));
+        QVERIFY(!error.isEmpty());
+        QCOMPARE(window.styleSheet(), loadedStyle);
+        QVERIFY(QFile::remove(path));
+        {
+            MainWindow missing;
+            QCOMPARE(missing.styleSheet(), defaultStyle);
+        }
+        action(window, "actionResetStyleSheet")->trigger();
+        QCOMPARE(window.styleSheet(), defaultStyle);
+        QVERIFY(api->styleSheet().isEmpty());
+        QCOMPARE(document->palette().color(QPalette::Base), QColor("#1e1f22"));
+        QVERIFY(!SmallSettings().contains("appearance/styleSheetPath"));
+        QCOMPARE(document->toPlainText(), source);
+        QVERIFY(document->document()->isModified());
+    }
+
     void newTabsHaveIndependentState()
     {
         MainWindow window;

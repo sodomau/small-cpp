@@ -239,6 +239,24 @@ void MainWindow::createUi()
     themeGroup->setExclusive(true);
     themeGroup->addAction(lightAction);
     themeGroup->addAction(darkAction);
+    themeMenu->addSeparator();
+    auto* loadStyleAction = themeMenu->addAction("Load Style Sheet...");
+    loadStyleAction->setObjectName("actionLoadStyleSheet");
+    auto* reloadStyleAction = themeMenu->addAction("Reload Style Sheet");
+    reloadStyleAction->setObjectName("actionReloadStyleSheet");
+    auto* resetStyleAction = themeMenu->addAction("Reset Style Sheet");
+    resetStyleAction->setObjectName("actionResetStyleSheet");
+    connect(loadStyleAction, &QAction::triggered, this, &MainWindow::chooseStyleSheet);
+    connect(reloadStyleAction, &QAction::triggered, this, [this] {
+        QString error;
+        if (!loadStyleSheet(styleSheetPath_, &error))
+            QMessageBox::warning(this, "Style Sheet", error);
+    });
+    connect(resetStyleAction, &QAction::triggered, this, [this] { loadStyleSheet({}); });
+    connect(themeMenu, &QMenu::aboutToShow, this, [this, reloadStyleAction, resetStyleAction] {
+        reloadStyleAction->setEnabled(!styleSheetPath_.isEmpty());
+        resetStyleAction->setEnabled(!styleSheetPath_.isEmpty());
+    });
     auto* fontAction = settingsMenu->addAction("Font...");
     fontAction->setObjectName("actionFont");
     auto* languageMenu = settingsMenu->addMenu("Tutorial Language");
@@ -714,6 +732,80 @@ void MainWindow::loadAppearance()
         editorFont_ = settings.value("appearance/font").value<QFont>();
     output_->setFont(editorFont_);
     applyTheme(darkTheme_);
+    const QString path = settings.value("appearance/styleSheetPath").toString();
+    if (!path.isEmpty())
+    {
+        QString error;
+        if (!loadStyleSheet(path, &error))
+        {
+            styleSheetPath_ = path; // Allow retry/reset even if the saved file moved.
+            statusBar()->showMessage(error, 10000);
+        }
+    }
+}
+
+bool MainWindow::loadStyleSheet(const QString& path, QString* error)
+{
+    if (error) error->clear();
+    QString text;
+    if (!path.isEmpty())
+    {
+        QFile file(path);
+        if (!file.open(QIODevice::ReadOnly))
+        {
+            if (error) *error = "Cannot read style sheet: " + path + "\n" + file.errorString();
+            return false;
+        }
+        const QByteArray bytes = file.readAll();
+        if (file.error() != QFileDevice::NoError)
+        {
+            if (error) *error = "Cannot read style sheet: " + path + "\n" + file.errorString();
+            return false;
+        }
+        text = QString::fromUtf8(bytes);
+        if (text.startsWith(QChar(0xfeff))) text.remove(0, 1);
+    }
+    styleSheetPath_ = path.isEmpty() ? QString() : QFileInfo(path).absoluteFilePath();
+    customStyleSheet_ = text;
+    refreshStyleSheets();
+    // Removing QSS restores Qt's original palettes; restore the chosen theme.
+    applyTheme(darkTheme_);
+    auto settings = SmallSettings();
+    if (path.isEmpty()) settings.remove("appearance/styleSheetPath");
+    else settings.setValue("appearance/styleSheetPath", styleSheetPath_);
+    statusBar()->showMessage(path.isEmpty() ? "Default style restored"
+                                         : "Style sheet loaded: " + styleSheetPath_, 5000);
+    return true;
+}
+
+void MainWindow::chooseStyleSheet()
+{
+    const QString path = QFileDialog::getOpenFileName(this, "Load Style Sheet", styleSheetPath_,
+                                                     "Qt Style Sheets (*.qss);;All Files (*)");
+    if (path.isEmpty()) return;
+    QString error;
+    if (!loadStyleSheet(path, &error)) QMessageBox::warning(this, "Style Sheet", error);
+}
+
+void MainWindow::applyStyleSheetTo(QWidget* widget)
+{
+    if (!widget) return;
+    if (customStyleSheet_.isEmpty()
+        && !widget->property("smallDefaultStyleSheet").isValid()) return;
+    // Keep each native window's built-in spacing when loading/reloading/resetting.
+    if (!widget->property("smallDefaultStyleSheet").isValid())
+        widget->setProperty("smallDefaultStyleSheet", widget->styleSheet());
+    const QString base = widget->property("smallDefaultStyleSheet").toString();
+    if (customStyleSheet_.isEmpty() && widget->styleSheet() == base) return;
+    widget->setStyleSheet(customStyleSheet_.isEmpty() ? base : base + "\n" + customStyleSheet_);
+}
+
+void MainWindow::refreshStyleSheets()
+{
+    applyStyleSheetTo(this);
+    applyStyleSheetTo(examplesBrowser_.data());
+    applyStyleSheetTo(tutorialBrowser_.data());
+    applyStyleSheetTo(apiBrowser_.data());
 }
 
 void MainWindow::applyAppearance(EditorDocument* document)
@@ -741,6 +833,7 @@ void MainWindow::applyTheme(bool dark)
     if (apiBrowser_)
         apiBrowser_->setAppearance(editorFont_, editorPalette(output_->palette(), dark), dark);
     SmallSettings().setValue("appearance/dark", dark);
+    if (!customStyleSheet_.isEmpty()) refreshStyleSheets();
 }
 
 void MainWindow::chooseFont()
@@ -871,6 +964,7 @@ void MainWindow::browseApi()
         connect(this, &QObject::destroyed, apiBrowser_.data(), &QObject::deleteLater);
     }
     apiBrowser_->setAppearance(editorFont_, editorPalette(output_->palette(), darkTheme_), darkTheme_);
+    applyStyleSheetTo(apiBrowser_.data());
     apiBrowser_->show();
     apiBrowser_->raise();
     apiBrowser_->activateWindow();
@@ -887,6 +981,7 @@ void MainWindow::browseExamples()
                 [this](const QString& id) { openExample(id); });
     }
     examplesBrowser_->setAppearance(editorFont_, editorPalette(output_->palette(), darkTheme_), darkTheme_);
+    applyStyleSheetTo(examplesBrowser_.data());
     examplesBrowser_->show();
     examplesBrowser_->raise();
     examplesBrowser_->activateWindow();
@@ -952,6 +1047,7 @@ void MainWindow::browseTutorial()
                 });
     }
     tutorialBrowser_->setAppearance(editorFont_, editorPalette(output_->palette(), darkTheme_), darkTheme_);
+    applyStyleSheetTo(tutorialBrowser_.data());
     tutorialBrowser_->show();
     tutorialBrowser_->raise();
     tutorialBrowser_->activateWindow();

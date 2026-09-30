@@ -31,6 +31,7 @@ public:
     // future example browser can open/copy documents without a project model.
     bool openDocument(const QString& path);
     bool openExample(const QString& id);
+    bool loadStyleSheet(const QString& path, QString* error = nullptr);
 
 protected:
     void closeEvent(QCloseEvent* event) override;
@@ -65,6 +66,8 @@ private:
     bool confirmingClose_ = false;
     bool darkTheme_ = false;
     QFont editorFont_;
+    QString styleSheetPath_;
+    QString customStyleSheet_;
     int nextUntitledNumber_ = 1;
 
     // Diagnostics belong to the document/snapshot passed to Run, NEVER to
@@ -83,6 +86,9 @@ private:
     void applyTheme(bool dark);
     void applyAppearance(EditorDocument* document);
     void chooseFont();
+    void chooseStyleSheet();
+    void refreshStyleSheets();
+    void applyStyleSheetTo(QWidget* widget);
     void setTutorialLanguage(const QString& language);
 
     EditorDocument* currentDocument() const;
