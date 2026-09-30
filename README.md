@@ -1,5 +1,9 @@
 Development: [workflow and build instructions](docs/DEVELOPMENT.md) · [setup validation](docs/SETUP_VALIDATION.md) · [design philosophy](docs/PHILOSOPHY.md)
 
+Current core tutorial: **88 Korean Small Steps lessons**, imported from
+`SmallCpp-Core-Tutorial-KO-Small-Steps.zip`. See the [contents](docs/tutorial-small-steps/CONTENTS.md),
+[teacher notes](docs/tutorial-small-steps/TEACHER.md), and [integration notes](docs/TUTORIAL_SMALL_STEPS.md).
+
 # Small C++ IDE v0.76f — IdePauseFile Build Fix
 
 Fixes the generated `SmallBuildConfig.h`: it now explicitly contains

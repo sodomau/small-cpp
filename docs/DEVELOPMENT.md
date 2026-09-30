@@ -5,6 +5,12 @@ The development repository was imported from
 The archive's internal `SmallCpp-IDE-v0.65/` directory name is historical;
 its README identifies the contents as v0.76f. The original archive is preserved.
 
+The core tutorial was subsequently replaced with the user's latest
+`SmallCpp-Core-Tutorial-KO-Small-Steps.zip`: 88 Korean lessons. Keep it as a
+complete content set rather than merging older lesson folders into it.
+Companion documents live in `docs/tutorial-small-steps/`; see
+`TUTORIAL_SMALL_STEPS.md` for integration and validation.
+
 ## Repository layout
 
 - `ide/`: Qt desktop IDE and the main CMake entry point.

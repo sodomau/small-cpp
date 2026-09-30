@@ -1,4 +1,0 @@
-void SmallMain()
-  {
-      Print("Alex");
-  }

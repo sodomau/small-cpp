@@ -1,0 +1,364 @@
+{
+  "lessons": 88,
+  "resolved_directives": 264,
+  "new_sources_syntax_passed": 105,
+  "new_console_output_cases_passed": 70,
+  "unchanged_sources_matched_to_prior_passing_syntax_checks": 159,
+  "max_body_characters": 686,
+  "average_body_characters": 476,
+  "scope": "New console examples and solutions executed; retained source bytes matched to previously passing syntax checks. No Qt GUI or IDE interaction testing.",
+  "lesson_lengths": [
+    {
+      "lesson": "01_hello",
+      "body_characters": 631
+    },
+    {
+      "lesson": "02_lines",
+      "body_characters": 439
+    },
+    {
+      "lesson": "03_calculate",
+      "body_characters": 361
+    },
+    {
+      "lesson": "04_variables",
+      "body_characters": 519
+    },
+    {
+      "lesson": "05_assignment",
+      "body_characters": 399
+    },
+    {
+      "lesson": "06_update",
+      "body_characters": 446
+    },
+    {
+      "lesson": "07_double",
+      "body_characters": 457
+    },
+    {
+      "lesson": "08_multiply",
+      "body_characters": 386
+    },
+    {
+      "lesson": "09_division",
+      "body_characters": 467
+    },
+    {
+      "lesson": "10_string_value",
+      "body_characters": 489
+    },
+    {
+      "lesson": "11_input_text",
+      "body_characters": 463
+    },
+    {
+      "lesson": "12_input_int",
+      "body_characters": 425
+    },
+    {
+      "lesson": "13_input_real",
+      "body_characters": 409
+    },
+    {
+      "lesson": "14_if",
+      "body_characters": 492
+    },
+    {
+      "lesson": "15_else",
+      "body_characters": 402
+    },
+    {
+      "lesson": "16_else_if",
+      "body_characters": 395
+    },
+    {
+      "lesson": "17_bool",
+      "body_characters": 426
+    },
+    {
+      "lesson": "18_logic",
+      "body_characters": 437
+    },
+    {
+      "lesson": "19_for",
+      "body_characters": 391
+    },
+    {
+      "lesson": "20_while",
+      "body_characters": 430
+    },
+    {
+      "lesson": "21_loop_control",
+      "body_characters": 381
+    },
+    {
+      "lesson": "22_nested_loops",
+      "body_characters": 372
+    },
+    {
+      "lesson": "23_functions",
+      "body_characters": 494
+    },
+    {
+      "lesson": "24_parameters",
+      "body_characters": 398
+    },
+    {
+      "lesson": "25_return_value",
+      "body_characters": 409
+    },
+    {
+      "lesson": "26_scope",
+      "body_characters": 470
+    },
+    {
+      "lesson": "27_string_join",
+      "body_characters": 489
+    },
+    {
+      "lesson": "28_characters",
+      "body_characters": 475
+    },
+    {
+      "lesson": "29_substring",
+      "body_characters": 427
+    },
+    {
+      "lesson": "30_escape",
+      "body_characters": 450
+    },
+    {
+      "lesson": "31_array_values",
+      "body_characters": 400
+    },
+    {
+      "lesson": "32_array_loop",
+      "body_characters": 402
+    },
+    {
+      "lesson": "33_array_create",
+      "body_characters": 447
+    },
+    {
+      "lesson": "34_constants",
+      "body_characters": 457
+    },
+    {
+      "lesson": "35_short_updates",
+      "body_characters": 439
+    },
+    {
+      "lesson": "36_first_window_1",
+      "body_characters": 561
+    },
+    {
+      "lesson": "37_first_window_2",
+      "body_characters": 487
+    },
+    {
+      "lesson": "38_drawing_1",
+      "body_characters": 603
+    },
+    {
+      "lesson": "39_drawing_2",
+      "body_characters": 499
+    },
+    {
+      "lesson": "40_keyboard_1",
+      "body_characters": 443
+    },
+    {
+      "lesson": "41_keyboard_2",
+      "body_characters": 513
+    },
+    {
+      "lesson": "42_mouse_1",
+      "body_characters": 400
+    },
+    {
+      "lesson": "43_mouse_2",
+      "body_characters": 466
+    },
+    {
+      "lesson": "44_animation_1",
+      "body_characters": 455
+    },
+    {
+      "lesson": "45_animation_2",
+      "body_characters": 458
+    },
+    {
+      "lesson": "46_stopwatch_1",
+      "body_characters": 488
+    },
+    {
+      "lesson": "47_stopwatch_2",
+      "body_characters": 535
+    },
+    {
+      "lesson": "48_sound_1",
+      "body_characters": 450
+    },
+    {
+      "lesson": "49_sound_2",
+      "body_characters": 449
+    },
+    {
+      "lesson": "50_events_1",
+      "body_characters": 563
+    },
+    {
+      "lesson": "51_events_2",
+      "body_characters": 594
+    },
+    {
+      "lesson": "52_game_1",
+      "body_characters": 627
+    },
+    {
+      "lesson": "53_game_2",
+      "body_characters": 615
+    },
+    {
+      "lesson": "54_sum_count_1",
+      "body_characters": 481
+    },
+    {
+      "lesson": "55_sum_count_2",
+      "body_characters": 447
+    },
+    {
+      "lesson": "56_min_max_1",
+      "body_characters": 395
+    },
+    {
+      "lesson": "57_min_max_2",
+      "body_characters": 481
+    },
+    {
+      "lesson": "58_linear_search_1",
+      "body_characters": 445
+    },
+    {
+      "lesson": "59_linear_search_2",
+      "body_characters": 437
+    },
+    {
+      "lesson": "60_sorting_1",
+      "body_characters": 433
+    },
+    {
+      "lesson": "61_sorting_2",
+      "body_characters": 417
+    },
+    {
+      "lesson": "62_visualizing_1",
+      "body_characters": 582
+    },
+    {
+      "lesson": "63_visualizing_2",
+      "body_characters": 449
+    },
+    {
+      "lesson": "64_binary_search_1",
+      "body_characters": 497
+    },
+    {
+      "lesson": "65_binary_search_2",
+      "body_characters": 419
+    },
+    {
+      "lesson": "66_complexity_1",
+      "body_characters": 468
+    },
+    {
+      "lesson": "67_complexity_2",
+      "body_characters": 443
+    },
+    {
+      "lesson": "68_challenge_1",
+      "body_characters": 468
+    },
+    {
+      "lesson": "69_challenge_2",
+      "body_characters": 449
+    },
+    {
+      "lesson": "70_text_files_1",
+      "body_characters": 503
+    },
+    {
+      "lesson": "71_text_files_2",
+      "body_characters": 502
+    },
+    {
+      "lesson": "72_binary_files_1",
+      "body_characters": 482
+    },
+    {
+      "lesson": "73_binary_files_2",
+      "body_characters": 465
+    },
+    {
+      "lesson": "74_struct_1",
+      "body_characters": 461
+    },
+    {
+      "lesson": "75_struct_2",
+      "body_characters": 437
+    },
+    {
+      "lesson": "76_class_1",
+      "body_characters": 552
+    },
+    {
+      "lesson": "77_references_1",
+      "body_characters": 490
+    },
+    {
+      "lesson": "78_references_2",
+      "body_characters": 555
+    },
+    {
+      "lesson": "79_standard_library_1",
+      "body_characters": 500
+    },
+    {
+      "lesson": "80_standard_library_2",
+      "body_characters": 391
+    },
+    {
+      "lesson": "81_standard_containers_1",
+      "body_characters": 536
+    },
+    {
+      "lesson": "82_standard_containers_2",
+      "body_characters": 628
+    },
+    {
+      "lesson": "83_includes_namespaces_1",
+      "body_characters": 569
+    },
+    {
+      "lesson": "84_includes_namespaces_2",
+      "body_characters": 540
+    },
+    {
+      "lesson": "85_smallmain_1",
+      "body_characters": 681
+    },
+    {
+      "lesson": "86_smallmain_2",
+      "body_characters": 686
+    },
+    {
+      "lesson": "87_beyond_1",
+      "body_characters": 509
+    },
+    {
+      "lesson": "88_beyond_2",
+      "body_characters": 489
+    }
+  ]
+}
