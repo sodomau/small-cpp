@@ -4,7 +4,10 @@ import re
 root=Path(__file__).resolve().parents[1]
 keywords=["concept","requires","co_await","co_return","co_yield"]
 bad=[]
-for path in list(root.rglob("*.cpp"))+list(root.rglob("*.h")):
+source_roots = [root/name for name in ("ide", "runtime", "extensions", "examples", "tutorial", "tests")]
+paths = [path for directory in source_roots for pattern in ("*.cpp", "*.h")
+         for path in directory.rglob(pattern)]
+for path in paths:
     text=path.read_text(encoding="utf-8",errors="ignore")
     for kw in keywords:
         patterns=[
