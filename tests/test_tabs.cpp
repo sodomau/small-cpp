@@ -8,10 +8,14 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QFontDialog>
+#include <QFontDatabase>
 #include <QLabel>
 #include <QMessageBox>
+#include <QMenuBar>
+#include <QToolBar>
 #include <QPlainTextEdit>
 #include <QPointer>
+#include <QPixmap>
 #include <QSettings>
 #include "SmallSettings.h"
 #include <QSignalSpy>
@@ -81,6 +85,11 @@ private slots:
         QApplication::setQuitOnLastWindowClosed(false);
         qputenv("SMALL_TEST_DIALOGS", "1");
         qputenv("SMALL_TEST_NO_CONSOLE_PAUSE", "1");
+        if (!qEnvironmentVariable("SMALL_THEME_PREVIEW_DIR").isEmpty())
+        {
+            QFontDatabase::addApplicationFont("C:/Windows/Fonts/segoeui.ttf");
+            QFontDatabase::addApplicationFont("C:/Windows/Fonts/consola.ttf");
+        }
         // Do not change the developer's font/theme while running the tests.
         settingsDirectory_ = std::make_unique<QTemporaryDir>();
         QVERIFY(settingsDirectory_->isValid());
@@ -102,7 +111,6 @@ private slots:
         auto* document = current(window);
         document->appendPlainText("// keep my work");
         const QString source = document->toPlainText();
-        const QString defaultStyle = window.styleSheet();
         QString error;
         QVERIFY(window.loadStyleSheet(path, &error));
         QVERIFY(error.isEmpty());
@@ -133,11 +141,13 @@ private slots:
         QVERIFY(QFile::remove(path));
         {
             MainWindow missing;
-            QCOMPARE(missing.styleSheet(), defaultStyle);
+            QVERIFY(!missing.styleSheet().contains("#654321"));
+            QCOMPARE(missing.palette().color(QPalette::Window), QColor("#171d29"));
         }
         action(window, "actionResetStyleSheet")->trigger();
-        QCOMPARE(window.styleSheet(), defaultStyle);
-        QVERIFY(api->styleSheet().isEmpty());
+        QVERIFY(!window.styleSheet().contains("#654321"));
+        QVERIFY(!api->styleSheet().contains("#654321"));
+        QVERIFY(api->styleSheet().contains("QMenuBar"));
         QCOMPARE(document->palette().color(QPalette::Base), QColor("#1e1f22"));
         QVERIFY(!SmallSettings().contains("appearance/styleSheetPath"));
         QCOMPARE(document->toPlainText(), source);
@@ -399,12 +409,31 @@ private slots:
         action(window, "actionNew")->trigger();
         auto* second = current(window);
         action(window, "actionThemeDark")->trigger();
+        QCOMPARE(window.palette().color(QPalette::Window), QColor("#171d29"));
+        QCOMPARE(window.menuBar()->palette().color(QPalette::WindowText), QColor("#e6e6e6"));
+        const QString previewDirectory = qEnvironmentVariable("SMALL_THEME_PREVIEW_DIR");
+        if (!previewDirectory.isEmpty())
+        {
+            window.resize(1000, 750);
+            window.show();
+            QApplication::processEvents();
+            window.grab().save(previewDirectory + "/theme-dark.png");
+        }
         QCOMPARE(first->palette().base().color(), QColor("#1e1f22"));
+        QCOMPARE(first->palette().alternateBase().color(), QColor("#292b2f"));
         QCOMPARE(second->palette().base().color(), QColor("#1e1f22"));
         action(window, "actionNew")->trigger();
         QCOMPARE(current(window)->palette().base().color(), QColor("#1e1f22"));
         action(window, "actionThemeLight")->trigger();
+        QCOMPARE(window.palette().color(QPalette::Window), QColor("#f3f5f9"));
+        QCOMPARE(window.menuBar()->palette().color(QPalette::WindowText), QColor("#202124"));
+        if (!previewDirectory.isEmpty())
+        {
+            QApplication::processEvents();
+            window.grab().save(previewDirectory + "/theme-light.png");
+        }
         QCOMPARE(first->palette().base().color(), QColor("#ffffff"));
+        QCOMPARE(first->palette().alternateBase().color(), QColor("#f3f4f6"));
         QCOMPARE(second->palette().base().color(), QColor("#ffffff"));
         QCOMPARE(window.findChild<QPlainTextEdit*>("output")->font().pointSize(), 14);
     }

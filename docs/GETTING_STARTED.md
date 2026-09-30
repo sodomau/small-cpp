@@ -31,7 +31,10 @@ startup. After editing the file, choose **Reload Style Sheet**; changes are
 not watched automatically. **Reset Style Sheet** removes the custom style
 and restores the built-in appearance.
 
-Light/Dark still selects syntax-highlighting and editor-gutter colors. QSS
+Light/Dark styles the entire IDE and Learn windows, including menus, toolbars,
+tabs, and controls, as well as syntax-highlighting and editor-gutter colors.
+The built-in design uses rounded controls, a blue Run button, and clearer
+spacing. User QSS is applied after the built-in styles. QSS
 can override widget colors and layout properties; it does not define C++
 syntax-highlighting rules. Qt parses the QSS, so malformed or unsupported
 rules may be ignored. A file read failure keeps the current style; a missing

@@ -8,6 +8,7 @@
 #include "Diagnostics.h"
 #include "Highlighter.h"
 #include "RuntimeDiagnostics.h"
+#include "Theme.h"
 
 #include <QAction>
 #include <QActionGroup>
@@ -112,6 +113,14 @@ QPalette editorPalette(QPalette palette, bool dark)
     palette.setColor(QPalette::PlaceholderText, QColor(dark ? "#9ba0a8" : "#686868"));
     palette.setColor(QPalette::Highlight, QColor(dark ? "#35577b" : "#c5def5"));
     palette.setColor(QPalette::HighlightedText, QColor(dark ? "#ffffff" : "#162b40"));
+    palette.setColor(QPalette::WindowText, QColor(dark ? "#e6e6e6" : "#202124"));
+    palette.setColor(QPalette::Button, QColor(dark ? "#252d3b" : "#ffffff"));
+    palette.setColor(QPalette::ButtonText, palette.color(QPalette::WindowText));
+    palette.setColor(QPalette::Mid, QColor(dark ? "#465164" : "#cbd2de"));
+    palette.setColor(QPalette::ToolTipBase, palette.color(QPalette::Base));
+    palette.setColor(QPalette::ToolTipText, palette.color(QPalette::Text));
+    palette.setColor(QPalette::Disabled, QPalette::WindowText, palette.color(QPalette::Mid));
+    palette.setColor(QPalette::Disabled, QPalette::ButtonText, palette.color(QPalette::Mid));
     return palette;
 }
 }
@@ -310,6 +319,7 @@ void MainWindow::createUi()
     runAction_->setObjectName("actionRun");
     runAction_->setShortcut(QKeySequence(Qt::Key_F5));
     runAction_->setToolTip("Run the current tab (F5). Each tab is a separate program.");
+    toolbar->widgetForAction(runAction_)->setObjectName("runButton");
     debugAction_ = toolbar->addAction("Debug");
     debugAction_->setObjectName("actionDebug");
     debugAction_->setShortcut(QKeySequence(Qt::Key_F6));
@@ -403,7 +413,11 @@ void MainWindow::createUi()
     splitter->addWidget(documentArea);
     splitter->addWidget(bottomTabs);
     splitter->setSizes({510, 170});
-    setCentralWidget(splitter);
+    auto* workspace = new QWidget;
+    auto* workspaceLayout = new QVBoxLayout(workspace);
+    workspaceLayout->setContentsMargins(12, 8, 12, 8);
+    workspaceLayout->addWidget(splitter);
+    setCentralWidget(workspace);
     timing_ = new QLabel;
     timing_->setObjectName("buildTiming");
     statusBar()->addPermanentWidget(timing_);
@@ -790,13 +804,14 @@ void MainWindow::chooseStyleSheet()
 void MainWindow::applyStyleSheetTo(QWidget* widget)
 {
     if (!widget) return;
-    if (customStyleSheet_.isEmpty()
-        && !widget->property("smallDefaultStyleSheet").isValid()) return;
     // Keep each native window's built-in spacing when loading/reloading/resetting.
     if (!widget->property("smallDefaultStyleSheet").isValid())
         widget->setProperty("smallDefaultStyleSheet", widget->styleSheet());
-    const QString base = widget->property("smallDefaultStyleSheet").toString();
-    if (customStyleSheet_.isEmpty() && widget->styleSheet() == base) return;
+    auto palette = editorPalette(widget->palette(), darkTheme_);
+    palette.setColor(QPalette::Window, QColor(darkTheme_ ? "#171d29" : "#f3f5f9"));
+    widget->setPalette(palette);
+    const QString base = widget->property("smallDefaultStyleSheet").toString()
+                       + "\n" + smallWindowStyleSheet(palette);
     widget->setStyleSheet(customStyleSheet_.isEmpty() ? base : base + "\n" + customStyleSheet_);
 }
 
@@ -833,7 +848,7 @@ void MainWindow::applyTheme(bool dark)
     if (apiBrowser_)
         apiBrowser_->setAppearance(editorFont_, editorPalette(output_->palette(), dark), dark);
     SmallSettings().setValue("appearance/dark", dark);
-    if (!customStyleSheet_.isEmpty()) refreshStyleSheets();
+    refreshStyleSheets();
 }
 
 void MainWindow::chooseFont()
