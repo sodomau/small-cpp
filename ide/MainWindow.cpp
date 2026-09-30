@@ -441,7 +441,8 @@ void MainWindow::createUi()
     timing_ = new QLabel;
     timing_->setObjectName("buildTiming");
     statusBar()->addPermanentWidget(timing_);
-    statusBar()->showMessage("Ready — Small C++ IDE v0.66");
+    statusBar()->showMessage(QString("Ready — Small C++ IDE v%1")
+                                .arg(QCoreApplication::applicationVersion()));
 
     connect(tabs_, &QTabWidget::currentChanged, this, [this](int) { updateTitle(); });
     connect(tabs_, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
