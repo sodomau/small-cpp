@@ -88,6 +88,15 @@ Copy-Item $exe (Join-Path $OutputDir "SmallCppIDE.exe") -Force
 Copy-Item $runtime (Join-Path $OutputDir "runtime") -Recurse -Force
 Copy-Item $extensions (Join-Path $OutputDir "extensions") -Recurse -Force
 Copy-Item $tutorial (Join-Path $OutputDir "tutorial") -Recurse -Force
+
+# Keep learner documentation explicit; do not ship internal validation reports.
+$publicDocs = @('GETTING_STARTED.md', 'SMALL_CPP_GUIDE.md', 'API.md', 'DESIGN.md')
+$docsOut = Join-Path $OutputDir 'docs'
+New-Item -ItemType Directory -Path $docsOut | Out-Null
+foreach ($doc in $publicDocs) {
+    Copy-Item -LiteralPath (Join-Path $repoRoot "docs\$doc") -Destination (Join-Path $docsOut $doc)
+}
+Copy-Item -LiteralPath (Join-Path $repoRoot 'distribution\README.md') -Destination (Join-Path $OutputDir 'README.md')
 Copy-Item -LiteralPath (Join-Path $repoRoot 'LICENSE') -Destination $OutputDir
 Copy-Item -LiteralPath $NoticesDir -Destination (Join-Path $OutputDir 'licenses') -Recurse
 Copy-Item -LiteralPath (Join-Path $repoRoot 'docs\PORTABLE_START.md') -Destination (Join-Path $OutputDir 'START_HERE.md')
@@ -180,6 +189,15 @@ foreach ($key in @("qt_widgets", "qt_gui", "qt_multimedia", "qt_core")) {
 
 Write-Host "Portable learner Qt runtime (windeployqt probe): OK"
 Write-Host "Portable Qt linker libraries: OK"
+foreach ($doc in $publicDocs) {
+    if (!(Test-Path (Join-Path $docsOut $doc))) {
+        throw "Packaged documentation validation failed: $doc"
+    }
+}
+if (!(Test-Path (Join-Path $OutputDir 'README.md'))) {
+    throw 'Packaged README validation failed.'
+}
+Write-Host "Portable documentation: OK"
 Write-Host "Portable Small C++ created:"
 Write-Host "  $OutputDir"
 Write-Host ""
