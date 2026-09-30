@@ -2,6 +2,7 @@
 #include "BuildController.h"
 #include "CodeEditor.h"
 #include "Diagnostics.h"
+#include "EntryPoint.h"
 #include "small.h"
 
 #include <QAbstractButton>
@@ -322,9 +323,12 @@ private slots:
 
     void detectsExtensionsFromIncludes()
     {
-        QCOMPARE(ExtensionRegistry::detect("#include <small/image.h>\nvoid SmallMain(){}").size(), 1);
-        QCOMPARE(ExtensionRegistry::detect(" // #include <small/image.h>\nvoid SmallMain(){}").size(), 0);
-        QCOMPARE(ExtensionRegistry::detect("#include <small.h>\nvoid SmallMain(){}").size(), 0);
+        const auto installed = ExtensionRegistry::discover(
+            QCoreApplication::applicationDirPath() + "/extensions");
+        QVERIFY(!installed.isEmpty());
+        QCOMPARE(ExtensionRegistry::detect("#include <small/image.h>\nvoid SmallMain(){}", installed).size(), 1);
+        QCOMPARE(ExtensionRegistry::detect(" // #include <small/image.h>\nvoid SmallMain(){}", installed).size(), 0);
+        QCOMPARE(ExtensionRegistry::detect("#include <small.h>\nvoid SmallMain(){}", installed).size(), 0);
     }
 
     void detectsRealMainOnly()
