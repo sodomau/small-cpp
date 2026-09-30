@@ -9,8 +9,8 @@ function setLanguage(language) {
   languageButton.textContent = language === 'en' ? '한국어' : 'English';
   languageButton.setAttribute('aria-label', language === 'en' ? 'Switch to Korean' : '영어로 전환');
   tutorialLink.href = language === 'en'
-    ? '/docs/TUTORIAL_ENGLISH.md'
-    : '/docs/TUTORIAL_SMALL_STEPS.md';
+    ? 'lessons/en/index.html'
+    : 'lessons/ko/index.html';
   document.title = language === 'en' ? 'Small C++ — Start small. Go further.' : 'Small C++ — 작게 시작해서, 더 멀리.';
   document.querySelector('#ide-screenshot').alt = language === 'en'
     ? 'Small C++ desktop IDE with a drawing program, Run and Debug controls, and diagnostics'

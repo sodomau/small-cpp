@@ -15,8 +15,10 @@ to prepare the static files without starting the server. Generated files and
 copied artwork stay under `build/project-page/`. The server binds only to the
 local computer. Stop it with Ctrl+C.
 
-The preview serves repository Markdown so the lesson links include the English
-pack that has not yet been pushed. A future public deployment should point these
-links to the published repository after that pack is pushed. The download button
+The build renders all 91 lessons in both languages as static HTML, including
+the shared examples, exercise starters, and collapsible solutions. The lesson
+index and previous/next links work without a Markdown viewer or extra packages.
+Generated pages remain in `build/`; the original lesson content is unchanged.
+The preview server serves only the generated site directory. The download button
 points to the existing v0.76.9 preview and does not imply the English pack is
 included in that binary. No external fonts, scripts, or analytics are loaded.
