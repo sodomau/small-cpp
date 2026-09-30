@@ -11,7 +11,7 @@ function setLanguage(language) {
   tutorialLink.href = language === 'en'
     ? 'lessons/en/index.html'
     : 'lessons/ko/index.html';
-  document.title = language === 'en' ? 'Small C++ — Start small. Go further.' : 'Small C++ — 작게 시작해서, 더 멀리.';
+  document.title = language === 'en' ? 'Small C++ — Start small. Go further.' : 'Small C++ — 작은 시작. 큰 가능성.';
   document.querySelector('#ide-screenshot').alt = language === 'en'
     ? 'Small C++ desktop IDE with a drawing program, Run and Debug controls, and diagnostics'
     : '그림 프로그램, 실행과 디버그 도구, 진단 창을 보여 주는 Small C++ IDE';
