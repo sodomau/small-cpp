@@ -3,36 +3,48 @@ title: Creating Images
 goal: Create Image objects in memory and draw them in a Window.
 ---
 
-## Creating Images
+## The first Image extension
 
-`Image` is an extension type. Include `<small/image.h>`, create an image with a size and fill color, and use `DrawImage` to draw it in a Window. The Image owns pixel data; drawing connects that data to a Window.
+Image belongs to an extension, rather than Core. Write `#include <small/image.h>` at the top. Small IDE sees this include and automatically links the Image extension.
 
-## Examples
+## Try it first
 
 @code example1.cpp
 
+## Image and Window are different things
+
+`Image` owns image data and provides operations intrinsic to an image, such as `Width()`, `Height()`, and `Pixel()`. `DrawImage(window, image, ...)` is a free function because it connects Image and Window.
+
+Omitting a size draws at the original size. Supplying width and height smoothly scales it to that size.
+
+## One step further
+
 @code example2.cpp
 
-## Exercise 1
+## Extensions are ordinary C++ too
 
-Complete the starter program using the ideas from this lesson.
+Using Image does not mean learning a new language. You include a header and use ordinary C++ objects and functions.
+
+## Exercise — Draw at two sizes
+
+Create a 120 × 80 Green image. Draw it at its original size and twice that size in one window.
 
 @exercise exercise1_starter.cpp
 
 ### Hint
 
-Use the examples above as a guide.
+Use both the four-argument and six-argument forms of `DrawImage`.
 
 @solution exercise1_solution.cpp
 
-## Exercise 2
+## Exercise — Check the size
 
-Complete the starter program using the ideas from this lesson.
+Create a 64 × 48 image and print its Width and Height.
 
 @exercise exercise2_starter.cpp
 
 ### Hint
 
-Use the examples above as a guide.
+Use `Print(image.Width(), " x ", image.Height());`.
 
 @solution exercise2_solution.cpp

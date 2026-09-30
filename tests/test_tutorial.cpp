@@ -108,15 +108,22 @@ private slots:
         QVERIFY(catalog.find("hello"));
     }
 
-    void missingCoreTranslationFallsBackToKorean()
+    void englishLessonsAreTranslatedAndUnknownLanguageFallsBack()
     {
         TutorialCatalog korean("ko");
         TutorialCatalog english("en");
+        TutorialCatalog unavailable("zz");
         QVERIFY2(english.isValid(), qPrintable(english.errorString()));
         for (const auto& lesson : korean.lessons())
         {
             if (lesson.sourceDirectory.contains("/extensions/")) continue;
-            const auto* fallback = english.find(lesson.id);
+            const auto* translated = english.find(lesson.id);
+            QVERIFY(translated);
+            QVERIFY(translated->title != lesson.title);
+            QVERIFY(!translated->title.contains(QRegularExpression("[가-힣]")));
+            QCOMPARE(translated->exercises.size(), lesson.exercises.size());
+            QCOMPARE(translated->exercises.first().solution, lesson.exercises.first().solution);
+            const auto* fallback = unavailable.find(lesson.id);
             QVERIFY(fallback);
             QCOMPARE(fallback->title, lesson.title);
             QCOMPARE(fallback->exercises.size(), lesson.exercises.size());
@@ -132,6 +139,31 @@ private slots:
         QVERIFY(learn->actions().contains(action(window, "actionTutorial")));
         QVERIFY(learn->actions().contains(action(window, "actionExamples")));
         QVERIFY(!learnWindow<TutorialBrowser>());
+    }
+
+    void englishCanBeSelectedAndPreferenceIsSaved()
+    {
+        MainWindow window;
+        auto* menu = window.findChild<QMenu*>("menuTutorialLanguage");
+        QVERIFY(menu);
+        QAction* english = nullptr;
+        for (auto* choice : menu->actions())
+            if (choice->data().toString() == "en") english = choice;
+        QVERIFY(english);
+        english->trigger();
+        QCOMPARE(SmallSettings().value("tutorial/language").toString(), QString("en"));
+        auto* browser = browse(window);
+        QVERIFY(browser->selectLesson("hello"));
+        bool hasEnglishTitle = false;
+        for (auto* label : browser->findChildren<QLabel*>())
+            hasEnglishTitle |= label->text().contains("Showing text on the screen");
+        QVERIFY(hasEnglishTitle);
+        TutorialCatalog korean("ko");
+        QString sharedCode;
+        for (const auto& block : korean.find("hello")->blocks)
+            if (block.kind == TutorialBlock::Kind::Code) { sharedCode = block.content; break; }
+        QVERIFY(!sharedCode.isEmpty());
+        QCOMPARE(browser->findChild<CodeEditor*>("tutorialExample1")->toPlainText(), sharedCode);
     }
 
     void browserIsLazyModelessAndReused()

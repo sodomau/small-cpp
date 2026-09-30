@@ -1,38 +1,50 @@
 ---
 title: Loading and Saving
-goal: Load images from files and save generated or edited images.
+goal: Save image files and load them again.
 ---
 
-## Loading and Saving
+## Connecting Image to files
 
-Image files connect in-memory pixel data with persistent files. Keep input and output paths clear and check file operations while experimenting.
+`SaveImage` saves an Image to a file; `LoadImage` reads one. Supported formats such as PNG and JPEG depend on the Qt image plugins supplied with the application.
 
-## Examples
+## Try it first
 
 @code example1.cpp
 
+## The filename chooses the format
+
+An extension such as in `SaveImage(image, "picture.png")` chooses the saved format. Small reports a runtime error if a file cannot be opened or saved.
+
+DrawImage composites the loaded image's alpha information.
+
+## One step further
+
 @code example2.cpp
 
-## Exercise 1
+## The basic Image workflow is complete
 
-Complete the starter program using the ideas from this lesson.
+You can create or load an image, inspect or edit its pixels, draw it, and save it. These operations are ordinary C++ library APIs designed for use outside Small IDE too.
+
+## Exercise — Save and read
+
+Save a 50 × 50 Cyan image as `cyan.png`, then load it into a new Image.
 
 @exercise exercise1_starter.cpp
 
 ### Hint
 
-Use the examples above as a guide.
+Use `Image loaded = LoadImage("cyan.png");`.
 
 @solution exercise1_solution.cpp
 
-## Exercise 2
+## Exercise — Edit a file
 
-Complete the starter program using the ideas from this lesson.
+Create and save an image, load it again, change (0, 0) to Magenta, and save under a different name.
 
 @exercise exercise2_starter.cpp
 
 ### Hint
 
-Use the examples above as a guide.
+Using a second filename preserves the original file.
 
 @solution exercise2_solution.cpp
