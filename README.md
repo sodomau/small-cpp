@@ -78,8 +78,8 @@ void SmallMain()
 
 ## Get started
 
-Try the [first Windows portable preview](https://github.com/sodomau/small-cpp/releases/tag/v0.76.6):
-download **SmallCpp-v0.76.6-Windows-x64.zip**, extract the entire archive,
+Try the [current Windows portable preview](https://github.com/sodomau/small-cpp/releases/tag/v0.76.9):
+download **SmallCpp-v0.76.9-Windows-x64.zip**, extract the entire archive,
 and launch `SmallCppIDE.exe`. The compiler and debugger are included.
 See [portable first use](docs/PORTABLE_START.md) for instructions.
 
