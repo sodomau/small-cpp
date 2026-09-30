@@ -1,21 +1,21 @@
 param(
     [string]$BuildDir = "",
-    [string]$OutputDir = ""
+    [string]$OutputDir = "",
+    [string]$NoticesDir = ""
 )
 
 $ErrorActionPreference = "Stop"
+$repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 
 if ([string]::IsNullOrWhiteSpace($BuildDir)) {
-    $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
     $candidates = @(
-        Get-ChildItem (Join-Path $repoRoot "ide\build") -Directory -ErrorAction SilentlyContinue |
-        Where-Object { $_.Name -match "_Release$" } |
+        Get-ChildItem (Join-Path $repoRoot "build") -Directory -ErrorAction SilentlyContinue |
         ForEach-Object { Join-Path $_.FullName "bin\Release" } |
         Where-Object { Test-Path (Join-Path $_ "SmallCppIDE.exe") }
     )
 
     if ($candidates.Count -eq 0) {
-        throw "Release build not found. Build the Release configuration in Qt Creator first."
+        throw "Release build not found under build/. Pass -BuildDir explicitly."
     }
     if ($candidates.Count -gt 1) {
         throw "More than one Release build was found. Pass -BuildDir explicitly."
@@ -30,6 +30,14 @@ if ([string]::IsNullOrWhiteSpace($OutputDir)) {
     $OutputDir = Join-Path (Split-Path $build -Parent) "SmallCpp-Portable"
 }
 $OutputDir = [System.IO.Path]::GetFullPath($OutputDir)
+$allowedOutputRoot = [System.IO.Path]::GetFullPath((Join-Path $repoRoot 'build')) + [System.IO.Path]::DirectorySeparatorChar
+if (!$OutputDir.StartsWith($allowedOutputRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+    throw "OutputDir must be a subdirectory of the repository's build/ directory."
+}
+if ([string]::IsNullOrWhiteSpace($NoticesDir) -or !(Test-Path (Join-Path $NoticesDir 'THIRD_PARTY.txt')) -or
+    !(Test-Path (Join-Path $NoticesDir 'SOURCE_ACCESS.md'))) {
+    throw "Pass -NoticesDir with reviewed licenses, THIRD_PARTY.txt and SOURCE_ACCESS.md before packaging."
+}
 
 if ($OutputDir.StartsWith($build + [System.IO.Path]::DirectorySeparatorChar,
                           [System.StringComparison]::OrdinalIgnoreCase)) {
@@ -70,7 +78,9 @@ if (!(Test-Path $deploy)) {
     throw "windeployqt.exe was not found: $deploy"
 }
 
-Remove-Item $OutputDir -Recurse -Force -ErrorAction SilentlyContinue
+if (Test-Path $OutputDir) {
+    throw "OutputDir already exists. Use a fresh destination to preserve previous packages."
+}
 New-Item -ItemType Directory -Path $OutputDir | Out-Null
 
 # Copy only Small-owned build artifacts.
@@ -78,17 +88,22 @@ Copy-Item $exe (Join-Path $OutputDir "SmallCppIDE.exe") -Force
 Copy-Item $runtime (Join-Path $OutputDir "runtime") -Recurse -Force
 Copy-Item $extensions (Join-Path $OutputDir "extensions") -Recurse -Force
 Copy-Item $tutorial (Join-Path $OutputDir "tutorial") -Recurse -Force
+Copy-Item -LiteralPath (Join-Path $repoRoot 'LICENSE') -Destination $OutputDir
+Copy-Item -LiteralPath $NoticesDir -Destination (Join-Path $OutputDir 'licenses') -Recurse
+Copy-Item -LiteralPath (Join-Path $repoRoot 'docs\PORTABLE_START.md') -Destination (Join-Path $OutputDir 'START_HERE.md')
 
 # Deploy Qt runtime and plugins from both dependency roots.
 # SmallCppIDE does not itself use every Qt module used by learner programs.
 Copy-Item $deployProbe (Join-Path $OutputDir "SmallDeployProbe.exe") -Force
 
-& $deploy --release --compiler-runtime --dir $OutputDir (Join-Path $OutputDir "SmallCppIDE.exe")
+$deployOptions = @('--release', '--compiler-runtime', '--no-translations', '--no-opengl-sw',
+                   '--no-system-d3d-compiler', '--no-ffmpeg', '--exclude-plugins', 'ffmpegmediaplugin', '--dir', $OutputDir)
+& $deploy @deployOptions (Join-Path $OutputDir "SmallCppIDE.exe")
 if ($LASTEXITCODE -ne 0) {
     throw "windeployqt failed for SmallCppIDE.exe (exit code $LASTEXITCODE)"
 }
 
-& $deploy --release --compiler-runtime --dir $OutputDir (Join-Path $OutputDir "SmallDeployProbe.exe")
+& $deploy @deployOptions (Join-Path $OutputDir "SmallDeployProbe.exe")
 if ($LASTEXITCODE -ne 0) {
     throw "windeployqt failed for SmallDeployProbe.exe (exit code $LASTEXITCODE)"
 }

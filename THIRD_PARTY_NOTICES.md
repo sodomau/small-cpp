@@ -33,9 +33,12 @@ mode.
 
 ## Before publishing a portable binary package
 
-The existing `tools/package_release.ps1` deploys Qt runtime files and plugins,
-copies Qt linker libraries, and copies the MinGW toolchain. It does not yet
-assemble a complete license/notice bundle or source distribution.
+`tools/package_release.ps1` deploys Qt runtime files and plugins, copies Qt
+linker libraries and the MinGW toolchain, and requires a reviewed notice
+directory. `tools/prepare_release_notices.py` collects source license texts,
+toolchain notices and Qt SBOMs. Source archives must be published alongside
+the binary package; the assembler does not replace inventory review.
+See [Windows distribution preparation](docs/BINARY_DISTRIBUTION.md).
 
 1. Record exact versions and all shipped files, including plugin dependencies
    and the toolchain's auxiliary programs. Use the Qt kit's SBOM/attribution

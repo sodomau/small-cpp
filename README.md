@@ -70,6 +70,11 @@ void SmallMain()
 
 ## Get started
 
+Try the [first Windows portable preview](https://github.com/sodomau/small-cpp/releases/tag/v0.76.6):
+download **SmallCpp-v0.76.6-Windows-x64.zip**, extract the entire archive,
+and launch `SmallCppIDE.exe`. The compiler and debugger are included.
+See [portable first use](docs/PORTABLE_START.md) for instructions.
+
 The documented development setup is **Windows with a matching Qt MinGW
 64-bit kit**. The current workflow uses Qt 6.11.2, MinGW 13.1.0, CMake, and
 Ninja. See [the build instructions](docs/DEVELOPMENT.md#windows-build) for the

@@ -1,0 +1,176 @@
+[
+  {
+    "file": "12d1cb5b7c60901e36163b3e0599f11703c4946a.tar.gz",
+    "bytes": 26011822,
+    "sha256": "4c1139fdd1e6c2a649a7439f0f2d1217fde2c84a72ae8ecfcf6d551b1d6430ee",
+    "noticeFiles": 8
+  },
+  {
+    "file": "binutils-2.39.tar.xz",
+    "bytes": 25167756,
+    "sha256": "645c25f563b8adc0a81dbd6a41cffbf4d37083a382e02d5d3df4f65c09516d00",
+    "noticeFiles": 8
+  },
+  {
+    "file": "bzip2-1.0.6.tar.gz",
+    "bytes": 782025,
+    "sha256": "a2848f34fcd5d6cf47def00461fcb528a0484d8edef8208d6d2e2909dc61d9cd",
+    "noticeFiles": 1
+  },
+  {
+    "file": "c3e587c067a00a561899d49d3e63a659e38802ec.tar.gz",
+    "bytes": 13931225,
+    "sha256": "62c20eefd0f884757e03ebbff66c167ecd18103fad2e48eb88f57f6f86af2c9a",
+    "noticeFiles": 13
+  },
+  {
+    "file": "expat-2.5.0.tar.xz",
+    "bytes": 460560,
+    "sha256": "ef2420f0232c087801abf705e89ae65f6257df6b7931d37846a193ef2e8cdcbe",
+    "noticeFiles": 2
+  },
+  {
+    "file": "gcc-13.1.0.tar.xz",
+    "bytes": 87451196,
+    "sha256": "61d684f0aa5e76ac6585ad8898a2427aade8979ed5e7f85492286c4dfc13ee86",
+    "noticeFiles": 38
+  },
+  {
+    "file": "gdb-11.2.tar.xz",
+    "bytes": 22039420,
+    "sha256": "1497c36a71881b8671a9a84a0ee40faab788ca30d7ba19d8463c3cc787152e32",
+    "noticeFiles": 15
+  },
+  {
+    "file": "gdbm-1.19.tar.gz",
+    "bytes": 967861,
+    "sha256": "37ed12214122b972e18a0d94995039e57748191939ef74115b1d41d8811364bc",
+    "noticeFiles": 2
+  },
+  {
+    "file": "gmp-6.2.1.tar.xz",
+    "bytes": 2027316,
+    "sha256": "fd4829912cddd12f84181c3451cc752be224643e87fac497b69edddadc49b4f2",
+    "noticeFiles": 3
+  },
+  {
+    "file": "isl-0.25.tar.xz",
+    "bytes": 1977048,
+    "sha256": "be7b210647ccadf90a2f0b000fca11a4d40546374a850db67adb32fad4b230d9",
+    "noticeFiles": 2
+  },
+  {
+    "file": "libffi-3.2.1.tar.gz",
+    "bytes": 940837,
+    "sha256": "d06ebb8e1d9a22d19e38d63fdb83954253f39bedc5d46232a05645685722ca37",
+    "noticeFiles": 1
+  },
+  {
+    "file": "libgnurx-2.8.0.tar.xz",
+    "bytes": 116448,
+    "sha256": "8afa3d465b198fca86214af0ab87dadac90f5c2f3a71e6366c2b3a3f7cadd983",
+    "noticeFiles": 1
+  },
+  {
+    "file": "libiconv-1.17.tar.gz",
+    "bytes": 5413283,
+    "sha256": "8f74213b56238c85a50a5329f77e06198771e70dd9a739779f4c02f65d971313",
+    "noticeFiles": 5
+  },
+  {
+    "file": "make-4.2.1.tar.bz2",
+    "bytes": 1407126,
+    "sha256": "d6e262bf3601b42d2b1e4ef8310029e1dcf20083c5446b4b7aa67081fdffc589",
+    "noticeFiles": 4
+  },
+  {
+    "file": "mingw-builds-20230524.tar.gz",
+    "bytes": 578807,
+    "sha256": "cb92e4c9df87cd3536a4f9318620a3153bae3de813207aded08a6747ba2d0fc1",
+    "noticeFiles": 43
+  },
+  {
+    "file": "mpc-1.2.1.tar.gz",
+    "bytes": 838731,
+    "sha256": "17503d2c395dfcf106b622dc142683c1199431d095367c6aacba6eec30340459",
+    "noticeFiles": 2
+  },
+  {
+    "file": "mpfr-4.1.0.tar.xz",
+    "bytes": 1525476,
+    "sha256": "0c98a3f1732ff6ca4ea690552079da9c597872d30e96ec28414ee23c95558a7f",
+    "noticeFiles": 3
+  },
+  {
+    "file": "ncurses-6.2.tar.gz",
+    "bytes": 3425862,
+    "sha256": "30306e0c76e0f9f1f0de987cf1c82a5c21e1ce6568b9227f7da5b71cbea86c9d",
+    "noticeFiles": 9
+  },
+  {
+    "file": "OpenSSL_1_1_1k.tar.gz",
+    "bytes": 9996510,
+    "sha256": "b92f9d3d12043c02860e5e602e50a73ed21a69947bcc74d391f41148e9f6aa95",
+    "noticeFiles": 3
+  },
+  {
+    "file": "qtbase-everywhere-src-6.11.2.tar.xz",
+    "bytes": 50582668,
+    "sha256": "5b2e00eccaf5a4d8c14134ffa0ea8dfd0a35ae1ffc7f8d87fa4305a1ed23cf22",
+    "noticeFiles": 159
+  },
+  {
+    "file": "qtmultimedia-everywhere-src-6.11.2.tar.xz",
+    "bytes": 10255120,
+    "sha256": "967b5e02ec6b793cdb360622cd6e703132836af983208d678dae4b50f109cd9f",
+    "noticeFiles": 39
+  },
+  {
+    "file": "qtsvg-everywhere-src-6.11.2.tar.xz",
+    "bytes": 2341860,
+    "sha256": "d594337feca84c26fb67fe87b85e6a5c12fda404b611d905f9d138210c311876",
+    "noticeFiles": 10
+  },
+  {
+    "file": "readline-8.1.tar.gz",
+    "bytes": 2993288,
+    "sha256": "f8ceb4ee131e3232226a17f51b164afc46cd0b9e6cef344be87c65962cb82b02",
+    "noticeFiles": 1
+  },
+  {
+    "file": "sqlite-autoconf-3350500.tar.gz",
+    "bytes": 2956627,
+    "sha256": "f52b72a5c319c3e516ed7a92e123139a6e87af08a2dc43d7757724f6132e6db0",
+    "noticeFiles": 1
+  },
+  {
+    "file": "tcl8.6.11-src.tar.gz",
+    "bytes": 10259009,
+    "sha256": "8c0486668586672c5693d7d95817cb05a18c5ecca2f40e2836b9578064088258",
+    "noticeFiles": 17
+  },
+  {
+    "file": "termcap-1.3.1.tar.gz",
+    "bytes": 439416,
+    "sha256": "91a0e22e5387ca4467b5bcb18edf1c51b930262fd466d5fda396dd9d26719100",
+    "noticeFiles": 1
+  },
+  {
+    "file": "tk8.6.11-src.tar.gz",
+    "bytes": 4496914,
+    "sha256": "5228a8187a7f70fa0791ef0f975270f068ba9557f57456f51eb02d9d4ea31282",
+    "noticeFiles": 11
+  },
+  {
+    "file": "v1.2.13.tar.gz",
+    "bytes": 1556687,
+    "sha256": "1525952a0a567581792613a9723333d7f8cc20b87a81f920fb8bc7e3f2251428",
+    "noticeFiles": 2
+  },
+  {
+    "file": "xz-5.2.5.tar.gz",
+    "bytes": 761870,
+    "sha256": "0d2b89629f13dd1a0602810529327195eff5f62a0142ccd65b903bc16a4ac78a",
+    "noticeFiles": 5
+  }
+]
