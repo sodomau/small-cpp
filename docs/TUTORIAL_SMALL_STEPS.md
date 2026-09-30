@@ -49,8 +49,7 @@ interactive window, sound, keyboard, mouse, or rendered tutorial UI validation.
 The archive's `validation.json` records its author's earlier checks and is preserved
 as source evidence, separate from the measurements above.
 
-The historical full-suite failures in `SETUP_VALIDATION.md` are not resolved by
-this content import. In particular, `tools/verify_tutorial.py` and the old
-`tests/test_tutorial.cpp` still assume earlier catalogs, lesson counts, IDs, or
-exercise layouts. Modernizing those tests is a separate maintenance task;
-the old suite was not represented as passing for this import.
+At the time of this content import, the historical full-suite failures in
+`SETUP_VALIDATION.md` remained unresolved. Subsequent test maintenance updated
+catalog, lesson, ID, and exercise assumptions: the current suite passes 29/29.
+See [Regression validation](REGRESSION_VALIDATION.md) for measured coverage.

@@ -1,5 +1,11 @@
 # Repository setup validation — 2026-09-30
 
+**Current status:** the updated regression suite passes **29/29** checks.
+All failures below describe the initial import and have been resolved. See
+[Regression validation](REGRESSION_VALIDATION.md) for the current measurements.
+
+## Historical import baseline
+
 ## Source integrity
 
 Imported archive: `SmallCpp-IDE-v0.76f-ide-pause-config-fix.zip`.

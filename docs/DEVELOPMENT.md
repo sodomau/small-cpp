@@ -105,8 +105,15 @@ The untouched v0.76f archive initially fails the test-enabled build because
 The import commit preserves this baseline; a separate test-only fix adds the include
 and updates extension detection calls to supply discovered installed extensions.
 
-Several historical Python validators refer to removed tutorial catalogs or
-pre-consolidation lesson files, or assert an old version string. Use UTF-8 mode
-to distinguish encoding errors from obsolete checks. See `SETUP_VALIDATION.md`
-for the measured setup results. These are follow-up maintenance items; the
-repository import does not redesign tutorial content to satisfy obsolete checks.
+Historical validators have now been updated for the external lesson packs and
+current Learn windows. CTest runs all 20 Python validators alongside the native
+tests and validator regression cases: 29/29 checks pass. `SETUP_VALIDATION.md`
+preserves the import baseline; `REGRESSION_VALIDATION.md` records current results.
+
+For all 264 tutorial builds and six representative real-runtime output checks:
+
+```powershell
+& C:\Qt\Tools\CMake\bin\cmake.exe --build build/local-debug --target small_tutorial_programs --parallel 4
+Get-ChildItem -LiteralPath build/local-debug/bin/Debug -Filter '*.dll' | Copy-Item -Destination build/local-debug/bin/Debug/tutorial
+python -X utf8 tools/verify_tutorial.py --build-dir build/local-debug --cmake C:/Qt/Tools/CMake/bin/cmake.exe --report build/local-debug/tutorial-validation.json
+```
