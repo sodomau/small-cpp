@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(SmallCppIDE VERSION 0.76.9 LANGUAGES CXX)
+project(SmallCppIDE VERSION 0.76.10 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -158,7 +158,8 @@ target_link_libraries(SmallDeployProbe PRIVATE
 set_target_properties(SmallDeployProbe PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${SMALL_BIN}")
 if(WIN32)
-    target_sources(SmallCppIDE PRIVATE smallcpp.rc)
+    configure_file(smallcpp.rc ${CMAKE_CURRENT_BINARY_DIR}/smallcpp.rc @ONLY)
+    target_sources(SmallCppIDE PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/smallcpp.rc)
 endif()
 target_link_libraries(SmallCppIDE PRIVATE small_ide_components)
 target_compile_definitions(SmallCppIDE PRIVATE SMALL_IDE_VERSION="${PROJECT_VERSION}")
