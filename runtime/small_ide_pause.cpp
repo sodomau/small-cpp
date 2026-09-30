@@ -23,7 +23,7 @@ struct IdePauseRegistration
     }
 };
 
-// This translation unit is linked only into programs launched by Small IDE.
+// This object file is linked directly into programs launched by Small IDE.
 // Its presence in the executable is the policy switch; Small runtime itself
 // knows nothing about the IDE pause behavior.
 IdePauseRegistration registration;

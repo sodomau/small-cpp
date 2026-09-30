@@ -80,6 +80,26 @@ private:
     }
 
 private slots:
+    void aboutShowsProjectOrigin()
+    {
+        MainWindow window;
+        auto* about = action(window, "actionAboutSmallCpp");
+        QVERIFY(about);
+        QString text;
+        QTimer::singleShot(0, &window, [&] {
+            if (auto* box = qobject_cast<QMessageBox*>(QApplication::activeModalWidget())) {
+                text = box->text();
+                box->accept();
+            }
+        });
+        about->trigger();
+        QVERIFY(text.contains("Sunghyun Cho"));
+        QVERIFY(text.contains("POSTECH"));
+        QVERIFY(text.contains("GW-BASIC"));
+        QVERIFY(text.contains("Small Basic"));
+        QVERIFY(text.contains("MIT License"));
+    }
+
     void initTestCase()
     {
         QApplication::setQuitOnLastWindowClosed(false);

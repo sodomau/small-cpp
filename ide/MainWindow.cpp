@@ -232,13 +232,18 @@ void MainWindow::createUi()
     auto* settingsMenu = menuBar()->addMenu("&Settings");
     auto* helpMenu = menuBar()->addMenu("&Help");
     auto* aboutAction = helpMenu->addAction("About Small C++...");
-    aboutAction->setObjectName("actionAbout");
+    aboutAction->setObjectName("actionAboutSmallCpp");
     aboutAction->setMenuRole(QAction::AboutRole);
     connect(aboutAction, &QAction::triggered, this, [this] {
         QMessageBox::about(this, "About Small C++",
             QString("<h2>Small C++ %1</h2>"
                     "<p>Start small. Grow as far as you want.</p>"
                     "<p>A native environment for learning real C++.</p>"
+                    "<p><b>Developed by Sunghyun Cho</b><br>POSTECH<br>"
+                    "<a href=\"mailto:s.cho@postech.ac.kr\">s.cho@postech.ac.kr</a></p>"
+                    "<p>Inspired by Sunghyun Cho's childhood experience with GW-BASIC.<br>"
+                    "The name Small C++ is a nod to Small Basic.</p>"
+                    "<p><i>The immediacy of BASIC. The path to C++.</i></p>"
                     "<p>Copyright &copy; 2026 Sunghyun Cho<br>"
                     "Small C++ is licensed under the MIT License.<br>"
                     "Qt and bundled tools retain their own licenses.</p>"

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(SmallCppIDE VERSION 0.76.6 LANGUAGES CXX)
+project(SmallCppIDE VERSION 0.76.9 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -36,10 +36,10 @@ target_include_directories(small_entry PRIVATE "${SMALL_ROOT}/runtime")
 target_link_libraries(small_entry PRIVATE small_runtime)
 
 # IDE-only exit pause support. This is deliberately separate from small_runtime:
-# linking this archive enables the console pause; omitting it gives normal
+# linking this object enables the console pause; omitting it gives normal
 # release-style process termination.
-add_library(small_ide_pause STATIC "${SMALL_ROOT}/runtime/small_ide_pause.cpp")
-set_target_properties(small_ide_pause PROPERTIES AUTOMOC OFF DEBUG_POSTFIX "")
+add_library(small_ide_pause OBJECT "${SMALL_ROOT}/runtime/small_ide_pause.cpp")
+set_target_properties(small_ide_pause PROPERTIES AUTOMOC OFF)
 
 # First real extension: Image. It depends on Core; Core does not depend on it.
 add_library(small_image STATIC
@@ -62,7 +62,7 @@ add_custom_target(small_sdk ALL
     COMMAND "${CMAKE_COMMAND}" -E copy_if_different
             "$<TARGET_FILE:small_entry>" "${SMALL_SDK}/$<TARGET_FILE_NAME:small_entry>"
     COMMAND "${CMAKE_COMMAND}" -E copy_if_different
-            "$<TARGET_FILE:small_ide_pause>" "${SMALL_SDK}/$<TARGET_FILE_NAME:small_ide_pause>"
+            "$<TARGET_OBJECTS:small_ide_pause>" "${SMALL_SDK}/small_ide_pause.o"
     COMMAND "${CMAKE_COMMAND}" -E make_directory
             "${SMALL_BIN}/extensions/image/include/small"
             "${SMALL_BIN}/extensions/image/lib"
@@ -101,7 +101,7 @@ inline constexpr const char* CompilerVersion = R\"small(${CMAKE_CXX_COMPILER_VER
 inline constexpr const char* QtBin = R\"small($<TARGET_FILE_DIR:Qt6::Core>)small\";
 inline constexpr const char* RuntimeFile = R\"small($<TARGET_FILE_NAME:small_runtime>)small\";
 inline constexpr const char* EntryFile = R\"small($<TARGET_FILE_NAME:small_entry>)small\";
-inline constexpr const char* IdePauseFile = R\"small($<TARGET_FILE_NAME:small_ide_pause>)small\";
+inline constexpr const char* IdePauseFile = R\"small(small_ide_pause.o)small\";
 inline constexpr const char* QtLibraries[] = {
     R\"small($<TARGET_LINKER_FILE:Qt6::Widgets>)small\",
     R\"small($<TARGET_LINKER_FILE:Qt6::Gui>)small\",
@@ -243,7 +243,7 @@ if(SMALL_BUILD_TESTS)
     if(Python3_Interpreter_FOUND)
         add_test(NAME small_ide_console_pause
             COMMAND "${Python3_EXECUTABLE}" "${SMALL_ROOT}/tests/test_ide_pause.py"
-                    "${CMAKE_CXX_COMPILER}" "$<TARGET_FILE:small_ide_pause>")
+                    "${CMAKE_CXX_COMPILER}" "$<TARGET_OBJECTS:small_ide_pause>")
         add_test(NAME small_tutorial_content
             COMMAND "${Python3_EXECUTABLE}" "${SMALL_ROOT}/tools/verify_tutorial.py")
         add_test(NAME small_example_catalog

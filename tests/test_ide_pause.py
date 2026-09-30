@@ -1,4 +1,4 @@
-"""Exercise the real pause archive with stdin kept open until Enter is supplied."""
+"""Exercise the real pause object with stdin kept open until Enter is supplied."""
 import os
 from pathlib import Path
 import subprocess
@@ -6,11 +6,11 @@ import sys
 import tempfile
 import time
 
-compiler, archive = sys.argv[1:]
+compiler, pause_object = sys.argv[1:]
 root = Path(__file__).resolve().parents[1]
 for controller in ('BuildController.cpp', 'DebugController.cpp'):
     text = (root / 'ide' / controller).read_text(encoding='utf-8')
-    assert '-Wl,--whole-archive' in text and '-Wl,--no-whole-archive' in text
+    assert 'idePausePath_' in text and '--whole-archive' not in text
 
 with tempfile.TemporaryDirectory() as directory:
     directory = Path(directory)
@@ -23,7 +23,7 @@ with tempfile.TemporaryDirectory() as directory:
         binary = directory / ('paused.exe' if include_pause else 'plain.exe')
         args = [compiler, str(source)]
         if include_pause:
-            args += ['-Wl,--whole-archive', archive, '-Wl,--no-whole-archive']
+            args += [pause_object]
         args += ['-o', str(binary)]
         subprocess.run(args, check=True, env=environment)
         process = subprocess.Popen([str(binary)], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -59,4 +59,4 @@ with tempfile.TemporaryDirectory() as directory:
                 if attempt == 29:
                     raise
                 time.sleep(0.1)
-print('IDE archive waits for Enter; standalone and test-mode programs exit immediately.')
+print('IDE object waits for Enter; standalone and test-mode programs exit immediately.')
