@@ -1,5 +1,10 @@
 Development: [workflow and build instructions](docs/DEVELOPMENT.md) · [setup validation](docs/SETUP_VALIDATION.md) · [design philosophy](docs/PHILOSOPHY.md)
 
+License: [MIT](LICENSE) for Small C++ project code, examples, tutorials,
+documentation, and logo/icon assets, except separately identified third-party
+material. External libraries and bundled tools retain their own licenses; see
+[third-party components and binary release preparation](THIRD_PARTY_NOTICES.md).
+
 Product documentation: [overview, user guide, architecture, and release checklist](docs/README.md).
 
 Current core tutorial: **88 Korean Small Steps lessons**, imported from

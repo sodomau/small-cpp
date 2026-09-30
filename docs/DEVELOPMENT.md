@@ -69,7 +69,10 @@ Examples and tutorial programs have optional compilation targets:
 Build Release separately under `build/local-release`. The existing
 `package_release.bat` / `tools/package_release.ps1` workflow produces a portable
 distribution. Publish binaries as GitHub Release assets when requested, not as
-source commits. No license is chosen automatically.
+source commits. Small-owned project materials use the MIT license; see
+`../LICENSE` and `../THIRD_PARTY_NOTICES.md`. A portable binary release also
+requires the applicable external license notices and source-access provisions;
+the current packaging script does not complete that preparation automatically.
 
 ## Change and commit workflow
 
