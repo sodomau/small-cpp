@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/small/app">
+        <file alias="smallcpp.png">assets/smallcpp.png</file>
+    </qresource>
+</RCC>

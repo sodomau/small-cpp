@@ -1,0 +1,2 @@
+Reference coverage OK: 12 files
+All learner-facing API groups and learner enum values are represented.

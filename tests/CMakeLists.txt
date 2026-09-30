@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.21)
+project(SmallCppValuesTests LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+enable_testing()
+add_executable(small_values_test test_values.cpp)
+target_include_directories(small_values_test PRIVATE ../runtime)
+add_test(NAME small_values COMMAND small_values_test)

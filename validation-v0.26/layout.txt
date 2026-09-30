@@ -1,0 +1,25 @@
+PASS public header contains no Qt includes
+PASS public API lives in Small namespace
+PASS beginner using is macro guarded
+PASS learner build enables beginner mode
+PASS SmallMain is the learner entry point
+PASS Window does not inherit QWidget in public API
+PASS fixed real main exists
+PASS runtime prebuilt by CMake
+PASS IDE depends on the packaged runtime
+PASS no blocking process waits in IDE
+PASS no qmake subprocess per Run
+PASS learner compilation has no Qt header paths
+PASS no runtime compilation in runner
+PASS close event uses save confirmation
+PASS all three save choices exist
+PASS save is atomic
+PASS Ctrl+S assigned
+PASS default save name is provided
+PASS sound is still PCM, not OS beep
+PASS tabs use widget identity rather than parallel index state
+PASS Run tracks originating tab using a guarded pointer
+PASS save-as protects other open documents
+PASS std::string inbound constructor exists
+PASS no generated machine-specific CMake cache included
+24 structural checks passed

@@ -1,0 +1,46 @@
+{
+  "runtime/small_internal.h": {
+    "unchanged": true,
+    "sha256": "382dcfafc37637799f33967ba2c15982cf758e6fa36e0f39611fcea7138a2617"
+  },
+  "runtime/small_runtime.cpp": {
+    "unchanged": true,
+    "sha256": "631f794b7b4a8bad8f3bb059ba2f8229d5920462d9e3828cd6909a126d140ffc"
+  },
+  "runtime/small_sound.cpp": {
+    "unchanged": true,
+    "sha256": "f0e96a2114ec9dd2f011e7bbb48718f8992005f2edab1aad8a0d261e3b6985ea"
+  },
+  "runtime/small_main.cpp": {
+    "unchanged": true,
+    "sha256": "5872439ddf4f715a97b8d030cddacc625ef43aa8ac28381450028fec11ae16e5"
+  },
+  "runtime/small.h": {
+    "unchanged": true,
+    "sha256": "4c986894893af81b776da17c88196c775447ffccd2a3aa1a415e9c918ce2efe2"
+  },
+  "ide/BuildController.cpp": {
+    "unchanged": true,
+    "sha256": "e17fa354d2ccb08aa1c56cadd91d167f1708e8be5e629f0932dac10397bdde05"
+  },
+  "ide/BuildController.h": {
+    "unchanged": true,
+    "sha256": "5b8f30ddb1afe6447f287d19d880215a54adb56c5ce341a1e0afe7a8d5dfc6b0"
+  },
+  "ide/EditorDocument.cpp": {
+    "unchanged": true,
+    "sha256": "253999565583dffeb45db74363eede3301ccf5b5ca035c4519d7fde4b1cd47b7"
+  },
+  "ide/EditorDocument.h": {
+    "unchanged": true,
+    "sha256": "dcb36d802847d628edd011e4204649aa3943d77f8cb42c64d1479331d2ed292c"
+  },
+  "ide/ExamplesBrowser.cpp": {
+    "unchanged": true,
+    "sha256": "0abf9d5e9c0adc618946d8f863bb0d05ef8234f8c3049207c16f4f2380e62950"
+  },
+  "ide/ExampleCatalog.cpp": {
+    "unchanged": true,
+    "sha256": "b1dce23ee21390b86a405dc0eda89035580f0156d4ef89d70e70c68654fbba04"
+  }
+}

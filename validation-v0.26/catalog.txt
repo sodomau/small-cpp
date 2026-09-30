@@ -1,0 +1,3 @@
+Example catalog/resource integrity passed: 19 examples
+Reference: 12; Programs: 7
+Every catalog source is present and embedded once. No external data download is used.

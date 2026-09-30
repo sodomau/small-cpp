@@ -1,0 +1,335 @@
+{
+  "version": 1,
+  "examples": [
+    {
+      "id": "reference/console",
+      "group": "Reference",
+      "title": "Console",
+      "description": "Read values from the keyboard and print text in the program console.",
+      "concepts": [
+        "Print",
+        "Write",
+        "Input",
+        "InputInt",
+        "InputReal",
+        "Format"
+      ],
+      "notes": "Enter a name, an age, and a height when the console asks. The IDE Diagnostics pane is not the program console.",
+      "source": "reference/console.cpp"
+    },
+    {
+      "id": "reference/comments",
+      "group": "Reference",
+      "title": "Comments",
+      "description": "Use comments to leave notes, explain intent, and temporarily disable a line while experimenting.",
+      "concepts": [
+        "// comments",
+        "/* ... */ comments"
+      ],
+      "notes": "Prefer comments that explain intent or reasons instead of repeating what the code already says.",
+      "source": "reference/comments.cpp"
+    },
+    {
+      "id": "reference/random",
+      "group": "Reference",
+      "title": "Random Numbers",
+      "description": "Generate random integers and real numbers with clear ranges.",
+      "concepts": [
+        "RandomInt",
+        "RandomReal"
+      ],
+      "notes": "RandomInt includes both endpoints. RandomReal includes the minimum and excludes the maximum.",
+      "source": "reference/random.cpp"
+    },
+    {
+      "id": "reference/string",
+      "group": "Reference",
+      "title": "String",
+      "description": "Create, index, join, and compare text values.",
+      "concepts": [
+        "String",
+        "Length",
+        "Substring",
+        "[]",
+        "+",
+        "+=",
+        "comparisons"
+      ],
+      "notes": "Output appears in the console. Edit the words in a Try copy and compare the results. This example uses ASCII text.",
+      "source": "reference/string.cpp"
+    },
+    {
+      "id": "reference/array",
+      "group": "Reference",
+      "title": "Array",
+      "description": "Store several values, change elements, and copy an entire array.",
+      "concepts": [
+        "Array<int>",
+        "Array<bool>",
+        "Length",
+        "[]",
+        "value assignment"
+      ],
+      "notes": "Notice how a = b replaces the whole array, including its length. Output appears in the console.",
+      "source": "reference/array.cpp"
+    },
+    {
+      "id": "reference/file",
+      "group": "Reference",
+      "title": "File",
+      "description": "Write and read text files, then save numbers using native binary representation.",
+      "concepts": [
+        "File",
+        "FileMode",
+        "Input",
+        "InputInt",
+        "InputReal",
+        "Print",
+        "Write",
+        "ReadInt",
+        "ReadReal",
+        "WriteInt",
+        "WriteReal"
+      ],
+      "notes": "Creates or overwrites example.txt, numbers.txt, and save.dat. Built-in examples run in a temporary folder. Use Try and save the copy in your own folder to keep these files.",
+      "source": "reference/file.cpp"
+    },
+    {
+      "id": "reference/window",
+      "group": "Reference",
+      "title": "Window",
+      "description": "Set a title before opening a window, change it while open, and close the window.",
+      "concepts": [
+        "Window",
+        "SetTitle",
+        "Title",
+        "Open",
+        "Close",
+        "IsOpen",
+        "Width",
+        "Height"
+      ],
+      "notes": "Watch the title change after one second. The window closes automatically; the console reports its properties.",
+      "source": "reference/window.cpp"
+    },
+    {
+      "id": "reference/drawing",
+      "group": "Reference",
+      "title": "Drawing",
+      "description": "A gallery of pixels, lines, rectangles, circles, colors, and text.",
+      "concepts": [
+        "RGB",
+        "named colors",
+        "SetPixel",
+        "DrawLine",
+        "DrawRectangle",
+        "FillRectangle",
+        "DrawCircle",
+        "FillCircle",
+        "DrawText",
+        "Show"
+      ],
+      "notes": "Close the graphics window when finished. Draw calls change the back buffer; Show presents the completed frame.",
+      "source": "reference/drawing.cpp"
+    },
+    {
+      "id": "reference/keyboard",
+      "group": "Reference",
+      "title": "Keyboard",
+      "description": "Compare a held key with a key that was just pressed or released.",
+      "concepts": [
+        "Key",
+        "KeyDown",
+        "KeyPressed",
+        "KeyReleased",
+        "character keys"
+      ],
+      "notes": "Click the graphics window, then try the arrow keys, Space, Enter, Escape, Tab, Backspace, Delete, and A/B/C. Messages appear in the console.",
+      "source": "reference/keyboard.cpp"
+    },
+    {
+      "id": "reference/mouse",
+      "group": "Reference",
+      "title": "Mouse",
+      "description": "Track the mouse position and the state of three mouse buttons.",
+      "concepts": [
+        "MouseButton",
+        "MouseX",
+        "MouseY",
+        "MouseDown",
+        "MousePressed",
+        "MouseReleased"
+      ],
+      "notes": "Move inside the graphics window. Left press, right release, and holding the middle button print messages to the console.",
+      "source": "reference/mouse.cpp"
+    },
+    {
+      "id": "reference/stopwatch",
+      "group": "Reference",
+      "title": "StopWatch",
+      "description": "Measure elapsed time and reset the reference point.",
+      "concepts": [
+        "StopWatch",
+        "Elapsed",
+        "Reset",
+        "Sleep"
+      ],
+      "notes": "Runs automatically. Elapsed time is in seconds; the printed values can be a little longer than the requested sleeps.",
+      "source": "reference/stopwatch.cpp"
+    },
+    {
+      "id": "reference/timer",
+      "group": "Reference",
+      "title": "Timer",
+      "description": "Call a named function repeatedly without calling it from the loop yourself.",
+      "concepts": [
+        "Timer",
+        "Start",
+        "Stop",
+        "IsRunning",
+        "callback",
+        "Sleep"
+      ],
+      "notes": "Prints ticks for about three seconds, then stops. Sleep lets the Small event loop deliver timer callbacks.",
+      "source": "reference/timer.cpp"
+    },
+    {
+      "id": "reference/sound",
+      "group": "Reference",
+      "title": "Sound",
+      "description": "Play every sound preset and compare immediate playback with waiting.",
+      "concepts": [
+        "Sound",
+        "PlaySound",
+        "PlaySoundAndWait",
+        "Beep",
+        "BeepAndWait"
+      ],
+      "notes": "Audio plays automatically. Functions ending in AndWait wait for that sound; the other functions return immediately.",
+      "source": "reference/sound.cpp"
+    },
+    {
+      "id": "reference/cpp_interop",
+      "group": "Reference",
+      "title": "C++ Interop",
+      "description": "Use the C++ standard library alongside Small, with explicit Small:: names.",
+      "concepts": [
+        "std::string",
+        "std::cout",
+        "std::sqrt",
+        "Small::String",
+        "Small::Print",
+        "c_str"
+      ],
+      "notes": "Advanced bridge example. The Small IDE still supplies the runtime and calls SmallMain; this is not a stand-alone main() project.",
+      "source": "reference/cpp_interop.cpp"
+    },
+    {
+      "id": "programs/ascii_art",
+      "group": "Programs",
+      "title": "ASCII Art",
+      "description": "Draw an X inside a square using nested loops and text output.",
+      "concepts": [
+        "InputInt",
+        "for",
+        "if",
+        "Write",
+        "Print"
+      ],
+      "notes": "Enter a small positive size, such as 12. Try changing the characters or the drawing condition.",
+      "source": "programs/ascii_art.cpp"
+    },
+    {
+      "id": "programs/number_guessing",
+      "group": "Programs",
+      "title": "Number Guessing",
+      "description": "Guess a secret number using higher/lower clues and count your attempts.",
+      "concepts": [
+        "RandomInt",
+        "InputInt",
+        "while",
+        "if / else",
+        "Sound"
+      ],
+      "notes": "Each run chooses a new secret number from 1 to 100.",
+      "source": "programs/number_guessing.cpp"
+    },
+    {
+      "id": "programs/drawing_pad",
+      "group": "Programs",
+      "title": "Drawing Pad",
+      "description": "Draw and erase on a canvas with the mouse.",
+      "concepts": [
+        "MouseDown",
+        "MouseX",
+        "MouseY",
+        "KeyPressed",
+        "FillCircle",
+        "Clear"
+      ],
+      "notes": "Left button: blue brush. Right button: eraser. Space: clear. The canvas is not cleared every frame, so the marks remain.",
+      "source": "programs/drawing_pad.cpp"
+    },
+    {
+      "id": "programs/bouncing_ball",
+      "group": "Programs",
+      "title": "Bouncing Ball",
+      "description": "Animate a ball that bounces against the edges and makes a sound on impact.",
+      "concepts": [
+        "StopWatch",
+        "elapsed time",
+        "velocity",
+        "collision",
+        "PlaySound"
+      ],
+      "notes": "Runs automatically. Try changing the speed, radius, color, or window size.",
+      "source": "programs/bouncing_ball.cpp"
+    },
+    {
+      "id": "programs/reaction_timer",
+      "group": "Programs",
+      "title": "Reaction Timer",
+      "description": "Wait for a timer signal, then measure the time until you press Enter.",
+      "concepts": [
+        "Timer",
+        "callback",
+        "StopWatch",
+        "Input",
+        "PlaySound"
+      ],
+      "notes": "Use the console: press Enter to begin, wait for the beep, then press Enter again. A simple timing demonstration, not a calibrated reaction-time test.",
+      "source": "programs/reaction_timer.cpp"
+    },
+    {
+      "id": "programs/pong",
+      "group": "Programs",
+      "title": "Pong",
+      "description": "A one-player paddle game: keep the ball from escaping past the left edge.",
+      "concepts": [
+        "keyboard",
+        "graphics",
+        "StopWatch",
+        "collision",
+        "sound"
+      ],
+      "notes": "Click the graphics window. Up/Down move the paddle. Missing the ball resets it. Close the window or use Stop to finish.",
+      "source": "programs/pong.cpp"
+    },
+    {
+      "id": "programs/save_game",
+      "group": "Programs",
+      "title": "Save Game",
+      "description": "Save game values to a binary file and load them back.",
+      "concepts": [
+        "File",
+        "WriteInt",
+        "WriteReal",
+        "ReadInt",
+        "ReadReal",
+        "sizeof"
+      ],
+      "notes": "Enter a level, score, and play time. Creates or overwrites save.dat using native int/double bytes. Save a Try copy in your own folder to keep the file.",
+      "source": "programs/save_game.cpp"
+    }
+  ]
+}

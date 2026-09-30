@@ -1,0 +1,198 @@
+{
+  "content": {
+    "lessons": 36,
+    "published": 5,
+    "exercises": 10,
+    "cppSources": 30,
+    "resourceFiles": 71,
+    "outputCases": 50
+  },
+  "execution": {
+    "compiler": "/usr/local/swift/usr/bin/clang++",
+    "programsCompiledLinked": 30,
+    "outputCasesPassed": 50,
+    "scope": "Console routines extracted verbatim from runtime; no Qt GUI/backend execution",
+    "records": [
+      {
+        "source": "01_hello/example1.cpp",
+        "sha256": "d189195d165e4870434435f52d463a9fd4adb097b1cee3bca46f99147d37b36e",
+        "outputCasesPassed": 1,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "01_hello/example2.cpp",
+        "sha256": "5ba5c6e4844790c88ecf5a265da87d6ea585dba14448c31a215237b81d5dbcf2",
+        "outputCasesPassed": 1,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "01_hello/exercise1_starter.cpp",
+        "sha256": "469ee633093114095f20d07651af847d9a39fa3c4988156bcd105cfe71ba2f1b",
+        "outputCasesPassed": 1,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "01_hello/exercise1_solution.cpp",
+        "sha256": "dc239233cfee1882326823fe9e6b8694dc331f3d2f099642edd8f80a67c1cf05",
+        "outputCasesPassed": 1,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "01_hello/exercise2_starter.cpp",
+        "sha256": "022e64c9dfbd5f1ce00867ab1ebcee4ffd7629079645e4724c06b738c9c242ba",
+        "outputCasesPassed": 1,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "01_hello/exercise2_solution.cpp",
+        "sha256": "1d541a187147b825c47b508825e62b0c955b5e901ea58bcc45b1c0286e74f0fc",
+        "outputCasesPassed": 1,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "02_variables/example1.cpp",
+        "sha256": "4c190228d838e057561c8b4592d3de140a5b10417842c47d40acce44013edc40",
+        "outputCasesPassed": 1,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "02_variables/example2.cpp",
+        "sha256": "5a9c6f7ea3b6585ade0c8737464a11c46009d849045eeb28b39f34c8b5412c7b",
+        "outputCasesPassed": 1,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "02_variables/exercise1_starter.cpp",
+        "sha256": "f0981a47bd5270258b2b1d6cf0d80d4913c1ce3cdcb2c5732e89fc6da72a6af2",
+        "outputCasesPassed": 1,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "02_variables/exercise1_solution.cpp",
+        "sha256": "33059ce3dcd80260ce5d8089adbce78b575b7bf0429c8d402c38c70038d963df",
+        "outputCasesPassed": 1,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "02_variables/exercise2_starter.cpp",
+        "sha256": "cd94567f26f14174dab5c1f72e95cc4006cf07977bfa5484ab6782fb7b2944e9",
+        "outputCasesPassed": 1,
+        "compilerWarnings": "/mnt/data/SmallCpp-IDE-v0.27/tutorial/02_variables/exercise2_starter.cpp:3:14: warning: unused variable 'width' [-Wunused-variable]\n    3 |       double width = 3.5;\n      |              ^~~~~\n/mnt/data/SmallCpp-IDE-v0.27/tutorial/02_variables/exercise2_starter.cpp:4:14: warning: unused variable 'height' [-Wunused-variable]\n    4 |       double height = 2.0;\n      |              ^~~~~~\n2 warnings generated.\n"
+      },
+      {
+        "source": "02_variables/exercise2_solution.cpp",
+        "sha256": "9985ab82a313bbd848b89cd0cadb55ffc0df69941ceb28ee859062979f087237",
+        "outputCasesPassed": 1,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "03_input_output/example1.cpp",
+        "sha256": "eb4d400bc2fe70bd47707b821e2035f01ae45559513fe918ce378933a2281d07",
+        "outputCasesPassed": 4,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "03_input_output/example2.cpp",
+        "sha256": "5ed641f7b6789ce38da7ac23180a68354856d71b08b1c0334707ee85c3d63c08",
+        "outputCasesPassed": 2,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "03_input_output/exercise1_starter.cpp",
+        "sha256": "116363ad800dcd89c94cf0be3172bbd31c139a89410aef77089fefd5128e7785",
+        "outputCasesPassed": 1,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "03_input_output/exercise1_solution.cpp",
+        "sha256": "437db6eee83cacf666707981e079f8be7f9d205c3789a49494ffbd16a254cde3",
+        "outputCasesPassed": 1,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "03_input_output/exercise2_starter.cpp",
+        "sha256": "ed2b00369b621e1c589c2bf95fada6c24db831e47a4b2046dbe3e04ca3a596e8",
+        "outputCasesPassed": 1,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "03_input_output/exercise2_solution.cpp",
+        "sha256": "60af15266900d14cf5101d4feca4fb19d75583e57bb878183228ff67d707c38b",
+        "outputCasesPassed": 3,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "04_decisions/example1.cpp",
+        "sha256": "ee15e7d054c18384fa554052ab1c2f667299af09c82c39faa138d8cc8cb82da4",
+        "outputCasesPassed": 4,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "04_decisions/example2.cpp",
+        "sha256": "097e6fee5cddb6287a271e51ee16418ac0bf4d43bddcd473a4360e60154fb62c",
+        "outputCasesPassed": 3,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "04_decisions/exercise1_starter.cpp",
+        "sha256": "1112f8fbbd7c407045c032bb69e908ede8a8952f0a7253661d0b29d8c9d67724",
+        "outputCasesPassed": 1,
+        "compilerWarnings": "/mnt/data/SmallCpp-IDE-v0.27/tutorial/04_decisions/exercise1_starter.cpp:3:11: warning: unused variable 'number' [-Wunused-variable]\n    3 |       int number = InputInt(\"Number: \");\n      |           ^~~~~~\n1 warning generated.\n"
+      },
+      {
+        "source": "04_decisions/exercise1_solution.cpp",
+        "sha256": "4204bd8a2bbbe484ebef81a7c54763394cfa88206c1aa198153d5123c1981104",
+        "outputCasesPassed": 3,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "04_decisions/exercise2_starter.cpp",
+        "sha256": "cfd96bd0026a50708a1c5d11fa95595b71e539e580655338a52ab06c37e3d82f",
+        "outputCasesPassed": 1,
+        "compilerWarnings": "/mnt/data/SmallCpp-IDE-v0.27/tutorial/04_decisions/exercise2_starter.cpp:3:11: warning: unused variable 'age' [-Wunused-variable]\n    3 |       int age = InputInt(\"Age: \");\n      |           ^~~\n1 warning generated.\n"
+      },
+      {
+        "source": "04_decisions/exercise2_solution.cpp",
+        "sha256": "eea69bf47b9c4a75a33387eed395050e5e33d0ba07117bcac4d8fba754b45d24",
+        "outputCasesPassed": 6,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "05_for_loop/example1.cpp",
+        "sha256": "578058d8126bcd9fa5a251fb377a699a96e23d68a21b9230b01fe2b24a3892be",
+        "outputCasesPassed": 1,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "05_for_loop/example2.cpp",
+        "sha256": "1ba805519b2eea36180f1e2d84adc51158c2b37be40d76fb8bf1f220816803d5",
+        "outputCasesPassed": 1,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "05_for_loop/exercise1_starter.cpp",
+        "sha256": "4c306720c96e7b7bc64cf3f2453eb59df96b4a7931ef6385a3e6dee0bdf52cc2",
+        "outputCasesPassed": 1,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "05_for_loop/exercise1_solution.cpp",
+        "sha256": "26c4621bc36ba58bf7195a4d312eab6547641be3ea21cd56ea7a6feba4963a39",
+        "outputCasesPassed": 1,
+        "compilerWarnings": ""
+      },
+      {
+        "source": "05_for_loop/exercise2_starter.cpp",
+        "sha256": "63bc2c6d401257606086d4d3c03fc84a4d9f1eeab9810fe26d5b3111e541beff",
+        "outputCasesPassed": 1,
+        "compilerWarnings": "/mnt/data/SmallCpp-IDE-v0.27/tutorial/05_for_loop/exercise2_starter.cpp:3:11: warning: unused variable 'number' [-Wunused-variable]\n    3 |       int number = InputInt(\"Table (2 to 9): \");\n      |           ^~~~~~\n1 warning generated.\n"
+      },
+      {
+        "source": "05_for_loop/exercise2_solution.cpp",
+        "sha256": "e37c0ae1cfd0926ae88f4530c6fe5f8efed46c6e647d42eb9825fb86fd182542",
+        "outputCasesPassed": 3,
+        "compilerWarnings": ""
+      }
+    ]
+  }
+}

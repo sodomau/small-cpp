@@ -1,0 +1,5 @@
+Checking /usr/bin/g++
+g++ 65 public API checks passed ; 19 example translation units
+Checking /usr/local/swift/usr/bin/clang++
+clang++ 65 public API checks passed ; 19 example translation units
+Regression validation completed

@@ -1,0 +1,56 @@
+build*/
+**/build*/
+*.user
+*.o
+*.a
+*.obj
+*.exe
+CMakeCache.txt
+CMakeFiles/
+
+# Out-of-source build and portable distribution directories
+/out/
+/dist/
+/SmallCpp-Portable*/
+/CMakeUserPresets.json
+cmake_install.cmake
+CTestTestfile.cmake
+Testing/
+compile_commands.json
+.qt/
+
+# Native build products
+*.dll
+*.lib
+*.pdb
+*.ilk
+*.exp
+*.so
+*.dylib
+
+# Machine-specific editor settings
+*.user.*
+.vs/
+.vscode/
+.idea/
+*.suo
+*.sdf
+*.VC.db
+
+# Local secrets and temporary files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+__pycache__/
+*.py[cod]
+*.tmp
+*.bak
+*~
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Historical validation reports in the source archive are preserved.
+# Put new generated reports inside build/ or out/.

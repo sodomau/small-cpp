@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/small/examples">
+        <file alias="catalog.json">../examples/catalog.json</file>
+        <file alias="reference/console.cpp">../examples/reference/console.cpp</file>
+        <file alias="reference/comments.cpp">../examples/reference/comments.cpp</file>
+        <file alias="reference/random.cpp">../examples/reference/random.cpp</file>
+        <file alias="reference/string.cpp">../examples/reference/string.cpp</file>
+        <file alias="reference/array.cpp">../examples/reference/array.cpp</file>
+        <file alias="reference/file.cpp">../examples/reference/file.cpp</file>
+        <file alias="reference/window.cpp">../examples/reference/window.cpp</file>
+        <file alias="reference/drawing.cpp">../examples/reference/drawing.cpp</file>
+        <file alias="reference/keyboard.cpp">../examples/reference/keyboard.cpp</file>
+        <file alias="reference/mouse.cpp">../examples/reference/mouse.cpp</file>
+        <file alias="reference/stopwatch.cpp">../examples/reference/stopwatch.cpp</file>
+        <file alias="reference/timer.cpp">../examples/reference/timer.cpp</file>
+        <file alias="reference/sound.cpp">../examples/reference/sound.cpp</file>
+        <file alias="reference/cpp_interop.cpp">../examples/reference/cpp_interop.cpp</file>
+        <file alias="programs/ascii_art.cpp">../examples/programs/ascii_art.cpp</file>
+        <file alias="programs/number_guessing.cpp">../examples/programs/number_guessing.cpp</file>
+        <file alias="programs/drawing_pad.cpp">../examples/programs/drawing_pad.cpp</file>
+        <file alias="programs/bouncing_ball.cpp">../examples/programs/bouncing_ball.cpp</file>
+        <file alias="programs/reaction_timer.cpp">../examples/programs/reaction_timer.cpp</file>
+        <file alias="programs/pong.cpp">../examples/programs/pong.cpp</file>
+        <file alias="programs/save_game.cpp">../examples/programs/save_game.cpp</file>
+    </qresource>
+</RCC>

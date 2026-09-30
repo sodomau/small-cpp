@@ -1,0 +1,10 @@
+{
+  "id": "image",
+  "name": "Image",
+  "header": "small/image.h",
+  "library": "small_image",
+  "include": "include",
+  "lib": "lib",
+  "tutorial": "tutorial",
+  "examples": "examples"
+}

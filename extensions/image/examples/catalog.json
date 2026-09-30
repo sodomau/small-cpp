@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "examples": [
+    {
+      "id": "image/create_and_draw",
+      "group": "Image",
+      "title": "Create and Draw",
+      "description": "Create an image in memory and draw it at original and scaled sizes.",
+      "concepts": [
+        "Image",
+        "DrawImage",
+        "scaling"
+      ],
+      "notes": "DrawImage is a free function because it connects Image and Window.",
+      "source": "create_and_draw.cpp"
+    },
+    {
+      "id": "image/pixels",
+      "group": "Image",
+      "title": "Pixel Gradient",
+      "description": "Build an image by changing individual pixels.",
+      "concepts": [
+        "Pixel",
+        "SetPixel",
+        "RGB"
+      ],
+      "notes": "Pixel access is useful for learning image processing and procedural images.",
+      "source": "pixels.cpp"
+    },
+    {
+      "id": "image/save_and_load",
+      "group": "Image",
+      "title": "Save and Load",
+      "description": "Save an image to disk and load it again.",
+      "concepts": [
+        "Save",
+        "Load",
+        "files"
+      ],
+      "notes": "The image format is inferred from the filename extension.",
+      "source": "save_and_load.cpp"
+    }
+  ]
+}

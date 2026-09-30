@@ -1,0 +1,404 @@
+#include "MainWindow.h"
+#include "BuildController.h"
+#include "EditorDocument.h"
+#include "ExampleCatalog.h"
+#include "TutorialCatalog.h"
+#include "TutorialBrowser.h"
+
+#include <QAbstractButton>
+#include <QAction>
+#include <QApplication>
+#include <QClipboard>
+#include <QDir>
+#include <QGroupBox>
+#include <QLabel>
+#include <QMenu>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QRegularExpression>
+#include <QSet>
+#include <QSettings>
+#include <QSignalSpy>
+#include <QTabWidget>
+#include <QTemporaryDir>
+#include <QTest>
+#include <QTextDocument>
+#include <QTimer>
+#include <QTreeWidget>
+
+class TutorialTests : public QObject
+{
+    Q_OBJECT
+private:
+    QTemporaryDir settingsDirectory_;
+    static QTabWidget* tabs(MainWindow& window)
+    {
+        return window.findChild<QTabWidget*>("documentTabs");
+    }
+    static EditorDocument* current(MainWindow& window)
+    {
+        return qobject_cast<EditorDocument*>(tabs(window)->currentWidget());
+    }
+    static QAction* action(MainWindow& window, const char* name)
+    {
+        return window.findChild<QAction*>(QString::fromLatin1(name));
+    }
+    static TutorialBrowser* browse(MainWindow& window)
+    {
+        action(window, "actionTutorial")->trigger();
+        return window.findChild<TutorialBrowser*>("tutorialBrowser");
+    }
+    static QPushButton* button(TutorialBrowser& browser, const char* name)
+    {
+        return browser.findChild<QPushButton*>(QString::fromLatin1(name));
+    }
+
+private slots:
+    void initTestCase()
+    {
+        QVERIFY(settingsDirectory_.isValid());
+        QSettings::setDefaultFormat(QSettings::IniFormat);
+        QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, settingsDirectory_.path());
+        QApplication::setQuitOnLastWindowClosed(false);
+        qputenv("SMALL_TEST_DIALOGS", "1");
+        qputenv("SMALL_TEST_NO_CONSOLE_PAUSE", "1");
+    }
+    void init() { QSettings("SmallCpp", "SmallCppIDE").clear(); }
+
+    void catalogHasSixPartsThirtySixTitlesFiveLessonsTenExercises()
+    {
+        TutorialCatalog catalog;
+        QVERIFY2(catalog.isValid(), qPrintable(catalog.errorString()));
+        QCOMPARE(catalog.parts().size(), 6);
+        QCOMPARE(catalog.lessons().size(), 36);
+        QCOMPARE(catalog.availableIds().size(), 5);
+        QCOMPARE(catalog.parts()[3].lessonIds, QStringList({"text_files", "binary_files"}));
+        int count = 0;
+        for (const auto& lesson : catalog.lessons())
+        {
+            QVERIFY(!lesson.title.isEmpty());
+            if (!lesson.available) { QVERIFY(lesson.exercises.isEmpty()); continue; }
+            QCOMPARE(lesson.exercises.size(), 2);
+            for (const auto& exercise : lesson.exercises)
+            {
+                ++count;
+                QVERIFY(!exercise.hint.isEmpty());
+                QVERIFY(!exercise.prompt.isEmpty());
+                QVERIFY(exercise.starter.contains("void SmallMain()"));
+                QVERIFY(exercise.solution.contains("void SmallMain()"));
+            }
+        }
+        QCOMPARE(count, 10);
+    }
+
+    void catalogLoadsWithoutSourceFolderAsWorkingDirectory()
+    {
+        QTemporaryDir empty;
+        const QString previous = QDir::currentPath();
+        QVERIFY(QDir::setCurrent(empty.path()));
+        TutorialCatalog catalog;
+        const bool valid = catalog.isValid();
+        const bool restored = QDir::setCurrent(previous);
+        QVERIFY(restored);
+        QVERIFY(valid);
+        QVERIFY(catalog.find("hello"));
+    }
+
+    void learnMenuContainsBothBrowsers()
+    {
+        MainWindow window;
+        auto* learn = window.findChild<QMenu*>("menuLearn");
+        QVERIFY(learn);
+        QVERIFY(learn->actions().contains(action(window, "actionTutorial")));
+        QVERIFY(learn->actions().contains(action(window, "actionExamples")));
+        QVERIFY(!window.findChild<TutorialBrowser*>());
+    }
+
+    void browserIsLazyModelessAndReused()
+    {
+        MainWindow window;
+        auto* browser = browse(window);
+        QVERIFY(browser);
+        QVERIFY(!browser->isModal());
+        QVERIFY(browser->selectLesson("decisions"));
+        browser->reject();
+        QCOMPARE(browse(window), browser);
+        QCOMPARE(browser->selectedId(), QString("decisions"));
+        QCOMPARE(window.findChildren<TutorialBrowser*>().size(), 1);
+    }
+
+    void allPublishedPreviewsMatchCatalogAndStayReadOnly()
+    {
+        TutorialCatalog catalog;
+        TutorialBrowser browser(catalog);
+        for (const QString& id : catalog.availableIds())
+        {
+            QVERIFY(browser.selectLesson(id));
+            const auto* lesson = catalog.find(id);
+            int index = 0;
+            for (const auto& block : lesson->blocks)
+                if (block.kind == TutorialBlock::Kind::Code)
+                {
+                    auto* editor = browser.findChild<CodeEditor*>(QString("tutorialExample%1").arg(++index));
+                    QVERIFY(editor);
+                    QVERIFY(editor->isReadOnly());
+                    QCOMPARE(editor->toPlainText(), block.content);
+                }
+            QCOMPARE(browser.findChildren<QGroupBox*>(QRegularExpression("^tutorialExercise[12]$")).size(), 2);
+            for (int i = 0; i < 2; ++i)
+            {
+                auto* answer = browser.findChild<CodeEditor*>(QString("tutorialSolutionCode%1").arg(i + 1));
+                QVERIFY(answer);
+                QVERIFY(answer->isReadOnly());
+                QCOMPARE(answer->toPlainText(), lesson->exercises[i].solution);
+            }
+        }
+    }
+
+    void everyLessonCanBeSelectedWithoutFinishingPreviousOnes()
+    {
+        TutorialCatalog catalog;
+        TutorialBrowser browser(catalog);
+        QVERIFY(browser.selectLesson("for_loop"));
+        QVERIFY(!browser.isRead("hello"));
+        QVERIFY(button(browser, "tryTutorialExample1"));
+        QVERIFY(browser.selectLesson("binary_files"));
+        QVERIFY(browser.findChild<QLabel*>("tutorialNotAvailable"));
+        QVERIFY(!button(browser, "tutorialNext")->isEnabled());
+        QVERIFY(!button(browser, "tryTutorialExample1"));
+        QVERIFY(browser.selectLesson("hello"));
+        QVERIFY(button(browser, "tryTutorialExample1")->isEnabled());
+    }
+
+    void invalidSelectionDoesNotChangeLesson()
+    {
+        TutorialCatalog catalog;
+        TutorialBrowser browser(catalog);
+        const QString before = browser.selectedId();
+        QVERIFY(!browser.selectLesson("../../file"));
+        QCOMPARE(browser.selectedId(), before);
+    }
+
+    void tryExampleCreatesNewDirtyTabAndKeepsExistingWork()
+    {
+        MainWindow window;
+        auto* original = current(window);
+        original->appendPlainText("// keep my work");
+        const QString snapshot = original->toPlainText();
+        auto* browser = browse(window);
+        QVERIFY(browser->selectLesson("hello"));
+        const QString example = browser->findChild<CodeEditor*>("tutorialExample1")->toPlainText();
+        button(*browser, "tryTutorialExample1")->click();
+        QCOMPARE(tabs(window)->count(), 2);
+        auto* copy = current(window);
+        QVERIFY(copy != original);
+        QVERIFY(copy->filePath().isEmpty());
+        QVERIFY(copy->document()->isModified());
+        QVERIFY(!copy->isReadOnly());
+        QVERIFY(!copy->isExample());
+        QCOMPARE(copy->toPlainText(), example);
+        QCOMPARE(original->toPlainText(), snapshot);
+        QVERIFY(original->document()->isModified());
+        QVERIFY(browser->isVisible());
+        QVERIFY(!window.findChild<BuildController*>()->isBusy());
+    }
+
+    void repeatedTryMakesIndependentCopies()
+    {
+        MainWindow window;
+        auto* browser = browse(window);
+        button(*browser, "tryTutorialExample1")->click();
+        auto* first = current(window);
+        first->appendPlainText("// changed");
+        button(*browser, "tryTutorialExample1")->click();
+        QVERIFY(current(window) != first);
+        QCOMPARE(tabs(window)->count(), 3);
+        QVERIFY(!current(window)->toPlainText().contains("// changed"));
+    }
+
+    void bothStartersForEveryPublishedLessonAreCopiedExactly()
+    {
+        MainWindow window;
+        TutorialCatalog catalog;
+        auto* browser = browse(window);
+        for (const QString& id : catalog.availableIds())
+        {
+            QVERIFY(browser->selectLesson(id));
+            const auto* lesson = catalog.find(id);
+            for (int i = 0; i < 2; ++i)
+            {
+                auto* tryButton = browser->findChild<QPushButton*>(QString("tryTutorialExercise%1").arg(i + 1));
+                QVERIFY(tryButton);
+                tryButton->click();
+                QCOMPARE(current(window)->toPlainText(), lesson->exercises[i].starter);
+                QVERIFY(current(window)->document()->isModified());
+            }
+        }
+        QCOMPARE(tabs(window)->count(), 11);
+    }
+
+    void hintAndSolutionStartHiddenAndDoNotCreateTabsOrMarkRead()
+    {
+        MainWindow window;
+        auto* browser = browse(window);
+        QVERIFY(browser->selectLesson("variables"));
+        auto* hint = browser->findChild<QLabel*>("tutorialHint1");
+        auto* answer = browser->findChild<QWidget*>("tutorialSolution1");
+        QVERIFY(hint->isHidden());
+        QVERIFY(answer->isHidden());
+        button(*browser, "tutorialHintButton1")->click();
+        button(*browser, "tutorialSolutionButton1")->click();
+        QVERIFY(!hint->isHidden());
+        QVERIFY(!answer->isHidden());
+        QCOMPARE(tabs(window)->count(), 1);
+        QVERIFY(!browser->isRead("variables"));
+        button(*browser, "tutorialHintButton1")->click();
+        button(*browser, "tutorialSolutionButton1")->click();
+        QVERIFY(hint->isHidden());
+        QVERIFY(answer->isHidden());
+    }
+
+    void trySolutionCreatesEditableCopyOfCompleteAnswer()
+    {
+        MainWindow window;
+        TutorialCatalog catalog;
+        auto* browser = browse(window);
+        QVERIFY(browser->selectLesson("decisions"));
+        button(*browser, "tutorialSolutionButton2")->click();
+        button(*browser, "tryTutorialSolution2")->click();
+        QCOMPARE(current(window)->toPlainText(), catalog.find("decisions")->exercises[1].solution);
+        QVERIFY(!current(window)->isReadOnly());
+        QVERIFY(current(window)->document()->isModified());
+    }
+
+    void nextMarksReadAndPreviousDoesNotLockAnything()
+    {
+        TutorialCatalog catalog;
+        TutorialBrowser browser(catalog);
+        QVERIFY(browser.selectLesson("hello"));
+        button(browser, "tutorialNext")->click();
+        QVERIFY(browser.isRead("hello"));
+        QCOMPARE(browser.selectedId(), QString("variables"));
+        QVERIFY(!browser.isRead("variables"));
+        button(browser, "tutorialPrevious")->click();
+        QCOMPARE(browser.selectedId(), QString("hello"));
+        QVERIFY(!button(browser, "tutorialPrevious")->isEnabled());
+    }
+
+    void readAndLastLessonPersistAcrossBrowserInstances()
+    {
+        TutorialCatalog catalog;
+        {
+            TutorialBrowser first(catalog);
+            first.selectLesson("hello");
+            button(first, "tutorialNext")->click();
+        }
+        TutorialBrowser second(catalog);
+        QVERIFY(second.isRead("hello"));
+        QCOMPARE(second.selectedId(), QString("variables"));
+        QVERIFY(!second.isRead("variables"));
+    }
+
+    void finishOnlyMarksTheCurrentLesson()
+    {
+        TutorialCatalog catalog;
+        TutorialBrowser browser(catalog);
+        QVERIFY(browser.selectLesson("for_loop"));
+        QCOMPARE(button(browser, "tutorialNext")->text(), QString("Finish"));
+        button(browser, "tutorialNext")->click();
+        QVERIFY(browser.isRead("for_loop"));
+        QVERIFY(!browser.isRead("hello"));
+        QVERIFY(!browser.isRead("while_loop"));
+        QCOMPARE(browser.selectedId(), QString("for_loop"));
+    }
+
+    void unknownStoredIdsAreIgnored()
+    {
+        QSettings settings("SmallCpp", "SmallCppIDE");
+        settings.setValue("tutorial/curriculumV2/lastLesson", "missing");
+        settings.setValue("tutorial/curriculumV2/readLessons", QStringList{"missing", "hello", "binary_files"});
+        TutorialCatalog catalog;
+        TutorialBrowser browser(catalog);
+        QCOMPARE(browser.selectedId(), QString("hello"));
+        QVERIFY(browser.isRead("hello"));
+        QVERIFY(!browser.isRead("missing"));
+        QVERIFY(!browser.isRead("binary_files"));
+    }
+
+    void fontAndThemeReachVisibleAndHiddenCodeWithoutResettingHint()
+    {
+        MainWindow window;
+        auto* browser = browse(window);
+        button(*browser, "tutorialHintButton1")->click();
+        action(window, "actionThemeDark")->trigger();
+        QVERIFY(!browser->findChild<QLabel*>("tutorialHint1")->isHidden());
+        auto* code = browser->findChild<CodeEditor*>("tutorialExample1");
+        QCOMPARE(code->palette().color(QPalette::Base), QColor("#1e1f22"));
+        QFont large("Consolas", 18);
+        browser->setAppearance(large, code->palette(), true);
+        QCOMPARE(code->font().pointSize(), 18);
+        QCOMPARE(browser->findChild<CodeEditor*>("tutorialSolutionCode1")->font().pointSize(), 18);
+        browser->selectLesson("variables");
+        QCOMPARE(browser->findChild<CodeEditor*>("tutorialExample1")->font().pointSize(), 18);
+    }
+
+    void relatedExampleOpensReadOnlyWithoutClosingTutorial()
+    {
+        MainWindow window;
+        auto* browser = browse(window);
+        button(*browser, "tutorialRelatedExample")->click();
+        QVERIFY(current(window)->isExample());
+        QCOMPARE(current(window)->exampleId(), QString("reference/console"));
+        QVERIFY(browser->isVisible());
+        QCOMPARE(tabs(window)->count(), 2);
+    }
+
+    void tutorialCodeResistsEditingAndClosingBrowserKeepsCopies()
+    {
+        MainWindow window;
+        auto* browser = browse(window);
+        auto* code = browser->findChild<CodeEditor*>("tutorialExample1");
+        const QString original = code->toPlainText();
+        QTest::keyClicks(code, "oops");
+        QTest::keyClick(code, Qt::Key_Tab);
+        QTest::keyClick(code, Qt::Key_Return);
+        QApplication::clipboard()->setText("replacement");
+        code->selectAll();
+        code->paste();
+        QCOMPARE(code->toPlainText(), original);
+        button(*browser, "tryTutorialExample1")->click();
+        auto* copy = current(window);
+        browser->reject();
+        QCOMPARE(current(window), copy);
+        QCOMPARE(tabs(window)->count(), 2);
+    }
+
+    void copiedExerciseUsesExistingSaveCancelProtection()
+    {
+        MainWindow window;
+        window.show();
+        auto* browser = browse(window);
+        button(*browser, "tryTutorialExercise1")->click();
+        auto* copy = current(window);
+        browser->reject();
+        bool asked = false;
+        QTimer choose;
+        choose.setInterval(5);
+        connect(&choose, &QTimer::timeout, &window, [&] {
+            if (auto* box = qobject_cast<QMessageBox*>(QApplication::activeModalWidget()))
+            {
+                asked = true;
+                choose.stop();
+                box->button(QMessageBox::Cancel)->click();
+            }
+        });
+        choose.start();
+        action(window, "actionCloseTab")->trigger();
+        QVERIFY(asked);
+        QCOMPARE(current(window), copy);
+        QVERIFY(copy->document()->isModified());
+    }
+};
+
+QTEST_MAIN(TutorialTests)
+#include "test_tutorial.moc"

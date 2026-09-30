@@ -1,0 +1,9 @@
+{
+  "runtime/small_internal.h": "382dcfafc37637799f33967ba2c15982cf758e6fa36e0f39611fcea7138a2617",
+  "runtime/small_main.cpp": "5872439ddf4f715a97b8d030cddacc625ef43aa8ac28381450028fec11ae16e5",
+  "runtime/small.h": "4c986894893af81b776da17c88196c775447ffccd2a3aa1a415e9c918ce2efe2",
+  "runtime/small_sound.cpp": "f0e96a2114ec9dd2f011e7bbb48718f8992005f2edab1aad8a0d261e3b6985ea",
+  "runtime/small_runtime.cpp": "631f794b7b4a8bad8f3bb059ba2f8229d5920462d9e3828cd6909a126d140ffc",
+  "ide/BuildController.h": "5b8f30ddb1afe6447f287d19d880215a54adb56c5ce341a1e0afe7a8d5dfc6b0",
+  "ide/BuildController.cpp": "e17fa354d2ccb08aa1c56cadd91d167f1708e8be5e629f0932dac10397bdde05"
+}

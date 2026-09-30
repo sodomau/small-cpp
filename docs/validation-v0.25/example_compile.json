@@ -1,0 +1,230 @@
+[
+  {
+    "compiler": "g++",
+    "example": "examples/programs/ascii_art.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "g++",
+    "example": "examples/programs/bouncing_ball.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "g++",
+    "example": "examples/programs/drawing_pad.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "g++",
+    "example": "examples/programs/number_guessing.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "g++",
+    "example": "examples/programs/pong.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "g++",
+    "example": "examples/programs/reaction_timer.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "g++",
+    "example": "examples/programs/save_game.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "g++",
+    "example": "examples/reference/array.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "g++",
+    "example": "examples/reference/console.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "g++",
+    "example": "examples/reference/cpp_interop.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "g++",
+    "example": "examples/reference/drawing.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "g++",
+    "example": "examples/reference/file.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "g++",
+    "example": "examples/reference/keyboard.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "g++",
+    "example": "examples/reference/mouse.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "g++",
+    "example": "examples/reference/sound.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "g++",
+    "example": "examples/reference/stopwatch.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "g++",
+    "example": "examples/reference/string.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "g++",
+    "example": "examples/reference/timer.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "g++",
+    "example": "examples/reference/window.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/programs/ascii_art.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/programs/bouncing_ball.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/programs/drawing_pad.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/programs/number_guessing.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/programs/pong.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/programs/reaction_timer.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/programs/save_game.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/reference/array.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/reference/console.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/reference/cpp_interop.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/reference/drawing.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/reference/file.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/reference/keyboard.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/reference/mouse.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/reference/sound.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/reference/stopwatch.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/reference/string.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/reference/timer.cpp",
+    "returncode": 0,
+    "stderr": ""
+  },
+  {
+    "compiler": "clang++",
+    "example": "examples/reference/window.cpp",
+    "returncode": 0,
+    "stderr": ""
+  }
+]

@@ -1,0 +1,597 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "source": "01_hello/example1.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "Hello, Small C++!\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "01_hello/example2.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "***************\n* Hello!      *\n***************\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "01_hello/exercise1_starter.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "01_hello/exercise1_solution.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "Alex\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "01_hello/exercise2_starter.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "01_hello/exercise2_solution.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "My name is Alex.\nI like drawing.\nI want to make a game.\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "02_variables/example1.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "10\n15\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "02_variables/example2.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "Area: 7\nReady: 1\nGrade: A\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "02_variables/exercise1_starter.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "02_variables/exercise1_solution.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "Age: 10\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "02_variables/exercise2_starter.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "02_variables/exercise2_solution.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "Area: 7\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "03_input_output/example1.cpp",
+      "name": "default",
+      "stdin": "Alex\n",
+      "stdout": "Name: Hello, Alex!\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "03_input_output/example1.cpp",
+      "name": "unicode-name",
+      "stdin": "아람\n",
+      "stdout": "Name: Hello, 아람!\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "03_input_output/example1.cpp",
+      "name": "empty-name",
+      "stdin": "\n",
+      "stdout": "Name: Hello, !\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "03_input_output/example2.cpp",
+      "name": "default",
+      "stdin": "10\n1.4\n",
+      "stdout": "Age: Height in meters: \nAge: 10\nHeight: 1.4\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "03_input_output/example2.cpp",
+      "name": "retry-input",
+      "stdin": "x\n10\ny\n1.4\n",
+      "stdout": "Age: Please enter an integer: Height in meters: Please enter a number: \nAge: 10\nHeight: 1.4\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "03_input_output/exercise1_starter.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "03_input_output/exercise1_solution.cpp",
+      "name": "default",
+      "stdin": "Alex\n",
+      "stdout": "Name: Nice to meet you, Alex!\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "03_input_output/exercise2_starter.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "03_input_output/exercise2_solution.cpp",
+      "name": "default",
+      "stdin": "2.5\n3.5\n",
+      "stdout": "First: Second: Sum: 6\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "03_input_output/exercise2_solution.cpp",
+      "name": "negative",
+      "stdin": "-2\n3\n",
+      "stdout": "First: Second: Sum: 1\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "03_input_output/exercise2_solution.cpp",
+      "name": "retry-input",
+      "stdin": "oops\n2.5\n3.5\n",
+      "stdout": "First: Please enter a number: Second: Sum: 6\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "03_input_output/example1.cpp",
+      "name": "end-of-input",
+      "stdin": "",
+      "stdout": "Name: ",
+      "exitCode": 1,
+      "stderr": "Runtime error: Input ended before a value was entered.\n"
+    },
+    {
+      "source": "04_decisions/example1.cpp",
+      "name": "50",
+      "stdin": "50\n",
+      "stdout": "Score: ",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "04_decisions/example1.cpp",
+      "name": "99",
+      "stdin": "99\n",
+      "stdout": "Score: ",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "04_decisions/example1.cpp",
+      "name": "100",
+      "stdin": "100\n",
+      "stdout": "Score: You win!\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "04_decisions/example1.cpp",
+      "name": "120",
+      "stdin": "120\n",
+      "stdout": "Score: You win!\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "04_decisions/example2.cpp",
+      "name": "-1",
+      "stdin": "-1\n",
+      "stdout": "Number: Negative\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "04_decisions/example2.cpp",
+      "name": "0",
+      "stdin": "0\n",
+      "stdout": "Number: Zero\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "04_decisions/example2.cpp",
+      "name": "1",
+      "stdin": "1\n",
+      "stdout": "Number: Positive\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "04_decisions/exercise1_starter.cpp",
+      "name": "default",
+      "stdin": "1\n",
+      "stdout": "Number: ",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "04_decisions/exercise1_solution.cpp",
+      "name": "-1",
+      "stdin": "-1\n",
+      "stdout": "Number: ",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "04_decisions/exercise1_solution.cpp",
+      "name": "0",
+      "stdin": "0\n",
+      "stdout": "Number: ",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "04_decisions/exercise1_solution.cpp",
+      "name": "1",
+      "stdin": "1\n",
+      "stdout": "Number: Positive\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "04_decisions/exercise2_starter.cpp",
+      "name": "default",
+      "stdin": "10\n",
+      "stdout": "Age: ",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "04_decisions/exercise2_solution.cpp",
+      "name": "0",
+      "stdin": "0\n",
+      "stdout": "Age: Child\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "04_decisions/exercise2_solution.cpp",
+      "name": "12",
+      "stdin": "12\n",
+      "stdout": "Age: Child\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "04_decisions/exercise2_solution.cpp",
+      "name": "13",
+      "stdin": "13\n",
+      "stdout": "Age: Teenager\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "04_decisions/exercise2_solution.cpp",
+      "name": "19",
+      "stdin": "19\n",
+      "stdout": "Age: Teenager\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "04_decisions/exercise2_solution.cpp",
+      "name": "20",
+      "stdin": "20\n",
+      "stdout": "Age: Adult\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "04_decisions/exercise2_solution.cpp",
+      "name": "90",
+      "stdin": "90\n",
+      "stdout": "Age: Adult\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "05_for_loop/example1.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "1\n2\n3\n4\n5\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "05_for_loop/example2.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "*****\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "05_for_loop/exercise1_starter.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "05_for_loop/exercise1_solution.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "05_for_loop/exercise2_starter.cpp",
+      "name": "default",
+      "stdin": "3\n",
+      "stdout": "Table (2 to 9): ",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "05_for_loop/exercise2_solution.cpp",
+      "name": "2",
+      "stdin": "2\n",
+      "stdout": "Table (2 to 9): 2 x 1 = 2\n2 x 2 = 4\n2 x 3 = 6\n2 x 4 = 8\n2 x 5 = 10\n2 x 6 = 12\n2 x 7 = 14\n2 x 8 = 16\n2 x 9 = 18\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "05_for_loop/exercise2_solution.cpp",
+      "name": "3",
+      "stdin": "3\n",
+      "stdout": "Table (2 to 9): 3 x 1 = 3\n3 x 2 = 6\n3 x 3 = 9\n3 x 4 = 12\n3 x 5 = 15\n3 x 6 = 18\n3 x 7 = 21\n3 x 8 = 24\n3 x 9 = 27\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "05_for_loop/exercise2_solution.cpp",
+      "name": "9",
+      "stdin": "9\n",
+      "stdout": "Table (2 to 9): 9 x 1 = 9\n9 x 2 = 18\n9 x 3 = 27\n9 x 4 = 36\n9 x 5 = 45\n9 x 6 = 54\n9 x 7 = 63\n9 x 8 = 72\n9 x 9 = 81\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "06_while_loop/example1.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "1\n2\n3\n4\n5\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "06_while_loop/example2.cpp",
+      "name": "default",
+      "stdin": "7\n-2\n0\n",
+      "stdout": "Number (0 to stop): You entered 7\nNumber (0 to stop): You entered -2\nNumber (0 to stop): Done!\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "06_while_loop/exercise1_starter.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "06_while_loop/exercise1_solution.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "10\n9\n8\n7\n6\n5\n4\n3\n2\n1\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "06_while_loop/exercise2_starter.cpp",
+      "name": "default",
+      "stdin": "1234\n",
+      "stdout": "Password: Welcome!\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "06_while_loop/exercise2_solution.cpp",
+      "name": "default",
+      "stdin": "1111\n1234\n",
+      "stdout": "Password: Try again.\nPassword: Welcome!\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "07_functions/example1.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "**********\nSmall C++\n**********\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "07_functions/example2.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "Square: 36\nLarger: 12\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "07_functions/exercise1_starter.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "0\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "07_functions/exercise1_solution.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "10\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "07_functions/exercise2_starter.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "0\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "07_functions/exercise2_solution.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "12\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "08_string/example1.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "Small C++\nLength: 9\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "08_string/example2.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "First: S\nMiddle: mal\n0: S\n1: m\n2: a\n3: l\n4: l\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "08_string/exercise1_starter.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "08_string/exercise1_solution.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "l\nl\na\nm\nS\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "08_string/exercise2_starter.cpp",
+      "name": "default",
+      "stdin": "Alex\n",
+      "stdout": "Name: ",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "08_string/exercise2_solution.cpp",
+      "name": "default",
+      "stdin": "Alex\n",
+      "stdout": "Name: First: A\nRest: lex\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "09_array/example1.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "Count: 5\n80\n95\n70\n100\n85\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "09_array/example2.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "Third: 10\nSum: 33\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "09_array/exercise1_starter.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "09_array/exercise1_solution.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "4\n8\n12\n16\n20\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "09_array/exercise2_starter.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "0\n",
+      "exitCode": 0,
+      "stderr": ""
+    },
+    {
+      "source": "09_array/exercise2_solution.cpp",
+      "name": "default",
+      "stdin": "",
+      "stdout": "50\n",
+      "exitCode": 0,
+      "stderr": ""
+    }
+  ]
+}

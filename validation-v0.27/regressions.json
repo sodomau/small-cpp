@@ -1,0 +1,166 @@
+{
+  "g++": {
+    "version": "g++ (Debian 14.2.0-19) 14.2.0",
+    "valuesOutput": "65 public API checks passed\n",
+    "examples": [
+      {
+        "file": "examples/programs/ascii_art.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/programs/bouncing_ball.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/programs/drawing_pad.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/programs/number_guessing.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/programs/pong.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/programs/reaction_timer.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/programs/save_game.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/array.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/console.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/cpp_interop.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/drawing.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/file.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/keyboard.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/mouse.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/sound.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/stopwatch.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/string.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/timer.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/window.cpp",
+        "warnings": ""
+      }
+    ]
+  },
+  "clang++": {
+    "version": "clang version 17.0.0 (https://github.com/swiftlang/llvm-project.git 10999b6d034fe318f3d56c83bddb6572593a8bb0)",
+    "valuesOutput": "65 public API checks passed\n",
+    "examples": [
+      {
+        "file": "examples/programs/ascii_art.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/programs/bouncing_ball.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/programs/drawing_pad.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/programs/number_guessing.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/programs/pong.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/programs/reaction_timer.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/programs/save_game.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/array.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/console.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/cpp_interop.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/drawing.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/file.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/keyboard.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/mouse.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/sound.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/stopwatch.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/string.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/timer.cpp",
+        "warnings": ""
+      },
+      {
+        "file": "examples/reference/window.cpp",
+        "warnings": ""
+      }
+    ]
+  }
+}

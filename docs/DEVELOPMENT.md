@@ -1,0 +1,90 @@
+# Development workflow
+
+The development repository was imported from
+`SmallCpp-IDE-v0.76f-ide-pause-config-fix.zip` on 2026-09-30.
+The archive's internal `SmallCpp-IDE-v0.65/` directory name is historical;
+its README identifies the contents as v0.76f. The original archive is preserved.
+
+## Repository layout
+
+- `ide/`: Qt desktop IDE and the main CMake entry point.
+- `runtime/`: Small public API, runtime, entry point and IDE pause support.
+- `extensions/`: manifest-driven extensions, starting with Image.
+- `examples/`, `tutorial/`: learner examples, lesson prose and assets.
+- `tests/`, `tools/`: regression tests, validation and release packaging.
+- `docs/`: philosophy, design notes, historical validation and development guidance.
+- `validation-v0.26/`, `validation-v0.27/`: preserved historical reports.
+- `build/`: ignored local output, not a source directory.
+
+The existing source layout is preserved. No top-level CMake wrapper is needed:
+configure from `ide/`.
+
+## Windows build
+
+Use a matching Qt MinGW 64-bit kit, not MSVC. This machine has Qt 6.11.2 and
+MinGW 13.1.0. In Qt Creator, open `ide/CMakeLists.txt`, select that kit, and keep
+the build directory under `build/`. Enable `SMALL_BUILD_TESTS` for regression tests.
+
+Equivalent PowerShell commands from the repository root:
+
+```powershell
+$env:PATH = 'C:\Qt\Tools\mingw1310_64\bin;C:\Qt\6.11.2\mingw_64\bin;C:\Qt\Tools\Ninja;' + $env:PATH
+& C:\Qt\Tools\CMake\bin\cmake.exe -S ide -B build/local-debug -G Ninja -DCMAKE_BUILD_TYPE=Debug -DSMALL_BUILD_TESTS=ON -DCMAKE_PREFIX_PATH=C:/Qt/6.11.2/mingw_64 -DCMAKE_CXX_COMPILER=C:/Qt/Tools/mingw1310_64/bin/g++.exe -DCMAKE_MAKE_PROGRAM=C:/Qt/Tools/Ninja/ninja.exe
+& C:\Qt\Tools\CMake\bin\cmake.exe --build build/local-debug --parallel 4
+& C:\Qt\Tools\CMake\bin\ctest.exe --test-dir build/local-debug --output-on-failure
+```
+
+If Python is not on PATH, pass its executable with `-DPython3_EXECUTABLE=...`.
+Run Python validation in UTF-8 mode: `python -X utf8 tools/verify_build_config.py`.
+Qt GUI tests use the offscreen platform configured in CMake. Keep Qt and MinGW
+bin directories on PATH for runtime DLL discovery.
+
+Examples and tutorial programs have optional compilation targets:
+
+```powershell
+& C:\Qt\Tools\CMake\bin\cmake.exe --build build/local-debug --target small_examples small_tutorial_programs --parallel 4
+```
+
+Build Release separately under `build/local-release`. The existing
+`package_release.bat` / `tools/package_release.ps1` workflow produces a portable
+distribution. Publish binaries as GitHub Release assets when requested, not as
+source commits. No license is chosen automatically.
+
+## Change and commit workflow
+
+```text
+Check status and recent commits
+  -> change one coherent feature or fix
+  -> build and run relevant tests
+  -> review working diff and staged diff
+  -> commit explicit files with a meaningful message
+  -> push when authorized
+```
+
+Before work: `git status --short --branch`, `git log -5 --oneline`, `git diff`.
+For separate work, create a short descriptive branch such as `fix/tutorial-links`.
+Before committing: `git diff --check`, stage selected paths, then
+`git diff --cached --stat` and `git diff --cached`.
+Examples: `fix: restore tutorial navigation`, `feat: reload external theme`,
+`docs: clarify SmallMain lifecycle`.
+Never commit unrelated edits or silently rewrite history.
+
+## Continuous work in Codex
+
+Add this repository folder as a local project and use it as the primary folder.
+Start future development chats from that project so they use the same code and
+root `AGENTS.md`. This setup chat itself is projectless; saving the repository
+does not register it automatically in the app.
+Official project guidance: https://learn.chatgpt.com/docs/projects
+
+## Baseline validation
+
+The untouched v0.76f archive initially fails the test-enabled build because
+`tests/test_qt.cpp` uses `DetectEntryPoint` without including `EntryPoint.h`.
+The import commit preserves this baseline; a separate test-only fix adds the include.
+
+Several historical Python validators refer to removed tutorial catalogs or
+pre-consolidation lesson files, or assert an old version string. Use UTF-8 mode
+to distinguish encoding errors from obsolete checks. See `SETUP_VALIDATION.md`
+for the measured setup results. These are follow-up maintenance items; the
+repository import does not redesign tutorial content to satisfy obsolete checks.

@@ -1,0 +1,26 @@
+{
+  "status": "added_not_executed_no_Qt",
+  "count": 20,
+  "tests": [
+    "catalogContainsAllNineteenPrograms",
+    "catalogDoesNotDependOnWorkingDirectory",
+    "browserIsCreatedOnlyWhenRequestedAndIsReused",
+    "browserPreviewMatchesEveryCatalogEntry",
+    "categorySelectionCannotOpenADocument",
+    "openFromBrowserKeepsDirtyUserTab",
+    "repeatedOpenUsesExistingExampleEvenAfterReorder",
+    "invalidExampleIdLeavesDocumentsAlone",
+    "exampleDoesNotConsumeAnUntitledName",
+    "exampleSourceResistsTypingIndentAndPaste",
+    "tryCreatesADirtyIndependentCopy",
+    "exampleControlsAreContextual",
+    "closingExampleDoesNotAskToSave",
+    "cancellingTryCloseKeepsTheCopy",
+    "cancellingSaveCopyCreatesNoFileOrTab",
+    "saveCopyPreservesExampleAndOpensNormalSavedTab",
+    "savingCopyCannotOverwriteAnotherOpenDocument",
+    "appearanceFollowsHiddenTabsAndPreview",
+    "rememberedFontAppliesToBrowserAndCopies",
+    "readOnlyExampleRunsWithoutTurningIntoAFile"
+  ]
+}
