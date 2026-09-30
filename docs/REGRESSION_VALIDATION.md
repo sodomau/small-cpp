@@ -96,3 +96,21 @@ The local portable folder includes all four guides, its README, and the new
 pause object. Print, user-written main, Window, Sound and Image each compiled,
 linked with that object and ran successfully using package/Windows paths only.
 A separate clean PC test remains pending. No published release was replaced.
+
+## Complete English tutorial edition (2026-09-30)
+
+Added explicit English files for all 88 Small Steps core lessons and expanded
+the three existing Image English lessons to include the original explanations,
+exercise tasks and hints. Korean Markdown and all runnable C++ files remain
+unchanged. The language manifest offers English while keeping Korean as default.
+The English index links to every lesson and is included by portable packaging.
+
+The new content validator requires real English coverage without fallback, no
+remaining Hangul, identical code/exercise/solution directives and unchanged
+example/output fences. Qt regressions load translated titles and shared answers,
+check unknown-language fallback, select English in Settings, display its first
+lesson and verify preference persistence and the shared code preview.
+
+Release build succeeded. Full CTest passed **31/31** in 74.08 seconds. The local
+portable review folder was updated with both language editions; published release
+assets have not been changed by this tutorial work.

@@ -18,7 +18,9 @@ open a Small Window.
 ## Learn
 
 Open **Learn → Tutorial...**, choose a lesson, and press **Try This
-Code**. The current Small Steps core pack supplies 88 Korean lessons.
+Code**. The current Small Steps core pack supplies 88 lessons in Korean and English.
+Choose **Settings → Tutorial Language → English** for the full English edition,
+including the three Image extension lessons.
 **Settings → Tutorial Language** lists the languages supplied by the installed
 content pack; the loader falls back to its default for missing translations.
 Examples and API Reference are also under Learn.

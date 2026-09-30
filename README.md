@@ -7,7 +7,7 @@
 
 A native desktop environment for learning real C++, one small step at a time.
 
-[Getting started](docs/GETTING_STARTED.md) · [88 Korean lessons](docs/tutorial-small-steps/CONTENTS.md) · [Build from source](docs/DEVELOPMENT.md) · [MIT license](LICENSE)
+[Getting started](docs/GETTING_STARTED.md) · [88 bilingual lessons](docs/TUTORIAL_ENGLISH.md) · [Build from source](docs/DEVELOPMENT.md) · [MIT license](LICENSE)
 
 </div>
 
@@ -17,7 +17,7 @@ library, and tools in larger programs.
 
 Small C++은 실제 C++을 작은 단계로 배우는 네이티브 교육 환경입니다.
 설정의 복잡함은 줄이고, 배운 내용을 일반 C++로 이어갈 수 있도록 설계했습니다.
-현재 핵심 튜토리얼은 **한국어 88개 레슨**으로 구성되어 있습니다.
+현재 핵심 튜토리얼은 **88개 레슨을 한국어와 영어로** 제공합니다.
 
 ## Why “Small C++”?
 
@@ -103,15 +103,17 @@ learners. Before publishing a binary release, complete the
 | Resource | Start here |
 | --- | --- |
 | First use | [Getting started](docs/GETTING_STARTED.md) |
+| English curriculum | [88-lesson index](docs/TUTORIAL_ENGLISH.md) |
 | Korean curriculum | [88-lesson contents](docs/tutorial-small-steps/CONTENTS.md) |
 | Teaching | [Teacher notes](docs/tutorial-small-steps/TEACHER.md) |
 | Programming model | [Small C++ guide](docs/SMALL_CPP_GUIDE.md) |
 | Design principles | [Philosophy](docs/PHILOSOPHY.md) |
 | Extensions and lessons | [Authoring guide](docs/EXTENSIONS_AND_TUTORIALS.md) |
 
-The current core lesson pack is Korean. The tutorial loader supports
-translations and falls back to the pack's default language when a translation
-is unavailable. IDE controls currently use English.
+The source lesson pack provides all 88 core lessons and three Image lessons
+in Korean and English. Choose **Settings → Tutorial Language → English**.
+See the [English lesson index](docs/TUTORIAL_ENGLISH.md). Korean remains the
+default; unavailable languages fall back to it. IDE controls use English.
 
 ## Develop and contribute
 

@@ -49,7 +49,7 @@ Reference, GDB/MI debugging, portable distribution, and multilingual
 external tutorials. It is feature-complete for now; further changes
 should be maintenance/usability driven.
 
-The current core content pack supplies 88 Korean Small Steps lessons.
+The current core content pack supplies 88 Small Steps lessons in Korean and English.
 Multilingual loading remains supported, but available translations depend
 on the installed content. The full 40-point manifesto in `PHILOSOPHY.md`
 remains the detailed design reference.

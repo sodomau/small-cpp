@@ -11,7 +11,7 @@ void SmallMain()
 }
 ```
 
-Use **Learn → Tutorial...** for the 88 Korean lessons and **Learn → Examples...**
+Use **Learn → Tutorial...** for the 88 Korean/English lessons and **Learn → Examples...**
 for runnable examples. **Settings → Theme** offers Light, Dark and custom `.qss` files.
 The compiler and debugger are included; no separate Qt or compiler installation is needed.
 
