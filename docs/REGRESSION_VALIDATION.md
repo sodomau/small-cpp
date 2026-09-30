@@ -72,3 +72,27 @@ The full Release CTest suite passed **30/30** after the main fix; the final
 quote/error-handling refinement was verified with the live String regression.
 The current buffer expression targets the supported GCC/libstdc++ kit; it
 must be revisited for a different standard-library implementation.
+
+## v0.76i source reconciliation (2026-09-30)
+
+The later origin-story archive uses CMake version 0.76.9. Its changes were
+compared with the original import before applying them to the current tree.
+The IDE pause is now a directly linked object for both Run and Debug, replacing
+the earlier whole-archive workaround. The process/input regression now links
+that real object and verifies normal Enter waiting, standalone exit and the
+existing test bypass. The About regression checks the restored origin and
+developer text while retaining the current license summary.
+
+Public API, design and guide documents and the distribution README were restored.
+The current Getting Started guide retains QSS, debugger and Korean tutorial
+information. Packaging explicitly includes the four public guides. The current
+ignore rules, license preparation, themes and debugger fixes remain in place.
+
+Validation: Release build succeeded; full CTest passed 30/30 (228.95 s).
+The identifier validator spent 152.56 s scanning generated third-party headers;
+its scope was then limited to project source directories. Checks 18–30 were
+rerun and passed 13/13, with the identifier check taking 0.27 s.
+The local portable folder includes all four guides, its README, and the new
+pause object. Print, user-written main, Window, Sound and Image each compiled,
+linked with that object and ran successfully using package/Windows paths only.
+A separate clean PC test remains pending. No published release was replaced.

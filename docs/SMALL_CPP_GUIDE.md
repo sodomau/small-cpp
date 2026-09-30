@@ -29,3 +29,17 @@ examples, and tutorials.
 Small types are stepping stones. Later lessons reveal `std::string`,
 `std::vector`, headers, namespaces, and ordinary `main()`. The goal is a
 gradual reveal of C++, not a language switch.
+
+## Visible control flow
+
+The Window API deliberately keeps the program's main flow visible:
+
+``` cpp
+while (window.IsOpen())
+{
+    // input
+    // update
+    // draw
+    window.Show();
+}
+```

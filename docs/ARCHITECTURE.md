@@ -23,7 +23,7 @@ point. Lifetime is explicit:
 such as audio are destroyed before `QApplication`.
 
 In v0.76f the runtime itself does not register a console exit pause.
-IDE Run and Debug additionally link `small_ide_pause`, whose exit registration
+IDE Run and Debug directly link `small_ide_pause.o`, whose exit registration
 implements IDE console-pause policy separately from runtime cleanup.
 
 ## Debugger

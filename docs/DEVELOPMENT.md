@@ -5,6 +5,11 @@ The development repository was imported from
 The archive's internal `SmallCpp-IDE-v0.65/` directory name is historical;
 its README identifies the contents as v0.76f. The original archive is preserved.
 
+The later `SmallCpp-IDE-v0.76i-origin-story.zip` (CMake version 0.76.9)
+was reconciled on 2026-09-30. Its origin story, public guides, directly linked
+IDE pause object and packaged documentation are integrated with the current
+themes, debugger fixes, licensing and Small Steps tutorial pack.
+
 The core tutorial was subsequently replaced with the user's latest
 `SmallCpp-Core-Tutorial-KO-Small-Steps.zip`: 88 Korean lessons. Keep it as a
 complete content set rather than merging older lesson folders into it.

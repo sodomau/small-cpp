@@ -19,6 +19,14 @@ Small C++은 실제 C++을 작은 단계로 배우는 네이티브 교육 환경
 설정의 복잡함은 줄이고, 배운 내용을 일반 C++로 이어갈 수 있도록 설계했습니다.
 현재 핵심 튜토리얼은 **한국어 88개 레슨**으로 구성되어 있습니다.
 
+## Why “Small C++”?
+
+Sunghyun Cho, POSTECH, first discovered programming through **GW-BASIC** as a
+child. Small C++ brings that immediacy to learning real C++. Its name is a nod
+to **Small Basic**. Read the [design and origin story](docs/DESIGN.md).
+
+**The immediacy of BASIC. The path to C++.**
+
 ## IDE preview
 
 <picture>

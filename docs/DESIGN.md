@@ -106,3 +106,31 @@ What is the smallest useful project model? Manifest or convention? How
 should header/source pairs be introduced? How should multi-file errors
 and Step Into filtering work? Which concepts belong in Small versus
 standard tooling?
+
+## Runtime lifetime
+
+Small runtime resources have explicit lifetime:
+
+``` text
+InitializeSmall → program → ShutdownSmall
+```
+
+Qt/audio cleanup is not delegated to exit-time static destruction. The
+console pause used by IDE Run/Debug is a separate IDE-only linked
+object, not runtime policy.
+
+## Origin
+
+Small C++ was created by Sunghyun Cho, who was introduced to the world of programming through **GW-BASIC** as a child. GW-BASIC made programming feel immediate: write a few lines, run them, and see something happen.
+
+The name **Small C++** is also a nod to **Small Basic**. While Small C++ is not based on Small Basic, the name reflects a shared aspiration: making the first experience of programming small, approachable, and rewarding.
+
+Small C++ grew from a desire to bring some of the immediacy and accessibility of that early BASIC experience to modern C++ education—without creating a new language. It is real C++, with a smaller and friendlier starting point and a natural path toward the full language.
+
+**The immediacy of BASIC. The path to C++.**
+
+## Project
+
+Small C++ was designed and developed by **Sunghyun Cho, POSTECH**.
+
+Contact: `s.cho@postech.ac.kr`

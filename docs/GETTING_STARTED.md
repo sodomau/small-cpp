@@ -55,6 +55,14 @@ Click the editor gutter to set a breakpoint, then choose **Debug**. Use
 Continue, Over, Into, Out, and Stop. Variables shows locals and user
 globals. Breakpoints can be changed during a session.
 
+Small IDE keeps the console open at normal exit for Run/Debug. Press Enter
+to close it. This is an IDE convenience, not Small runtime behavior.
+
+## About
+
+Open **Help → About Small C++...** for the version, developer, project origin,
+license summary and GitHub link.
+
 ## Growing into C++
 
 Later lessons introduce structs/classes, references, the standard
