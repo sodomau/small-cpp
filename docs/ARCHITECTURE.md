@@ -1,43 +1,59 @@
-# Implementation notes
+# Architecture
 
-The runtime API and the learner program do not include Qt. `Window` owns an opaque
-implementation, created only by `Open`. `String` and `Array<T>` remain normal
-C++ value types. No friend functions are required.
+``` text
+SmallCppIDE
+├─ Editor / Learn UI
+├─ BuildController → bundled MinGW
+├─ DebugController → GDB/MI
+├─ TutorialCatalog / TutorialBrowser
+└─ Extension discovery → extension.json
 
-CMake builds `small_runtime.cpp`, `small_sound.cpp`, and the fixed `small_main.cpp`
-into one static archive. `small_sdk` copies that archive and the public header
-beside the IDE. The IDE itself is not linked against this archive: it must not
-pull in the learner's `main` or require a definition of `Main`.
+Learner executable
+├─ small_entry (SmallMain programs)
+├─ small_runtime
+├─ small_ide_pause (IDE Run/Debug only)
+└─ optional extension libraries
+```
 
-The linker sees the learner object first, then the runtime archive, then the
-Qt libraries recorded by the current CMake configuration. The archive member
-containing `main` supplies the process entry point and calls the learner's `Main`.
+## Runtime
 
-CMake generates `SmallBuildConfig.h` separately for each build configuration.
-It records the actual C++ compiler and the actual imported Qt linker files, not
-an independently discovered compiler or the newest arbitrary Qt version.
+`small_runtime` has no `main()`. `small_entry` supplies the hidden entry
+point. Lifetime is explicit:
+`InitializeSmall → SmallMain → ShutdownSmall`. Qt-dependent resources
+such as audio are destroyed before `QApplication`.
 
-The IDE executes only two build processes per Run: learner compilation and
-linking. QProcess completion/error signals advance the pipeline. The public
-header, precompiled runtime and toolchain use the same CMake kit.
+In v0.76f the runtime itself does not register a console exit pause.
+IDE Run and Debug additionally link `small_ide_pause`, whose exit registration
+implements IDE console-pause policy separately from runtime cleanup.
 
-`QTemporaryDir` isolates every invocation. No timestamp-based cache from an old
-version in a shared Temp/SmallCppIDE directory is reused.
+## Debugger
 
-`QTextDocument::isModified()` is the single dirty-state source. `maybeSave()`
-protects Close, New and Open. Failed/cancelled saves preserve the document and
-cancel the destructive action. `QSaveFile::commit()` must succeed before the dirty
-flag is cleared. Close during a build/run is deferred until asynchronous Stop
-reaches Idle, so ordinary close does not destroy an active QProcess.
+GDB/MI provides breakpoints, live breakpoint changes,
+Continue/Over/Into/Out, source tracking, locals, user globals, readable
+Small String values, separate learner console, and clean program-exit
+handling. Ordinary Step Into filters Small/STL implementation frames.
 
-The Small user's `Main` remains on the GUI thread, matching the earlier runtime.
-`IsOpen`, `Show`, `Sleep`, and blocking audio service GUI events. This is a small
-teaching runtime, not a general-purpose scheduler. Arbitrary long computations
-without an event-processing call can still make the learner's graphics window
-unresponsive; the separate IDE stays responsive and can stop that program.
+## Tutorials
 
-Reference APIs used:
-- https://doc.qt.io/qt-6/qprocess.html
-- https://doc.qt.io/qt-6/qsavefile.html
-- https://doc.qt.io/qt-6/qaudiosink.html
-- https://cmake.org/cmake/help/latest/command/file.html
+Filesystem content, not Qt resources:
+
+``` text
+tutorial/
+├─ languages.json
+└─ 01_hello/
+   ├─ ko.md
+   ├─ en.md (optional translation)
+   ├─ *.cpp
+   └─ images/
+```
+
+`NN_id` gives order/id. Markdown supplies title/part/goal/content.
+Relative images resolve from the lesson directory.
+The active core pack contains 88 Korean lessons, with three Image extension lessons.
+
+## Portable deployment
+
+A packaging-only `SmallDeployProbe` links the learner Qt module
+superset. `windeployqt` runs on both IDE and probe so dependencies such
+as Multimedia/plugins are discovered; the probe is removed from the
+final package.
