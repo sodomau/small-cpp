@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+#include "LearnWindowTestHelpers.h"
 #include "BuildController.h"
 #include "EditorDocument.h"
 #include "ExampleCatalog.h"
@@ -18,6 +19,7 @@
 #include <QRegularExpression>
 #include <QSet>
 #include <QSettings>
+#include "SmallSettings.h"
 #include <QSignalSpy>
 #include <QTabWidget>
 #include <QTemporaryDir>
@@ -46,7 +48,7 @@ private:
     static TutorialBrowser* browse(MainWindow& window)
     {
         action(window, "actionTutorial")->trigger();
-        return window.findChild<TutorialBrowser*>("tutorialBrowser");
+        return learnWindow<TutorialBrowser>();
     }
     static QPushButton* button(TutorialBrowser& browser, const char* name)
     {
@@ -63,32 +65,34 @@ private slots:
         qputenv("SMALL_TEST_DIALOGS", "1");
         qputenv("SMALL_TEST_NO_CONSOLE_PAUSE", "1");
     }
-    void init() { QSettings("SmallCpp", "SmallCppIDE").clear(); }
+    void init() { SmallSettings().clear(); }
+    void cleanup() { QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete); }
 
-    void catalogHasSixPartsThirtySixTitlesFiveLessonsTenExercises()
+    void catalogContainsCompleteCoreAndExtensionLessons()
     {
         TutorialCatalog catalog;
         QVERIFY2(catalog.isValid(), qPrintable(catalog.errorString()));
-        QCOMPARE(catalog.parts().size(), 6);
-        QCOMPARE(catalog.lessons().size(), 36);
-        QCOMPARE(catalog.availableIds().size(), 5);
-        QCOMPARE(catalog.parts()[3].lessonIds, QStringList({"text_files", "binary_files"}));
+        QCOMPARE(catalog.parts().size(), 7);
+        QCOMPARE(catalog.lessons().size(), 91);
+        QCOMPARE(catalog.availableIds().size(), 91);
+        QVERIFY(catalog.find("text_files_1"));
+        QVERIFY(catalog.find("binary_files_2"));
         int count = 0;
         for (const auto& lesson : catalog.lessons())
         {
             QVERIFY(!lesson.title.isEmpty());
             if (!lesson.available) { QVERIFY(lesson.exercises.isEmpty()); continue; }
-            QCOMPARE(lesson.exercises.size(), 2);
+            QVERIFY(!lesson.exercises.isEmpty());
             for (const auto& exercise : lesson.exercises)
             {
                 ++count;
                 QVERIFY(!exercise.hint.isEmpty());
                 QVERIFY(!exercise.prompt.isEmpty());
-                QVERIFY(exercise.starter.contains("void SmallMain()"));
-                QVERIFY(exercise.solution.contains("void SmallMain()"));
+                QVERIFY(exercise.starter.contains("SmallMain") || exercise.starter.contains("main("));
+                QVERIFY(exercise.solution.contains("SmallMain") || exercise.solution.contains("main("));
             }
         }
-        QCOMPARE(count, 10);
+        QCOMPARE(count, 94);
     }
 
     void catalogLoadsWithoutSourceFolderAsWorkingDirectory()
@@ -104,6 +108,22 @@ private slots:
         QVERIFY(catalog.find("hello"));
     }
 
+    void missingCoreTranslationFallsBackToKorean()
+    {
+        TutorialCatalog korean("ko");
+        TutorialCatalog english("en");
+        QVERIFY2(english.isValid(), qPrintable(english.errorString()));
+        for (const auto& lesson : korean.lessons())
+        {
+            if (lesson.sourceDirectory.contains("/extensions/")) continue;
+            const auto* fallback = english.find(lesson.id);
+            QVERIFY(fallback);
+            QCOMPARE(fallback->title, lesson.title);
+            QCOMPARE(fallback->exercises.size(), lesson.exercises.size());
+            QCOMPARE(fallback->exercises.first().solution, lesson.exercises.first().solution);
+        }
+    }
+
     void learnMenuContainsBothBrowsers()
     {
         MainWindow window;
@@ -111,7 +131,7 @@ private slots:
         QVERIFY(learn);
         QVERIFY(learn->actions().contains(action(window, "actionTutorial")));
         QVERIFY(learn->actions().contains(action(window, "actionExamples")));
-        QVERIFY(!window.findChild<TutorialBrowser*>());
+        QVERIFY(!learnWindow<TutorialBrowser>());
     }
 
     void browserIsLazyModelessAndReused()
@@ -120,11 +140,11 @@ private slots:
         auto* browser = browse(window);
         QVERIFY(browser);
         QVERIFY(!browser->isModal());
-        QVERIFY(browser->selectLesson("decisions"));
+        QVERIFY(browser->selectLesson("if"));
         browser->reject();
         QCOMPARE(browse(window), browser);
-        QCOMPARE(browser->selectedId(), QString("decisions"));
-        QCOMPARE(window.findChildren<TutorialBrowser*>().size(), 1);
+        QCOMPARE(browser->selectedId(), QString("if"));
+        QCOMPARE(learnWindowCount<TutorialBrowser>(), 1);
     }
 
     void allPublishedPreviewsMatchCatalogAndStayReadOnly()
@@ -144,8 +164,8 @@ private slots:
                     QVERIFY(editor->isReadOnly());
                     QCOMPARE(editor->toPlainText(), block.content);
                 }
-            QCOMPARE(browser.findChildren<QGroupBox*>(QRegularExpression("^tutorialExercise[12]$")).size(), 2);
-            for (int i = 0; i < 2; ++i)
+            QCOMPARE(browser.findChildren<QGroupBox*>(QRegularExpression("^tutorialExercise[0-9]+$")).size(), lesson->exercises.size());
+            for (int i = 0; i < lesson->exercises.size(); ++i)
             {
                 auto* answer = browser.findChild<CodeEditor*>(QString("tutorialSolutionCode%1").arg(i + 1));
                 QVERIFY(answer);
@@ -159,13 +179,13 @@ private slots:
     {
         TutorialCatalog catalog;
         TutorialBrowser browser(catalog);
-        QVERIFY(browser.selectLesson("for_loop"));
+        QVERIFY(browser.selectLesson("for"));
         QVERIFY(!browser.isRead("hello"));
         QVERIFY(button(browser, "tryTutorialExample1"));
-        QVERIFY(browser.selectLesson("binary_files"));
-        QVERIFY(browser.findChild<QLabel*>("tutorialNotAvailable"));
-        QVERIFY(!button(browser, "tutorialNext")->isEnabled());
-        QVERIFY(!button(browser, "tryTutorialExample1"));
+        QVERIFY(browser.selectLesson("binary_files_1"));
+        QVERIFY(!browser.findChild<QLabel*>("tutorialNotAvailable"));
+        QVERIFY(button(browser, "tutorialNext")->isEnabled());
+        QVERIFY(button(browser, "tryTutorialExample1"));
         QVERIFY(browser.selectLesson("hello"));
         QVERIFY(button(browser, "tryTutorialExample1")->isEnabled());
     }
@@ -216,7 +236,7 @@ private slots:
         QVERIFY(!current(window)->toPlainText().contains("// changed"));
     }
 
-    void bothStartersForEveryPublishedLessonAreCopiedExactly()
+    void allStartersForEveryPublishedLessonAreCopiedExactly()
     {
         MainWindow window;
         TutorialCatalog catalog;
@@ -225,7 +245,7 @@ private slots:
         {
             QVERIFY(browser->selectLesson(id));
             const auto* lesson = catalog.find(id);
-            for (int i = 0; i < 2; ++i)
+            for (int i = 0; i < lesson->exercises.size(); ++i)
             {
                 auto* tryButton = browser->findChild<QPushButton*>(QString("tryTutorialExercise%1").arg(i + 1));
                 QVERIFY(tryButton);
@@ -234,7 +254,9 @@ private slots:
                 QVERIFY(current(window)->document()->isModified());
             }
         }
-        QCOMPARE(tabs(window)->count(), 11);
+        int exercises = 0;
+        for (const auto& lesson : catalog.lessons()) exercises += lesson.exercises.size();
+        QCOMPARE(tabs(window)->count(), 1 + exercises);
     }
 
     void hintAndSolutionStartHiddenAndDoNotCreateTabsOrMarkRead()
@@ -263,10 +285,10 @@ private slots:
         MainWindow window;
         TutorialCatalog catalog;
         auto* browser = browse(window);
-        QVERIFY(browser->selectLesson("decisions"));
-        button(*browser, "tutorialSolutionButton2")->click();
-        button(*browser, "tryTutorialSolution2")->click();
-        QCOMPARE(current(window)->toPlainText(), catalog.find("decisions")->exercises[1].solution);
+        QVERIFY(browser->selectLesson("if"));
+        button(*browser, "tutorialSolutionButton1")->click();
+        button(*browser, "tryTutorialSolution1")->click();
+        QCOMPARE(current(window)->toPlainText(), catalog.find("if")->exercises[0].solution);
         QVERIFY(!current(window)->isReadOnly());
         QVERIFY(current(window)->document()->isModified());
     }
@@ -278,7 +300,7 @@ private slots:
         QVERIFY(browser.selectLesson("hello"));
         button(browser, "tutorialNext")->click();
         QVERIFY(browser.isRead("hello"));
-        QCOMPARE(browser.selectedId(), QString("variables"));
+        QCOMPARE(browser.selectedId(), QString("lines"));
         QVERIFY(!browser.isRead("variables"));
         button(browser, "tutorialPrevious")->click();
         QCOMPARE(browser.selectedId(), QString("hello"));
@@ -295,7 +317,7 @@ private slots:
         }
         TutorialBrowser second(catalog);
         QVERIFY(second.isRead("hello"));
-        QCOMPARE(second.selectedId(), QString("variables"));
+        QCOMPARE(second.selectedId(), QString("lines"));
         QVERIFY(!second.isRead("variables"));
     }
 
@@ -303,26 +325,26 @@ private slots:
     {
         TutorialCatalog catalog;
         TutorialBrowser browser(catalog);
-        QVERIFY(browser.selectLesson("for_loop"));
+        const QString last = catalog.availableIds().last();
+        QVERIFY(browser.selectLesson(last));
         QCOMPARE(button(browser, "tutorialNext")->text(), QString("Finish"));
         button(browser, "tutorialNext")->click();
-        QVERIFY(browser.isRead("for_loop"));
+        QVERIFY(browser.isRead(last));
         QVERIFY(!browser.isRead("hello"));
-        QVERIFY(!browser.isRead("while_loop"));
-        QCOMPARE(browser.selectedId(), QString("for_loop"));
+        QCOMPARE(browser.selectedId(), last);
     }
 
     void unknownStoredIdsAreIgnored()
     {
-        QSettings settings("SmallCpp", "SmallCppIDE");
+        auto settings = SmallSettings();
         settings.setValue("tutorial/curriculumV2/lastLesson", "missing");
-        settings.setValue("tutorial/curriculumV2/readLessons", QStringList{"missing", "hello", "binary_files"});
+        settings.setValue("tutorial/curriculumV2/readLessons", QStringList{"missing", "hello", "binary_files_1"});
         TutorialCatalog catalog;
         TutorialBrowser browser(catalog);
         QCOMPARE(browser.selectedId(), QString("hello"));
         QVERIFY(browser.isRead("hello"));
         QVERIFY(!browser.isRead("missing"));
-        QVERIFY(!browser.isRead("binary_files"));
+        QVERIFY(browser.isRead("binary_files_1"));
     }
 
     void fontAndThemeReachVisibleAndHiddenCodeWithoutResettingHint()

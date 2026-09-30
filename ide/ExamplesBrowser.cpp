@@ -16,6 +16,7 @@
 #include <QTreeWidgetItemIterator>
 #include <QVBoxLayout>
 #include <QSettings>
+#include "SmallSettings.h"
 
 ExamplesBrowser::ExamplesBrowser(const ExampleCatalog& catalog, QWidget* parent)
     : QDialog(parent), catalog_(catalog)
@@ -31,7 +32,7 @@ ExamplesBrowser::ExamplesBrowser(const ExampleCatalog& catalog, QWidget* parent)
     setSizeGripEnabled(true);
     setMinimumSize(640, 460);
     const QByteArray savedGeometry =
-        QSettings("SmallCpp", "SmallCppIDE").value("examples/windowGeometry").toByteArray();
+        SmallSettings().value("examples/windowGeometry").toByteArray();
     if (!savedGeometry.isEmpty())
         restoreGeometry(savedGeometry);
     QFont uiFont = font();
@@ -160,7 +161,7 @@ ExamplesBrowser::ExamplesBrowser(const ExampleCatalog& catalog, QWidget* parent)
 
 ExamplesBrowser::~ExamplesBrowser()
 {
-    QSettings("SmallCpp", "SmallCppIDE").setValue("examples/windowGeometry", saveGeometry());
+    SmallSettings().setValue("examples/windowGeometry", saveGeometry());
 }
 
 

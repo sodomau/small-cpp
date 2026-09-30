@@ -3,6 +3,7 @@
 #include "CodeEditor.h"
 #include "Diagnostics.h"
 #include "EntryPoint.h"
+#include "SmallSettings.h"
 #include "small.h"
 
 #include <QAbstractButton>
@@ -45,6 +46,17 @@ private slots:
         QApplication::setQuitOnLastWindowClosed(false);
         qputenv("SMALL_TEST_DIALOGS", "1");
         qputenv("SMALL_TEST_NO_CONSOLE_PAUSE", "1");
+    }
+
+    void settingsUseIsolatedConfiguredBackend()
+    {
+        auto settings = SmallSettings();
+        QCOMPARE(settings.format(), QSettings::IniFormat);
+        QVERIFY(settings.fileName().startsWith(testSettings_.path()));
+        settings.setValue("tests/roundTrip", 42);
+        settings.sync();
+        QCOMPARE(settings.status(), QSettings::NoError);
+        QCOMPARE(SmallSettings().value("tests/roundTrip").toInt(), 42);
     }
 
     void diagnosticsUsesPreviousDeclaration()
@@ -356,10 +368,12 @@ private slots:
         QSignalSpy started(&build, &BuildController::programStarted);
         QTemporaryDir folder;
         QVERIFY(folder.isValid());
-        build.start(R"cpp(int main(int argc, char* argv[])
+        build.start(R"cpp(#include <small.h>
+int main(int argc, char* argv[])
 {
-    InitializeSmall(argc, argv);
-    Print("manual main");
+    Small::InitializeSmall(argc, argv);
+    Small::Print("manual main");
+    Small::ShutdownSmall();
     return 0;
 }
 )cpp", folder.filePath("program.cpp"));

@@ -27,6 +27,7 @@
 #include <QPlainTextEdit>
 #include <QSaveFile>
 #include <QSettings>
+#include "SmallSettings.h"
 #include <QSignalBlocker>
 #include <QSplitter>
 #include <QStandardPaths>
@@ -121,7 +122,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
     editorFont_.setStyleHint(QFont::Monospace);
     build_ = new BuildController(this);
     debug_ = new DebugController(this);
-    tutorials_ = TutorialCatalog(QSettings("SmallCpp", "SmallCppIDE").value(
+    tutorials_ = TutorialCatalog(SmallSettings().value(
         "tutorial/language", TutorialCatalog::defaultLanguage()).toString());
 
     // Small C++ is a learning environment, not a space-maximized professional IDE.
@@ -244,7 +245,7 @@ void MainWindow::createUi()
     languageMenu->setObjectName("menuTutorialLanguage");
     auto* languageGroup = new QActionGroup(this);
     languageGroup->setExclusive(true);
-    const QString currentTutorialLanguage = QSettings("SmallCpp", "SmallCppIDE").value(
+    const QString currentTutorialLanguage = SmallSettings().value(
         "tutorial/language", TutorialCatalog::defaultLanguage()).toString();
     for (const auto& language : TutorialCatalog::languages())
     {
@@ -508,7 +509,7 @@ QString MainWindow::initialDirectory(const EditorDocument* document) const
 {
     if (document && !document->filePath().isEmpty())
         return QFileInfo(document->filePath()).absolutePath();
-    const QString last = QSettings("SmallCpp", "SmallCppIDE").value("files/lastDirectory").toString();
+    const QString last = SmallSettings().value("files/lastDirectory").toString();
     if (!last.isEmpty() && QDir(last).exists()) return last;
     const QString path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
     return QDir(path).exists() ? path : QDir::homePath();
@@ -555,7 +556,7 @@ bool MainWindow::saveTo(EditorDocument* document, const QString& path)
         updateTabTitle(document);
         updateTitle();
     }
-    QSettings("SmallCpp", "SmallCppIDE").setValue("files/lastDirectory",
+    SmallSettings().setValue("files/lastDirectory",
                                                   QFileInfo(destination).absolutePath());
     statusBar()->showMessage("Saved " + document->displayName(), 3000);
     return true;
@@ -669,7 +670,7 @@ bool MainWindow::openDocument(const QString& path)
         return false;
     }
     addDocument(QString::fromUtf8(bytes), absolute);
-    QSettings("SmallCpp", "SmallCppIDE").setValue("files/lastDirectory",
+    SmallSettings().setValue("files/lastDirectory",
                                                   QFileInfo(absolute).absolutePath());
     return true;
 }
@@ -707,7 +708,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 void MainWindow::loadAppearance()
 {
-    QSettings settings("SmallCpp", "SmallCppIDE");
+    auto settings = SmallSettings();
     darkTheme_ = settings.value("appearance/dark", false).toBool();
     if (settings.contains("appearance/font"))
         editorFont_ = settings.value("appearance/font").value<QFont>();
@@ -718,11 +719,13 @@ void MainWindow::loadAppearance()
 void MainWindow::applyAppearance(EditorDocument* document)
 {
     if (!document) return;
+    const bool modified = document->document()->isModified();
     document->setFont(editorFont_);
     document->setTabStopDistance(document->fontMetrics().horizontalAdvance(' ') * 4);
     document->setPalette(editorPalette(document->palette(), darkTheme_));
     document->setDarkTheme(darkTheme_);
     document->highlighter()->setDark(darkTheme_);
+    document->document()->setModified(modified);
     document->viewport()->update();
 }
 
@@ -737,7 +740,7 @@ void MainWindow::applyTheme(bool dark)
         tutorialBrowser_->setAppearance(editorFont_, editorPalette(output_->palette(), dark), dark);
     if (apiBrowser_)
         apiBrowser_->setAppearance(editorFont_, editorPalette(output_->palette(), dark), dark);
-    QSettings("SmallCpp", "SmallCppIDE").setValue("appearance/dark", dark);
+    SmallSettings().setValue("appearance/dark", dark);
 }
 
 void MainWindow::chooseFont()
@@ -753,7 +756,7 @@ void MainWindow::chooseFont()
         examplesBrowser_->setAppearance(editorFont_, editorPalette(output_->palette(), darkTheme_), darkTheme_);
     if (tutorialBrowser_)
         tutorialBrowser_->setAppearance(editorFont_, editorPalette(output_->palette(), darkTheme_), darkTheme_);
-    QSettings("SmallCpp", "SmallCppIDE").setValue("appearance/font", font);
+    SmallSettings().setValue("appearance/font", font);
 }
 
 void MainWindow::run()
@@ -924,7 +927,7 @@ void MainWindow::tryExample()
 
 void MainWindow::setTutorialLanguage(const QString& language)
 {
-    QSettings("SmallCpp", "SmallCppIDE").setValue("tutorial/language", language);
+    SmallSettings().setValue("tutorial/language", language);
     tutorials_ = TutorialCatalog(language);
     if (tutorialBrowser_) {
         tutorialBrowser_->close();

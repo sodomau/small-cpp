@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 from pathlib import Path
 root=Path(__file__).resolve().parents[1]
-data=(root/"ide/ApiReference.cpp").read_text()
-browser=(root/"ide/ApiBrowser.cpp").read_text()
-main=(root/"ide/MainWindow.cpp").read_text()
+data=(root/"ide/ApiReference.cpp").read_text(encoding="utf-8")
+browser=(root/"ide/ApiBrowser.cpp").read_text(encoding="utf-8")
+main=(root/"ide/MainWindow.cpp").read_text(encoding="utf-8")
 required=["Print","InputInt","RandomInt","StopWatch","Sleep","String","Array","File.Open","RGB",
           "Window.Open","Window.FillCircle","Window.KeyDown","Window.MouseDown","PlaySound"]
 for name in required: assert f'"{name}"' in data, name
@@ -22,7 +22,7 @@ for bad in ['"watch.Elapsed()"','"timer.Start(interval, function)"','"text.Lengt
             '"Image.Load(filename)"']:
     assert bad not in data, bad
 assert "typeNodes" in browser and "memberName" in browser
-cmake=(root/"ide/CMakeLists.txt").read_text()
+cmake=(root/"ide/CMakeLists.txt").read_text(encoding="utf-8")
 import re
 m=re.search(r"set\(SMALL_IDE_SOURCES\s+(.*?)\n\)", cmake, re.S)
 assert m

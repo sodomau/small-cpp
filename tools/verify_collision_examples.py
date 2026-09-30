@@ -2,10 +2,9 @@
 from pathlib import Path
 root=Path(__file__).resolve().parents[1]
 files=[root/"examples/programs/pong.cpp",
-       root/"tutorial/18_game/example1.cpp",
-       root/"tutorial/18_game/example2.cpp",
-       root/"tutorial/18_game/exercise2_starter.cpp",
-       root/"tutorial/18_game/exercise2_solution.cpp"]
+       *sorted((root/"tutorial/52_game_1").glob("*.cpp")),
+       *sorted((root/"tutorial/53_game_2").glob("*.cpp"))]
+assert len(files) == 7, "Both current game lessons must supply example/starter/solution"
 bad=["if (ballY < 10 || ballY > 490)",
      "if (ballX > 790)\\n            ballVX",
      "if (ballX < 15 || ballX > 625)",

@@ -13,6 +13,7 @@
 #include <QTreeWidget>
 #include <QVBoxLayout>
 #include <QSettings>
+#include "SmallSettings.h"
 
 ApiBrowser::ApiBrowser(QWidget* parent) : QDialog(parent)
 {
@@ -25,7 +26,7 @@ ApiBrowser::ApiBrowser(QWidget* parent) : QDialog(parent)
                    Qt::WindowCloseButtonHint);
     setMinimumSize(760, 520);
     const QByteArray savedGeometry =
-        QSettings("SmallCpp", "SmallCppIDE").value("api/windowGeometry").toByteArray();
+        SmallSettings().value("api/windowGeometry").toByteArray();
     if (!savedGeometry.isEmpty())
         restoreGeometry(savedGeometry);
     resize(1000, 680);
@@ -146,7 +147,7 @@ ApiBrowser::ApiBrowser(QWidget* parent) : QDialog(parent)
 
 ApiBrowser::~ApiBrowser()
 {
-    QSettings("SmallCpp", "SmallCppIDE").setValue("api/windowGeometry", saveGeometry());
+    SmallSettings().setValue("api/windowGeometry", saveGeometry());
 }
 
 

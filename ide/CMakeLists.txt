@@ -112,6 +112,7 @@ inline constexpr const char* QtLibraries[] = {
 ")
 
 set(SMALL_IDE_SOURCES
+    SmallSettings.h
     MainWindow.h MainWindow.cpp
     EditorDocument.h EditorDocument.cpp
     ExampleCatalog.h ExampleCatalog.cpp
@@ -208,7 +209,7 @@ if(SMALL_BUILD_TESTS)
         Qt6::Test Qt6::Widgets Qt6::Multimedia)
     set_target_properties(small_qt_test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${SMALL_BIN}")
     add_dependencies(small_qt_test small_sdk)
-    add_test(NAME small_qt COMMAND small_qt_test)
+    add_test(NAME small_qt COMMAND small_qt_test -o small_qt-results.txt,txt)
     set_tests_properties(small_qt PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
     set_tests_properties(small_qt PROPERTIES TIMEOUT 120)
 
@@ -225,7 +226,7 @@ if(SMALL_BUILD_TESTS)
     target_link_libraries(small_examples_ui_test PRIVATE small_ide_components Qt6::Test Qt6::Widgets)
     set_target_properties(small_examples_ui_test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${SMALL_BIN}")
     add_dependencies(small_examples_ui_test small_sdk)
-    add_test(NAME small_examples_ui COMMAND small_examples_ui_test)
+    add_test(NAME small_examples_ui COMMAND small_examples_ui_test -o small_examples-results.txt,txt)
     set_tests_properties(small_examples_ui PROPERTIES
         ENVIRONMENT "QT_QPA_PLATFORM=offscreen" TIMEOUT 180)
 
@@ -233,7 +234,7 @@ if(SMALL_BUILD_TESTS)
     target_link_libraries(small_tutorial_ui_test PRIVATE small_ide_components Qt6::Test Qt6::Widgets)
     set_target_properties(small_tutorial_ui_test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${SMALL_BIN}")
     add_dependencies(small_tutorial_ui_test small_sdk)
-    add_test(NAME small_tutorial_ui COMMAND small_tutorial_ui_test)
+    add_test(NAME small_tutorial_ui COMMAND small_tutorial_ui_test -o small_tutorial-results.txt,txt)
     set_tests_properties(small_tutorial_ui PROPERTIES
         ENVIRONMENT "QT_QPA_PLATFORM=offscreen" TIMEOUT 180)
 
@@ -243,6 +244,15 @@ if(SMALL_BUILD_TESTS)
             COMMAND "${Python3_EXECUTABLE}" "${SMALL_ROOT}/tools/verify_tutorial.py")
         add_test(NAME small_example_catalog
             COMMAND "${Python3_EXECUTABLE}" "${SMALL_ROOT}/tools/verify_example_catalog.py")
+        add_test(NAME small_tutorial_validator_regressions
+            COMMAND "${Python3_EXECUTABLE}" "${SMALL_ROOT}/tests/test_tutorial_validation.py")
+        file(GLOB SMALL_CONTENT_CHECKS CONFIGURE_DEPENDS "${SMALL_ROOT}/tools/verify_*.py")
+        foreach(check_script IN LISTS SMALL_CONTENT_CHECKS)
+            get_filename_component(check_name "${check_script}" NAME_WE)
+            if(NOT check_name STREQUAL "verify_tutorial" AND NOT check_name STREQUAL "verify_example_catalog")
+                add_test(NAME "small_${check_name}" COMMAND "${Python3_EXECUTABLE}" "${check_script}")
+            endif()
+        endforeach()
     endif()
 
 

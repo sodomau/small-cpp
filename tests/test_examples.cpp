@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+#include "LearnWindowTestHelpers.h"
 #include "BuildController.h"
 #include "EditorDocument.h"
 #include "ExampleCatalog.h"
@@ -18,6 +19,7 @@
 #include <QPushButton>
 #include <QSet>
 #include <QSettings>
+#include "SmallSettings.h"
 #include <QSignalSpy>
 #include <QTabBar>
 #include <QTabWidget>
@@ -53,7 +55,7 @@ private:
     static ExamplesBrowser* browse(MainWindow& window)
     {
         action(window, "actionExamples")->trigger();
-        return window.findChild<ExamplesBrowser*>("examplesBrowser");
+        return learnWindow<ExamplesBrowser>();
     }
 
 private slots:
@@ -66,14 +68,15 @@ private slots:
         qputenv("SMALL_TEST_DIALOGS", "1");
         qputenv("SMALL_TEST_NO_CONSOLE_PAUSE", "1");
     }
-    void init() { QSettings("SmallCpp", "SmallCppIDE").clear(); }
+    void init() { SmallSettings().clear(); }
+    void cleanup() { QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete); }
 
-    void catalogContainsAllNineteenPrograms()
+    void catalogContainsCoreAndExtensionPrograms()
     {
         ExampleCatalog catalog;
         QVERIFY2(catalog.isValid(), qPrintable(catalog.errorString()));
-        QCOMPARE(catalog.entries().size(), 19);
-        int reference = 0, programs = 0;
+        QCOMPARE(catalog.entries().size(), 24);
+        int reference = 0, programs = 0, extensions = 0;
         QSet<QString> ids;
         for (const auto& entry : catalog.entries())
         {
@@ -84,12 +87,17 @@ private slots:
             QVERIFY(!entry.concepts.isEmpty());
             QVERIFY(!entry.notes.isEmpty());
             QVERIFY(entry.code.contains("void SmallMain()"));
-            QCOMPARE(entry.code, QString::fromUtf8(read(":/small/examples/" + entry.sourceName)));
+            const QString path = entry.group.startsWith("Extensions / ")
+                ? QCoreApplication::applicationDirPath() + "/extensions/image/examples/" + entry.sourceName
+                : ":/small/examples/" + entry.sourceName;
+            QCOMPARE(entry.code, QString::fromUtf8(read(path)));
+            if (entry.group.startsWith("Extensions / ")) ++extensions;
             QCOMPARE(catalog.find(entry.id), &entry);
             if (entry.group == "Reference") ++reference;
             if (entry.group == "Programs") ++programs;
         }
-        QCOMPARE(reference, 12);
+        QCOMPARE(reference, 14);
+        QCOMPARE(extensions, 3);
         QCOMPARE(programs, 7);
     }
 
@@ -111,7 +119,7 @@ private slots:
     void browserIsCreatedOnlyWhenRequestedAndIsReused()
     {
         MainWindow window;
-        QVERIFY(!window.findChild<ExamplesBrowser*>());
+        QVERIFY(!learnWindow<ExamplesBrowser>());
         auto* browser = browse(window);
         QVERIFY(browser);
         QVERIFY(!browser->isModal());
@@ -119,7 +127,7 @@ private slots:
         browser->reject();
         QCOMPARE(browse(window), browser);
         QCOMPARE(browser->selectedId(), QString("programs/pong"));
-        QCOMPARE(window.findChildren<ExamplesBrowser*>().size(), 1);
+        QCOMPARE(learnWindowCount<ExamplesBrowser>(), 1);
     }
 
     void browserPreviewMatchesEveryCatalogEntry()
@@ -146,7 +154,7 @@ private slots:
         ExamplesBrowser browser(catalog);
         auto* tree = browser.findChild<QTreeWidget*>("exampleList");
         auto* open = browser.findChild<QPushButton*>("openExampleButton");
-        QCOMPARE(tree->topLevelItemCount(), 2);
+        QCOMPARE(tree->topLevelItemCount(), 3);
         tree->setCurrentItem(tree->topLevelItem(0));
         QVERIFY(browser.selectedId().isEmpty());
         QVERIFY(!open->isEnabled());
@@ -418,17 +426,21 @@ private slots:
         action(window, "actionThemeDark")->trigger();
         QCOMPARE(preview->palette().base().color(), QColor("#1e1f22"));
         QCOMPARE(example->palette().base().color(), QColor("#1e1f22"));
+        QVERIFY(!example->document()->isModified());
         action(window, "actionTryExample")->trigger();
         QCOMPARE(current(window)->palette().base().color(), QColor("#1e1f22"));
+        QVERIFY(current(window)->document()->isModified());
         action(window, "actionThemeLight")->trigger();
         QCOMPARE(preview->palette().base().color(), QColor("#ffffff"));
         QCOMPARE(example->palette().base().color(), QColor("#ffffff"));
+        QVERIFY(!example->document()->isModified());
+        QVERIFY(current(window)->document()->isModified());
     }
 
     void rememberedFontAppliesToBrowserAndCopies()
     {
         const QFont font("Consolas", 18);
-        QSettings("SmallCpp", "SmallCppIDE").setValue("appearance/font", font);
+        SmallSettings().setValue("appearance/font", font);
         MainWindow window;
         auto* browser = browse(window);
         QCOMPARE(browser->findChild<CodeEditor*>("examplePreview")->font().pointSize(), 18);

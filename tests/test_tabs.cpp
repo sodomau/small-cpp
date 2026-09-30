@@ -13,6 +13,7 @@
 #include <QPlainTextEdit>
 #include <QPointer>
 #include <QSettings>
+#include "SmallSettings.h"
 #include <QSignalSpy>
 #include <QTabBar>
 #include <QTabWidget>
@@ -88,7 +89,7 @@ private slots:
     }
     void init()
     {
-        QSettings("SmallCpp", "SmallCppIDE").clear();
+        SmallSettings().clear();
     }
 
     void newTabsHaveIndependentState()

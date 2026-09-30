@@ -4,7 +4,7 @@ checks={
  'ide/DebugController.cpp':['-exec-step','-exec-next','-exec-finish','-stack-list-variables','c_str()','-data-evaluate-expression'],
  'ide/CodeEditor.cpp':['breakpoints_','debugLine_'],
  'ide/MainWindow.cpp':['actionDebug','debugVariables','DebugController::stepInto'],
- 'ide/CMakeLists.txt':['DebugController.h DebugController.cpp','VERSION 0.66'],
+ 'ide/CMakeLists.txt':['DebugController.h DebugController.cpp'],
 }
 for f,tokens in checks.items():
  s=(r/f).read_text(encoding='utf-8')

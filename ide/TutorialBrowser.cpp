@@ -14,6 +14,7 @@
 #include <QScrollArea>
 #include <QScrollBar>
 #include <QSettings>
+#include "SmallSettings.h"
 #include <QSizePolicy>
 #include <QSplitter>
 #include <QTextDocument>
@@ -53,7 +54,7 @@ TutorialBrowser::TutorialBrowser(const TutorialCatalog& catalog, QWidget* parent
     setSizeGripEnabled(true);
     setMinimumSize(680, 460);
     const QByteArray savedGeometry =
-        QSettings("SmallCpp", "SmallCppIDE").value("tutorial/windowGeometry").toByteArray();
+        SmallSettings().value("tutorial/windowGeometry").toByteArray();
     if (!savedGeometry.isEmpty())
         restoreGeometry(savedGeometry);
     codeFont_.setStyleHint(QFont::Monospace);
@@ -118,7 +119,7 @@ TutorialBrowser::TutorialBrowser(const TutorialCatalog& catalog, QWidget* parent
     connect(next_, &QPushButton::clicked, this, &TutorialBrowser::nextLesson);
     connect(closeButton, &QPushButton::clicked, this, &QDialog::reject);
 
-    const QStringList stored = QSettings("SmallCpp", "SmallCppIDE").value(ReadKey).toStringList();
+    const QStringList stored = SmallSettings().value(ReadKey).toStringList();
     for (const QString& id : stored)
         if (const auto* lesson = catalog_.find(id); lesson && lesson->available)
             readLessons_.insert(id);
@@ -143,7 +144,7 @@ TutorialBrowser::TutorialBrowser(const TutorialCatalog& catalog, QWidget* parent
     connect(tree_, &QTreeWidget::currentItemChanged, this,
             [this](QTreeWidgetItem*, QTreeWidgetItem*) { showSelection(); });
     updateReadLabels();
-    const QString last = QSettings("SmallCpp", "SmallCppIDE").value(LastKey).toString();
+    const QString last = SmallSettings().value(LastKey).toString();
     if (!selectLesson(last))
     {
         const QStringList available = catalog_.availableIds();
@@ -158,7 +159,7 @@ TutorialBrowser::TutorialBrowser(const TutorialCatalog& catalog, QWidget* parent
 
 TutorialBrowser::~TutorialBrowser()
 {
-    QSettings("SmallCpp", "SmallCppIDE").setValue("tutorial/windowGeometry", saveGeometry());
+    SmallSettings().setValue("tutorial/windowGeometry", saveGeometry());
 }
 
 
@@ -277,7 +278,7 @@ void TutorialBrowser::showSelection()
             message->setObjectName("tutorialNotAvailable");
             layout->addWidget(message);
         }
-        QSettings("SmallCpp", "SmallCppIDE").setValue(LastKey, lesson->id);
+        SmallSettings().setValue(LastKey, lesson->id);
     }
     layout->addStretch();
     scroll_->setWidget(page);
@@ -421,7 +422,7 @@ void TutorialBrowser::nextLesson()
     readLessons_.insert(id);
     QStringList stored = readLessons_.values();
     stored.sort();
-    QSettings("SmallCpp", "SmallCppIDE").setValue(ReadKey, stored);
+    SmallSettings().setValue(ReadKey, stored);
     updateReadLabels();
     if (index + 1 < available.size()) selectLesson(available[index + 1]);
     else progress_->setText("This is the last lesson in this version. You can revisit earlier lessons at any time.");
