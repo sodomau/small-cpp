@@ -161,6 +161,7 @@ if(WIN32)
     target_sources(SmallCppIDE PRIVATE smallcpp.rc)
 endif()
 target_link_libraries(SmallCppIDE PRIVATE small_ide_components)
+target_compile_definitions(SmallCppIDE PRIVATE SMALL_IDE_VERSION="${PROJECT_VERSION}")
 set_target_properties(SmallCppIDE PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${SMALL_BIN}"
     WIN32_EXECUTABLE TRUE

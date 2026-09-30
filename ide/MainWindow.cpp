@@ -230,6 +230,21 @@ void MainWindow::createUi()
     connect(tutorialAction, &QAction::triggered, this, &MainWindow::browseTutorial);
     auto* examplesAction = learnMenu->addAction("Examples...");
     auto* settingsMenu = menuBar()->addMenu("&Settings");
+    auto* helpMenu = menuBar()->addMenu("&Help");
+    auto* aboutAction = helpMenu->addAction("About Small C++...");
+    aboutAction->setObjectName("actionAbout");
+    aboutAction->setMenuRole(QAction::AboutRole);
+    connect(aboutAction, &QAction::triggered, this, [this] {
+        QMessageBox::about(this, "About Small C++",
+            QString("<h2>Small C++ %1</h2>"
+                    "<p>Start small. Grow as far as you want.</p>"
+                    "<p>A native environment for learning real C++.</p>"
+                    "<p>Copyright &copy; 2026 Sunghyun Cho<br>"
+                    "Small C++ is licensed under the MIT License.<br>"
+                    "Qt and bundled tools retain their own licenses.</p>"
+                    "<p><a href=\"https://github.com/sodomau/small-cpp\">Project on GitHub</a></p>")
+                .arg(QCoreApplication::applicationVersion().toHtmlEscaped()));
+    });
     examplesAction->setObjectName("actionExamples");
     examplesAction->setToolTip("Browse built-in reference examples and small programs.");
     connect(examplesAction, &QAction::triggered, this, &MainWindow::browseExamples);
