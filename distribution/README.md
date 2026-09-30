@@ -5,7 +5,8 @@ C++.
 
 ## Start
 
-Run `SmallCppIDE.exe`, then open **Learn → Tutorial...**. The included core tutorial contains 88 Korean lessons. Settings lists the
+Run `SmallCppIDE.exe`, then open **Learn → Tutorial...**. The included core tutorial contains 88 lessons in Korean and English. Choose **Settings → Tutorial Language
+→ English** to switch languages. Settings lists the
 languages supplied by the installed content pack.
 
 ## Documentation
@@ -16,6 +17,7 @@ See the `docs` folder:
 -   `SMALL_CPP_GUIDE.md`
 -   `API.md`
 -   `DESIGN.md`
+-   `TUTORIAL_ENGLISH.md`
 
 No separate compiler or Qt installation is required for the portable
 package.

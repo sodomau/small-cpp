@@ -17,7 +17,7 @@ library, extensions, tutorial content, Qt import libraries, and Qt
 runtime DLLs/plugins.
 
 Current builds also include `small_ide_pause.o`, linked directly by IDE Run/Debug,
-and four public guides under `docs/` plus the distribution README.
+and public guides plus the English lesson index under `docs/`, with the distribution README.
 See `DEVELOPMENT.md` for this machine's build and test commands.
 When updating an existing output, replace the old tutorial directory completely
 before copying the 88-lesson pack; copying on top can retain obsolete lessons.
