@@ -7,7 +7,7 @@
 
 A native desktop environment for learning real C++, one small step at a time.
 
-[Getting started](docs/GETTING_STARTED.md) · [88 bilingual lessons](docs/TUTORIAL_ENGLISH.md) · [Build from source](docs/DEVELOPMENT.md) · [MIT license](LICENSE)
+[Project website](https://sodomau.github.io/small-cpp/) · [Getting started](docs/GETTING_STARTED.md) · [88 bilingual lessons](docs/TUTORIAL_ENGLISH.md) · [Build from source](docs/DEVELOPMENT.md) · [MIT license](LICENSE)
 
 </div>
 

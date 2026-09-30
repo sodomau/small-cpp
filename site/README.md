@@ -1,7 +1,7 @@
 # Small C++ project page
 
-A responsive, English/Korean introduction to the native desktop IDE. This is
-a local preview, not a published website. It uses the existing logo and real
+A responsive, English/Korean introduction to the native desktop IDE, published
+at https://sodomau.github.io/small-cpp/. It uses the existing logo and real
 IDE screenshots; the IDE itself remains a native Qt application.
 
 From the repository root, run:
@@ -22,3 +22,7 @@ Generated pages remain in `build/`; the original lesson content is unchanged.
 The preview server serves only the generated site directory. The download button
 points to the existing v0.76.9 preview and does not imply the English pack is
 included in that binary. No external fonts, scripts, or analytics are loaded.
+
+The Pages workflow builds and publishes only `build/project-page` when the site,
+lessons, artwork, or build script changes on `main`. Repository Settings → Pages
+must use GitHub Actions as its source. Local preview remains available as above.
