@@ -19,6 +19,16 @@ Small C++은 실제 C++을 작은 단계로 배우는 네이티브 교육 환경
 설정의 복잡함은 줄이고, 배운 내용을 일반 C++로 이어갈 수 있도록 설계했습니다.
 현재 핵심 튜토리얼은 **한국어 88개 레슨**으로 구성되어 있습니다.
 
+## IDE preview
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/ide-dark.png" />
+  <img src="docs/images/ide-light.png" alt="Small C++ IDE showing a window-drawing program, Run and Debug controls, and the Diagnostics panel" width="1200" />
+</picture>
+
+The native Qt IDE in [Light](docs/images/ide-light.png) and
+[Dark](docs/images/ide-dark.png). The preview follows your preferred color scheme.
+
 ## Your first program
 
 ```cpp
