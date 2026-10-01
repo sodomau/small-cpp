@@ -418,19 +418,6 @@ void BuildController::package()
     QString error;
     if (!planPackage(&error)) { fail(error); return; }
     packageFiles_.prepend({executablePath_, publishExecutableName_});
-    if (projectActive_) {
-        for (const auto& source : project_.sources + project_.headers)
-            packageFiles_.append({project_.absolute(source), "source/" + source});
-        if (QFileInfo(project_.absolute("small.project")).isFile())
-            packageFiles_.append({project_.absolute("small.project"), "source/small.project"});
-        for (int i = 0; i < projectObjects_.size(); ++i)
-            packageFiles_.append({projectObjects_[i], QString("relink/program%1.o").arg(i)});
-        for (int i = 0; i < projectLibraries_.size(); ++i)
-            packageFiles_.append({projectLibraries_[i], QString("relink/external/%1/").arg(i) + QFileInfo(projectLibraries_[i]).fileName()});
-    } else {
-        packageFiles_.append({sourcePath_, "source/program.cpp"});
-        packageFiles_.append({objectPath_, "relink/program.o"});
-    }
     packageDirectory_ = std::make_unique<QTemporaryDir>(
         QFileInfo(publishDestination_).absolutePath() + "/.SmallCpp-publish-XXXXXX");
     if (!packageDirectory_->isValid()) { fail("Cannot create the publish folder."); return; }
@@ -454,38 +441,15 @@ void BuildController::copyPackageFile()
         QSaveFile file(packageDirectory_->filePath(name));
         return file.open(QIODevice::WriteOnly) && file.write(contents) == contents.size() && file.commit();
     };
-    QByteArray relink = "@echo off\r\ncd /d \"%~dp0\"\r\ng++";
-    if (projectActive_) {
-        for (int i = 0; i < projectObjects_.size(); ++i) relink += QString(" \"program%1.o\"").arg(i).toUtf8();
-    } else relink += " \"program.o\"";
-    auto library = [&relink](const QString& path) {
-        relink += " \"" + QDir::toNativeSeparators(path).toUtf8() + "\"";
-    };
-    if (!usesOwnMain_) library("runtime/" + QFileInfo(entryPath_).fileName());
-    for (const auto& extension : std::as_const(extensions_))
-        library("extensions/" + extension.id + "/" + QFileInfo(extension.libraryPath).fileName());
-    library("runtime/" + QFileInfo(runtimePath_).fileName());
-    if (projectActive_) {
-        for (int i = 0; i < projectLibraries_.size(); ++i)
-            library(QString("external/%1/").arg(i) + QFileInfo(projectLibraries_[i]).fileName());
-        for (const auto& option : project_.linkerOptions) {
-            if (option.contains(QRegularExpression("[\\r\\n\"%!&|<>^]"))) { fail("Cannot make a portable relink script for option: " + option); return; }
-            library(option);
-        }
-    }
-    for (const char* qt : SmallBuildConfig::QtLibraries)
-        library("qt/lib/" + QFileInfo(QString::fromUtf8(qt)).fileName());
-    relink += " -o \"../" + publishExecutableName_.toUtf8() + "\"\r\nexit /b %errorlevel%\r\n";
-    if (!write(".smallcpp-package", "Small C++ published program\n") || !write("relink/RELINK.cmd", relink) ||
+    if (!write(".smallcpp-package", "Small C++ published program\n") ||
         !write("README.txt", QByteArray("Run ") + publishExecutableName_.toUtf8() + ".\r\n"
                "Share this entire folder; the DLLs and plugins are required.\r\n"
                "Resource paths are relative to this folder; keep subfolders intact.\r\n"
                "Small C++ is not required to run this program. Windows x64 only.\r\n\r\n"
-               "The author controls the license of their program in source/.\r\n"
+               "The author controls the license of their program.\r\n"
                "LICENSE covers Small-owned components, not the author's program.\r\n"
                "See licenses/ for external licenses and matching source access.\r\n"
-               "Qt DLLs can be replaced by compatible builds. relink/ contains object and library\r\n"
-               "files for relinking with the matching MinGW toolchain (RELINK.cmd).\r\n")) {
+               "Qt DLLs can be replaced by compatible builds.\r\n")) {
         fail("Cannot write the package instructions."); return;
     }
     const QString temporary = packageDirectory_->path();

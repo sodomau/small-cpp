@@ -38,7 +38,7 @@ paths such as `data/message.txt` or `images/player.png` in your program.
 
 Publish selects included images, sounds and other data automatically. You can
 remove individual files from that export in the dialog. Subfolder paths are
-preserved, and all included sources and headers are copied under `source/`.
+preserved. Student source files, headers and relinking materials are not exported.
 Share the entire exported folder. See [Publish](PUBLISH.md) for runtime files
 and licenses. Export folders marked by Small C++ are excluded from later builds.
 
@@ -70,7 +70,6 @@ they are not wildcard patterns. A library can be a name resolved in
 project between computers. Output filenames and compile-only options remain
 controlled by the IDE.
 
-Publish includes resolved external library archives for relinking. Recompiling
-from source may still require the original external headers, libraries and
-compiler setup. Package licenses cover the bundled Small C++ and Qt components;
+Publish does not add resolved external library archives or a compiler setup.
+Package licenses cover the bundled Small C++ and Qt components;
 check the requirements of any additional library you choose.

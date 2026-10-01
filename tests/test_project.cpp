@@ -264,7 +264,7 @@ private slots:
         QTRY_VERIFY_WITH_TIMEOUT(!failed.isEmpty(), 30000);
         QCOMPARE(failed.first().at(2).toString(), directory.filePath("logic/value.cpp"));
     }
-    void publishNestedResourcesAndRelink()
+    void publishNestedResourcesWithoutBuildFiles()
     {
         if (!QFileInfo::exists(QCoreApplication::applicationDirPath() + "/licenses/SOURCE_ACCESS.md"))
             QSKIP("Prepare the matching Windows portable runtime and notices for Publish tests.");
@@ -275,14 +275,12 @@ private slots:
         build.startProject(load(directory.filePath("MyGame")), false, destination);
         QTRY_VERIFY_WITH_TIMEOUT(!published.isEmpty() || !failed.isEmpty(), 30000);
         QVERIFY2(failed.isEmpty(), qPrintable(failed.isEmpty() ? QString() : failed.first().first().toString()));
-        QVERIFY(QFileInfo::exists(destination + "/source/logic/value.h"));
+        QVERIFY(!QFileInfo::exists(destination + "/source"));
+        QVERIFY(!QFileInfo::exists(destination + "/relink"));
         QVERIFY(QFileInfo::exists(destination + "/data/message.txt"));
         QVERIFY(QFileInfo::exists(destination + "/.smallcpp-package"));
         QCOMPARE(load(directory.filePath("MyGame")).sources.size(), 2);
-        QProcess relink; auto env=QProcessEnvironment::systemEnvironment(); env.insert("PATH", QFileInfo(QString::fromUtf8(SmallBuildConfig::Compiler)).absolutePath()+";"+env.value("PATH"));
-        relink.setProcessEnvironment(env); relink.setWorkingDirectory(destination); relink.start("C:/Windows/System32/cmd.exe", {"/c", destination + "/relink/RELINK.cmd"});
-        QVERIFY(relink.waitForFinished(15000)); QCOMPARE(relink.exitCode(), 0);
-        QProcess program; env=QProcessEnvironment::systemEnvironment(); env.insert("PATH", "C:/Windows/System32"); env.remove("QT_PLUGIN_PATH"); env.remove("QT_QPA_PLATFORM_PLUGIN_PATH"); env.remove("SMALL_TEST_NO_CONSOLE_PAUSE");
+        QProcess program; auto env=QProcessEnvironment::systemEnvironment(); env.insert("PATH", "C:/Windows/System32"); env.remove("QT_PLUGIN_PATH"); env.remove("QT_QPA_PLATFORM_PLUGIN_PATH"); env.remove("SMALL_TEST_NO_CONSOLE_PAUSE");
         program.setProcessEnvironment(env); program.setWorkingDirectory(destination); program.start(destination+"/MyGame.exe", {});
         QVERIFY(program.waitForFinished(15000)); QCOMPARE(program.exitCode(), 0);
         QCOMPARE(read(destination+"/result.txt").replace("\r\n", "\n").trimmed(), QByteArray("nested resource\n42"));
@@ -317,14 +315,21 @@ private slots:
         QVERIFY2(failed.isEmpty(), qPrintable(failed.isEmpty() ? QString() : failed.first().first().toString()));
         QCOMPARE(read(directory.filePath("project/result.txt")).trimmed(), QByteArray("60"));
         if (!QFileInfo::exists(QCoreApplication::applicationDirPath() + "/licenses/SOURCE_ACCESS.md"))
-            QSKIP("External library Run passed; prepare portable files to test Publish and relinking.");
+            QSKIP("External library Run passed; prepare portable files to test Publish.");
         QSignalSpy published(&build,&BuildController::published); build.startProject(project,false,directory.filePath("published"));
         QTRY_VERIFY_WITH_TIMEOUT(!published.isEmpty() || !failed.isEmpty(),30000);
         QVERIFY2(failed.isEmpty(),qPrintable(failed.isEmpty()?QString():failed.first().first().toString()));
-        QVERIFY(QFileInfo::exists(directory.filePath("published/relink/external/0/libanswer.a")));
-        QProcess relink; auto env=QProcessEnvironment::systemEnvironment();env.insert("PATH",QFileInfo(compiler).absolutePath()+";"+env.value("PATH"));relink.setProcessEnvironment(env);
-        relink.start("C:/Windows/System32/cmd.exe",{"/c",directory.filePath("published/relink/RELINK.cmd")});
-        QVERIFY(relink.waitForFinished(15000));QCOMPARE(relink.exitCode(),0);
+        QVERIFY(!QFileInfo::exists(directory.filePath("published/relink")));
+        QVERIFY(!QFileInfo::exists(directory.filePath("published/source")));
+        QProcess program;
+        auto env = QProcessEnvironment::systemEnvironment();
+        env.insert("PATH", "C:/Windows/System32");
+        env.remove("QT_PLUGIN_PATH"); env.remove("QT_QPA_PLATFORM_PLUGIN_PATH");
+        env.remove("SMALL_TEST_NO_CONSOLE_PAUSE");
+        program.setProcessEnvironment(env); program.setWorkingDirectory(directory.filePath("published"));
+        program.start(directory.filePath("published/project.exe"), {});
+        QVERIFY(program.waitForFinished(15000)); QCOMPARE(program.exitCode(), 0);
+        QCOMPARE(read(directory.filePath("published/result.txt")).trimmed(), QByteArray("60"));
     }
     void projectPreview()
     {

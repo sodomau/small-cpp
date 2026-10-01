@@ -24,13 +24,11 @@ finish; run from an existing terminal when you need to read their output.
 Resource paths are relative to the program's working directory, normally the
 export folder when opened from File Explorer.
 
-The package includes your current source in `source/program.cpp`, your compiled
-object, Small libraries and Qt import libraries in `relink/`, and the matching
-runtime license notices and source-access information in `licenses/`. Your code
-is shared with the recipient. You decide your own program's license; the Small
-MIT license does not automatically license your program. `relink/RELINK.cmd`
-can relink the program using the matching MinGW compiler, without IDE pause
-support. Compatible Qt DLLs can be replaced beside the executable.
+The package includes the executable, runtime DLLs/plugins, selected resources,
+and matching license notices and library source-access information in `licenses/`.
+Student source files, object files and relinking libraries are not added.
+You decide your program's license; the Small MIT license does not automatically
+license your program. Compatible Qt DLLs can be replaced beside the executable.
 
 Publish requires a prepared **Windows portable installation** with the matching
 DLLs, plugins, import libraries and license notices. An incomplete development
@@ -47,7 +45,7 @@ need a writable location.
 
 ## Development validation
 
-Prepare the DLL/plugin deployment, `qt/lib`, `LICENSE` and `licenses/` beside
+Prepare the DLL/plugin deployment, `LICENSE` and `licenses/` beside
 `small_qt_test.exe` using the matching portable package, then run `small_qt`.
 Publish integration tests execute SmallMain, ordinary main and Image/window
 programs with only Windows System32 on PATH and no Qt plugin overrides. They

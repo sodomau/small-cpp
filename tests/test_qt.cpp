@@ -471,25 +471,13 @@ private slots:
         QVERIFY(started.isEmpty());
         QVERIFY(!build.isBusy());
         QVERIFY(QFileInfo::exists(target + "/data.txt"));
-        QVERIFY(QFileInfo::exists(target + "/source/program.cpp"));
-        QVERIFY(QFileInfo::exists(target + "/relink/program.o"));
+        QVERIFY(!QFileInfo::exists(target + "/source"));
+        QVERIFY(!QFileInfo::exists(target + "/relink"));
         QVERIFY(QFileInfo::exists(target + "/licenses/SOURCE_ACCESS.md"));
         QVERIFY(!QFileInfo::exists(target + "/compiler"));
         QVERIFY(!QFileInfo::exists(target + "/SmallCppIDE.exe"));
         QVERIFY(QFileInfo::exists(target + "/My_Game.exe"));
         QVERIFY(!QFileInfo::exists(target + "/START.cmd"));
-        QProcess relink;
-        relink.setProcessChannelMode(QProcess::MergedChannels);
-        auto relinkEnv = QProcessEnvironment::systemEnvironment();
-        relinkEnv.insert("PATH", QFileInfo(QString::fromUtf8(SmallBuildConfig::Compiler)).absolutePath()
-                         + QDir::listSeparator() + relinkEnv.value("PATH"));
-        relink.setProcessEnvironment(relinkEnv);
-        relink.setWorkingDirectory(target + "/relink");
-        relink.start(qEnvironmentVariable("SystemRoot") + "/System32/cmd.exe",
-                     {"/d", "/c", "RELINK.cmd"});
-        QVERIFY(relink.waitForFinished(15000));
-        QCOMPARE(relink.exitStatus(), QProcess::NormalExit);
-        QVERIFY2(relink.exitCode() == 0, relink.readAllStandardOutput().constData());
         QProcess program;
         auto env = QProcessEnvironment::systemEnvironment();
         env.insert("PATH", env.value("SystemRoot") + "/System32");
