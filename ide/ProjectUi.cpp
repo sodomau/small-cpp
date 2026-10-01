@@ -22,10 +22,42 @@
 #include <QTabWidget>
 #include <QTextDocument>
 #include <QTimer>
+#include <QToolButton>
 #include <QTreeWidget>
 #include <QTreeWidgetItemIterator>
 #include <QVBoxLayout>
 #include <QDir>
+#include <QApplication>
+#include <QPainter>
+#include <QStyledItemDelegate>
+
+namespace {
+class ProjectFileDelegate : public QStyledItemDelegate
+{
+public:
+    using QStyledItemDelegate::QStyledItemDelegate;
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override
+    {
+        if (!index.data(Qt::UserRole + 1).toBool()) {
+            QStyledItemDelegate::paint(painter, option, index);
+            return;
+        }
+        // Keep excluded text gray even when the theme sets selected text white.
+        QStyleOptionViewItem view(option);
+        initStyleOption(&view, index);
+        auto* style = view.widget ? view.widget->style() : QApplication::style();
+        const QRect textRect = style->subElementRect(QStyle::SE_ItemViewItemText, &view, view.widget);
+        const QString text = view.fontMetrics.elidedText(view.text, view.textElideMode, textRect.width());
+        view.text.clear();
+        painter->save();
+        style->drawControl(QStyle::CE_ItemViewItem, &view, painter, view.widget);
+        painter->setFont(view.font);
+        painter->setPen(index.data(Qt::ForegroundRole).value<QBrush>().color());
+        painter->drawText(textRect, view.displayAlignment, text);
+        painter->restore();
+    }
+};
+}
 
 void MainWindow::createProjectUi()
 {
@@ -60,6 +92,7 @@ void MainWindow::createProjectUi()
     projectTree_ = new QTreeWidget;
     projectTree_->setObjectName("projectFiles");
     projectTree_->setHeaderHidden(true);
+    projectTree_->setItemDelegate(new ProjectFileDelegate(projectTree_));
     projectTree_->setMinimumWidth(220);
     projectTree_->setStyleSheet("QTreeWidget { font-size: 12pt; } QTreeWidget::item { min-height: 30px; padding: 4px; }");
     projectTree_->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -192,6 +225,7 @@ void MainWindow::refreshProject()
                     auto* item = parent ? new QTreeWidgetItem(parent) : new QTreeWidgetItem(projectTree_);
                     item->setText(0, segment + (project_.excludes(path) ? " (Excluded)" : ""));
                     item->setData(0, Qt::UserRole, path);
+                    item->setData(0, Qt::UserRole + 1, project_.excludes(path));
                     item->setToolTip(0, project_.absolute(path) + (project_.excludes(path) ? "\nExcluded; the file is still on disk." : ""));
                     item->setExpanded(expanded.contains(path));
                     items.insert(path, item);
@@ -226,6 +260,13 @@ void MainWindow::openProjectDialog()
     dialog.setViewMode(QFileDialog::Detail);
     dialog.setLabelText(QFileDialog::Accept, "Open Project");
     dialog.setLabelText(QFileDialog::FileName, "Project folder:");
+    // QFileDialog fixes its navigation buttons to icon size. The IDE's generous
+    // general button padding otherwise consumes their entire icon area.
+    dialog.setStyleSheet("QToolButton { padding: 4px; }");
+    for (auto* button : dialog.findChildren<QToolButton*>()) {
+        button->setFixedSize(36, 36);
+        button->setIconSize(QSize(20, 20));
+    }
     dialog.resize(850, 560);
     if (dialog.exec() == QDialog::Accepted && !dialog.selectedFiles().isEmpty())
         openProject(dialog.selectedFiles().first());

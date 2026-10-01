@@ -26,6 +26,7 @@
 #include <QTest>
 #include <QTextDocument>
 #include <QTimer>
+#include <QToolButton>
 #include <QTreeWidget>
 
 class ProjectTests : public QObject
@@ -57,6 +58,8 @@ class ProjectTests : public QObject
 private slots:
     void initTestCase()
     {
+        QFontDatabase::addApplicationFont(qEnvironmentVariable("SystemRoot") + "/Fonts/segoeui.ttf");
+        QFontDatabase::addApplicationFont(qEnvironmentVariable("SystemRoot") + "/Fonts/segoeuib.ttf");
         QVERIFY(settings_.isValid());
         QSettings::setDefaultFormat(QSettings::IniFormat);
         QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, settings_.path());
@@ -118,18 +121,26 @@ private slots:
         QTemporaryDir directory; fixture(directory.filePath("MyGame"));
         MainWindow window;
         QCOMPARE(action(window, "actionOpenProject")->text(), QString("Open Project (Folder)..."));
-        bool foldersOnly = false, filesShown = false;
+        action(window, "actionThemeDark")->trigger();
+        bool foldersOnly = false, filesShown = false, iconsHaveSpace = false;
         QTimer::singleShot(100, &window, [&] {
             auto* dialog = window.findChild<QFileDialog*>("openProjectFolderDialog");
             if (!dialog) return;
             foldersOnly = dialog->fileMode() == QFileDialog::Directory;
             auto* model = dialog->findChild<QFileSystemModel*>();
             filesShown = !dialog->testOption(QFileDialog::ShowDirsOnly) && model && (model->filter() & QDir::Files);
+            iconsHaveSpace = true;
+            for (auto* button : dialog->findChildren<QToolButton*>())
+                iconsHaveSpace &= !button->icon().isNull() && button->width() >= button->iconSize().width() + 10;
             dialog->setDirectory(directory.filePath("MyGame"));
-            QTimer::singleShot(100, dialog, [dialog] { QMetaObject::invokeMethod(dialog, "accept", Qt::DirectConnection); });
+            QTimer::singleShot(200, dialog, [dialog] {
+                const QString output = qEnvironmentVariable("SMALL_PROJECT_PREVIEW_DIR");
+                if (!output.isEmpty()) dialog->grab().save(QDir(output).filePath("project-picker.png"));
+                QMetaObject::invokeMethod(dialog, "accept", Qt::DirectConnection);
+            });
         });
         action(window, "actionOpenProject")->trigger();
-        QVERIFY(foldersOnly); QVERIFY(filesShown);
+        QVERIFY(foldersOnly); QVERIFY(filesShown); QVERIFY(iconsHaveSpace);
         QCOMPARE(window.projectRoot(), QFileInfo(directory.filePath("MyGame")).canonicalFilePath());
     }
     void excludedFilesLookDifferentInBothThemes()
@@ -262,7 +273,10 @@ private slots:
             window.findChild<QAction*>(dark ? "actionThemeDark" : "actionThemeLight")->trigger();
             QVERIFY(window.openProject(directory.filePath("MyGame")));
             QVERIFY(window.openDocument(directory.filePath("MyGame/logic/value.cpp"))); QVERIFY(window.openDocument(directory.filePath("outside.cpp")));
-            window.findChild<QTreeWidget*>("projectFiles")->expandAll(); window.resize(1200,800); window.show(); QTest::qWait(50);
+              window.findChild<QTreeWidget*>("projectFiles")->expandAll(); window.resize(1200,800); window.show(); QTest::qWait(50);
+              auto* tree = window.findChild<QTreeWidget*>("projectFiles");
+              tree->setCurrentItem(tree->findItems("practice.cpp (Excluded)", Qt::MatchExactly).first());
+              tree->setFocus();
             QVERIFY(window.grab().save(QDir(output).filePath(dark?"project-dark.png":"project-light.png")));
         }
     }
