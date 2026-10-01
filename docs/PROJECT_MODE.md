@@ -2,6 +2,8 @@
 
 Choose **File → Open Project (Folder)…** to use a folder as a project, or **New Project…**
 to create one with a starter `main.cpp`. No project configuration is required.
+In the picker, enter the folder and choose **Open This Folder**. Files remain
+visible for reference; selecting a file does not prevent opening the current folder.
 
 The project name appears above the file tree, in the window title and in the
 status bar. **Run Project**, **Debug Project** and **Publish Project** always

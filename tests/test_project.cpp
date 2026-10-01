@@ -27,7 +27,9 @@
 #include <QTextDocument>
 #include <QTimer>
 #include <QToolButton>
+#include <QPushButton>
 #include <QTreeWidget>
+#include <QTreeView>
 
 class ProjectTests : public QObject
 {
@@ -122,7 +124,7 @@ private slots:
         MainWindow window;
         QCOMPARE(action(window, "actionOpenProject")->text(), QString("Open Project (Folder)..."));
         action(window, "actionThemeDark")->trigger();
-        bool foldersOnly = false, filesShown = false, iconsHaveSpace = false;
+        bool foldersOnly = false, filesShown = false, iconsHaveSpace = false, fileClickAllowsOpening = false, fileClicked = false;
         QTimer::singleShot(100, &window, [&] {
             auto* dialog = window.findChild<QFileDialog*>("openProjectFolderDialog");
             if (!dialog) return;
@@ -133,14 +135,23 @@ private slots:
             for (auto* button : dialog->findChildren<QToolButton*>())
                 iconsHaveSpace &= !button->icon().isNull() && button->width() >= button->iconSize().width() + 10;
             dialog->setDirectory(directory.filePath("MyGame"));
-            QTimer::singleShot(200, dialog, [dialog] {
+            QTimer::singleShot(200, dialog, [&, dialog] {
+                auto* view = dialog->findChild<QTreeView*>("treeView");
+                if (view) for (int row = 0; row < view->model()->rowCount(view->rootIndex()); ++row) {
+                    const auto index = view->model()->index(row, 0, view->rootIndex());
+                    if (index.data().toString() != "main.cpp") continue;
+                    QTest::mouseClick(view->viewport(), Qt::LeftButton, Qt::NoModifier, view->visualRect(index).center());
+                    fileClicked = view->selectionModel()->isSelected(index);
+                }
+                auto* open = dialog->findChild<QPushButton*>("openCurrentProjectFolder");
+                fileClickAllowsOpening = open && open->isEnabled();
                 const QString output = qEnvironmentVariable("SMALL_PROJECT_PREVIEW_DIR");
                 if (!output.isEmpty()) dialog->grab().save(QDir(output).filePath("project-picker.png"));
-                QMetaObject::invokeMethod(dialog, "accept", Qt::DirectConnection);
+                if (open) open->click(); else dialog->reject();
             });
         });
         action(window, "actionOpenProject")->trigger();
-        QVERIFY(foldersOnly); QVERIFY(filesShown); QVERIFY(iconsHaveSpace);
+        QVERIFY(foldersOnly); QVERIFY(filesShown); QVERIFY(iconsHaveSpace); QVERIFY(fileClicked); QVERIFY(fileClickAllowsOpening);
         QCOMPARE(window.projectRoot(), QFileInfo(directory.filePath("MyGame")).canonicalFilePath());
     }
     void excludedFilesLookDifferentInBothThemes()

@@ -30,6 +30,8 @@
 #include <QApplication>
 #include <QPainter>
 #include <QStyledItemDelegate>
+#include <QDialogButtonBox>
+#include <QPushButton>
 
 namespace {
 class ProjectFileDelegate : public QStyledItemDelegate
@@ -261,6 +263,20 @@ void MainWindow::openProjectDialog()
     dialog.setViewMode(QFileDialog::Detail);
     dialog.setLabelText(QFileDialog::Accept, "Open Project");
     dialog.setLabelText(QFileDialog::FileName, "Project folder:");
+    QString chosenFolder;
+    auto* buttons = dialog.findChild<QDialogButtonBox*>();
+    if (auto* original = buttons->button(QDialogButtonBox::Open)) {
+        original->setDefault(false);
+        original->setAutoDefault(false);
+        original->hide();
+    }
+    auto* openCurrent = buttons->addButton("Open This Folder", QDialogButtonBox::ActionRole);
+    openCurrent->setObjectName("openCurrentProjectFolder");
+    openCurrent->setDefault(true);
+    connect(openCurrent, &QPushButton::clicked, &dialog, [&] {
+        chosenFolder = dialog.directory().absolutePath();
+        static_cast<QDialog&>(dialog).done(QDialog::Accepted);
+    });
     // QFileDialog fixes its navigation buttons to icon size. The IDE's generous
     // general button padding otherwise consumes their entire icon area.
     dialog.setStyleSheet(QString("QToolButton { padding: 4px; } QAbstractItemView, QComboBox { background: %1; color: %2; }")
@@ -281,8 +297,13 @@ void MainWindow::openProjectDialog()
         button->setIcon(icon);
     }
     dialog.resize(850, 560);
-    if (dialog.exec() == QDialog::Accepted && !dialog.selectedFiles().isEmpty())
-        openProject(dialog.selectedFiles().first());
+    if (dialog.exec() == QDialog::Accepted) {
+        if (chosenFolder.isEmpty() && !dialog.selectedFiles().isEmpty()) {
+            const QString selected = dialog.selectedFiles().first();
+            chosenFolder = QFileInfo(selected).isDir() ? selected : dialog.directory().absolutePath();
+        }
+        if (!chosenFolder.isEmpty()) openProject(chosenFolder);
+    }
 }
 void MainWindow::newProject()
 {
