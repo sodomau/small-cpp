@@ -12,6 +12,9 @@
 #include "Theme.h"
 
 #include <QAction>
+#include <QAbstractButton>
+#include <QPainter>
+#include <QTabBar>
 #include <QActionGroup>
 #include <QCloseEvent>
 #include <QDir>
@@ -47,6 +50,39 @@
 
 namespace
 {
+class TabCloseButton : public QAbstractButton
+{
+public:
+    explicit TabCloseButton(QWidget* parent) : QAbstractButton(parent)
+    {
+        setFixedSize(24, 24);
+        setToolTip("Close Tab");
+        setAccessibleName("Close Tab");
+        setCursor(Qt::PointingHandCursor);
+    }
+protected:
+    void paintEvent(QPaintEvent*) override
+    {
+        QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setPen(QPen(QColor("#8993a3"), 1.8, Qt::SolidLine, Qt::RoundCap));
+        painter.drawLine(QPointF(8, 8), QPointF(16, 16));
+        painter.drawLine(QPointF(16, 8), QPointF(8, 16));
+    }
+};
+
+void addTabCloseButton(QTabWidget* tabs, QWidget* page)
+{
+    auto* button = new TabCloseButton(tabs->tabBar());
+    const int index = tabs->indexOf(page);
+    tabs->tabBar()->setTabButton(index, QTabBar::LeftSide, nullptr);
+    tabs->tabBar()->setTabButton(index, QTabBar::RightSide, button);
+    QObject::connect(button, &QAbstractButton::clicked, tabs, [tabs, page] {
+        const int currentIndex = tabs->indexOf(page);
+        if (currentIndex >= 0) emit tabs->tabCloseRequested(currentIndex);
+    });
+}
+
 const char* EmptyProgram = "void SmallMain()\n{\n    \n}\n";
 
 QString normalizedPath(const QString& path)
@@ -503,6 +539,7 @@ EditorDocument* MainWindow::addDocument(const QString& text, const QString& path
         debugBreakpoints_ = now;
     });
     tabs_->addTab(document, document->displayName());
+    addTabCloseButton(tabs_, document);
     updateTabTitle(document);
     tabs_->setCurrentWidget(document);
     document->setFocus();
@@ -775,6 +812,7 @@ void MainWindow::showWelcome()
     connect(tutorial, &QPushButton::clicked, this, &MainWindow::browseTutorial);
     updateWelcomeAppearance();
     tabs_->addTab(page, "Welcome");
+    addTabCloseButton(tabs_, page);
     tabs_->setCurrentWidget(page);
     updateTitle();
 }

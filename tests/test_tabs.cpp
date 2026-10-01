@@ -193,6 +193,28 @@ private slots:
         SmallSettings().clear();
     }
 
+    void activeTabCloseButtonWorksInBothThemes()
+    {
+        for (bool dark : {false, true}) {
+            MainWindow window;
+            action(window, dark ? "actionThemeDark" : "actionThemeLight")->trigger();
+            action(window, "actionNew")->trigger();
+            window.show(); QTest::qWait(50);
+            auto* documents = tabs(window);
+            QWidget* page = documents->currentWidget();
+            QPointer<QWidget> closed(page);
+            auto* button = qobject_cast<QAbstractButton*>(documents->tabBar()->tabButton(documents->currentIndex(), QTabBar::RightSide));
+            QVERIFY(button); QVERIFY(button->isVisible());
+            const QImage image = button->grab().toImage();
+            int glyphPixels = 0;
+            for (int y = 0; y < image.height(); ++y)
+                for (int x = 0; x < image.width(); ++x)
+                    if (image.pixelColor(x, y).rgb() == QColor("#8993a3").rgb()) ++glyphPixels;
+            QVERIFY(glyphPixels > 5);
+            QTest::mouseClick(button, Qt::LeftButton);
+            QTRY_VERIFY(closed.isNull());
+        }
+    }
     void externalStyleSheetReloadRestoreAndFailure()
     {
         QTemporaryDir directory;
