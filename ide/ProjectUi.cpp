@@ -32,6 +32,12 @@
 #include <QStyledItemDelegate>
 #include <QDialogButtonBox>
 #include <QPushButton>
+#include <QTabBar>
+#include <QDesktopServices>
+#include <QUrl>
+#ifdef Q_OS_WIN
+#include <shlobj.h>
+#endif
 
 namespace {
 class ProjectFileDelegate : public QStyledItemDelegate
@@ -95,6 +101,14 @@ void MainWindow::createProjectUi()
     projectHeading_->setObjectName("projectHeading");
     projectHeading_->setTextFormat(Qt::PlainText);
     projectHeading_->setWordWrap(true);
+    projectHeading_->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(projectHeading_, &QWidget::customContextMenuRequested, this, [this](const QPoint& position) {
+        QMenu menu(this);
+        auto* reveal = menu.addAction("Show Project in File Explorer");
+        reveal->setEnabled(QFileInfo(project_.root).isDir());
+        connect(reveal, &QAction::triggered, this, [this] { showInFileExplorer(project_.root); });
+        menu.exec(projectHeading_->mapToGlobal(position));
+    });
     projectHeading_->setStyleSheet("QLabel { font-size: 14pt; font-weight: bold; padding: 12px; }");
     projectDock_->setTitleBarWidget(projectHeading_);
     projectTree_ = new QTreeWidget;
@@ -116,20 +130,26 @@ void MainWindow::createProjectUi()
             QStringList{"txt", "json", "md", "csv", "qss"}.contains(QFileInfo(path).suffix().toLower()))) openDocument(path);
     });
     connect(projectTree_, &QTreeWidget::customContextMenuRequested, this, [this](const QPoint& position) {
-        if (build_->isBusy() || debug_->isBusy()) return;
         auto* item = projectTree_->itemAt(position);
         const QString relative = item ? item->data(0, Qt::UserRole).toString() : QString();
         const QFileInfo target(project_.absolute(relative));
         const QString directory = relative.isEmpty() ? project_.root
             : (target.isDir() ? target.absoluteFilePath() : target.absolutePath());
         QMenu menu(this);
-        menu.addAction("New Source File...", this, [this, directory] { newProjectFile("cpp", directory); });
-        menu.addAction("New Header File...", this, [this, directory] { newProjectFile("h", directory); });
-        menu.addAction("Add Existing Files...", this, &MainWindow::addProjectFiles);
+        const bool canEdit = !build_->isBusy() && !debug_->isBusy();
+        menu.addAction("New Source File...", this, [this, directory] { newProjectFile("cpp", directory); })->setEnabled(canEdit);
+        menu.addAction("New Header File...", this, [this, directory] { newProjectFile("h", directory); })->setEnabled(canEdit);
+        menu.addAction("Add Existing Files...", this, &MainWindow::addProjectFiles)->setEnabled(canEdit);
+        menu.addSeparator();
+        const QString path = relative.isEmpty() ? project_.root : target.absoluteFilePath();
+        auto* reveal = menu.addAction(relative.isEmpty() ? "Show Project in File Explorer" : "Show in File Explorer");
+        reveal->setEnabled(QFileInfo::exists(path));
+        connect(reveal, &QAction::triggered, this, [this, path] { showInFileExplorer(path); });
         if (!relative.isEmpty()) {
             menu.addSeparator();
             const bool excluded = project_.excludes(relative);
             auto* toggle = menu.addAction(excluded ? "Include in Project" : "Exclude from Project");
+            toggle->setEnabled(canEdit);
             // A child of an excluded folder is restored by including that folder.
             QString exclusion = relative;
             for (const auto& path : project_.excluded)
@@ -152,9 +172,44 @@ void MainWindow::createProjectUi()
         }
         menu.exec(projectTree_->viewport()->mapToGlobal(position));
     });
+    auto* tabBar = tabs_->tabBar();
+    tabBar->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(tabBar, &QWidget::customContextMenuRequested, this, [this, tabBar](const QPoint& position) {
+        const int index = tabBar->tabAt(position);
+        if (index < 0) return;
+        auto* document = documentAt(index);
+        if (!document) return; // The Welcome tab has no file location.
+        const QString path = document->filePath();
+        QMenu menu(this);
+        auto* reveal = menu.addAction("Show in File Explorer");
+        reveal->setEnabled(!path.isEmpty() && QFileInfo(path).isFile());
+        connect(reveal, &QAction::triggered, this, [this, path] { showInFileExplorer(path); });
+        menu.exec(tabBar->mapToGlobal(position));
+    });
     projectRefresh_ = new QTimer(this);
     projectRefresh_->setInterval(1500);
     connect(projectRefresh_, &QTimer::timeout, this, &MainWindow::refreshProject);
+}
+
+bool MainWindow::showInFileExplorer(const QString& path)
+{
+    const QFileInfo file(path);
+    if (!file.exists()) return false;
+    if (file.isDir()) return QDesktopServices::openUrl(QUrl::fromLocalFile(file.absoluteFilePath()));
+#ifdef Q_OS_WIN
+    // Select the exact Unicode path without command-line quoting or a shell.
+    const HRESULT initialized = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+    if (FAILED(initialized) && initialized != RPC_E_CHANGED_MODE) return false;
+    PIDLIST_ABSOLUTE item = nullptr;
+    const QString native = QDir::toNativeSeparators(file.absoluteFilePath());
+    HRESULT result = SHParseDisplayName(reinterpret_cast<LPCWSTR>(native.utf16()), nullptr, &item, 0, nullptr);
+    if (SUCCEEDED(result)) result = SHOpenFolderAndSelectItems(item, 0, nullptr, 0);
+    CoTaskMemFree(item);
+    if (SUCCEEDED(initialized)) CoUninitialize();
+    return SUCCEEDED(result);
+#else
+    return QDesktopServices::openUrl(QUrl::fromLocalFile(file.absolutePath()));
+#endif
 }
 
 bool MainWindow::openProject(const QString& folder)

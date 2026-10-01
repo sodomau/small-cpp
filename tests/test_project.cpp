@@ -24,6 +24,7 @@
 #include <QProcessEnvironment>
 #include <QSignalSpy>
 #include <QTabWidget>
+#include <QTabBar>
 #include <QTemporaryDir>
 #include <QTest>
 #include <QTextDocument>
@@ -32,6 +33,14 @@
 #include <QPushButton>
 #include <QTreeWidget>
 #include <QTreeView>
+
+class FileLocationWindow : public MainWindow
+{
+public:
+    QStringList locations;
+protected:
+    bool showInFileExplorer(const QString& path) override { locations << path; return true; }
+};
 
 class ProjectTests : public QObject
 {
@@ -226,6 +235,55 @@ private slots:
             QCOMPARE(load(directory.path()).excludes("logic/value.cpp"), exclude);
             QCOMPARE(tabs(window)->tabText(tabs(window)->currentIndex()).contains("[Excluded]"), exclude);
         }
+    }
+    void explorerMenusUseClickedLocationAndDisableUnsavedTabs()
+    {
+        QTemporaryDir directory; fixture(directory.filePath("My Project"));
+        const QString root = directory.filePath("My Project");
+        const QString outside = directory.filePath("outside file.cpp");
+        write(outside, "void SmallMain() {}\n");
+        FileLocationWindow window; QVERIFY(window.openProject(root));
+        window.show();
+        auto* tree = window.findChild<QTreeWidget*>("projectFiles"); tree->expandAll();
+        auto invoke = [&](QWidget* target, const QPoint& position, const QString& label, bool enabled) {
+            bool found = false;
+            QTimer::singleShot(0, &window, [&] {
+                auto* menu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+                if (!menu) return;
+                for (auto* entry : menu->actions()) {
+                    if (entry->text() != label) continue;
+                    found = true; QCOMPARE(entry->isEnabled(), enabled);
+                    if (enabled) entry->trigger();
+                    break;
+                }
+                menu->close();
+            });
+            QMetaObject::invokeMethod(target, "customContextMenuRequested", Qt::DirectConnection, Q_ARG(QPoint, position));
+            QVERIFY(found);
+        };
+        invoke(window.findChild<QLabel*>("projectHeading"), QPoint(10,10), "Show Project in File Explorer", true);
+        QCOMPARE(window.locations.takeLast(), root);
+        invoke(tree, QPoint(tree->viewport()->width()/2, tree->viewport()->height()-5), "Show Project in File Explorer", true);
+        QCOMPARE(window.locations.takeLast(), root);
+        const auto files = tree->findItems("value.cpp", Qt::MatchExactly | Qt::MatchRecursive);
+        QCOMPARE(files.size(), 1);
+        invoke(tree, tree->visualItemRect(files.first()).center(), "Show in File Explorer", true);
+        QCOMPARE(window.locations.takeLast(), QDir(root).filePath("logic/value.cpp"));
+        const auto folders = tree->findItems("logic", Qt::MatchExactly | Qt::MatchRecursive);
+        QCOMPARE(folders.size(), 1);
+        invoke(tree, tree->visualItemRect(folders.first()).center(), "Show in File Explorer", true);
+        QCOMPARE(window.locations.takeLast(), QDir(root).filePath("logic"));
+        QVERIFY(window.openDocument(outside));
+        auto* tabBar = tabs(window)->tabBar();
+        const int outsideIndex = tabs(window)->currentIndex();
+        QVERIFY(window.openDocument(QDir(root).filePath("logic/value.cpp")));
+        invoke(tabBar, tabBar->tabRect(outsideIndex).center(), "Show in File Explorer", true);
+        QCOMPARE(window.locations.takeLast(), outside);
+        QCOMPARE(qobject_cast<EditorDocument*>(tabs(window)->currentWidget())->filePath(), QDir(root).filePath("logic/value.cpp"));
+        QVERIFY(window.closeProject());
+        action(window, "actionNew")->trigger();
+        invoke(tabBar, tabBar->tabRect(tabs(window)->currentIndex()).center(), "Show in File Explorer", false);
+        QVERIFY(window.locations.isEmpty());
     }
     void newFilesUseContextFolder_data()
     {

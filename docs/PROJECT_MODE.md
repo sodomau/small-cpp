@@ -28,6 +28,14 @@ destination folder. Right-click a folder to create inside it, or a file to creat
 beside it. A blank area or the main **New** button creates in the project root.
 An omitted extension is added automatically. Existing files are not overwritten.
 
+Right-click the project heading or a blank area in its file list and choose
+**Show Project in File Explorer** to open the project folder. Right-click a file
+in the list or its tab and choose **Show in File Explorer** to reveal that file
+selected on Windows. A folder row opens that folder. Unsaved tabs have this
+action disabled; the Welcome tab has no file menu. Files outside the project
+can also be revealed from their tabs. These actions do not change the active tab
+or save an edited file.
+
 The bilingual **Small Steps VIII — Build with Several Files** tutorial introduces
 projects using files in one folder. Its complete multi-file examples are in
 `examples/projects/Greeting` and `examples/projects/ScoreCard`. Open a copy of

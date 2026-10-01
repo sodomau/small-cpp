@@ -26,7 +26,7 @@ Publish는 원본 `.cpp`와 `.h`, `small.project`를 자동으로 넣지 않습�
 
 ## 함께 편집할 프로젝트 보내기
 
-코드를 함께 고치려면 저장한 **원래 프로젝트 폴더 전체**를 ZIP으로 보내세요. `.cpp`, `.h`, 필요한 자료와 `small.project`가 있다면 함께 넣습니다. 친구는 압축을 풀고 Small C++에서 **Open Project (Folder)… → Open This Folder**로 엽니다. 내 컴퓨터의 절대 경로는 프로그램에 넣지 않는 것이 좋습니다.
+코드를 함께 고치려면 저장한 **원래 프로젝트 폴더 전체**를 ZIP으로 보내세요. 프로젝트 이름을 우클릭하고 **Show Project in File Explorer**를 선택하면 그 폴더를 찾을 수 있습니다. `.cpp`, `.h`, 필요한 자료와 `small.project`가 있다면 함께 넣습니다. 친구는 압축을 풀고 Small C++에서 **Open Project (Folder)… → Open This Folder**로 엽니다. 내 컴퓨터의 절대 경로는 프로그램에 넣지 않는 것이 좋습니다.
 
 폴더 이름이 프로젝트 이름입니다. 복사본을 만들고 다른 이름으로 바꿔도 사용할 수 있습니다.
 

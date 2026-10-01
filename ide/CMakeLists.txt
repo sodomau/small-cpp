@@ -142,6 +142,9 @@ set(SMALL_IDE_SOURCES
 add_library(small_ide_components STATIC ${SMALL_IDE_SOURCES})
 set_target_properties(small_ide_components PROPERTIES AUTORCC ON)
 target_link_libraries(small_ide_components PUBLIC Qt6::Widgets)
+if(WIN32)
+    target_link_libraries(small_ide_components PRIVATE shell32 ole32)
+endif()
 target_include_directories(small_ide_components PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}"
     "${CMAKE_CURRENT_BINARY_DIR}/generated/$<CONFIG>"

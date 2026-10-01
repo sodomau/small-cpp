@@ -28,6 +28,10 @@ A tab is the file you are reading or editing. Run Project uses all included `.cp
 
 **File → Close Project** closes the project without deleting its files.
 
+## Find the actual folder
+
+Right-click the project name or a blank area in its file list and choose **Show Project in File Explorer**. This opens the project folder. Right-click a file or its tab and choose **Show in File Explorer** to see that file selected. This action is unavailable for files you have not saved yet.
+
 ## Exercise — Check it yourself
 
 Change the message and save. Close the project, reopen the same folder, and run it.

@@ -26,7 +26,7 @@ Publish does not automatically include the original `.cpp`, `.h`, or `small.proj
 
 ## Send a project to edit together
 
-Save and ZIP the **original project folder** when you want help editing the code. Include the `.cpp`, `.h`, required resources, and `small.project` if it exists. Your friend extracts it and uses **Open Project (Folder)… → Open This Folder** in Small C++. Avoid absolute paths tied to your own computer in the program.
+Save and ZIP the **original project folder** when you want help editing the code. Right-click the project name and choose **Show Project in File Explorer** to find that folder. Include the `.cpp`, `.h`, required resources, and `small.project` if it exists. Your friend extracts it and uses **Open Project (Folder)… → Open This Folder** in Small C++. Avoid absolute paths tied to your own computer in the program.
 
 The folder name is the project name. A copy with a different folder name works too.
 

@@ -44,6 +44,7 @@ public:
 
 protected:
     void closeEvent(QCloseEvent* event) override;
+    virtual bool showInFileExplorer(const QString& path);
 
 private:
     QTabWidget* tabs_ = nullptr;
