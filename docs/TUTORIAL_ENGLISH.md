@@ -1,6 +1,6 @@
 # English tutorial
 
-All 88 core lessons and three Image extension lessons have English text,
+All 97 core lessons and three Image extension lessons have English text,
 including explanations, exercise prompts and hints. Examples, starters and
 solutions are shared with Korean so both editions run the same programs.
 
@@ -97,6 +97,22 @@ content pack. Korean remains the default, and the preference is saved.
 - [86. Cleaning up the window before the runtime](../tutorial/86_smallmain_2/en.md)
 - [87. Greeting without Small](../tutorial/87_beyond_1/en.md)
 - [88. Using the same procedures in standard C++](../tutorial/88_beyond_2/en.md)
+
+
+## Small Steps VII — Share Your Program
+
+- [Publish Your Program](../tutorial/89_publish/en.md)
+- [Include Extra Files](../tutorial/90_extra_files/en.md)
+- [Share with Friends](../tutorial/91_share/en.md)
+
+## Small Steps VIII — Build with Several Files
+
+- [A Folder Is a Project](../tutorial/92_project_folder/en.md)
+- [Split a Program into Two Files](../tutorial/93_split_files/en.md)
+- [Give Functions a Header](../tutorial/94_project_headers/en.md)
+- [Give Each File a Job](../tutorial/95_project_roles/en.md)
+- [Set a File Aside](../tutorial/96_project_exclude/en.md)
+- [Share a Project or Its Program](../tutorial/97_project_share/en.md)
 
 ## Image extension
 

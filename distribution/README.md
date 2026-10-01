@@ -5,7 +5,7 @@ C++.
 
 ## Start
 
-Run `SmallCppIDE.exe`, then open **Learn → Tutorial...**. The included core tutorial contains 88 lessons in Korean and English. Choose **Settings → Tutorial Language
+Run `SmallCppIDE.exe`, then open **Learn → Tutorial...**. The included core tutorial contains 97 lessons in Korean and English. Choose **Settings → Tutorial Language
 → English** to switch languages. Settings lists the
 languages supplied by the installed content pack.
 

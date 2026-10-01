@@ -90,7 +90,7 @@ Copy-Item $extensions (Join-Path $OutputDir "extensions") -Recurse -Force
 Copy-Item $tutorial (Join-Path $OutputDir "tutorial") -Recurse -Force
 
 # Keep learner documentation explicit; do not ship internal validation reports.
-$publicDocs = @('GETTING_STARTED.md', 'SMALL_CPP_GUIDE.md', 'API.md', 'DESIGN.md', 'TUTORIAL_ENGLISH.md')
+$publicDocs = @('GETTING_STARTED.md', 'SMALL_CPP_GUIDE.md', 'API.md', 'DESIGN.md', 'TUTORIAL_ENGLISH.md', 'PROJECT_MODE.md', 'PUBLISH.md')
 $docsOut = Join-Path $OutputDir 'docs'
 New-Item -ItemType Directory -Path $docsOut | Out-Null
 foreach ($doc in $publicDocs) {
@@ -100,6 +100,8 @@ Copy-Item -LiteralPath (Join-Path $repoRoot 'distribution\README.md') -Destinati
 Copy-Item -LiteralPath (Join-Path $repoRoot 'LICENSE') -Destination $OutputDir
 Copy-Item -LiteralPath $NoticesDir -Destination (Join-Path $OutputDir 'licenses') -Recurse
 Copy-Item -LiteralPath (Join-Path $repoRoot 'docs\PORTABLE_START.md') -Destination (Join-Path $OutputDir 'START_HERE.md')
+New-Item -ItemType Directory -Path (Join-Path $OutputDir 'examples') | Out-Null
+Copy-Item -LiteralPath (Join-Path $repoRoot 'examples\projects') -Destination (Join-Path $OutputDir 'examples\projects') -Recurse
 
 # Deploy Qt runtime and plugins from both dependency roots.
 # SmallCppIDE does not itself use every Qt module used by learner programs.
