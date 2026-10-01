@@ -6,17 +6,23 @@ or a compiler. It is a local export; it does not upload your work to a website.
 1. Open your program and choose **File → Publish…**.
 2. Choose a **new folder** inside an existing parent folder. Existing folders
    are never overwritten.
-3. Add any images, sounds, headers or data files your program needs. Selected
-   files are copied beside `program.exe`; use their filenames in your code.
+3. Under **Extra Files — Optional**, choose **Add Files…** for any images,
+   sounds, headers or data your program needs. You can add files in several
+   batches and use **Remove** beside a file to leave it out. Selected
+   files are copied beside the executable; use their filenames in your code.
    Files with duplicate names or names used by the package are rejected.
 4. Press **Publish**. The IDE builds the current editor contents, including
-   unsaved changes, and opens the completed folder.
-5. Test **START.cmd**, then share the **entire folder**, for example by compressing
-   it into a ZIP. Sharing `program.exe` alone will not work.
+   unsaved changes. When **Your program is ready!** appears, choose **Open Folder**.
+5. Run the **exe**, then share the **entire folder**, for example by compressing
+   it into a ZIP. Sharing only the exe will not work.
 
-`START.cmd` sets the working directory to the package folder and keeps the console
-open after the program ends. `program.exe` itself has no IDE exit pause. This
-keeps it usable from another console or application.
+The executable follows your code's name: `MyGame.cpp` becomes `MyGame.exe`.
+Names use English letters, numbers, hyphens and underscores. Other characters
+are replaced with underscores; names with no usable characters become `Program.exe`.
+The executable has no IDE exit pause. Console programs may close as soon as they
+finish; run from an existing terminal when you need to read their output.
+Resource paths are relative to the program's working directory, normally the
+export folder when opened from File Explorer.
 
 The package includes your current source in `source/program.cpp`, your compiled
 object, Small libraries and Qt import libraries in `relink/`, and the matching

@@ -5,14 +5,27 @@
 #include <QSet>
 #include <QRegularExpression>
 
+QString ProgramPackage::executableName(const QString& sourceName)
+{
+    QString base = QFileInfo(sourceName).completeBaseName();
+    base.replace(QRegularExpression("[^A-Za-z0-9_-]+"), "_");
+    base.remove(QRegularExpression("^_+|_+$"));
+    if (base.isEmpty()) base = "Program";
+    base = base.left(80);
+    if (QRegularExpression("^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$",
+                           QRegularExpression::CaseInsensitiveOption).match(base).hasMatch())
+        base.prepend("Program-");
+    return base + ".exe";
+}
+
 bool ProgramPackage::plan(const QString& installation, const QStringList& resources,
                           const QVector<SmallExtension>& extensions,
-                          QVector<PackageFile>* files, QString* error)
+                          QVector<PackageFile>* files, QString* error, const QString& executable)
 {
     files->clear();
     error->clear();
     const QDir root(installation);
-    QSet<QString> names{"program.exe", "start.cmd", "readme.txt", "source", "relink"};
+    QSet<QString> names{executable.toLower(), "readme.txt", "source", "relink"};
     auto add = [&](const QString& source, const QString& relative) {
         const QFileInfo info(source);
         if (!info.isFile() || info.isSymLink() || names.contains(relative.toLower())) {

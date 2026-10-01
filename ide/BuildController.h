@@ -24,7 +24,9 @@ public:
                const QString& unsavedName = "Untitled.cpp");
     void stop();
     void publish(const QString& source, const QString& originalFilePath,
-                 const QString& destination, const QStringList& resources = {});
+                 const QString& destination, const QStringList& resources = {},
+                 const QString& unsavedName = "Program.cpp");
+    QString publishExecutableName() const { return publishExecutableName_; }
 
 signals:
     void busyChanged(bool busy);
@@ -51,6 +53,7 @@ private:
     qint64 compileMs_ = 0;
     bool cancelled_ = false;
     QString publishDestination_;
+    QString publishExecutableName_;
     QStringList publishResources_;
     QVector<PackageFile> packageFiles_;
     std::unique_ptr<QTemporaryDir> packageDirectory_;

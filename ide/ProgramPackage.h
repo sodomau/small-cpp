@@ -11,7 +11,9 @@ struct PackageFile { QString source, relativePath; };
 class ProgramPackage
 {
 public:
+    static QString executableName(const QString& sourceName);
     static bool plan(const QString& installation, const QStringList& resources,
                      const QVector<SmallExtension>& extensions,
-                     QVector<PackageFile>* files, QString* error);
+                     QVector<PackageFile>* files, QString* error,
+                     const QString& executable = "Program.exe");
 };

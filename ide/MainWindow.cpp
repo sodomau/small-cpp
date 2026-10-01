@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include "BuildController.h"
+#include "PublishDialog.h"
 #include "DebugController.h"
 #include "EditorDocument.h"
 #include "ExamplesBrowser.h"
@@ -14,13 +15,6 @@
 #include <QActionGroup>
 #include <QCloseEvent>
 #include <QDir>
-#include <QDialog>
-#include <QDialogButtonBox>
-#include <QDesktopServices>
-#include <QFormLayout>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QUrl>
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
@@ -192,7 +186,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
     connect(build_, &BuildController::published, this, [this](const QString& folder) {
         appendOutput("Published to: " + folder + "\nShare the entire folder with your friends.\n");
         if (!closing_ && !qEnvironmentVariableIsSet("SMALL_TEST_DIALOGS"))
-            QDesktopServices::openUrl(QUrl::fromLocalFile(folder));
+            ShowPublishComplete(folder, build_->publishExecutableName(), this);
     });
     connect(debug_, &DebugController::busyChanged, this, [this](bool) { updateDebugActions(); });
     connect(debug_, &DebugController::phaseChanged, this, [this](const QString& text) {
@@ -944,50 +938,8 @@ void MainWindow::publish()
 {
     auto* document = currentDocument();
     if (!document || build_->isBusy() || debug_->isBusy() || closing_) return;
-    QDialog dialog(this);
-    dialog.setWindowTitle("Publish Program");
-    auto* layout = new QFormLayout(&dialog);
-    auto* description = new QLabel("Make a new Windows x64 folder to share.\n"
-                                   "Your current code will be included. Small C++ is not needed to run it.", &dialog);
-    layout->addRow(description);
-    auto* destination = new QLineEdit(&dialog);
-    destination->setObjectName("publishDestination");
-    const QString base = QFileInfo(document->displayName()).completeBaseName() + "-published";
-    destination->setText(QDir(initialDirectory(document)).filePath(base));
-    auto* browse = new QPushButton("Choose parent folder...", &dialog);
-    layout->addRow("New folder:", destination);
-    layout->addRow(browse);
-    connect(browse, &QPushButton::clicked, &dialog, [&] {
-        const QString parent = QFileDialog::getExistingDirectory(&dialog, "Publish Destination",
-                                                                 QFileInfo(destination->text()).absolutePath());
-        if (!parent.isEmpty()) destination->setText(QDir(parent).filePath(base));
-    });
-    QStringList resources;
-    auto* resourcesButton = new QPushButton("Add images, sounds or data...", &dialog);
-    auto* resourcesLabel = new QLabel("No extra files. Selected files are copied beside program.exe.", &dialog);
-    layout->addRow(resourcesButton);
-    layout->addRow(resourcesLabel);
-    connect(resourcesButton, &QPushButton::clicked, &dialog, [&] {
-        const auto selected = QFileDialog::getOpenFileNames(&dialog, "Files to Include",
-                                                           initialDirectory(document));
-        if (!selected.isEmpty()) {
-            resources = selected;
-            resourcesLabel->setText(QString("%1 file(s) selected").arg(resources.size()));
-        }
-    });
-    auto* buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
-    buttons->button(QDialogButtonBox::Ok)->setText("Publish");
-    layout->addRow(buttons);
-    connect(buttons, &QDialogButtonBox::accepted, &dialog, [&] {
-        const QFileInfo target(destination->text());
-        if (destination->text().trimmed().isEmpty() || target.exists() || target.isSymLink() ||
-            !QFileInfo(target.absolutePath()).isDir()) {
-            QMessageBox::warning(&dialog, "Publish", "Choose a new folder inside an existing parent folder.");
-            return;
-        }
-        dialog.accept();
-    });
-    connect(buttons, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
+    PublishDialog dialog(initialDirectory(document),
+                         QFileInfo(ProgramPackage::executableName(document->displayName())).completeBaseName(), this);
     if (dialog.exec() != QDialog::Accepted) return;
     runDocument_ = document;
     runName_ = document->displayName();
@@ -1002,7 +954,8 @@ void MainWindow::publish()
     rawAction_->setText(diagnosticRawLabel_);
     rawAction_->setEnabled(false);
     updateDiagnosticsLabel();
-    build_->publish(runSnapshot_, document->filePath(), destination->text(), resources);
+    build_->publish(runSnapshot_, document->filePath(), dialog.destination(), dialog.resources(),
+                    document->displayName());
 }
 
 void MainWindow::updateDebugActions()

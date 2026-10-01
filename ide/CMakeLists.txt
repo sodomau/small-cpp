@@ -125,6 +125,7 @@ set(SMALL_IDE_SOURCES
     
     BuildController.h BuildController.cpp
     ProgramPackage.h ProgramPackage.cpp
+    PublishDialog.h PublishDialog.cpp
     DebugController.h DebugController.cpp
     EntryPoint.h EntryPoint.cpp
     ExtensionRegistry.h ExtensionRegistry.cpp

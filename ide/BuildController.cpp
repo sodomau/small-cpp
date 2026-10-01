@@ -108,11 +108,13 @@ void BuildController::start(const QString& source, const QString& originalFilePa
 }
 
 void BuildController::publish(const QString& source, const QString& originalFilePath,
-                              const QString& destination, const QStringList& resources)
+                              const QString& destination, const QStringList& resources,
+                              const QString& unsavedName)
 {
     if (isBusy()) return;
     sourceSnapshot_ = source;
     sourcePath_ = originalFilePath;
+    publishExecutableName_ = ProgramPackage::executableName(originalFilePath.isEmpty() ? unsavedName : originalFilePath);
 #ifndef Q_OS_WIN
     fail("Publish currently supports Windows only.");
     return;
@@ -125,7 +127,7 @@ void BuildController::publish(const QString& source, const QString& originalFile
         return;
     }
     publishResources_ = resources;
-    startBuild(source, originalFilePath, "program.cpp");
+    startBuild(source, originalFilePath, unsavedName);
 }
 
 void BuildController::startBuild(const QString& source, const QString& originalFilePath,
@@ -148,7 +150,7 @@ void BuildController::startBuild(const QString& source, const QString& originalF
     if (!publishDestination_.isEmpty()) {
         QString error;
         if (!ProgramPackage::plan(QCoreApplication::applicationDirPath(), publishResources_,
-                                  extensions_, &packageFiles_, &error)) { fail(error); return; }
+                                  extensions_, &packageFiles_, &error, publishExecutableName_)) { fail(error); return; }
     }
     if (!QFileInfo::exists(compiler()))
     {
@@ -387,8 +389,8 @@ void BuildController::package()
     if (stage_ != Stage::Packaging) return;
     QString error;
     if (!ProgramPackage::plan(QCoreApplication::applicationDirPath(), publishResources_,
-                              extensions_, &packageFiles_, &error)) { fail(error); return; }
-    packageFiles_.prepend({executablePath_, "program.exe"});
+                              extensions_, &packageFiles_, &error, publishExecutableName_)) { fail(error); return; }
+    packageFiles_.prepend({executablePath_, publishExecutableName_});
     packageFiles_.append({sourcePath_, "source/program.cpp"});
     packageFiles_.append({objectPath_, "relink/program.o"});
     packageDirectory_ = std::make_unique<QTemporaryDir>(
@@ -424,12 +426,11 @@ void BuildController::copyPackageFile()
     library("runtime/" + QFileInfo(runtimePath_).fileName());
     for (const char* qt : SmallBuildConfig::QtLibraries)
         library("qt/lib/" + QFileInfo(QString::fromUtf8(qt)).fileName());
-    relink += " -o \"../program.exe\"\r\nexit /b %errorlevel%\r\n";
-    if (!write("START.cmd", "@echo off\r\ncd /d \"%~dp0\"\r\nprogram.exe\r\npause\r\n") ||
-        !write("relink/RELINK.cmd", relink) ||
-        !write("README.txt", "Run START.cmd (keeps the console open), or program.exe.\r\n"
+    relink += " -o \"../" + publishExecutableName_.toUtf8() + "\"\r\nexit /b %errorlevel%\r\n";
+    if (!write("relink/RELINK.cmd", relink) ||
+        !write("README.txt", QByteArray("Run ") + publishExecutableName_.toUtf8() + ".\r\n"
                "Share this entire folder; the DLLs and plugins are required.\r\n"
-               "Selected resource files are beside program.exe. Paths are relative to this folder.\r\n"
+               "Selected resource files are beside the executable. Paths are relative to this folder.\r\n"
                "Small C++ is not required to run this program. Windows x64 only.\r\n\r\n"
                "The author controls the license of their program in source/program.cpp.\r\n"
                "LICENSE covers Small-owned components, not the author's program.\r\n"

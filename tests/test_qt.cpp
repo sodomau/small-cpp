@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "BuildController.h"
 #include "ProgramPackage.h"
+#include "PublishDialog.h"
 #include "DebugController.h"
 #include "CodeEditor.h"
 #include "Diagnostics.h"
@@ -15,10 +16,13 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QFocusEvent>
+#include <QFontDatabase>
 #include <QImage>
 #include <QKeyEvent>
 #include <QMessageBox>
 #include <QMouseEvent>
+#include <QPushButton>
+#include <QTreeWidget>
 #include <QSignalSpy>
 #include <QSettings>
 #include <QTemporaryDir>
@@ -349,6 +353,64 @@ private slots:
         QCOMPARE(marker.readAll(), QByteArray("keep"));
     }
 
+    void publishFilesCanBeAddedAndRemoved()
+    {
+        QTemporaryDir folder;
+        QVERIFY(folder.isValid());
+        PublishDialog dialog(folder.path(), "MyGame");
+        dialog.addFiles({folder.filePath("cat.png")});
+        dialog.addFiles({folder.filePath("music.wav"), folder.filePath("cat.png")});
+        QCOMPARE(dialog.resources().size(), 2);
+        dialog.show();
+        QTest::qWait(20);
+        auto* files = dialog.findChild<QTreeWidget*>("publishFiles");
+        QVERIFY(files);
+        auto* remove = qobject_cast<QPushButton*>(files->itemWidget(files->topLevelItem(0), 1));
+        QVERIFY(remove);
+        QTest::mouseClick(remove, Qt::LeftButton);
+        QCOMPARE(dialog.resources(), QStringList{folder.filePath("music.wav")});
+        dialog.close();
+    }
+
+    void publishExecutableUsesSafeEnglishName()
+    {
+        QCOMPARE(ProgramPackage::executableName("MyGame.cpp"), QString("MyGame.exe"));
+        QCOMPARE(ProgramPackage::executableName("My Game.cpp"), QString("My_Game.exe"));
+        QCOMPARE(ProgramPackage::executableName(QString::fromUtf8("나의 작품.cpp")), QString("Program.exe"));
+        QCOMPARE(ProgramPackage::executableName("CON.cpp"), QString("Program-CON.exe"));
+    }
+
+    void publishDialogPreview()
+    {
+        const QString output = qEnvironmentVariable("SMALL_PUBLISH_PREVIEW_DIR");
+        if (output.isEmpty()) return;
+        QFontDatabase::addApplicationFont(qEnvironmentVariable("SystemRoot") + "/Fonts/segoeui.ttf");
+        QFontDatabase::addApplicationFont(qEnvironmentVariable("SystemRoot") + "/Fonts/segoeuib.ttf");
+        QVERIFY(QDir().mkpath(output));
+        for (bool dark : {false, true}) {
+            SmallSettings().setValue("appearance/dark", dark);
+            MainWindow parent;
+            PublishDialog dialog("C:/Users/Student/Documents", "MyGame", &parent);
+            dialog.addFiles({"C:/Pictures/cat.png", "C:/Sounds/music.wav"});
+            dialog.show();
+            QTest::qWait(30);
+            QVERIFY(dialog.grab().save(QDir(output).filePath(dark ? "publish-dark.png" : "publish-light.png")));
+            dialog.close();
+            bool captured = false;
+            QTimer::singleShot(0, this, [&] {
+                auto* complete = qobject_cast<QDialog*>(QApplication::activeModalWidget());
+                if (complete) {
+                    captured = complete->grab().save(QDir(output).filePath(
+                        dark ? "publish-complete-dark.png" : "publish-complete-light.png"));
+                    complete->reject();
+                }
+            });
+            ShowPublishComplete("C:/Users/Student/Documents/MyGame-published", "MyGame.exe", &parent);
+            QVERIFY(captured);
+        }
+        SmallSettings().setValue("appearance/dark", false);
+    }
+
     void publishStandalone_data()
     {
         QTest::addColumn<QString>("source");
@@ -380,7 +442,7 @@ private slots:
         QSignalSpy failed(&build, &BuildController::buildError);
         QSignalSpy published(&build, &BuildController::published);
         QSignalSpy started(&build, &BuildController::programStarted);
-        build.publish(source, {}, target, {resource.fileName()});
+        build.publish(source, {}, target, {resource.fileName()}, "My Game.cpp");
         QTRY_VERIFY_WITH_TIMEOUT(!published.isEmpty() || !failed.isEmpty(), 45000);
         QVERIFY2(failed.isEmpty(), qPrintable(failed.isEmpty() ? QString{} : failed.first().first().toString()));
         QCOMPARE(published.size(), 1);
@@ -392,6 +454,8 @@ private slots:
         QVERIFY(QFileInfo::exists(target + "/licenses/SOURCE_ACCESS.md"));
         QVERIFY(!QFileInfo::exists(target + "/compiler"));
         QVERIFY(!QFileInfo::exists(target + "/SmallCppIDE.exe"));
+        QVERIFY(QFileInfo::exists(target + "/My_Game.exe"));
+        QVERIFY(!QFileInfo::exists(target + "/START.cmd"));
         QProcess relink;
         relink.setWorkingDirectory(target + "/relink");
         relink.start(qEnvironmentVariable("SystemRoot") + "/System32/cmd.exe",
@@ -406,7 +470,7 @@ private slots:
         env.remove("QT_QPA_PLATFORM"); env.remove("SMALL_TEST_NO_CONSOLE_PAUSE");
         program.setProcessEnvironment(env);
         program.setWorkingDirectory(target);
-        program.start(target + "/program.exe", {});
+        program.start(target + "/My_Game.exe", {});
         QVERIFY(program.waitForFinished(15000));
         QCOMPARE(program.exitStatus(), QProcess::NormalExit);
         QCOMPARE(program.exitCode(), 0);
