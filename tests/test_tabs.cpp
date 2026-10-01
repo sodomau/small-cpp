@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+#include "WindowTestSupport.h"
 #include "EditorDocument.h"
 #include "BuildController.h"
 
@@ -6,6 +7,8 @@
 #include <QAction>
 #include <QApplication>
 #include <QFile>
+#include <QDir>
+#include <QPushButton>
 #include <QFileDialog>
 #include <QFontDialog>
 #include <QFontDatabase>
@@ -80,9 +83,78 @@ private:
     }
 
 private slots:
+    void welcomeIsNotAFileAndCanBeClosedAndReopened()
+    {
+        MainWindow window;
+        QCOMPARE(tabs(window)->count(), 1);
+        QCOMPARE(tabs(window)->tabText(0), QString("Welcome"));
+        QVERIFY(!current(window));
+        for (const char* name : {"actionSave", "actionSaveAs", "actionRun", "actionDebug", "actionPublish"})
+            QVERIFY(!action(window, name)->isEnabled());
+        QPointer<QWidget> welcome = tabs(window)->currentWidget();
+        action(window, "actionCloseTab")->trigger();
+        QVERIFY(welcome.isNull());
+        QCOMPARE(tabs(window)->count(), 0);
+        action(window, "actionWelcome")->trigger();
+        QCOMPARE(tabs(window)->count(), 1);
+        action(window, "actionWelcome")->trigger();
+        QCOMPARE(tabs(window)->count(), 1);
+        action(window, "actionCloseTab")->trigger();
+        action(window, "actionNew")->trigger();
+        QCOMPARE(current(window)->displayName(), QString("Untitled.cpp"));
+        QVERIFY(current(window)->toPlainText().contains("void SmallMain()"));
+        action(window, "actionCloseTab")->trigger();
+        QCOMPARE(tabs(window)->count(), 0);
+    }
+
+    void welcomeExampleOpensSeparateEditableProgram()
+    {
+        MainWindow window;
+        auto* welcome = tabs(window)->currentWidget();
+        auto* preview = welcome->findChild<CodeEditor*>("welcomeCodePreview");
+        QVERIFY(preview && preview->isReadOnly());
+        const QString code = preview->toPlainText();
+        auto* tryExample = welcome->findChild<QPushButton*>("welcomeTryExample");
+        QVERIFY(tryExample);
+        tryExample->click();
+        QCOMPARE(tabs(window)->count(), 2);
+        auto* document = current(window);
+        QVERIFY(document);
+        QCOMPARE(document->displayName(), QString("Untitled.cpp"));
+        QCOMPARE(document->toPlainText(), code);
+        QVERIFY(!document->isReadOnly());
+        QVERIFY(document->document()->isModified());
+        QVERIFY(action(window, "actionRun")->isEnabled());
+        action(window, "actionWelcome")->trigger();
+        QCOMPARE(tabs(window)->currentWidget(), welcome);
+        QVERIFY(!action(window, "actionRun")->isEnabled());
+        action(window, "actionCloseTab")->trigger();
+        QCOMPARE(current(window), document);
+        QVERIFY(action(window, "actionSave")->isEnabled());
+        QVERIFY(action(window, "actionRun")->isEnabled());
+    }
+
+    void welcomePreview()
+    {
+        const QString output = qEnvironmentVariable("SMALL_WELCOME_PREVIEW_DIR");
+        if (output.isEmpty()) return;
+        QFontDatabase::addApplicationFont("C:/Windows/Fonts/segoeui.ttf");
+        QFontDatabase::addApplicationFont("C:/Windows/Fonts/segoeuib.ttf");
+        QFontDatabase::addApplicationFont("C:/Windows/Fonts/consola.ttf");
+        QVERIFY(QDir().mkpath(output));
+        MainWindow window;
+        window.show();
+        for (const bool dark : {false, true}) {
+            action(window, dark ? "actionThemeDark" : "actionThemeLight")->trigger();
+            QApplication::processEvents();
+            QVERIFY(window.grab().save(output + (dark ? "/welcome-dark.png" : "/welcome-light.png")));
+        }
+    }
+
     void aboutShowsProjectOrigin()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* about = action(window, "actionAboutSmallCpp");
         QVERIFY(about);
         QString text;
@@ -128,6 +200,7 @@ private slots:
         const QString path = directory.filePath("custom.qss");
         writeFile(path, "QPlainTextEdit { background-color: #123456; color: #ffffff; }");
         MainWindow window;
+        OpenNewProgram(window);
         auto* document = current(window);
         document->appendPlainText("// keep my work");
         const QString source = document->toPlainText();
@@ -148,6 +221,7 @@ private slots:
         QVERIFY(api->styleSheet().contains("#123456"));
         {
             MainWindow restored;
+            OpenNewProgram(restored);
             QCOMPARE(current(restored)->palette().color(QPalette::Base), QColor("#123456"));
         }
         writeFile(path, "QPlainTextEdit { background-color: #654321; }");
@@ -177,6 +251,7 @@ private slots:
     void newTabsHaveIndependentState()
     {
         MainWindow window;
+        OpenNewProgram(window);
         QCOMPARE(tabs(window)->count(), 1);
         auto* first = current(window);
         first->appendPlainText("// first edit");
@@ -200,6 +275,7 @@ private slots:
     void shortcutsSwitchWithoutEditing()
     {
         MainWindow window;
+        OpenNewProgram(window);
         window.show();
         auto* first = current(window);
         action(window, "actionNew")->trigger();
@@ -224,6 +300,7 @@ private slots:
         const QString path = folder.filePath("same.cpp");
         writeFile(path, "void SmallMain() {}\n");
         MainWindow window;
+        OpenNewProgram(window);
         QVERIFY(window.openDocument(path));
         auto* document = current(window);
         document->appendPlainText("// unsaved");
@@ -241,6 +318,7 @@ private slots:
         const QString a = folder.filePath("a.cpp"), b = folder.filePath("b.cpp");
         writeFile(a, "// A\n"); writeFile(b, "// B\n");
         MainWindow window;
+        OpenNewProgram(window);
         QVERIFY(window.openDocument(a)); auto* first = current(window);
         QVERIFY(window.openDocument(b)); QPointer<EditorDocument> second = current(window);
         first->appendPlainText("// changed A"); second->appendPlainText("// changed B");
@@ -262,6 +340,7 @@ private slots:
         const QString first = a.filePath("game.cpp"), second = b.filePath("game.cpp");
         writeFile(first, "// first\n"); writeFile(second, "// second\n");
         MainWindow window;
+        OpenNewProgram(window);
         QVERIFY(window.openDocument(first)); auto* docA = current(window);
         QVERIFY(window.openDocument(second)); auto* docB = current(window);
         QVERIFY(docA != docB);
@@ -272,6 +351,7 @@ private slots:
     void cancelTabCloseKeepsText()
     {
         MainWindow window;
+        OpenNewProgram(window);
         window.show();
         auto* document = current(window);
         document->appendPlainText("// keep me");
@@ -281,22 +361,25 @@ private slots:
         QVERIFY(document->toPlainText().contains("keep me"));
     }
 
-    void discardLastTabLeavesAnEmptyDocument()
+    void discardLastTabLeavesNoDocument()
     {
         MainWindow window;
+        OpenNewProgram(window);
         window.show();
         QPointer<EditorDocument> previous = current(window);
         previous->appendPlainText("// discard me");
         closeWith(window, QMessageBox::Discard);
         QVERIFY(previous.isNull());
-        QCOMPARE(tabs(window)->count(), 1);
-        QVERIFY(!current(window)->document()->isModified());
-        QVERIFY(current(window)->toPlainText().contains("void SmallMain()"));
+        QCOMPARE(tabs(window)->count(), 0);
+        QVERIFY(!current(window));
+        QVERIFY(!action(window, "actionRun")->isEnabled());
+        QVERIFY(!action(window, "actionPublish")->isEnabled());
     }
 
     void cancellingSaveDialogKeepsTab()
     {
         MainWindow window;
+        OpenNewProgram(window);
         window.show();
         auto* document = current(window);
         document->appendPlainText("// keep after cancel Save As");
@@ -324,6 +407,7 @@ private slots:
     {
         QTemporaryDir folder;
         MainWindow window;
+        OpenNewProgram(window);
         window.show();
         action(window, "actionNew")->trigger();
         auto* document = current(window);
@@ -356,6 +440,7 @@ private slots:
         const QByteArray original("// disk original\n");
         writeFile(path, original);
         MainWindow window;
+        OpenNewProgram(window);
         window.show();
         QVERIFY(window.openDocument(path));
         auto* existing = current(window);
@@ -393,6 +478,7 @@ private slots:
     void cancelExitRetainsAllTabsEvenAfterDiscard()
     {
         MainWindow window;
+        OpenNewProgram(window);
         window.show();
         auto* first = current(window);
         first->appendPlainText("// keep first");
@@ -423,6 +509,7 @@ private slots:
     void appearanceAppliesToCurrentHiddenAndFutureTabs()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* first = current(window);
         QCOMPARE(first->font().pointSize(), 14);
         QCOMPARE(first->font().family(), QString("Consolas"));
@@ -461,6 +548,7 @@ private slots:
     void compileErrorTargetsOriginNotCurrentTab()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* origin = current(window);
         const QString bad = "void SmallMain()\n{\n    Print(noSuchName);\n}\n";
         origin->setPlainText(bad);
@@ -480,6 +568,7 @@ private slots:
     void changedOriginDoesNotReceiveStaleHighlight()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* origin = current(window);
         origin->setPlainText("void SmallMain(){ Print(noSuchName); }\n");
         auto* build = window.findChild<BuildController*>();
@@ -494,6 +583,7 @@ private slots:
     void closedOriginDoesNotMarkReplacementTab()
     {
         MainWindow window;
+        OpenNewProgram(window);
         QPointer<EditorDocument> origin = current(window);
         const QString bad = "void SmallMain(){ Print(noSuchName); }\n";
         origin->setPlainText(bad);
@@ -503,6 +593,8 @@ private slots:
         action(window, "actionRun")->trigger();
         action(window, "actionCloseTab")->trigger();
         QVERIFY(origin.isNull());
+        QCOMPARE(tabs(window)->count(), 0);
+        action(window, "actionNew")->trigger();
         auto* replacement = current(window);
         replacement->setPlainText(bad);
         QTRY_VERIFY_WITH_TIMEOUT(!errors.isEmpty(), 30000);
@@ -519,6 +611,7 @@ private slots:
         writeFile(validPath,
             "void SmallMain(){ File f; f.Open(\"selected.txt\", FileMode::Write); f.Print(42); }\n");
         MainWindow window;
+        OpenNewProgram(window);
         QVERIFY(window.openDocument(invalidPath));
         auto* other = current(window);
         QVERIFY(window.openDocument(validPath));
@@ -537,6 +630,7 @@ private slots:
     void runtimeErrorRemainsBoundToOrigin()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* origin = current(window);
         origin->setPlainText("void SmallMain(){ Array<int> a(2); Print(a[5]); }\n");
         auto* build = window.findChild<BuildController*>();

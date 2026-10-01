@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+#include "WindowTestSupport.h"
 #include "LearnWindowTestHelpers.h"
 #include "BuildController.h"
 #include "EditorDocument.h"
@@ -119,6 +120,7 @@ private slots:
     void browserIsCreatedOnlyWhenRequestedAndIsReused()
     {
         MainWindow window;
+        OpenNewProgram(window);
         QVERIFY(!learnWindow<ExamplesBrowser>());
         auto* browser = browse(window);
         QVERIFY(browser);
@@ -166,6 +168,7 @@ private slots:
     void openFromBrowserKeepsDirtyUserTab()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* user = current(window);
         user->appendPlainText("// do not replace this code");
         const QString original = user->toPlainText();
@@ -183,6 +186,7 @@ private slots:
     void repeatedOpenUsesExistingExampleEvenAfterReorder()
     {
         MainWindow window;
+        OpenNewProgram(window);
         QVERIFY(window.openExample("reference/string"));
         auto* example = current(window);
         QVERIFY(window.openExample("programs/pong"));
@@ -196,6 +200,7 @@ private slots:
     void invalidExampleIdLeavesDocumentsAlone()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* original = current(window);
         const int count = tabs(window)->count();
         QVERIFY(!window.openExample("../../runtime/small.h"));
@@ -207,6 +212,7 @@ private slots:
     void exampleDoesNotConsumeAnUntitledName()
     {
         MainWindow window;
+        OpenNewProgram(window);
         QVERIFY(window.openExample("reference/array"));
         action(window, "actionNew")->trigger();
         QCOMPARE(current(window)->displayName(), QString("Untitled-2.cpp"));
@@ -215,6 +221,7 @@ private slots:
     void exampleSourceResistsTypingIndentAndPaste()
     {
         MainWindow window;
+        OpenNewProgram(window);
         window.show();
         QVERIFY(window.openExample("reference/string"));
         auto* example = current(window);
@@ -237,6 +244,7 @@ private slots:
     void tryCreatesADirtyIndependentCopy()
     {
         MainWindow window;
+        OpenNewProgram(window);
         QVERIFY(window.openExample("reference/string"));
         auto* example = current(window);
         const QString original = example->toPlainText();
@@ -258,6 +266,7 @@ private slots:
     void exampleControlsAreContextual()
     {
         MainWindow window;
+        OpenNewProgram(window);
         window.show();
         auto* user = current(window);
         auto* controls = window.findChild<QWidget*>("exampleTabTools");
@@ -278,6 +287,7 @@ private slots:
     void closingExampleDoesNotAskToSave()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* user = current(window);
         QVERIFY(window.openExample("reference/console"));
         QPointer<EditorDocument> example = current(window);
@@ -290,6 +300,7 @@ private slots:
     void cancellingTryCloseKeepsTheCopy()
     {
         MainWindow window;
+        OpenNewProgram(window);
         window.show();
         QVERIFY(window.openExample("reference/string"));
         action(window, "actionTryExample")->trigger();
@@ -315,6 +326,7 @@ private slots:
     void cancellingSaveCopyCreatesNoFileOrTab()
     {
         MainWindow window;
+        OpenNewProgram(window);
         window.show();
         QVERIFY(window.openExample("programs/pong"));
         auto* example = current(window);
@@ -344,6 +356,7 @@ private slots:
         QTemporaryDir folder;
         const QString path = folder.filePath("my-pong.cpp");
         MainWindow window;
+        OpenNewProgram(window);
         window.show();
         QVERIFY(window.openExample("programs/pong"));
         auto* example = current(window);
@@ -380,6 +393,7 @@ private slots:
         const QString path = folder.filePath("keep.cpp");
         { QFile f(path); QVERIFY(f.open(QIODevice::WriteOnly)); f.write("// original file\n"); }
         MainWindow window;
+        OpenNewProgram(window);
         window.show();
         QVERIFY(window.openDocument(path));
         auto* user = current(window);
@@ -417,6 +431,7 @@ private slots:
     void appearanceFollowsHiddenTabsAndPreview()
     {
         MainWindow window;
+        OpenNewProgram(window);
         QVERIFY(window.openExample("reference/string"));
         auto* example = current(window);
         auto* browser = browse(window);
@@ -442,6 +457,7 @@ private slots:
         const QFont font("Consolas", 18);
         SmallSettings().setValue("appearance/font", font);
         MainWindow window;
+        OpenNewProgram(window);
         auto* browser = browse(window);
         QCOMPARE(browser->findChild<CodeEditor*>("examplePreview")->font().pointSize(), 18);
         QVERIFY(window.openExample("reference/array"));
@@ -452,6 +468,7 @@ private slots:
     void readOnlyExampleRunsWithoutTurningIntoAFile()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* user = current(window);
         const QString userText = user->toPlainText();
         QVERIFY(window.openExample("reference/array"));

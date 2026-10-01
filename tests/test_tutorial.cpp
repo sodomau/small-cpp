@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+#include "WindowTestSupport.h"
 #include "LearnWindowTestHelpers.h"
 #include "BuildController.h"
 #include "EditorDocument.h"
@@ -134,6 +135,7 @@ private slots:
     void learnMenuContainsBothBrowsers()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* learn = window.findChild<QMenu*>("menuLearn");
         QVERIFY(learn);
         QVERIFY(learn->actions().contains(action(window, "actionTutorial")));
@@ -144,6 +146,7 @@ private slots:
     void englishCanBeSelectedAndPreferenceIsSaved()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* menu = window.findChild<QMenu*>("menuTutorialLanguage");
         QVERIFY(menu);
         QAction* english = nullptr;
@@ -169,6 +172,7 @@ private slots:
     void browserIsLazyModelessAndReused()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* browser = browse(window);
         QVERIFY(browser);
         QVERIFY(!browser->isModal());
@@ -234,6 +238,7 @@ private slots:
     void tryExampleCreatesNewDirtyTabAndKeepsExistingWork()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* original = current(window);
         original->appendPlainText("// keep my work");
         const QString snapshot = original->toPlainText();
@@ -258,6 +263,7 @@ private slots:
     void repeatedTryMakesIndependentCopies()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* browser = browse(window);
         button(*browser, "tryTutorialExample1")->click();
         auto* first = current(window);
@@ -271,6 +277,7 @@ private slots:
     void allStartersForEveryPublishedLessonAreCopiedExactly()
     {
         MainWindow window;
+        OpenNewProgram(window);
         TutorialCatalog catalog;
         auto* browser = browse(window);
         for (const QString& id : catalog.availableIds())
@@ -294,6 +301,7 @@ private slots:
     void hintAndSolutionStartHiddenAndDoNotCreateTabsOrMarkRead()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* browser = browse(window);
         QVERIFY(browser->selectLesson("variables"));
         auto* hint = browser->findChild<QLabel*>("tutorialHint1");
@@ -315,6 +323,7 @@ private slots:
     void trySolutionCreatesEditableCopyOfCompleteAnswer()
     {
         MainWindow window;
+        OpenNewProgram(window);
         TutorialCatalog catalog;
         auto* browser = browse(window);
         QVERIFY(browser->selectLesson("if"));
@@ -382,6 +391,7 @@ private slots:
     void fontAndThemeReachVisibleAndHiddenCodeWithoutResettingHint()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* browser = browse(window);
         button(*browser, "tutorialHintButton1")->click();
         action(window, "actionThemeDark")->trigger();
@@ -399,6 +409,7 @@ private slots:
     void relatedExampleOpensReadOnlyWithoutClosingTutorial()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* browser = browse(window);
         button(*browser, "tutorialRelatedExample")->click();
         QVERIFY(current(window)->isExample());
@@ -410,6 +421,7 @@ private slots:
     void tutorialCodeResistsEditingAndClosingBrowserKeepsCopies()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* browser = browse(window);
         auto* code = browser->findChild<CodeEditor*>("tutorialExample1");
         const QString original = code->toPlainText();
@@ -430,6 +442,7 @@ private slots:
     void copiedExerciseUsesExistingSaveCancelProtection()
     {
         MainWindow window;
+        OpenNewProgram(window);
         window.show();
         auto* browser = browse(window);
         button(*browser, "tryTutorialExercise1")->click();

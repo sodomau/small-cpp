@@ -27,6 +27,8 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QPlainTextEdit>
+#include <QPushButton>
+#include <QScrollArea>
 #include <QSaveFile>
 #include <QSettings>
 #include "SmallSettings.h"
@@ -42,41 +44,6 @@
 #include <QToolButton>
 #include <QTreeWidget>
 #include <QVBoxLayout>
-
-namespace
-{
-const char* DefaultProgram = R"(void SmallMain()
-{
-    Window window;
-    window.Open(640, 480);
-
-    double x = 320;
-    StopWatch timer;
-
-    while (window.IsOpen())
-    {
-        double dt = timer.Elapsed();
-        timer.Reset();
-
-        if (window.KeyDown(Key::Left) || window.KeyDown('A'))
-            x = x - 200 * dt;
-
-        if (window.KeyDown(Key::Right) || window.KeyDown('D'))
-            x = x + 200 * dt;
-
-        if (window.KeyPressed(Key::Space))
-            PlaySound(Sound::Pop);
-
-        window.Clear(Black);
-        window.FillCircle(x, 240, 20, Yellow);
-        window.DrawText(20, 20, "Small C++");
-        window.DrawText(20, 50, "Arrow keys: move   Space: Pop");
-        window.Show();
-        Sleep(0.005);
-    }
-}
-)";
-}
 
 namespace
 {
@@ -152,7 +119,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
     );
     createUi();
     loadAppearance();
-    addDocument(QString::fromUtf8(DefaultProgram));
+    showWelcome();
     resize(1000, 750);
     updateTitle();
 
@@ -237,6 +204,9 @@ void MainWindow::createUi()
     auto* examplesAction = learnMenu->addAction("Examples...");
     auto* settingsMenu = menuBar()->addMenu("&Settings");
     auto* helpMenu = menuBar()->addMenu("&Help");
+    auto* welcomeAction = helpMenu->addAction("Welcome");
+    welcomeAction->setObjectName("actionWelcome");
+    connect(welcomeAction, &QAction::triggered, this, &MainWindow::showWelcome);
     auto* aboutAction = helpMenu->addAction("About Small C++...");
     aboutAction->setObjectName("actionAboutSmallCpp");
     aboutAction->setMenuRole(QAction::AboutRole);
@@ -682,19 +652,19 @@ bool MainWindow::maybeSaveAll()
 void MainWindow::closeTab(int index)
 {
     if (closing_ || confirmingClose_) return;
+    QPointer<QWidget> page(tabs_->widget(index));
+    if (!page) return;
     QPointer<EditorDocument> document(documentAt(index));
-    if (!document) return;
     confirmingClose_ = true;
     const bool approved = maybeSave(document);
     confirmingClose_ = false;
-    if (!approved || !document) return;
+    if (!approved || !page) return;
     // Look the position up again; the page is the stable identity.
-    index = tabs_->indexOf(document);
+    index = tabs_->indexOf(page);
     if (index < 0) return;
-    const bool wasRunDocument = runDocument_ == document;
+    const bool wasRunDocument = document && runDocument_ == document;
     tabs_->removeTab(index);
-    delete document.data();
-    if (tabs_->count() == 0) addDocument(QString::fromUtf8(EmptyProgram));
+    delete page.data();
     updateTitle();
     if (wasRunDocument)
     {
@@ -707,6 +677,90 @@ void MainWindow::closeTab(int index)
 void MainWindow::newFile()
 {
     if (!closing_ && !confirmingClose_) addDocument(QString::fromUtf8(EmptyProgram));
+}
+
+void MainWindow::showWelcome()
+{
+    if (closing_ || confirmingClose_) return;
+    if (welcome_) { tabs_->setCurrentWidget(welcome_); return; }
+    auto* page = new QScrollArea(tabs_);
+    welcome_ = page;
+    page->setObjectName("welcomeTab");
+    page->setWidgetResizable(true);
+    page->setFrameShape(QFrame::NoFrame);
+    auto* content = new QWidget(page);
+    content->setObjectName("welcomeContent");
+    content->setStyleSheet("QWidget#welcomeContent { background: palette(window); }"
+                          "QLabel, QPushButton { font-family: 'Segoe UI'; font-size: 13pt; }"
+                          "QLabel#welcomeHeading { font-size: 22pt; font-weight: bold; }"
+                          "QPushButton { min-height: 44px; padding: 0 16px; }");
+    auto* layout = new QVBoxLayout(content);
+    layout->setContentsMargins(32, 24, 32, 24);
+    layout->setSpacing(16);
+    auto* heading = new QLabel("Welcome to Small C++", content);
+    heading->setObjectName("welcomeHeading");
+    layout->addWidget(heading);
+    layout->addWidget(new QLabel("Your first program can be this small.", content));
+    auto* preview = new CodeEditor(content);
+    welcomePreview_ = preview;
+    preview->setObjectName("welcomeCodePreview");
+    preview->setReadOnly(true);
+    preview->setDebugGutterEnabled(false);
+    preview->setPlainText("void SmallMain()\n{\n    Print(\"Hello!\");\n}\n");
+    preview->setFixedHeight(140);
+    welcomeHighlighter_ = new Highlighter(preview->document());
+    layout->addWidget(preview);
+    auto* actions = new QHBoxLayout;
+    auto add = [&](const QString& text, const QString& name) {
+        auto* button = new QPushButton(text, content);
+        button->setObjectName(name);
+        actions->addWidget(button);
+        return button;
+    };
+    auto* tryExample = add("Try This Example", "welcomeTryExample");
+    auto* newProgram = add("New Program", "welcomeNewProgram");
+    auto* open = add("Open File", "welcomeOpenFile");
+    actions->addStretch();
+    layout->addLayout(actions);
+    auto* tutorial = new QPushButton("Explore the Tutorial", content);
+    tutorial->setObjectName("welcomeTutorial");
+    layout->addWidget(tutorial, 0, Qt::AlignLeft);
+    layout->addStretch();
+    page->setWidget(content);
+    connect(tryExample, &QPushButton::clicked, this, [this] {
+        if (closing_ || confirmingClose_) return;
+        auto* copy = addDocument(welcomePreview_->toPlainText());
+        copy->document()->setModified(true);
+    });
+    connect(newProgram, &QPushButton::clicked, this, &MainWindow::newFile);
+    connect(open, &QPushButton::clicked, this, &MainWindow::openFile);
+    connect(tutorial, &QPushButton::clicked, this, &MainWindow::browseTutorial);
+    updateWelcomeAppearance();
+    tabs_->addTab(page, "Welcome");
+    tabs_->setCurrentWidget(page);
+    updateTitle();
+}
+
+void MainWindow::updateWelcomeAppearance()
+{
+    if (!welcomePreview_) return;
+    auto colors = editorPalette(palette(), darkTheme_);
+    colors.setColor(QPalette::Window, QColor(darkTheme_ ? "#171d29" : "#f3f5f9"));
+    welcome_->setPalette(colors);
+    if (auto* scroll = qobject_cast<QScrollArea*>(welcome_.data())) {
+        auto* content = scroll->widget();
+        content->setPalette(colors);
+        if (!content->property("smallDefaultStyleSheet").isValid())
+            content->setProperty("smallDefaultStyleSheet", content->styleSheet());
+        content->setStyleSheet(smallWindowStyleSheet(colors)
+            + content->property("smallDefaultStyleSheet").toString()
+            + QString("\nQWidget#welcomeContent { background: %1; }").arg(colors.color(QPalette::Window).name())
+            + "\n" + customStyleSheet_);
+    }
+    welcomePreview_->setFont(editorFont_);
+    welcomePreview_->setPalette(editorPalette(welcomePreview_->palette(), darkTheme_));
+    welcomePreview_->setDarkTheme(darkTheme_);
+    welcomeHighlighter_->setDark(darkTheme_);
 }
 
 bool MainWindow::openDocument(const QString& path)
@@ -879,6 +933,7 @@ void MainWindow::applyTheme(bool dark)
         apiBrowser_->setAppearance(editorFont_, editorPalette(output_->palette(), dark), dark);
     SmallSettings().setValue("appearance/dark", dark);
     refreshStyleSheets();
+    updateWelcomeAppearance();
 }
 
 void MainWindow::chooseFont()
@@ -890,6 +945,7 @@ void MainWindow::chooseFont()
     editorFont_ = font;
     output_->setFont(font);
     for (int index = 0; index < tabs_->count(); ++index) applyAppearance(documentAt(index));
+    updateWelcomeAppearance();
     if (examplesBrowser_)
         examplesBrowser_->setAppearance(editorFont_, editorPalette(output_->palette(), darkTheme_), darkTheme_);
     if (tutorialBrowser_)

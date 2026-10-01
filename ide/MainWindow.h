@@ -20,6 +20,8 @@ class EditorDocument;
 class ExamplesBrowser;
 class ApiBrowser;
 class TutorialBrowser;
+class CodeEditor;
+class Highlighter;
 
 class MainWindow : public QMainWindow
 {
@@ -63,6 +65,9 @@ private:
     QPointer<ApiBrowser> apiBrowser_;
     TutorialCatalog tutorials_;
     QPointer<TutorialBrowser> tutorialBrowser_;
+    QPointer<QWidget> welcome_;
+    QPointer<CodeEditor> welcomePreview_;
+    QPointer<Highlighter> welcomeHighlighter_;
     bool closing_ = false;
     bool confirmingClose_ = false;
     bool darkTheme_ = false;
@@ -114,6 +119,8 @@ private:
     EditorDocument* findOpenDocument(const QString& path,
                                      const EditorDocument* except = nullptr) const;
     void newFile();
+    void showWelcome();
+    void updateWelcomeAppearance();
     void openFile();
     void run();
     void publish();

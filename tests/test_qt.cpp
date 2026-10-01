@@ -1,5 +1,7 @@
 #include "MainWindow.h"
+#include "WindowTestSupport.h"
 #include "BuildController.h"
+#include "SmallBuildConfig.h"
 #include "ProgramPackage.h"
 #include "PublishDialog.h"
 #include "DebugController.h"
@@ -77,6 +79,7 @@ private slots:
     void shortcutsAndDirtyTitle()
     {
         MainWindow window;
+        OpenNewProgram(window);
         auto* editor = window.findChild<CodeEditor*>("codeEditor");
         QVERIFY(editor);
         QCOMPARE(window.findChild<QAction*>("actionSave")->shortcut(), QKeySequence(QKeySequence::Save));
@@ -90,6 +93,7 @@ private slots:
     void closeCancelRetainsDocument()
     {
         MainWindow window;
+        OpenNewProgram(window);
         window.show();
         auto* editor = window.findChild<CodeEditor*>("codeEditor");
         editor->appendPlainText("// unsaved");
@@ -115,6 +119,7 @@ private slots:
     void closeDiscardDoesNotSave()
     {
         MainWindow window;
+        OpenNewProgram(window);
         window.show();
         window.findChild<CodeEditor*>("codeEditor")->appendPlainText("// unsaved");
         QTimer choose;
@@ -134,6 +139,7 @@ private slots:
     void cancelSaveAsAlsoCancelsClosing()
     {
         MainWindow window;
+        OpenNewProgram(window);
         window.show();
         auto* editor = window.findChild<CodeEditor*>("codeEditor");
         editor->appendPlainText("// unsaved");
@@ -164,6 +170,7 @@ private slots:
         QVERIFY(folder.isValid());
         const QString path = folder.filePath("saved-program.cpp");
         MainWindow window;
+        OpenNewProgram(window);
         window.show();
         auto* editor = window.findChild<CodeEditor*>("codeEditor");
         editor->appendPlainText("// first save");
@@ -457,12 +464,17 @@ private slots:
         QVERIFY(QFileInfo::exists(target + "/My_Game.exe"));
         QVERIFY(!QFileInfo::exists(target + "/START.cmd"));
         QProcess relink;
+        relink.setProcessChannelMode(QProcess::MergedChannels);
+        auto relinkEnv = QProcessEnvironment::systemEnvironment();
+        relinkEnv.insert("PATH", QFileInfo(QString::fromUtf8(SmallBuildConfig::Compiler)).absolutePath()
+                         + QDir::listSeparator() + relinkEnv.value("PATH"));
+        relink.setProcessEnvironment(relinkEnv);
         relink.setWorkingDirectory(target + "/relink");
         relink.start(qEnvironmentVariable("SystemRoot") + "/System32/cmd.exe",
                      {"/d", "/c", "RELINK.cmd"});
         QVERIFY(relink.waitForFinished(15000));
         QCOMPARE(relink.exitStatus(), QProcess::NormalExit);
-        QCOMPARE(relink.exitCode(), 0);
+        QVERIFY2(relink.exitCode() == 0, relink.readAllStandardOutput().constData());
         QProcess program;
         auto env = QProcessEnvironment::systemEnvironment();
         env.insert("PATH", env.value("SystemRoot") + "/System32");

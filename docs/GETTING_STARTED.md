@@ -5,6 +5,10 @@ installation.
 
 ## First program
 
+The IDE starts with a **Welcome** tab. Choose **Try This Example** to open the
+example below in an editable tab, **New Program** for a SmallMain skeleton, or
+**Open File** for an existing program. Welcome is not a source file.
+
 ``` cpp
 void SmallMain()
 {
@@ -14,6 +18,9 @@ void SmallMain()
 
 Press **Run/F5**. Console programs open a console; graphical programs
 open a Small Window.
+
+Closing the last tab leaves the IDE empty. No replacement file is created.
+Use **Help → Welcome** to show the start tab again.
 
 ## Learn
 
