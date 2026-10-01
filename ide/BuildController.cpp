@@ -10,6 +10,7 @@
 #include <QProcessEnvironment>
 #include <QRegularExpression>
 #include <QSaveFile>
+#include <QTimer>
 
 #ifdef Q_OS_WIN
 #ifndef NOMINMAX
@@ -102,6 +103,35 @@ void BuildController::start(const QString& source, const QString& originalFilePa
                             const QString& unsavedName)
 {
     if (isBusy()) return;
+    publishDestination_.clear();
+    startBuild(source, originalFilePath, unsavedName);
+}
+
+void BuildController::publish(const QString& source, const QString& originalFilePath,
+                              const QString& destination, const QStringList& resources)
+{
+    if (isBusy()) return;
+    sourceSnapshot_ = source;
+    sourcePath_ = originalFilePath;
+#ifndef Q_OS_WIN
+    fail("Publish currently supports Windows only.");
+    return;
+#endif
+    publishDestination_ = QFileInfo(destination).absoluteFilePath();
+    const QFileInfo target(publishDestination_);
+    if (destination.isEmpty() || target.exists() || target.isSymLink() ||
+        !QFileInfo(target.absolutePath()).isDir()) {
+        fail("Choose a new folder inside an existing destination. Existing folders are never overwritten.");
+        return;
+    }
+    publishResources_ = resources;
+    startBuild(source, originalFilePath, "program.cpp");
+}
+
+void BuildController::startBuild(const QString& source, const QString& originalFilePath,
+                                 const QString& unsavedName)
+{
+    if (isBusy()) return;
     cancelled_ = false;
     buildOutput_.clear();
     sourceSnapshot_ = source;
@@ -115,6 +145,11 @@ void BuildController::start(const QString& source, const QString& originalFilePa
     usesOwnMain_ = DetectEntryPoint(source) == SmallEntryPoint::Main;
     installedExtensions_ = ExtensionRegistry::discover(extensionsDirectory_);
     extensions_ = ExtensionRegistry::detect(source, installedExtensions_);
+    if (!publishDestination_.isEmpty()) {
+        QString error;
+        if (!ProgramPackage::plan(QCoreApplication::applicationDirPath(), publishResources_,
+                                  extensions_, &packageFiles_, &error)) { fail(error); return; }
+    }
     if (!QFileInfo::exists(compiler()))
     {
         fail("The compiler recorded by CMake no longer exists:\n" + compiler() +
@@ -166,7 +201,7 @@ void BuildController::compile()
     buildOutput_.clear();
     stageTimer_.start();
     QStringList args = {
-        "-std=c++20", "-O0", "-g0", "-Wall", "-Wextra", "-Werror=parentheses",
+        "-std=c++20", publishDestination_.isEmpty() ? "-O0" : "-O2", "-g0", "-Wall", "-Wextra", "-Werror=parentheses",
         "-fdiagnostics-color=never", "-fmessage-length=0",
         "-I", sdkDirectory_,
         "-iquote", originalDirectory_,
@@ -209,7 +244,7 @@ void BuildController::link()
     // Link the object directly so its static initializer cannot be discarded.
     // This policy is encoded by linking one tiny support object, not by
     // changing Small's public header/runtime or the learner source.
-    args << idePausePath_;
+    if (publishDestination_.isEmpty()) args << idePausePath_;
     for (const auto& extension : std::as_const(extensions_))
     {
         if (!QFileInfo::exists(extension.libraryPath))
@@ -286,7 +321,8 @@ void BuildController::onBuildFinished(int code, QProcess::ExitStatus status)
     else
     {
         emit buildTiming(compileMs_, stageTimer_.elapsed());
-        launch();
+        if (publishDestination_.isEmpty()) launch();
+        else package();
     }
 }
 
@@ -317,6 +353,7 @@ void BuildController::onProgramFinished(int code, QProcess::ExitStatus status)
 
 void BuildController::fail(const QString& error)
 {
+    packageDirectory_.reset();
     setStage(Stage::Idle);
     emit phaseChanged("Build / run failed");
     emit buildError(error, sourceSnapshot_, sourcePath_);
@@ -337,7 +374,77 @@ void BuildController::stop()
 void BuildController::finishStopped()
 {
     if (stage_ == Stage::Idle) return;
+    packageDirectory_.reset();
     setStage(Stage::Idle);
     emit phaseChanged("Stopped");
     emit finished(-1, true);
+}
+
+void BuildController::package()
+{
+    setStage(Stage::Packaging);
+    emit phaseChanged("Packaging your program...");
+    if (stage_ != Stage::Packaging) return;
+    QString error;
+    if (!ProgramPackage::plan(QCoreApplication::applicationDirPath(), publishResources_,
+                              extensions_, &packageFiles_, &error)) { fail(error); return; }
+    packageFiles_.prepend({executablePath_, "program.exe"});
+    packageFiles_.append({sourcePath_, "source/program.cpp"});
+    packageFiles_.append({objectPath_, "relink/program.o"});
+    packageDirectory_ = std::make_unique<QTemporaryDir>(
+        QFileInfo(publishDestination_).absolutePath() + "/.SmallCpp-publish-XXXXXX");
+    if (!packageDirectory_->isValid()) { fail("Cannot create the publish folder."); return; }
+    packageIndex_ = 0;
+    QTimer::singleShot(0, this, &BuildController::copyPackageFile);
+}
+
+void BuildController::copyPackageFile()
+{
+    if (stage_ != Stage::Packaging) return;
+    if (cancelled_) { finishStopped(); return; }
+    if (packageIndex_ < packageFiles_.size()) {
+        const auto file = packageFiles_[packageIndex_++];
+        const QString destination = packageDirectory_->filePath(file.relativePath);
+        if (!QDir().mkpath(QFileInfo(destination).absolutePath()) ||
+            !QFile::copy(file.source, destination)) { fail("Could not package: " + file.source); return; }
+        QTimer::singleShot(0, this, &BuildController::copyPackageFile);
+        return;
+    }
+    auto write = [this](const QString& name, const QByteArray& contents) {
+        QSaveFile file(packageDirectory_->filePath(name));
+        return file.open(QIODevice::WriteOnly) && file.write(contents) == contents.size() && file.commit();
+    };
+    QByteArray relink = "@echo off\r\ncd /d \"%~dp0\"\r\ng++ \"program.o\"";
+    auto library = [&relink](const QString& path) {
+        relink += " \"" + QDir::toNativeSeparators(path).toUtf8() + "\"";
+    };
+    if (!usesOwnMain_) library("runtime/" + QFileInfo(entryPath_).fileName());
+    for (const auto& extension : std::as_const(extensions_))
+        library("extensions/" + extension.id + "/" + QFileInfo(extension.libraryPath).fileName());
+    library("runtime/" + QFileInfo(runtimePath_).fileName());
+    for (const char* qt : SmallBuildConfig::QtLibraries)
+        library("qt/lib/" + QFileInfo(QString::fromUtf8(qt)).fileName());
+    relink += " -o \"../program.exe\"\r\nexit /b %errorlevel%\r\n";
+    if (!write("START.cmd", "@echo off\r\ncd /d \"%~dp0\"\r\nprogram.exe\r\npause\r\n") ||
+        !write("relink/RELINK.cmd", relink) ||
+        !write("README.txt", "Run START.cmd (keeps the console open), or program.exe.\r\n"
+               "Share this entire folder; the DLLs and plugins are required.\r\n"
+               "Selected resource files are beside program.exe. Paths are relative to this folder.\r\n"
+               "Small C++ is not required to run this program. Windows x64 only.\r\n\r\n"
+               "The author controls the license of their program in source/program.cpp.\r\n"
+               "LICENSE covers Small-owned components, not the author's program.\r\n"
+               "See licenses/ for external licenses and matching source access.\r\n"
+               "Qt DLLs can be replaced by compatible builds. relink/ contains object and library\r\n"
+               "files for relinking with the matching MinGW toolchain (RELINK.cmd).\r\n")) {
+        fail("Cannot write the package instructions."); return;
+    }
+    const QString temporary = packageDirectory_->path();
+    if (QFileInfo::exists(publishDestination_) || !QDir().rename(temporary, publishDestination_)) {
+        fail("Cannot finish publishing. The destination may already exist."); return;
+    }
+    packageDirectory_->setAutoRemove(false);
+    packageDirectory_.reset();
+    setStage(Stage::Idle);
+    emit phaseChanged("Published: " + publishDestination_);
+    emit published(publishDestination_);
 }

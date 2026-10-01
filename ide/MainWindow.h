@@ -45,6 +45,7 @@ private:
     DebugController* debug_ = nullptr;
     QTreeWidget* variables_ = nullptr;
     QAction* runAction_ = nullptr;
+    QAction* publishAction_ = nullptr;
     QAction* stopAction_ = nullptr;
     QAction* debugAction_ = nullptr;
     QAction* continueAction_ = nullptr;
@@ -115,6 +116,7 @@ private:
     void newFile();
     void openFile();
     void run();
+    void publish();
     void debug();
     void updateDebugActions();
     void updateDiagnosticsLabel();

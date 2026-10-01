@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include "BuildController.h"
+#include "ProgramPackage.h"
 #include "DebugController.h"
 #include "CodeEditor.h"
 #include "Diagnostics.h"
@@ -330,6 +331,129 @@ private slots:
         QVERIFY(!times.isEmpty());
         QVERIFY(beats > 0);
         QVERIFY(!build.isBusy());
+    }
+
+    void publishRejectsExistingDestination()
+    {
+        QTemporaryDir folder;
+        QVERIFY(folder.isValid());
+        QFile marker(folder.filePath("keep.txt"));
+        QVERIFY(marker.open(QIODevice::WriteOnly));
+        marker.write("keep"); marker.close();
+        BuildController build;
+        QSignalSpy failed(&build, &BuildController::buildError);
+        build.publish("void SmallMain() {}", {}, folder.path());
+        QCOMPARE(failed.size(), 1);
+        QVERIFY(!build.isBusy());
+        QVERIFY(marker.open(QIODevice::ReadOnly));
+        QCOMPARE(marker.readAll(), QByteArray("keep"));
+    }
+
+    void publishStandalone_data()
+    {
+        QTest::addColumn<QString>("source");
+        QTest::newRow("SmallMain") << QString(
+            "void SmallMain() { File f; f.Open(\"result.txt\", FileMode::Write); f.Print(\"published\"); }");
+        QTest::newRow("manual-main") << QString(
+            "#include <fstream>\nint main() { std::ofstream(\"result.txt\") << \"published\"; }");
+        QTest::newRow("Image") << QString(
+            "#include <small/image.h>\nvoid SmallMain() { Image image(8, 8); "
+            "Window window; window.Open(64, 64); DrawImage(window, image, 0, 0); window.Close(); "
+            "File f; f.Open(\"result.txt\", FileMode::Write); f.Print(\"published\"); }");
+    }
+
+    void publishStandalone()
+    {
+#ifndef Q_OS_WIN
+        QSKIP("Windows Publish integration test");
+#endif
+        if (!QFileInfo::exists(QCoreApplication::applicationDirPath() + "/licenses/SOURCE_ACCESS.md"))
+            QSKIP("Prepare the matching portable runtime and notices beside the test executable first.");
+        QFETCH(QString, source);
+        QTemporaryDir parent(QDir::tempPath() + "/SmallCpp publish-XXXXXX");
+        QVERIFY(parent.isValid());
+        const QString target = parent.filePath(QString::fromUtf8("나의 작품"));
+        QFile resource(parent.filePath("data.txt"));
+        QVERIFY(resource.open(QIODevice::WriteOnly));
+        resource.write("student data"); resource.close();
+        BuildController build;
+        QSignalSpy failed(&build, &BuildController::buildError);
+        QSignalSpy published(&build, &BuildController::published);
+        QSignalSpy started(&build, &BuildController::programStarted);
+        build.publish(source, {}, target, {resource.fileName()});
+        QTRY_VERIFY_WITH_TIMEOUT(!published.isEmpty() || !failed.isEmpty(), 45000);
+        QVERIFY2(failed.isEmpty(), qPrintable(failed.isEmpty() ? QString{} : failed.first().first().toString()));
+        QCOMPARE(published.size(), 1);
+        QVERIFY(started.isEmpty());
+        QVERIFY(!build.isBusy());
+        QVERIFY(QFileInfo::exists(target + "/data.txt"));
+        QVERIFY(QFileInfo::exists(target + "/source/program.cpp"));
+        QVERIFY(QFileInfo::exists(target + "/relink/program.o"));
+        QVERIFY(QFileInfo::exists(target + "/licenses/SOURCE_ACCESS.md"));
+        QVERIFY(!QFileInfo::exists(target + "/compiler"));
+        QVERIFY(!QFileInfo::exists(target + "/SmallCppIDE.exe"));
+        QProcess relink;
+        relink.setWorkingDirectory(target + "/relink");
+        relink.start(qEnvironmentVariable("SystemRoot") + "/System32/cmd.exe",
+                     {"/d", "/c", "RELINK.cmd"});
+        QVERIFY(relink.waitForFinished(15000));
+        QCOMPARE(relink.exitStatus(), QProcess::NormalExit);
+        QCOMPARE(relink.exitCode(), 0);
+        QProcess program;
+        auto env = QProcessEnvironment::systemEnvironment();
+        env.insert("PATH", env.value("SystemRoot") + "/System32");
+        env.remove("QT_PLUGIN_PATH"); env.remove("QT_QPA_PLATFORM_PLUGIN_PATH");
+        env.remove("QT_QPA_PLATFORM"); env.remove("SMALL_TEST_NO_CONSOLE_PAUSE");
+        program.setProcessEnvironment(env);
+        program.setWorkingDirectory(target);
+        program.start(target + "/program.exe", {});
+        QVERIFY(program.waitForFinished(15000));
+        QCOMPARE(program.exitStatus(), QProcess::NormalExit);
+        QCOMPARE(program.exitCode(), 0);
+        QFile result(target + "/result.txt");
+        QVERIFY(result.open(QIODevice::ReadOnly));
+        QVERIFY(result.readAll().contains("published"));
+    }
+
+    void publishCollisionAndCompileFailureLeaveNoFolder()
+    {
+        if (!QFileInfo::exists(QCoreApplication::applicationDirPath() + "/licenses/SOURCE_ACCESS.md"))
+            QSKIP("Prepared Windows portable fixture required");
+        QTemporaryDir parent;
+        QVERIFY(parent.isValid());
+        BuildController build;
+        QSignalSpy failed(&build, &BuildController::buildError);
+        const QString target = parent.filePath("export");
+        QFile conflict(parent.filePath("PROGRAM.EXE"));
+        QVERIFY(conflict.open(QIODevice::WriteOnly)); conflict.write("keep"); conflict.close();
+        build.publish("void SmallMain() {}", {}, target, {conflict.fileName()});
+        QCOMPARE(failed.size(), 1);
+        QVERIFY(!QFileInfo::exists(target));
+        failed.clear();
+        build.publish("void SmallMain() { invalid syntax; }", {}, target);
+        QTRY_VERIFY_WITH_TIMEOUT(!failed.isEmpty(), 30000);
+        QVERIFY(!QFileInfo::exists(target));
+        QVERIFY(!build.isBusy());
+    }
+
+    void publishCancellationLeavesNoFolder()
+    {
+        if (!QFileInfo::exists(QCoreApplication::applicationDirPath() + "/licenses/SOURCE_ACCESS.md"))
+            QSKIP("Prepared Windows portable fixture required");
+        QTemporaryDir parent;
+        QVERIFY(parent.isValid());
+        BuildController build;
+        QSignalSpy failed(&build, &BuildController::buildError);
+        QSignalSpy finished(&build, &BuildController::finished);
+        connect(&build, &BuildController::phaseChanged, &build, [&](const QString& text) {
+            if (text.startsWith("Packaging")) QTimer::singleShot(0, &build, &BuildController::stop);
+        });
+        build.publish("void SmallMain() {}", {}, parent.filePath("export"));
+        QTRY_VERIFY_WITH_TIMEOUT(!finished.isEmpty() || !failed.isEmpty(), 30000);
+        QVERIFY2(failed.isEmpty(), qPrintable(failed.isEmpty() ? QString{} : failed.first().first().toString()));
+        QVERIFY(finished.first().at(1).toBool());
+        QVERIFY(!QFileInfo::exists(parent.filePath("export")));
+        QVERIFY(QDir(parent.path()).entryList(QDir::Dirs | QDir::Hidden | QDir::NoDotAndDotDot).isEmpty());
     }
 
 

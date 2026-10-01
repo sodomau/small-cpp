@@ -124,6 +124,7 @@ set(SMALL_IDE_SOURCES
     TutorialBrowser.h TutorialBrowser.cpp
     
     BuildController.h BuildController.cpp
+    ProgramPackage.h ProgramPackage.cpp
     DebugController.h DebugController.cpp
     EntryPoint.h EntryPoint.cpp
     ExtensionRegistry.h ExtensionRegistry.cpp
