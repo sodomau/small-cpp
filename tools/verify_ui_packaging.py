@@ -8,7 +8,7 @@ tutorial=(root/"ide/TutorialBrowser.cpp").read_text(encoding="utf-8")
 from tutorial_content import validate_pack
 languages=json.loads((root/"tutorial/languages.json").read_text(encoding="utf-8"))
 lessons, sources=validate_pack(root/"tutorial", languages["languages"], languages["default"])
-assert len(lessons)==91
+assert len(lessons)==97
 assert '"${SMALL_ROOT}/tutorial" "${SMALL_BIN}/tutorial"' in cm
 assert 'SmallTutorials.qrc' not in cm
 packager=(root/"tools/package_release.ps1").read_text(encoding="utf-8")

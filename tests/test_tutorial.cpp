@@ -76,14 +76,17 @@ private slots:
     {
         TutorialCatalog catalog;
         QVERIFY2(catalog.isValid(), qPrintable(catalog.errorString()));
-        QCOMPARE(catalog.parts().size(), 8);
-        QCOMPARE(catalog.lessons().size(), 94);
-        QCOMPARE(catalog.availableIds().size(), 94);
+        QCOMPARE(catalog.parts().size(), 9);
+        QCOMPARE(catalog.lessons().size(), 100);
+        QCOMPARE(catalog.availableIds().size(), 100);
         QVERIFY(catalog.find("text_files_1"));
         QVERIFY(catalog.find("binary_files_2"));
         QVERIFY(catalog.find("publish"));
         QVERIFY(catalog.find("extra_files"));
         QVERIFY(catalog.find("share"));
+        QVERIFY(catalog.find("project_folder"));
+        QVERIFY(catalog.find("project_headers"));
+        QVERIFY(catalog.find("project_share"));
         int count = 0;
         for (const auto& lesson : catalog.lessons())
         {
@@ -99,7 +102,7 @@ private slots:
                 QVERIFY(exercise.solution.contains("SmallMain") || exercise.solution.contains("main("));
             }
         }
-        QCOMPARE(count, 97);
+        QCOMPARE(count, 103);
     }
 
     void catalogLoadsWithoutSourceFolderAsWorkingDirectory()
@@ -136,7 +139,8 @@ private slots:
                 browser.resize(1000, 850);
                 browser.show();
                 browser.findChild<QTreeWidget*>("tutorialList")->collapseAll();
-                for (const QString& id : {QString("publish"), QString("extra_files"), QString("share")}) {
+                for (const QString& id : {QString("publish"), QString("extra_files"), QString("share"),
+                                          QString("project_headers"), QString("project_roles")}) {
                     QVERIFY(browser.selectLesson(id));
                     QTest::qWait(10);
                     auto* screenshot = browser.findChild<QLabel*>("tutorialScreenshot");
@@ -173,7 +177,7 @@ private slots:
         for (const auto& part : korean.parts())
         {
             if (part.id.startsWith("extension")) continue;
-            if (part.id == "sharing" || part.id == "algorithms")
+            if (part.id == "sharing" || part.id == "algorithms" || part.id == "projects")
                 QVERIFY(part.title.contains(QRegularExpression("[가-힣]")));
         }
         for (const auto& lesson : korean.lessons())

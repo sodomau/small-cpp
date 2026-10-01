@@ -23,6 +23,17 @@ items remain visible in gray italic text and can be included again. The tree not
 removed files automatically. Run, Debug and Publish save modified project files
 first; files outside the project are not saved or compiled by those actions.
 
+**New Source File…** and **New Header File…** ask for a file name and show the
+destination folder. Right-click a folder to create inside it, or a file to create
+beside it. A blank area or the main **New** button creates in the project root.
+An omitted extension is added automatically. Existing files are not overwritten.
+
+The bilingual **Small Steps VIII — Build with Several Files** tutorial introduces
+projects using files in one folder. Its complete multi-file examples are in
+`examples/projects/Greeting` and `examples/projects/ScoreCard`. Open a copy of
+either folder as a project to experiment; the lesson's Open Example button opens
+the corresponding single-file practice version.
+
 Build folders (`build`, `CMakeFiles`, `.smallcpp`), version-control folders and
 folders containing the `.smallcpp-package` export marker are ignored. Symbolic
 links are not followed. Avoid putting program sources in these reserved folders.

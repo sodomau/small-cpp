@@ -146,8 +146,8 @@ def build():
             content += '<div class="lesson-navigation">' + ''.join(navigation) + '</div>'
             (destination / f'{slug}.html').write_text(page(title, language, content, f'../{other}/{slug}.html'), encoding='utf-8', newline='\n')
         title = 'One small step at a time.' if language == 'en' else '한 걸음씩, 차근차근.'
-        description = ('91 core lessons + 3 Image lessons. Read, try the examples in the desktop IDE, and make them your own.'
-                       if language == 'en' else '핵심 91개 레슨과 Image 확장 3개 레슨. 설명을 읽고 데스크톱 IDE에서 예제를 실행하며 나만의 코드로 바꿔 보세요.')
+        description = ('97 core lessons + 3 Image lessons. Read, try the examples in the desktop IDE, and make them your own.'
+                       if language == 'en' else '핵심 97개 레슨과 Image 확장 3개 레슨. 설명을 읽고 데스크톱 IDE에서 예제를 실행하며 나만의 코드로 바꿔 보세요.')
         content = f'<p class="eyebrow">SMALL STEPS</p><h1>{title}</h1><p class="lesson-goal">{description}</p><ol class="lesson-index">' + ''.join(index) + '</ol>'
         (destination / 'index.html').write_text(page(title, language, content, f'../{other}/index.html'), encoding='utf-8', newline='\n')
     return OUTPUT
