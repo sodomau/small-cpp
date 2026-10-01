@@ -119,7 +119,7 @@ void PublishDialog::addFiles(const QStringList& paths)
     for (const QString& path : paths) {
         const QString absolute = QFileInfo(path).absoluteFilePath();
         if (resources().contains(absolute)) continue;
-        auto* item = new QTreeWidgetItem(files_, {QFileInfo(path).fileName()});
+        auto* item = new QTreeWidgetItem(files_, {projectRoot_.isEmpty() ? QFileInfo(path).fileName() : QDir(projectRoot_).relativeFilePath(path)});
         item->setData(0, Qt::UserRole, absolute);
         item->setToolTip(0, absolute);
         auto* remove = new QPushButton("Remove", files_);
@@ -128,6 +128,13 @@ void PublishDialog::addFiles(const QStringList& paths)
             delete files_->takeTopLevelItem(files_->indexOfTopLevelItem(item));
         });
     }
+}
+
+void PublishDialog::setProjectRoot(const QString& root)
+{
+    projectRoot_ = root;
+    setWindowTitle("Publish Your Project");
+    findChild<QLabel*>("publishHeading")->setText("Publish Your Project");
 }
 
 void ShowPublishComplete(const QString& folder, const QString& executable, QWidget* parent)

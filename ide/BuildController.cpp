@@ -104,6 +104,7 @@ void BuildController::start(const QString& source, const QString& originalFilePa
 {
     if (isBusy()) return;
     publishDestination_.clear();
+    projectActive_ = false; debugBuild_ = false;
     startBuild(source, originalFilePath, unsavedName);
 }
 
@@ -112,6 +113,7 @@ void BuildController::publish(const QString& source, const QString& originalFile
                               const QString& unsavedName)
 {
     if (isBusy()) return;
+    projectActive_ = false; debugBuild_ = false;
     sourceSnapshot_ = source;
     sourcePath_ = originalFilePath;
     publishExecutableName_ = ProgramPackage::executableName(originalFilePath.isEmpty() ? unsavedName : originalFilePath);
@@ -149,8 +151,7 @@ void BuildController::startBuild(const QString& source, const QString& originalF
     extensions_ = ExtensionRegistry::detect(source, installedExtensions_);
     if (!publishDestination_.isEmpty()) {
         QString error;
-        if (!ProgramPackage::plan(QCoreApplication::applicationDirPath(), publishResources_,
-                                  extensions_, &packageFiles_, &error, publishExecutableName_)) { fail(error); return; }
+        if (!planPackage(&error)) { fail(error); return; }
     }
     if (!QFileInfo::exists(compiler()))
     {
@@ -198,17 +199,28 @@ void BuildController::startBuild(const QString& source, const QString& originalF
 
 void BuildController::compile()
 {
+    if (projectActive_) {
+        sourcePath_ = project_.absolute(project_.sources[projectSourceIndex_]);
+        sourceSnapshot_ = projectSnapshots_.value(sourcePath_);
+        objectPath_ = projectObjects_[projectSourceIndex_];
+    }
     setStage(Stage::Compiling);
     emit phaseChanged("Compiling your program...");
     buildOutput_.clear();
     stageTimer_.start();
     QStringList args = {
-        "-std=c++20", publishDestination_.isEmpty() ? "-O0" : "-O2", "-g0", "-Wall", "-Wextra", "-Werror=parentheses",
+        "-std=c++20", publishDestination_.isEmpty() ? "-O0" : "-O2", debugBuild_ ? "-g" : "-g0", "-Wall", "-Wextra", "-Werror=parentheses",
         "-fdiagnostics-color=never", "-fmessage-length=0",
         "-I", sdkDirectory_,
         "-iquote", originalDirectory_,
         "-c", sourcePath_, "-o", objectPath_
     };
+    if (projectActive_) {
+        args << "-I" << project_.root;
+        for (const auto& path : project_.includePaths) args << "-I" << path;
+        args << project_.compilerOptions;
+        if (debugBuild_) args << "-fno-omit-frame-pointer";
+    }
 
     // SmallMain is the beginner-facing path: the IDE supplies the Small
     // header and namespace shortcut. A real main() is ordinary C++ source,
@@ -240,7 +252,7 @@ void BuildController::link()
     emit phaseChanged("Linking...");
     buildOutput_.clear();
     stageTimer_.start();
-    QStringList args = {objectPath_};
+    QStringList args = projectActive_ ? projectObjects_ : QStringList{objectPath_};
     if (!usesOwnMain_) args << entryPath_;
     // Small IDE Run always keeps the console open at normal process exit.
     // Link the object directly so its static initializer cannot be discarded.
@@ -259,6 +271,11 @@ void BuildController::link()
         args << extension.libraryPath;
     }
     args << runtimePath_;
+    if (projectActive_) {
+        args << projectLibraries_;
+        for (const auto& path : project_.libraryPaths) args << "-L" << path;
+        args << project_.linkerOptions;
+    }
     const QString portableQtLib =
         QDir(QCoreApplication::applicationDirPath()).filePath("qt/lib");
     for (const char* library : SmallBuildConfig::QtLibraries)
@@ -280,6 +297,7 @@ void BuildController::launch()
 
     configureEnvironment(program_);
     QProcessEnvironment env = program_.processEnvironment();
+    if (projectActive_) env.insert("PATH", project_.libraryPaths.join(QDir::listSeparator()) + QDir::listSeparator() + env.value("PATH"));
     env.insert("SMALL_RUNTIME_ERROR_FILE", runtimeErrorPath_);
     program_.setProcessEnvironment(env);
     program_.setWorkingDirectory(originalDirectory_);
@@ -317,13 +335,15 @@ void BuildController::onBuildFinished(int code, QProcess::ExitStatus status)
     if (!buildOutput_.isEmpty()) emit textOutput(QString::fromUtf8(buildOutput_));
     if (stage_ == Stage::Compiling)
     {
-        compileMs_ = stageTimer_.elapsed();
+        compileMs_ += stageTimer_.elapsed();
+        if (projectActive_ && ++projectSourceIndex_ < project_.sources.size()) { compile(); return; }
         link();
     }
     else
     {
         emit buildTiming(compileMs_, stageTimer_.elapsed());
-        if (publishDestination_.isEmpty()) launch();
+        if (debugBuild_) { setStage(Stage::Idle); emit projectBuilt(executablePath_); }
+        else if (publishDestination_.isEmpty()) launch();
         else package();
     }
 }
@@ -358,6 +378,14 @@ void BuildController::fail(const QString& error)
     packageDirectory_.reset();
     setStage(Stage::Idle);
     emit phaseChanged("Build / run failed");
+    if (projectActive_) {
+        const QRegularExpression location("(?:^|\\n)(.+?):\\d+:\\d+:");
+        const auto match = location.match(error);
+        if (match.hasMatch()) {
+            const QString path = QDir::cleanPath(match.captured(1));
+            if (projectSnapshots_.contains(path)) { sourcePath_ = path; sourceSnapshot_ = projectSnapshots_.value(path); }
+        }
+    }
     emit buildError(error, sourceSnapshot_, sourcePath_);
 }
 
@@ -388,11 +416,21 @@ void BuildController::package()
     emit phaseChanged("Packaging your program...");
     if (stage_ != Stage::Packaging) return;
     QString error;
-    if (!ProgramPackage::plan(QCoreApplication::applicationDirPath(), publishResources_,
-                              extensions_, &packageFiles_, &error, publishExecutableName_)) { fail(error); return; }
+    if (!planPackage(&error)) { fail(error); return; }
     packageFiles_.prepend({executablePath_, publishExecutableName_});
-    packageFiles_.append({sourcePath_, "source/program.cpp"});
-    packageFiles_.append({objectPath_, "relink/program.o"});
+    if (projectActive_) {
+        for (const auto& source : project_.sources + project_.headers)
+            packageFiles_.append({project_.absolute(source), "source/" + source});
+        if (QFileInfo(project_.absolute("small.project")).isFile())
+            packageFiles_.append({project_.absolute("small.project"), "source/small.project"});
+        for (int i = 0; i < projectObjects_.size(); ++i)
+            packageFiles_.append({projectObjects_[i], QString("relink/program%1.o").arg(i)});
+        for (int i = 0; i < projectLibraries_.size(); ++i)
+            packageFiles_.append({projectLibraries_[i], QString("relink/external/%1/").arg(i) + QFileInfo(projectLibraries_[i]).fileName()});
+    } else {
+        packageFiles_.append({sourcePath_, "source/program.cpp"});
+        packageFiles_.append({objectPath_, "relink/program.o"});
+    }
     packageDirectory_ = std::make_unique<QTemporaryDir>(
         QFileInfo(publishDestination_).absolutePath() + "/.SmallCpp-publish-XXXXXX");
     if (!packageDirectory_->isValid()) { fail("Cannot create the publish folder."); return; }
@@ -416,7 +454,10 @@ void BuildController::copyPackageFile()
         QSaveFile file(packageDirectory_->filePath(name));
         return file.open(QIODevice::WriteOnly) && file.write(contents) == contents.size() && file.commit();
     };
-    QByteArray relink = "@echo off\r\ncd /d \"%~dp0\"\r\ng++ \"program.o\"";
+    QByteArray relink = "@echo off\r\ncd /d \"%~dp0\"\r\ng++";
+    if (projectActive_) {
+        for (int i = 0; i < projectObjects_.size(); ++i) relink += QString(" \"program%1.o\"").arg(i).toUtf8();
+    } else relink += " \"program.o\"";
     auto library = [&relink](const QString& path) {
         relink += " \"" + QDir::toNativeSeparators(path).toUtf8() + "\"";
     };
@@ -424,15 +465,23 @@ void BuildController::copyPackageFile()
     for (const auto& extension : std::as_const(extensions_))
         library("extensions/" + extension.id + "/" + QFileInfo(extension.libraryPath).fileName());
     library("runtime/" + QFileInfo(runtimePath_).fileName());
+    if (projectActive_) {
+        for (int i = 0; i < projectLibraries_.size(); ++i)
+            library(QString("external/%1/").arg(i) + QFileInfo(projectLibraries_[i]).fileName());
+        for (const auto& option : project_.linkerOptions) {
+            if (option.contains(QRegularExpression("[\\r\\n\"%!&|<>^]"))) { fail("Cannot make a portable relink script for option: " + option); return; }
+            library(option);
+        }
+    }
     for (const char* qt : SmallBuildConfig::QtLibraries)
         library("qt/lib/" + QFileInfo(QString::fromUtf8(qt)).fileName());
     relink += " -o \"../" + publishExecutableName_.toUtf8() + "\"\r\nexit /b %errorlevel%\r\n";
-    if (!write("relink/RELINK.cmd", relink) ||
+    if (!write(".smallcpp-package", "Small C++ published program\n") || !write("relink/RELINK.cmd", relink) ||
         !write("README.txt", QByteArray("Run ") + publishExecutableName_.toUtf8() + ".\r\n"
                "Share this entire folder; the DLLs and plugins are required.\r\n"
-               "Selected resource files are beside the executable. Paths are relative to this folder.\r\n"
+               "Resource paths are relative to this folder; keep subfolders intact.\r\n"
                "Small C++ is not required to run this program. Windows x64 only.\r\n\r\n"
-               "The author controls the license of their program in source/program.cpp.\r\n"
+               "The author controls the license of their program in source/.\r\n"
                "LICENSE covers Small-owned components, not the author's program.\r\n"
                "See licenses/ for external licenses and matching source access.\r\n"
                "Qt DLLs can be replaced by compatible builds. relink/ contains object and library\r\n"

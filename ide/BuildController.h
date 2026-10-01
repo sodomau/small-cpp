@@ -7,6 +7,8 @@
 #include <memory>
 #include "ExtensionRegistry.h"
 #include "ProgramPackage.h"
+#include "ProjectFolder.h"
+#include <QMap>
 
 // Owns compile -> link -> run. No blocking process waits on the GUI thread.
 class BuildController : public QObject
@@ -27,6 +29,10 @@ public:
                  const QString& destination, const QStringList& resources = {},
                  const QString& unsavedName = "Program.cpp");
     QString publishExecutableName() const { return publishExecutableName_; }
+    void startProject(const ProjectFolder& project, bool debugBuild = false,
+                      const QString& destination = {}, const QStringList& resources = {});
+    QStringList projectSourcePaths() const;
+    QMap<QString, QString> projectSnapshots() const { return projectSnapshots_; }
 
 signals:
     void busyChanged(bool busy);
@@ -38,6 +44,7 @@ signals:
     void buildTiming(qint64 compileMs, qint64 linkMs);
     void finished(int exitCode, bool stopped);
     void published(const QString& folder);
+    void projectBuilt(const QString& executable);
 
 private:
     QProcess build_;
@@ -58,6 +65,12 @@ private:
     QVector<PackageFile> packageFiles_;
     std::unique_ptr<QTemporaryDir> packageDirectory_;
     int packageIndex_ = 0;
+    bool projectActive_ = false, debugBuild_ = false;
+    ProjectFolder project_;
+    QStringList projectObjects_, projectLibraries_;
+    QMap<QString, QString> projectSnapshots_;
+    int projectSourceIndex_ = 0;
+    bool planPackage(QString* error);
 
     void setStage(Stage stage);
     void compile();

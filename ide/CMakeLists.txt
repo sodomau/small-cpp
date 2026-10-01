@@ -125,6 +125,10 @@ set(SMALL_IDE_SOURCES
     
     BuildController.h BuildController.cpp
     ProgramPackage.h ProgramPackage.cpp
+    ProjectFolder.h ProjectFolder.cpp
+    ProjectBuild.cpp
+    ProjectDebug.cpp
+    ProjectUi.cpp
     PublishDialog.h PublishDialog.cpp
     DebugController.h DebugController.cpp
     EntryPoint.h EntryPoint.cpp
@@ -209,6 +213,12 @@ if(SMALL_BUILD_TESTS)
     add_test(NAME small_standard_main COMMAND small_standard_main_test)
 
     qt_add_executable(small_qt_test "${SMALL_ROOT}/tests/test_qt.cpp")
+    qt_add_executable(small_project_test "${SMALL_ROOT}/tests/test_project.cpp")
+    target_link_libraries(small_project_test PRIVATE small_ide_components Qt6::Test Qt6::Widgets)
+    set_target_properties(small_project_test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${SMALL_BIN}")
+    add_dependencies(small_project_test small_sdk)
+    add_test(NAME small_project COMMAND small_project_test -o small_project-results.txt,txt)
+    set_tests_properties(small_project PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;SMALL_TEST_NO_CONSOLE_PAUSE=1")
     target_link_libraries(small_qt_test PRIVATE small_ide_components small_runtime
         Qt6::Test Qt6::Widgets Qt6::Multimedia)
     set_target_properties(small_qt_test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${SMALL_BIN}")

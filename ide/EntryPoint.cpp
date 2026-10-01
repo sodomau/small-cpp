@@ -89,11 +89,11 @@ QVector<Token> Lex(const QString& source)
     return out;
 }
 
-bool HasTopLevelMainDefinition(const QVector<Token>& tokens)
+bool HasTopLevelMainDefinition(const QVector<Token>& tokens, const QString& name = "main")
 {
     for (int i = 0; i < tokens.size(); ++i)
     {
-        if (tokens[i].depth != 0 || tokens[i].kind != Kind::Identifier || tokens[i].text != "main")
+        if (tokens[i].depth != 0 || tokens[i].kind != Kind::Identifier || tokens[i].text != name)
             continue;
         if (i + 1 >= tokens.size() || tokens[i + 1].text != "(") continue;
 
@@ -122,4 +122,13 @@ SmallEntryPoint DetectEntryPoint(const QString& source)
 {
     return HasTopLevelMainDefinition(Lex(source)) ? SmallEntryPoint::Main
                                                    : SmallEntryPoint::SmallMain;
+}
+
+QStringList DefinedEntryPoints(const QString& source)
+{
+    const auto tokens = Lex(source);
+    QStringList result;
+    if (HasTopLevelMainDefinition(tokens)) result << "main";
+    if (HasTopLevelMainDefinition(tokens, "SmallMain")) result << "SmallMain";
+    return result;
 }

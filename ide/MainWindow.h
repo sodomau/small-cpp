@@ -2,6 +2,8 @@
 
 #include "ExampleCatalog.h"
 #include "TutorialCatalog.h"
+#include "ProjectFolder.h"
+#include <QMap>
 
 #include <QFont>
 #include <QMainWindow>
@@ -22,6 +24,8 @@ class ApiBrowser;
 class TutorialBrowser;
 class CodeEditor;
 class Highlighter;
+class QDockWidget;
+class QTimer;
 
 class MainWindow : public QMainWindow
 {
@@ -34,6 +38,9 @@ public:
     bool openDocument(const QString& path);
     bool openExample(const QString& id);
     bool loadStyleSheet(const QString& path, QString* error = nullptr);
+    bool openProject(const QString& folder);
+    bool closeProject();
+    QString projectRoot() const { return project_.root; }
 
 protected:
     void closeEvent(QCloseEvent* event) override;
@@ -75,6 +82,28 @@ private:
     QString styleSheetPath_;
     QString customStyleSheet_;
     int nextUntitledNumber_ = 1;
+    ProjectFolder project_;
+    QDockWidget* projectDock_ = nullptr;
+    QTreeWidget* projectTree_ = nullptr;
+    QLabel* projectHeading_ = nullptr;
+    QLabel* projectStatus_ = nullptr;
+    QAction* closeProjectAction_ = nullptr;
+    QAction* openProjectAction_ = nullptr;
+    QAction* newProjectAction_ = nullptr;
+    QAction* projectSettingsAction_ = nullptr;
+    QTimer* projectRefresh_ = nullptr;
+    bool refreshingProject_ = false;
+    bool projectRun_ = false;
+    QMap<QString, QSet<int>> projectDebugBreakpoints_;
+    void createProjectUi();
+    void refreshProject();
+    void openProjectDialog();
+    void newProject();
+    void newProjectFile(const QString& suffix);
+    void addProjectFiles();
+    void editProjectSettings();
+    bool prepareProject();
+    void projectDiagnostic(const QString& raw, const QString& snapshot, const QString& file);
 
     // Diagnostics belong to the document/snapshot passed to Run, NEVER to
     // whichever tab happens to be selected when a QProcess signal arrives.

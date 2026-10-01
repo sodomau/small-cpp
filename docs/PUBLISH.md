@@ -37,10 +37,11 @@ DLLs, plugins, import libraries and license notices. An incomplete development
 build reports which file is missing. It uses the same compiler, SmallMain/manual
 main selection and installed extension detection as Run. Export uses `-O2`.
 
-The first version handles one source file and explicitly selected files with
-flat filenames. It does not discover resource paths, copy an entire source
-directory, support nested resource trees or third-party runtime dependencies,
-create an installer, sign an executable or upload a release. Test the folder on
+Single-file mode handles one source file and explicitly selected files with
+flat filenames. [Project mode](PROJECT_MODE.md) builds all included source files
+and preserves nested resource folders. Neither mode discovers third-party
+runtime dependencies, creates an installer, signs an executable or uploads a
+release. Test the folder on
 another Windows PC before distributing it widely. Files written by your program
 need a writable location.
 
