@@ -1,7 +1,7 @@
 ---
 title: 조건에 맞는 값 세기
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Part III — 프로그램으로 생각하기
 goal: 조건에 맞는 값 세기
 related-example: reference/array
 ---

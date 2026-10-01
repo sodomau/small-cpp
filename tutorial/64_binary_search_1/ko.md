@@ -1,7 +1,7 @@
 ---
 title: 찾을 범위를 반으로 줄이기
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Part III — 프로그램으로 생각하기
 goal: 찾을 범위를 반으로 줄이기
 related-example: reference/array
 ---

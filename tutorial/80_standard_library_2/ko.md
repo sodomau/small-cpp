@@ -1,7 +1,7 @@
 ---
 title: 음수의 크기 구하기
 part: cpp
-part-title: Part VI — Growing into C++
+part-title: Part VI — C++로 성장하기
 goal: 음수의 크기 구하기
 related-example: reference/console
 ---

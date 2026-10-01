@@ -1,7 +1,7 @@
 ---
 title: 표준 C++에서도 같은 절차 쓰기
 part: cpp
-part-title: Part VI — Growing into C++
+part-title: Part VI — C++로 성장하기
 goal: 표준 C++에서도 같은 절차 쓰기
 related-example: reference/console
 ---

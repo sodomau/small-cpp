@@ -1,7 +1,7 @@
 ---
 title: 숫자를 막대로 보여 주기
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Part III — 프로그램으로 생각하기
 goal: 숫자를 막대로 보여 주기
 related-example: programs/bouncing_ball
 ---

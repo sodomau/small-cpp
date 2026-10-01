@@ -1,7 +1,7 @@
 ---
 title: 좌표로 그림 그리기
 part: making_things
-part-title: Part II — Making Things
+part-title: Part II — 만들며 배우기
 goal: 좌표로 그림 그리기
 related-example: reference/drawing
 ---

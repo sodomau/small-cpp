@@ -1,7 +1,7 @@
 ---
 title: 진짜 시작 함수 main 쓰기
 part: cpp
-part-title: Part VI — Growing into C++
+part-title: Part VI — C++로 성장하기
 goal: 진짜 시작 함수 main 쓰기
 related-example: reference/console
 ---

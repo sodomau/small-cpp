@@ -1,7 +1,7 @@
 ---
 title: 복사 없이 읽기만 하기
 part: types
-part-title: Part V — Making Your Own Types
+part-title: Part V — 나만의 자료형 만들기
 goal: 복사 없이 읽기만 하기
 related-example: reference/array
 ---

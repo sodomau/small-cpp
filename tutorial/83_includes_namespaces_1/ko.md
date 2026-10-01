@@ -1,7 +1,7 @@
 ---
 title: 필요한 도구를 코드에 적기
 part: cpp
-part-title: Part VI — Growing into C++
+part-title: Part VI — C++로 성장하기
 goal: 필요한 도구를 코드에 적기
 related-example: reference/console
 ---

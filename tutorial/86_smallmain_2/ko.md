@@ -1,7 +1,7 @@
 ---
 title: 창을 정리한 뒤 런타임 끝내기
 part: cpp
-part-title: Part VI — Growing into C++
+part-title: Part VI — C++로 성장하기
 goal: 창을 정리한 뒤 런타임 끝내기
 related-example: reference/console
 ---

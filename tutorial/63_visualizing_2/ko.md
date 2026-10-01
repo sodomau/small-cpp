@@ -1,7 +1,7 @@
 ---
 title: 정렬 과정을 눈으로 보기
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Part III — 프로그램으로 생각하기
 goal: 정렬 과정을 눈으로 보기
 related-example: programs/bouncing_ball
 ---

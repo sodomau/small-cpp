@@ -1,7 +1,7 @@
 ---
 title: 효과음 재생하기
 part: making_things
-part-title: Part II — Making Things
+part-title: Part II — 만들며 배우기
 goal: 효과음 재생하기
 related-example: reference/sound
 ---

@@ -1,7 +1,7 @@
 ---
 title: 원소를 추가하고 하나씩 읽기
 part: cpp
-part-title: Part VI — Growing into C++
+part-title: Part VI — C++로 성장하기
 goal: 원소를 추가하고 하나씩 읽기
 related-example: reference/console
 ---

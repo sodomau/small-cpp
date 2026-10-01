@@ -1,7 +1,7 @@
 ---
 title: 작은 수부터 순서 정하기
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Part III — 프로그램으로 생각하기
 goal: 작은 수부터 순서 정하기
 related-example: reference/array
 ---

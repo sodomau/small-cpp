@@ -48,3 +48,7 @@ Create and save an image, load it again, change (0, 0) to Magenta, and save unde
 Using a second filename preserves the original file.
 
 @solution exercise2_solution.cpp
+
+## Share your finished program
+
+Part VII — Share Your Program shows how to make a Windows package. Include any image files your program loads with Add Files, then share the whole folder as a ZIP.

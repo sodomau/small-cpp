@@ -1,7 +1,7 @@
 ---
 title: 방향 바꾸어 튕기기
 part: making_things
-part-title: Part II — Making Things
+part-title: Part II — 만들며 배우기
 goal: 방향 바꾸어 튕기기
 related-example: programs/bouncing_ball
 ---

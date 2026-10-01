@@ -1,7 +1,7 @@
 ---
 title: 실제 시간에 맞춰 움직이기
 part: making_things
-part-title: Part II — Making Things
+part-title: Part II — 만들며 배우기
 goal: 실제 시간에 맞춰 움직이기
 related-example: reference/stopwatch
 ---

@@ -1,7 +1,7 @@
 ---
 title: 마우스를 따라가는 원
 part: making_things
-part-title: Part II — Making Things
+part-title: Part II — 만들며 배우기
 goal: 마우스를 따라가는 원
 related-example: reference/mouse
 ---

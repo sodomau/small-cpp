@@ -1,7 +1,7 @@
 ---
 title: 소리가 끝날 때까지 기다리기
 part: making_things
-part-title: Part II — Making Things
+part-title: Part II — 만들며 배우기
 goal: 소리가 끝날 때까지 기다리기
 related-example: reference/sound
 ---

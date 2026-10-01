@@ -73,11 +73,14 @@ private slots:
     {
         TutorialCatalog catalog;
         QVERIFY2(catalog.isValid(), qPrintable(catalog.errorString()));
-        QCOMPARE(catalog.parts().size(), 7);
-        QCOMPARE(catalog.lessons().size(), 91);
-        QCOMPARE(catalog.availableIds().size(), 91);
+        QCOMPARE(catalog.parts().size(), 8);
+        QCOMPARE(catalog.lessons().size(), 94);
+        QCOMPARE(catalog.availableIds().size(), 94);
         QVERIFY(catalog.find("text_files_1"));
         QVERIFY(catalog.find("binary_files_2"));
+        QVERIFY(catalog.find("publish"));
+        QVERIFY(catalog.find("extra_files"));
+        QVERIFY(catalog.find("share"));
         int count = 0;
         for (const auto& lesson : catalog.lessons())
         {
@@ -93,7 +96,7 @@ private slots:
                 QVERIFY(exercise.solution.contains("SmallMain") || exercise.solution.contains("main("));
             }
         }
-        QCOMPARE(count, 94);
+        QCOMPARE(count, 97);
     }
 
     void catalogLoadsWithoutSourceFolderAsWorkingDirectory()
@@ -115,6 +118,12 @@ private slots:
         TutorialCatalog english("en");
         TutorialCatalog unavailable("zz");
         QVERIFY2(english.isValid(), qPrintable(english.errorString()));
+        for (const auto& part : korean.parts())
+        {
+            if (part.id.startsWith("extension")) continue;
+            if (part.id == "sharing" || part.id == "algorithms")
+                QVERIFY(part.title.contains(QRegularExpression("[가-힣]")));
+        }
         for (const auto& lesson : korean.lessons())
         {
             if (lesson.sourceDirectory.contains("/extensions/")) continue;

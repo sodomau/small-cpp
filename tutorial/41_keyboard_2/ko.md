@@ -1,7 +1,7 @@
 ---
 title: 한 번 누를 때 한 번 바꾸기
 part: making_things
-part-title: Part II — Making Things
+part-title: Part II — 만들며 배우기
 goal: 한 번 누를 때 한 번 바꾸기
 related-example: reference/keyboard
 ---
