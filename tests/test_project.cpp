@@ -10,6 +10,8 @@
 #include <QDir>
 #include <QDockWidget>
 #include <QFile>
+#include <QFileDialog>
+#include <QFileSystemModel>
 #include <QFontDatabase>
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -110,6 +112,40 @@ private slots:
         QVERIFY(tabs(window)->indexOf(outside) >= 0); QVERIFY(!tabs(window)->tabText(tabs(window)->indexOf(outside)).contains("Outside Project"));
         QCOMPARE(action(window, "actionRun")->text(), QString("Run"));
         QVERIFY(window.findChild<QDockWidget*>("projectDock")->isHidden());
+    }
+    void projectPickerShowsFilesAndAcceptsFolder()
+    {
+        QTemporaryDir directory; fixture(directory.filePath("MyGame"));
+        MainWindow window;
+        QCOMPARE(action(window, "actionOpenProject")->text(), QString("Open Project (Folder)..."));
+        bool foldersOnly = false, filesShown = false;
+        QTimer::singleShot(100, &window, [&] {
+            auto* dialog = window.findChild<QFileDialog*>("openProjectFolderDialog");
+            if (!dialog) return;
+            foldersOnly = dialog->fileMode() == QFileDialog::Directory;
+            auto* model = dialog->findChild<QFileSystemModel*>();
+            filesShown = !dialog->testOption(QFileDialog::ShowDirsOnly) && model && (model->filter() & QDir::Files);
+            dialog->setDirectory(directory.filePath("MyGame"));
+            QTimer::singleShot(100, dialog, [dialog] { QMetaObject::invokeMethod(dialog, "accept", Qt::DirectConnection); });
+        });
+        action(window, "actionOpenProject")->trigger();
+        QVERIFY(foldersOnly); QVERIFY(filesShown);
+        QCOMPARE(window.projectRoot(), QFileInfo(directory.filePath("MyGame")).canonicalFilePath());
+    }
+    void excludedFilesLookDifferentInBothThemes()
+    {
+        QTemporaryDir directory; fixture(directory.path());
+        auto project = load(directory.path()); QString error;
+        QVERIFY(project.setExcluded("logic", true, &error));
+        MainWindow window; QVERIFY(window.openProject(directory.path()));
+        auto* tree = window.findChild<QTreeWidget*>("projectFiles");
+        for (bool dark : {false, true}) {
+            action(window, dark ? "actionThemeDark" : "actionThemeLight")->trigger();
+            const auto items = tree->findItems("value.cpp (Excluded)", Qt::MatchExactly | Qt::MatchRecursive);
+            QCOMPARE(items.size(), 1);
+            QTRY_COMPARE_WITH_TIMEOUT(items.first()->foreground(0).color(), QColor(dark ? "#8993a3" : "#929aa6"), 3000);
+            QVERIFY(items.first()->font(0).italic());
+        }
     }
     void cancellingCloseKeepsProjectAndText()
     {
@@ -216,7 +252,10 @@ private slots:
         const QString output=qEnvironmentVariable("SMALL_PROJECT_PREVIEW_DIR"); if(output.isEmpty()) return;
         QFontDatabase::addApplicationFont(qEnvironmentVariable("SystemRoot")+"/Fonts/segoeui.ttf");
         QFontDatabase::addApplicationFont(qEnvironmentVariable("SystemRoot")+"/Fonts/segoeuib.ttf");
-        QVERIFY(QDir().mkpath(output)); QTemporaryDir directory; fixture(directory.filePath("MyGame"));
+          QVERIFY(QDir().mkpath(output)); QTemporaryDir directory; fixture(directory.filePath("MyGame"));
+          write(directory.filePath("MyGame/practice.cpp"), "void SmallMain() {}\n");
+          QString error; auto project = load(directory.filePath("MyGame"));
+          QVERIFY(project.setExcluded("practice.cpp", true, &error));
         write(directory.filePath("outside.cpp"), "// A separate program, outside MyGame.\nvoid SmallMain()\n{\n    Print(\"Hello!\");\n}\n");
         for(bool dark:{false,true}) {
             MainWindow window;

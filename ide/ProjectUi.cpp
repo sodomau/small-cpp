@@ -33,7 +33,7 @@ void MainWindow::createProjectUi()
     menu->addSeparator();
     newProjectAction_ = menu->addAction("New Project...");
     newProjectAction_->setObjectName("actionNewProject");
-    openProjectAction_ = menu->addAction("Open Folder...");
+    openProjectAction_ = menu->addAction("Open Project (Folder)...");
     openProjectAction_->setObjectName("actionOpenProject");
     closeProjectAction_ = menu->addAction("Close Project");
     closeProjectAction_->setObjectName("actionCloseProject");
@@ -118,7 +118,7 @@ bool MainWindow::openProject(const QString& folder)
     if (build_->isBusy() || debug_->isBusy() || closing_ || confirmingClose_) return false;
     ProjectFolder next;
     QString error;
-    if (!next.load(folder, &error)) { QMessageBox::warning(this, "Open Folder", error); return false; }
+    if (!next.load(folder, &error)) { QMessageBox::warning(this, "Open Project", error); return false; }
     if (next.root == project_.root) return true;
     if (!closeProject()) return false;
     project_ = next;
@@ -193,13 +193,22 @@ void MainWindow::refreshProject()
                     item->setText(0, segment + (project_.excludes(path) ? " (Excluded)" : ""));
                     item->setData(0, Qt::UserRole, path);
                     item->setToolTip(0, project_.absolute(path) + (project_.excludes(path) ? "\nExcluded; the file is still on disk." : ""));
-                    if (project_.excludes(path)) item->setForeground(0, palette().color(QPalette::PlaceholderText));
                     item->setExpanded(expanded.contains(path));
                     items.insert(path, item);
                 }
                 parent = items.value(path);
             }
         }
+    }
+    QTreeWidgetItemIterator iterator(projectTree_);
+    while (*iterator) {
+        auto* item = *iterator;
+        const bool excluded = project_.excludes(item->data(0, Qt::UserRole).toString());
+        item->setForeground(0, excluded ? QBrush(QColor(darkTheme_ ? "#8993a3" : "#929aa6")) : QBrush());
+        QFont font = item->font(0);
+        font.setItalic(excluded);
+        item->setFont(0, font);
+        ++iterator;
     }
     for (int i = 0; i < tabs_->count(); ++i) updateTabTitle(documentAt(i));
     updateTitle();
@@ -208,8 +217,18 @@ void MainWindow::refreshProject()
 
 void MainWindow::openProjectDialog()
 {
-    const QString folder = QFileDialog::getExistingDirectory(this, "Open Project Folder", initialDirectory(currentDocument()));
-    if (!folder.isEmpty()) openProject(folder);
+    // Qt's directory picker can show files as context while accepting folders only.
+    QFileDialog dialog(this, "Open Project (Folder)", initialDirectory(currentDocument()));
+    dialog.setObjectName("openProjectFolderDialog");
+    dialog.setOption(QFileDialog::DontUseNativeDialog);
+    dialog.setFileMode(QFileDialog::Directory);
+    dialog.setOption(QFileDialog::ShowDirsOnly, false);
+    dialog.setViewMode(QFileDialog::Detail);
+    dialog.setLabelText(QFileDialog::Accept, "Open Project");
+    dialog.setLabelText(QFileDialog::FileName, "Project folder:");
+    dialog.resize(850, 560);
+    if (dialog.exec() == QDialog::Accepted && !dialog.selectedFiles().isEmpty())
+        openProject(dialog.selectedFiles().first());
 }
 void MainWindow::newProject()
 {

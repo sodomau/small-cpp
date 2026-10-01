@@ -24,7 +24,7 @@ Use **Help → Welcome** to show the start tab again.
 
 ## Folder projects
 
-Use **File → Open Folder…** for a program with several source files, headers or
+Use **File → Open Project (Folder)…** for a program with several source files, headers or
 resource folders. The folder becomes the project, including its subfolders.
 See [Folder projects](PROJECT_MODE.md) for exclusions, debugging and publishing.
 

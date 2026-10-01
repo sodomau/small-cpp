@@ -1,6 +1,6 @@
 # Folder projects
 
-Choose **File → Open Folder…** to use a folder as a project, or **New Project…**
+Choose **File → Open Project (Folder)…** to use a folder as a project, or **New Project…**
 to create one with a starter `main.cpp`. No project configuration is required.
 
 The project name appears above the file tree, in the window title and in the
@@ -17,7 +17,7 @@ practice programs should be excluded or kept in another project folder.
 
 Right-click the tree to create a source file or header, add existing files, or
 choose **Exclude from Project**. Exclusion does not delete a file. Excluded
-items remain visible and can be included again. The tree notices added and
+items remain visible in gray italic text and can be included again. The tree notices added and
 removed files automatically. Run, Debug and Publish save modified project files
 first; files outside the project are not saved or compiled by those actions.
 
