@@ -99,7 +99,7 @@ private:
     void refreshProject();
     void openProjectDialog();
     void newProject();
-    void newProjectFile(const QString& suffix);
+    void newProjectFile(const QString& suffix, const QString& directory = QString());
     void addProjectFiles();
     void editProjectSettings();
     bool prepareProject();

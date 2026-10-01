@@ -119,9 +119,12 @@ void MainWindow::createProjectUi()
         if (build_->isBusy() || debug_->isBusy()) return;
         auto* item = projectTree_->itemAt(position);
         const QString relative = item ? item->data(0, Qt::UserRole).toString() : QString();
+        const QFileInfo target(project_.absolute(relative));
+        const QString directory = relative.isEmpty() ? project_.root
+            : (target.isDir() ? target.absoluteFilePath() : target.absolutePath());
         QMenu menu(this);
-        menu.addAction("New Source File...", this, [this] { newProjectFile("cpp"); });
-        menu.addAction("New Header File...", this, [this] { newProjectFile("h"); });
+        menu.addAction("New Source File...", this, [this, directory] { newProjectFile("cpp", directory); });
+        menu.addAction("New Header File...", this, [this, directory] { newProjectFile("h", directory); });
         menu.addAction("Add Existing Files...", this, &MainWindow::addProjectFiles);
         if (!relative.isEmpty()) {
             menu.addSeparator();
@@ -335,10 +338,22 @@ void MainWindow::newProject()
     if (!file.open(QIODevice::WriteOnly) || file.write(text) != text.size() || !file.commit()) { QMessageBox::warning(this, "New Project", "Cannot create main.cpp."); return; }
     openProject(folder);
 }
-void MainWindow::newProjectFile(const QString& suffix)
+void MainWindow::newProjectFile(const QString& suffix, const QString& directory)
 {
-    QString path = QFileDialog::getSaveFileName(this, "New Project File", project_.absolute("NewFile." + suffix));
-    if (path.isEmpty()) return;
+    const QString folder = directory.isEmpty() ? project_.root : directory;
+    QInputDialog dialog(this);
+    dialog.setObjectName("newProjectFileDialog");
+    dialog.setWindowTitle(suffix == "h" ? "New Header File" : "New Source File");
+    const QString relative = QDir(project_.root).relativeFilePath(folder);
+    dialog.setLabelText("File name\nFolder: " + (relative == "." ? project_.name : relative));
+    dialog.setTextValue("NewFile." + suffix);
+    if (dialog.exec() != QDialog::Accepted) return;
+    const QString name = dialog.textValue().trimmed();
+    if (name.isEmpty()) return;
+    if (name == "." || name == ".." || name.contains('/') || name.contains('\\')) {
+        QMessageBox::warning(this, "New File", "Enter a file name without slashes."); return;
+    }
+    QString path = QDir(folder).filePath(name);
     if (QFileInfo(path).suffix().isEmpty()) path += "." + suffix;
     if (!project_.contains(path) || QFileInfo::exists(path)) { QMessageBox::warning(this, "New File", "Choose a new file inside the project folder."); return; }
     QSaveFile file(path);

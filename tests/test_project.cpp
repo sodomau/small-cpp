@@ -15,6 +15,7 @@
 #include <QFontDatabase>
 #include <QJsonDocument>
 #include <QJsonArray>
+#include <QInputDialog>
 #include <QLabel>
 #include <QMessageBox>
 #include <QMenu>
@@ -226,6 +227,59 @@ private slots:
             QCOMPARE(tabs(window)->tabText(tabs(window)->currentIndex()).contains("[Excluded]"), exclude);
         }
     }
+    void newFilesUseContextFolder_data()
+    {
+        QTest::addColumn<QString>("context");
+        QTest::addColumn<QString>("suffix");
+        QTest::addColumn<QString>("expected");
+        QTest::newRow("folder-source") << "logic" << "cpp" << "logic/created.cpp";
+        QTest::newRow("file-header") << "value.cpp" << "h" << "logic/created.h";
+        QTest::newRow("blank-root") << "" << "cpp" << "created.cpp";
+        QTest::newRow("toolbar-root") << "toolbar" << "cpp" << "created.cpp";
+    }
+    void newFilesUseContextFolder()
+    {
+        QFETCH(QString, context); QFETCH(QString, suffix); QFETCH(QString, expected);
+        QTemporaryDir directory; fixture(directory.path());
+        MainWindow window; QVERIFY(window.openProject(directory.path()));
+        auto* tree = window.findChild<QTreeWidget*>("projectFiles");
+        window.show(); tree->expandAll();
+        bool accepted = false;
+        auto enterName = [&] {
+            auto* dialog = window.findChild<QInputDialog*>("newProjectFileDialog");
+            if (!dialog) return;
+            dialog->setTextValue("created"); // The appropriate extension is supplied.
+            accepted = true; dialog->accept();
+        };
+        if (context == "toolbar") {
+            QTimer::singleShot(0, &window, enterName);
+            action(window, "actionNew")->trigger();
+        } else {
+            QPoint position(tree->viewport()->width() / 2, tree->viewport()->height() - 5);
+            if (!context.isEmpty()) {
+                const auto items = tree->findItems(context, Qt::MatchExactly | Qt::MatchRecursive);
+                QCOMPARE(items.size(), 1);
+                position = tree->visualItemRect(items.first()).center();
+            }
+            QTimer::singleShot(0, &window, [&] {
+                auto* menu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+                if (!menu) return;
+                for (auto* entry : menu->actions()) {
+                    if (entry->text() != (suffix == "h" ? "New Header File..." : "New Source File...")) continue;
+                    QTimer::singleShot(0, &window, enterName);
+                    entry->trigger(); break;
+                }
+                menu->close();
+            });
+            QMetaObject::invokeMethod(tree, "customContextMenuRequested", Qt::DirectConnection, Q_ARG(QPoint, position));
+        }
+        QVERIFY(accepted);
+        QVERIFY(QFileInfo::exists(directory.filePath(expected)));
+        const auto project = load(directory.path());
+        QVERIFY((suffix == "h" ? project.headers : project.sources).contains(expected));
+        QCOMPARE(qobject_cast<EditorDocument*>(tabs(window)->currentWidget())->filePath(), directory.filePath(expected));
+        if (suffix == "h") QCOMPARE(read(directory.filePath(expected)), QByteArray("#pragma once\n"));
+    }
     void cancellingCloseKeepsProjectAndText()
     {
         QTemporaryDir directory; fixture(directory.path()); MainWindow window; QVERIFY(window.openProject(directory.path()));
@@ -250,6 +304,49 @@ private slots:
         QVERIFY2(failed.isEmpty(), qPrintable(failed.isEmpty() ? QString() : failed.first().first().toString()));
         QCOMPARE(read(directory.filePath("project/result.txt")).trimmed(), QByteArray("73"));
         QVERIFY(!helper->document()->isModified()); QVERIFY(read(helper->filePath()).contains("73"));
+    }
+    void tutorialProjectsRun_data()
+    {
+        QTest::addColumn<QString>("name");
+        QTest::addColumn<QByteArray>("output");
+        QTest::newRow("greeting") << "Greeting" << QByteArray("Hello from another file!\n");
+        QTest::newRow("score") << "ScoreCard" << QByteArray("30\n");
+    }
+    void tutorialProjectsRun()
+    {
+        QFETCH(QString, name); QFETCH(QByteArray, output);
+        const QString samples = QFINDTESTDATA("../examples/projects");
+        QVERIFY(!samples.isEmpty());
+        QTemporaryDir directory;
+        const QString projectPath = directory.filePath(name);
+        QVERIFY(QDir().mkpath(projectPath));
+        const QDir sample(QDir(samples).filePath(name));
+        for (const auto& file : sample.entryList(QDir::Files))
+            QVERIFY(QFile::copy(sample.filePath(file), QDir(projectPath).filePath(file)));
+        const QString preview = qEnvironmentVariable("SMALL_PROJECT_TUTORIAL_PREVIEW_DIR");
+        if (!preview.isEmpty()) {
+            QFontDatabase::addApplicationFont(qEnvironmentVariable("SystemRoot") + "/Fonts/consola.ttf");
+            const QFont previous = QApplication::font();
+            QApplication::setFont(QFont("Segoe UI", 11));
+            SmallSettings().setValue("appearance/dark", false);
+            MainWindow window; QVERIFY(window.openProject(projectPath));
+            window.resize(1120, 720); window.show(); QTest::qWait(100);
+            QVERIFY(QDir().mkpath(preview));
+            QVERIFY(window.grab().save(QDir(preview).filePath(name + ".png")));
+            QApplication::setFont(previous);
+        }
+        BuildController build;
+        QSignalSpy built(&build, &BuildController::projectBuilt);
+        QSignalSpy failed(&build, &BuildController::buildError);
+        build.startProject(load(projectPath), true);
+        QTRY_VERIFY_WITH_TIMEOUT(!built.isEmpty() || !failed.isEmpty(), 30000);
+        QVERIFY2(failed.isEmpty(), qPrintable(failed.isEmpty() ? QString() : failed.first().first().toString()));
+        QProcess program;
+        program.setWorkingDirectory(projectPath);
+        program.start(built.first().first().toString(), QStringList{});
+        QVERIFY(program.waitForFinished(10000));
+        QCOMPARE(program.exitCode(), 0);
+        QCOMPARE(program.readAllStandardOutput().replace("\r\n", "\n"), output);
     }
     void startFunctionsAndDiagnosticFile()
     {
