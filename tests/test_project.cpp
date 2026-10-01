@@ -513,6 +513,13 @@ private slots:
         QTRY_VERIFY_WITH_TIMEOUT(!built.isEmpty() || !failed.isEmpty(), 30000);
         QVERIFY2(failed.isEmpty(), qPrintable(failed.isEmpty() ? QString() : failed.first().first().toString()));
         QProcess program;
+        auto environment = QProcessEnvironment::systemEnvironment();
+        const QString separator(QDir::listSeparator());
+        environment.insert("PATH", QFileInfo(QString::fromUtf8(SmallBuildConfig::Compiler)).absolutePath()
+                           + separator + QCoreApplication::applicationDirPath()
+                           + separator + QString::fromUtf8(SmallBuildConfig::QtBin)
+                           + separator + environment.value("PATH"));
+        program.setProcessEnvironment(environment);
         program.setWorkingDirectory(projectPath);
         program.start(built.first().first().toString(), QStringList{});
         QVERIFY(program.waitForFinished(10000));
