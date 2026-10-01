@@ -40,6 +40,20 @@
 #endif
 
 namespace {
+void selectProjectItem(QTreeWidget* tree, const QString& relative)
+{
+    QTreeWidgetItemIterator iterator(tree);
+    while (*iterator) {
+        auto* item = *iterator;
+        if (item->data(0, Qt::UserRole).toString() == relative) {
+            for (auto* parent = item->parent(); parent; parent = parent->parent()) parent->setExpanded(true);
+            tree->setCurrentItem(item);
+            tree->scrollToItem(item);
+            return;
+        }
+        ++iterator;
+    }
+}
 class ProjectFileDelegate : public QStyledItemDelegate
 {
 public:
@@ -139,6 +153,7 @@ void MainWindow::createProjectUi()
         const bool canEdit = !build_->isBusy() && !debug_->isBusy();
         menu.addAction("New Source File...", this, [this, directory] { newProjectFile("cpp", directory); })->setEnabled(canEdit);
         menu.addAction("New Header File...", this, [this, directory] { newProjectFile("h", directory); })->setEnabled(canEdit);
+        menu.addAction("New Folder...", this, [this, directory] { newProjectFolder(directory); })->setEnabled(canEdit);
         menu.addAction("Add Existing Files...", this, &MainWindow::addProjectFiles)->setEnabled(canEdit);
         menu.addSeparator();
         const QString path = relative.isEmpty() ? project_.root : target.absoluteFilePath();
@@ -271,7 +286,8 @@ void MainWindow::refreshProject()
     ProjectFolder next;
     QString error;
     if (!next.load(project_.root, &error)) { statusBar()->showMessage(error); refreshingProject_ = false; return; }
-    const bool same = next.files == project_.files && next.excluded == project_.excluded && projectTree_->topLevelItemCount() > 0;
+    const bool same = next.files == project_.files && next.directories == project_.directories
+        && next.excluded == project_.excluded && projectTree_->topLevelItemCount() > 0;
     project_ = next;
     projectHeading_->setText("PROJECT\n" + project_.name);
     projectHeading_->setToolTip(project_.root);
@@ -281,7 +297,7 @@ void MainWindow::refreshProject()
         while (*iterator) { if ((*iterator)->isExpanded()) expanded.insert((*iterator)->data(0, Qt::UserRole).toString()); ++iterator; }
         projectTree_->clear();
         QMap<QString, QTreeWidgetItem*> items;
-        for (const QString& file : project_.files) {
+        for (const QString& file : project_.directories + project_.files) {
             QString path;
             QTreeWidgetItem* parent = nullptr;
             const auto segments = file.split('/');
@@ -414,7 +430,33 @@ void MainWindow::newProjectFile(const QString& suffix, const QString& directory)
     QSaveFile file(path);
     const QByteArray contents = suffix == "h" ? QByteArray("#pragma once\n") : QByteArray("// Add your helper functions here.\n");
     if (!file.open(QIODevice::WriteOnly) || file.write(contents) != contents.size() || !file.commit()) { QMessageBox::warning(this, "New File", "Cannot create the file."); return; }
-    refreshProject(); openDocument(path);
+    refreshProject();
+    selectProjectItem(projectTree_, QDir(project_.root).relativeFilePath(path));
+    openDocument(path);
+}
+void MainWindow::newProjectFolder(const QString& directory)
+{
+    QInputDialog dialog(this);
+    dialog.setObjectName("newProjectFolderDialog");
+    dialog.setWindowTitle("New Folder");
+    const QString relative = QDir(project_.root).relativeFilePath(directory);
+    dialog.setLabelText("Folder name\nLocation: " + (relative == "." ? project_.name : relative));
+    dialog.setTextValue("NewFolder");
+    if (dialog.exec() != QDialog::Accepted) return;
+    const QString name = dialog.textValue().trimmed();
+    if (name.isEmpty()) return;
+    if (name == "." || name == ".." || name.endsWith('.') || name.contains('/') || name.contains('\\')) {
+        QMessageBox::warning(this, "New Folder", "Enter a folder name without slashes or a trailing dot."); return;
+    }
+    if (ProjectFolder::isIgnoredDirectory(name)) {
+        QMessageBox::warning(this, "New Folder", "That name is reserved for build or system folders. Choose another name."); return;
+    }
+    const QString path = QDir(directory).filePath(name);
+    if (!project_.contains(path) || QFileInfo::exists(path) || !QDir(directory).mkdir(name)) {
+        QMessageBox::warning(this, "New Folder", "Cannot create the folder. Choose a new name inside the project."); return;
+    }
+    refreshProject();
+    selectProjectItem(projectTree_, QDir(project_.root).relativeFilePath(path));
 }
 void MainWindow::addProjectFiles()
 {

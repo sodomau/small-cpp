@@ -28,6 +28,12 @@ destination folder. Right-click a folder to create inside it, or a file to creat
 beside it. A blank area or the main **New** button creates in the project root.
 An omitted extension is added automatically. Existing files are not overwritten.
 
+**New Folder…** creates a folder at the same context location and selects it in
+the tree. Empty folders are visible too, so you can right-click a new folder to
+create a source or header inside it. Folder creation asks only for a name;
+existing folders are kept. The IDE does not provide folder moving, renaming or
+deleting. Empty folders do not become build sources or Publish resources.
+
 Right-click the project heading or a blank area in its file list and choose
 **Show Project in File Explorer** to open the project folder. Right-click a file
 in the list or its tab and choose **Show in File Explorer** to reveal that file

@@ -80,7 +80,7 @@ bool ProjectFolder::load(const QString& folder, QString* error)
 }
 bool ProjectFolder::scan(QString* error)
 {
-    files.clear(); sources.clear(); headers.clear(); resources.clear();
+    directories.clear(); files.clear(); sources.clear(); headers.clear(); resources.clear();
     if (!QFileInfo(root).isDir()) { *error = "The project folder is no longer available."; return false; }
     std::function<void(const QString&)> visit = [&](const QString& relative) {
         QDir directory(absolute(relative));
@@ -88,9 +88,9 @@ bool ProjectFolder::scan(QString* error)
             if (info.isSymLink()) continue;
             const QString path = relative.isEmpty() ? info.fileName() : relative + "/" + info.fileName();
             if (info.isDir()) {
-                const QString n = info.fileName().toLower();
-                if (QStringList{".git", ".svn", ".hg", ".smallcpp", "build", "cmakefiles"}.contains(n) ||
-                    n.startsWith(".smallcpp-publish-") || QFileInfo(QDir(info.absoluteFilePath()).filePath(".smallcpp-package")).exists()) continue;
+                if (isIgnoredDirectory(info.fileName()) ||
+                    QFileInfo(QDir(info.absoluteFilePath()).filePath(".smallcpp-package")).exists()) continue;
+                directories << path;
                 visit(path);
             } else if (info.isFile() && info.fileName() != "small.project" && info.fileName() != ".smallcpp-package") {
                 files << path;
@@ -103,6 +103,12 @@ bool ProjectFolder::scan(QString* error)
     };
     visit("");
     return true;
+}
+bool ProjectFolder::isIgnoredDirectory(const QString& name)
+{
+    const QString lower = name.toLower();
+    return QStringList{".git", ".svn", ".hg", ".smallcpp", "build", "cmakefiles"}.contains(lower)
+        || lower.startsWith(".smallcpp-publish-");
 }
 bool ProjectFolder::setExcluded(const QString& relative, bool exclude, QString* error)
 {

@@ -32,7 +32,7 @@ The folder name is the project name. A copy with a different folder name works t
 
 ## Find out more — subfolders
 
-Sources in subfolders are included automatically. Right-click an existing folder and choose New Source File or New Header File to create a file there. Right-click a file to create beside it. A blank area or the main New button creates in the project root. One folder is enough to start.
+Sources in subfolders are included automatically. Right-click a blank area in the file list and choose **New Folder…** to make a folder. Empty folders are visible and a new folder is selected immediately. Right-click a folder and choose **New Source File…** or **New Header File…** to create a file there. Right-click a file to create beside it. A blank area or the main New button creates files in the project root. New Folder also creates inside a clicked folder or beside a clicked file. One folder is enough to start.
 
 ## Exercise — Check it yourself
 

@@ -101,6 +101,7 @@ private:
     void openProjectDialog();
     void newProject();
     void newProjectFile(const QString& suffix, const QString& directory = QString());
+    void newProjectFolder(const QString& directory);
     void addProjectFiles();
     void editProjectSettings();
     bool prepareProject();

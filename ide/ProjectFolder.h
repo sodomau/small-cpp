@@ -7,7 +7,7 @@ class ProjectFolder
 {
 public:
     QString root, name;
-    QStringList excluded, files, sources, headers, resources;
+    QStringList excluded, directories, files, sources, headers, resources;
     QStringList includePaths, libraryPaths, libraries, compilerOptions, linkerOptions;
     QJsonObject settings;
     bool load(const QString& folder, QString* error);
@@ -18,4 +18,5 @@ public:
     QString absolute(const QString& relative) const;
     static bool isSource(const QString& path);
     static bool isHeader(const QString& path);
+    static bool isIgnoredDirectory(const QString& name);
 };

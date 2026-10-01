@@ -101,6 +101,24 @@ private slots:
         QVERIFY(QFile::remove(directory.filePath("more/helper.cpp")));
         QVERIFY(project.scan(&error)); QCOMPARE(project.sources.size(), 2);
     }
+    void emptyDirectoriesAppearWithoutBecomingResources()
+    {
+        QTemporaryDir directory; fixture(directory.path());
+        QVERIFY(QDir().mkpath(directory.filePath("Empty/Nested")));
+        QVERIFY(QDir().mkpath(directory.filePath("build/Empty")));
+        auto project = load(directory.path());
+        QVERIFY(project.directories.contains("Empty"));
+        QVERIFY(project.directories.contains("Empty/Nested"));
+        QVERIFY(!project.directories.contains("build"));
+        QCOMPARE(project.sources.size(), 2); QCOMPARE(project.resources.size(), 1);
+        MainWindow window; QVERIFY(window.openProject(directory.path()));
+        auto* tree = window.findChild<QTreeWidget*>("projectFiles");
+        QCOMPARE(tree->findItems("Nested", Qt::MatchExactly | Qt::MatchRecursive).size(), 1);
+        QVERIFY(QDir().mkdir(directory.filePath("Added")));
+        QTRY_COMPARE_WITH_TIMEOUT(tree->findItems("Added", Qt::MatchExactly | Qt::MatchRecursive).size(), 1, 3000);
+        QVERIFY(QDir().rmdir(directory.filePath("Added")));
+        QTRY_VERIFY_WITH_TIMEOUT(tree->findItems("Added", Qt::MatchExactly | Qt::MatchRecursive).isEmpty(), 3000);
+    }
     void settingsAreStrictAndPreserved()
     {
         QTemporaryDir directory; fixture(directory.path());
@@ -284,6 +302,101 @@ private slots:
         action(window, "actionNew")->trigger();
         invoke(tabBar, tabBar->tabRect(tabs(window)->currentIndex()).center(), "Show in File Explorer", false);
         QVERIFY(window.locations.isEmpty());
+    }
+    void newFolderUsesContextAndAcceptsAFileInside_data()
+    {
+        QTest::addColumn<QString>("context");
+        QTest::addColumn<QString>("expected");
+        QTest::newRow("folder") << "logic" << "logic/NewFolder";
+        QTest::newRow("file") << "value.cpp" << "logic/NewFolder";
+        QTest::newRow("blank") << "" << "NewFolder";
+    }
+    void newFolderUsesContextAndAcceptsAFileInside()
+    {
+        QFETCH(QString, context); QFETCH(QString, expected);
+        QTemporaryDir directory; fixture(directory.path());
+        MainWindow window; QVERIFY(window.openProject(directory.path())); window.show();
+        auto* tree = window.findChild<QTreeWidget*>("projectFiles"); tree->expandAll();
+        QPoint position(tree->viewport()->width()/2, tree->viewport()->height()-5);
+        if (!context.isEmpty()) {
+            const auto items = tree->findItems(context, Qt::MatchExactly | Qt::MatchRecursive);
+            QCOMPARE(items.size(), 1); position = tree->visualItemRect(items.first()).center();
+        }
+        auto create = [&](const QPoint& point, const QString& label, const char* dialogName, const QString& name) {
+            bool entered = false;
+            QTimer::singleShot(0, &window, [&] {
+                auto* menu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+                if (!menu) return;
+                for (auto* entry : menu->actions()) {
+                    if (entry->text() != label) continue;
+                    QTimer::singleShot(0, &window, [&] {
+                        auto* dialog = window.findChild<QInputDialog*>(dialogName);
+                        if (dialog) { entered = true; dialog->setTextValue(name); dialog->accept(); }
+                    });
+                    entry->trigger(); break;
+                }
+                menu->close();
+            });
+            QMetaObject::invokeMethod(tree, "customContextMenuRequested", Qt::DirectConnection, Q_ARG(QPoint, point));
+            QVERIFY(entered);
+        };
+        create(position, "New Folder...", "newProjectFolderDialog", "NewFolder");
+        QVERIFY(QFileInfo(directory.filePath(expected)).isDir());
+        QVERIFY(load(directory.path()).directories.contains(expected));
+        QVERIFY(tree->currentItem());
+        QCOMPARE(tree->currentItem()->data(0, Qt::UserRole).toString(), expected);
+        create(tree->visualItemRect(tree->currentItem()).center(), "New Source File...", "newProjectFileDialog", "helper");
+        QVERIFY(load(directory.path()).sources.contains(expected + "/helper.cpp"));
+        QCOMPARE(tree->currentItem()->data(0, Qt::UserRole).toString(), expected + "/helper.cpp");
+        QVERIFY(tree->currentItem()->parent()->isExpanded());
+        QCOMPARE(qobject_cast<EditorDocument*>(tabs(window)->currentWidget())->filePath(), directory.filePath(expected + "/helper.cpp"));
+        QVERIFY(window.closeProject()); QVERIFY(window.openProject(directory.path()));
+        QCOMPARE(tree->findItems("NewFolder", Qt::MatchExactly | Qt::MatchRecursive).size(), 1);
+    }
+    void newFolderCancellationAndInvalidNames_data()
+    {
+        QTest::addColumn<QString>("name"); QTest::addColumn<bool>("cancel");
+        QTest::newRow("cancel") << "Cancelled" << true;
+        QTest::newRow("existing") << "logic" << false;
+        QTest::newRow("outside") << "../Outside" << false;
+        QTest::newRow("reserved") << "build" << false;
+    }
+    void newFolderCancellationAndInvalidNames()
+    {
+        QFETCH(QString, name); QFETCH(bool, cancel);
+        QTemporaryDir directory; fixture(directory.path());
+        MainWindow window; QVERIFY(window.openProject(directory.path())); window.show();
+        auto* tree = window.findChild<QTreeWidget*>("projectFiles");
+        const auto before = load(directory.path());
+        bool entered = false, warned = false;
+        QTimer::singleShot(0, &window, [&] {
+            auto* menu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+            if (!menu) return;
+            for (auto* entry : menu->actions()) {
+                if (entry->text() != "New Folder...") continue;
+                QTimer::singleShot(0, &window, [&] {
+                    auto* dialog = window.findChild<QInputDialog*>("newProjectFolderDialog");
+                    if (!dialog) return;
+                    entered = true; dialog->setTextValue(name);
+                    if (cancel) dialog->reject();
+                    else {
+                        QTimer::singleShot(0, &window, [&] {
+                            if (auto* box = qobject_cast<QMessageBox*>(QApplication::activeModalWidget())) {
+                                warned = true; box->accept();
+                            }
+                        });
+                        dialog->accept();
+                    }
+                });
+                entry->trigger(); break;
+            }
+            menu->close();
+        });
+        const QPoint position(tree->viewport()->width()/2, tree->viewport()->height()-5);
+        QMetaObject::invokeMethod(tree, "customContextMenuRequested", Qt::DirectConnection, Q_ARG(QPoint, position));
+        QVERIFY(entered); QCOMPARE(warned, !cancel);
+        QCOMPARE(load(directory.path()).directories, before.directories);
+        QCOMPARE(read(directory.filePath("logic/value.cpp")), QByteArray("#include \"value.h\"\nint Value()\n{\n    int value = 42;\n    return value;\n}\n"));
     }
     void newFilesUseContextFolder_data()
     {
