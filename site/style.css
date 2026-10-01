@@ -165,6 +165,9 @@ html[lang=ko] h1{font-size:53px}
 .reader strong{color:var(--text)}
 .reader code{font-family:Consolas,"Courier New",monospace;color:var(--mint);font-size:.95em}
 .reader p code{background:var(--panel);padding:2px 5px;border-radius:4px}
+.lesson-screenshot{margin:28px 0}
+.lesson-screenshot img{display:block;max-width:100%;height:auto;border:1px solid var(--line);border-radius:9px}
+.lesson-screenshot figcaption{margin-top:10px;font-size:13px;color:var(--muted)}
 .reader pre{background:var(--panel);border:1px solid var(--line);padding:22px;border-radius:9px;overflow-x:auto;font-size:14px;line-height:1.7}
 .lesson-goal{font-size:17px;border-left:3px solid var(--mint);padding-left:20px;margin-bottom:38px}
 .code-label{font-size:11px;color:var(--mint);margin:25px 0 -8px}

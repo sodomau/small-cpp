@@ -1,7 +1,7 @@
 ---
 title: Adding elements and reading them one by one
 part: cpp
-part-title: Part VI — Growing into C++
+part-title: Small Steps VI — Growing into C++
 goal: Add elements and read them one by one.
 related-example: reference/console
 ---

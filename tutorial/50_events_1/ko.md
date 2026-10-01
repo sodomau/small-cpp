@@ -1,7 +1,7 @@
 ---
 title: 시간이 되면 함수 실행하기
 part: making_things
-part-title: Part II — 만들며 배우기
+part-title: 작은 걸음 II — 만들며 배우기
 goal: 시간이 되면 함수 실행하기
 related-example: reference/timer
 ---

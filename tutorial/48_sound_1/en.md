@@ -1,7 +1,7 @@
 ---
 title: Playing sound effects
 part: making_things
-part-title: Part II — Making Things
+part-title: Small Steps II — Making Things
 goal: Play sound effects.
 related-example: reference/sound
 ---

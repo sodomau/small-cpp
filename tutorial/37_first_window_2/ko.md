@@ -1,7 +1,7 @@
 ---
 title: 객체에게 정보 물어보기
 part: making_things
-part-title: Part II — 만들며 배우기
+part-title: 작은 걸음 II — 만들며 배우기
 goal: 객체에게 정보 물어보기
 related-example: reference/window
 ---

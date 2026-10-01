@@ -1,7 +1,7 @@
 ---
 title: A circle that follows the mouse
 part: making_things
-part-title: Part II — Making Things
+part-title: Small Steps II — Making Things
 goal: Make a circle follow the mouse.
 related-example: reference/mouse
 ---

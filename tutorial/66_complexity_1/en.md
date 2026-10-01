@@ -1,7 +1,7 @@
 ---
 title: How much work does more data require?
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Small Steps III — Thinking with Programs
 goal: Understand how the amount of work grows with more data.
 related-example: reference/array
 ---

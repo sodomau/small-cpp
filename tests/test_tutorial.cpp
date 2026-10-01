@@ -12,12 +12,15 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QDir>
+#include <QFontDatabase>
 #include <QGroupBox>
 #include <QLabel>
 #include <QMenu>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QRegularExpression>
+#include <QScrollArea>
+#include <QScrollBar>
 #include <QSet>
 #include <QSettings>
 #include "SmallSettings.h"
@@ -110,6 +113,55 @@ private slots:
         QVERIFY(restored);
         QVERIFY(valid);
         QVERIFY(catalog.find("hello"));
+    }
+
+    void sharingScreenshotsLoadAndFitTheLessonWidth()
+    {
+        const QString output = qEnvironmentVariable("SMALL_TUTORIAL_PREVIEW_DIR");
+        if (!output.isEmpty()) {
+            QFontDatabase::addApplicationFont(qEnvironmentVariable("SystemRoot") + "/Fonts/segoeui.ttf");
+            QFontDatabase::addApplicationFont(qEnvironmentVariable("SystemRoot") + "/Fonts/segoeuib.ttf");
+            QFontDatabase::addApplicationFont(qEnvironmentVariable("SystemRoot") + "/Fonts/malgun.ttf");
+            QFontDatabase::addApplicationFont(qEnvironmentVariable("SystemRoot") + "/Fonts/malgunbd.ttf");
+            QVERIFY(QDir().mkpath(output));
+        }
+        for (const QString& language : {QString("ko"), QString("en")}) {
+            SmallSettings().setValue("tutorial/language", language);
+            for (bool dark : {false, true}) {
+                QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+                SmallSettings().setValue("appearance/dark", dark);
+                MainWindow parent;
+                TutorialBrowser& browser = *browse(parent);
+                if (!output.isEmpty()) browser.setFont(QFont("Malgun Gothic", 11));
+                browser.resize(1000, 850);
+                browser.show();
+                browser.findChild<QTreeWidget*>("tutorialList")->collapseAll();
+                for (const QString& id : {QString("publish"), QString("extra_files"), QString("share")}) {
+                    QVERIFY(browser.selectLesson(id));
+                    QTest::qWait(10);
+                    auto* screenshot = browser.findChild<QLabel*>("tutorialScreenshot");
+                    QVERIFY(screenshot);
+                    QVERIFY(!screenshot->pixmap().isNull());
+                    QVERIFY(!screenshot->accessibleName().isEmpty());
+                    QVERIFY(screenshot->pixmap().width() <= screenshot->width());
+                    QCOMPARE(screenshot->height(), screenshot->pixmap().height());
+                    browser.resize(720, 850);
+                    QTest::qWait(10);
+                    QVERIFY(screenshot->pixmap().width() <= screenshot->width());
+                    browser.resize(1000, 850);
+                    if (!output.isEmpty()) {
+                        QTest::qWait(10);
+                        auto* scroll = browser.findChild<QScrollArea*>("tutorialScroll");
+                        scroll->verticalScrollBar()->setValue(screenshot->mapTo(scroll->widget(), QPoint()).y() - 80);
+                        QTest::qWait(10);
+                        QVERIFY(browser.grab().save(QDir(output).filePath(
+                            id + "-" + language + (dark ? "-dark.png" : "-light.png"))));
+                    }
+                }
+                browser.close();
+            }
+        }
+        SmallSettings().setValue("appearance/dark", false);
     }
 
     void englishLessonsAreTranslatedAndUnknownLanguageFallsBack()

@@ -1,7 +1,7 @@
 ---
 title: Asking an object for information
 part: making_things
-part-title: Part II — Making Things
+part-title: Small Steps II — Making Things
 goal: Ask an object for information.
 related-example: reference/window
 ---

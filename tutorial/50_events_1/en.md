@@ -1,7 +1,7 @@
 ---
 title: Running a function when it is time
 part: making_things
-part-title: Part II — Making Things
+part-title: Small Steps II — Making Things
 goal: Run a function when it is time.
 related-example: reference/timer
 ---

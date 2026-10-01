@@ -1,7 +1,7 @@
 ---
 title: Grouping related values
 part: types
-part-title: Part V — Making Your Own Types
+part-title: Small Steps V — Making Your Own Types
 goal: Group related values.
 related-example: reference/array
 ---

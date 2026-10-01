@@ -1,7 +1,7 @@
 ---
 title: 친구에게 보내기
 part: sharing
-part-title: Part VII — 프로그램 공유하기
+part-title: 작은 걸음 VII — 프로그램 공유하기
 goal: 배포 폴더를 확인하고 ZIP으로 친구에게 보내세요.
 related-example: reference/console
 ---
@@ -17,6 +17,8 @@ MyCard.cpp로 저장하세요. 실행해 본 뒤 새 폴더에 배포하세요. 
 배포 폴더를 열고 MyCard.exe를 더블 클릭해서 결과를 확인하세요. 추가 파일을 쓰는 프로그램이라면 그것도 확인하세요. Publish가 만든 DLL 파일과 source, relink, licenses 폴더 등은 모두 함께 두세요. 공유하려고 이 파일들을 열거나 고칠 필요는 없습니다.
 
 **exe만 보내지 말고 폴더 전체를 보내세요.** 나머지 파일은 실행에 필요하거나 소스 코드와 라이선스 정보를 담고 있습니다. 그림과 소리 등은 내가 공유할 수 있는 자료만 넣으세요.
+
+![Open Folder로 완성된 프로그램 폴더를 여세요.](ready.png)
 
 ## ZIP으로 묶기
 

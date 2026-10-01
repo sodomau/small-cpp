@@ -1,7 +1,7 @@
 ---
 title: Finding the second-largest value
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Small Steps III — Thinking with Programs
 goal: Find the second-largest value.
 related-example: reference/array
 ---

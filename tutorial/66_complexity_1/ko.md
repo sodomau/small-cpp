@@ -1,7 +1,7 @@
 ---
 title: 데이터가 많아지면 얼마나 일할까
 part: algorithms
-part-title: Part III — 프로그램으로 생각하기
+part-title: 작은 걸음 III — 프로그램으로 생각하기
 goal: 데이터가 많아지면 얼마나 일할까
 related-example: reference/array
 ---

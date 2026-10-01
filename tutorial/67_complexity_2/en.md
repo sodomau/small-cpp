@@ -1,7 +1,7 @@
 ---
 title: How many times can a range be halved?
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Small Steps III — Thinking with Programs
 goal: Understand how often a range can be halved.
 related-example: reference/array
 ---

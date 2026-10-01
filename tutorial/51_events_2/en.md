@@ -1,7 +1,7 @@
 ---
 title: Displaying a timer's value
 part: making_things
-part-title: Part II — Making Things
+part-title: Small Steps II — Making Things
 goal: Display a timer's value on the screen.
 related-example: reference/timer
 ---

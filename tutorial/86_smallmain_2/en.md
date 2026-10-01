@@ -1,7 +1,7 @@
 ---
 title: Cleaning up the window before the runtime
 part: cpp
-part-title: Part VI — Growing into C++
+part-title: Small Steps VI — Growing into C++
 goal: Clean up the window before shutting down the runtime.
 related-example: reference/console
 ---

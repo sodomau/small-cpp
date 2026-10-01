@@ -1,7 +1,7 @@
 ---
 title: 추가 파일 함께 넣기
 part: sharing
-part-title: Part VII — 프로그램 공유하기
+part-title: 작은 걸음 VII — 프로그램 공유하기
 goal: 데이터 파일을 프로그램과 함께 배포하세요.
 related-example: reference/console
 ---
@@ -12,7 +12,7 @@ related-example: reference/console
 
 @code example.cpp
 
-일반 텍스트 파일 **message.txt**를 만들고 Hello from a file!을 한 줄 적으세요. 저장한 MyMessage.cpp 옆에 두고 프로그램을 실행하세요. 텍스트 파일을 만드는 방법이 필요하면 Part IV의 텍스트 파일 수업을 참고하세요. 이름이 message.txt.txt가 아닌 message.txt인지 확인하세요.
+일반 텍스트 파일 **message.txt**를 만들고 Hello from a file!을 한 줄 적으세요. 저장한 MyMessage.cpp 옆에 두고 프로그램을 실행하세요. 텍스트 파일을 만드는 방법이 필요하면 작은 걸음 IV의 텍스트 파일 수업을 참고하세요. 이름이 message.txt.txt가 아닌 message.txt인지 확인하세요.
 
 ## 배포본에 파일 넣기
 
@@ -23,6 +23,8 @@ related-example: reference/console
 5. MyMessage.exe를 더블 클릭해서 파일에 적은 문장이 나오는지 확인하세요.
 
 선택한 파일은 exe 옆에 복사됩니다. picture.png, music.wav처럼 간단한 영어 파일 이름을 쓰고 코드의 이름과 정확히 맞추세요. 현재는 같은 폴더에 놓는 파일을 지원하므로 하위 폴더 경로를 사용하지 마세요. 이름이 같은 파일 두 개를 동시에 넣을 수는 없습니다.
+
+![Add Files로 message.txt를 실행 파일 옆에 넣으세요.](extra-files.png)
 
 ## Exercise — 다른 메시지 읽기
 

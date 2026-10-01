@@ -1,7 +1,7 @@
 ---
 title: 실행이 끝나도 값 남기기
 part: files
-part-title: Part IV — 저장하고 불러오기
+part-title: 작은 걸음 IV — 저장하고 불러오기
 goal: 실행이 끝나도 값 남기기
 related-example: reference/file
 ---

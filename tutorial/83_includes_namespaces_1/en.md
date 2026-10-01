@@ -1,7 +1,7 @@
 ---
 title: Writing down the tools you need
 part: cpp
-part-title: Part VI — Growing into C++
+part-title: Small Steps VI — Growing into C++
 goal: Write down the tools you need.
 related-example: reference/console
 ---

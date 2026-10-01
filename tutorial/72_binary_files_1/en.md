@@ -1,7 +1,7 @@
 ---
 title: Saving numbers in binary form
 part: files
-part-title: Part IV — Saving and Loading
+part-title: Small Steps IV — Saving and Loading
 goal: Save numbers in binary form.
 related-example: reference/file
 ---

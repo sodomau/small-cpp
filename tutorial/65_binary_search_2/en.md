@@ -1,7 +1,7 @@
 ---
 title: Seeing which values were compared
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Small Steps III — Thinking with Programs
 goal: See which values were compared.
 related-example: reference/array
 ---

@@ -1,7 +1,7 @@
 ---
 title: Publish Your Program
 part: sharing
-part-title: Part VII — Share Your Program
+part-title: Small Steps VII — Share Your Program
 goal: Build a folder your friends can run.
 related-example: reference/console
 ---
@@ -21,6 +21,8 @@ Choose **Try This Code**, save it as **MyGreeting.cpp**, and press **Run**. The 
 5. Double-click **MyGreeting.exe**, read the greeting, then press Enter.
 
 Publish makes a local Windows x64 copy. It does not upload your work to the Internet. Your friends do not need Small C++, Qt, or a compiler installed. The folder also includes your source code, so they can read how you made it.
+
+![Choose a new destination folder, then press Publish.](publish.png)
 
 ## Exercise — Your own greeting
 

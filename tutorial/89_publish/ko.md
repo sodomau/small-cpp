@@ -1,7 +1,7 @@
 ---
 title: 프로그램 배포본 만들기
 part: sharing
-part-title: Part VII — 프로그램 공유하기
+part-title: 작은 걸음 VII — 프로그램 공유하기
 goal: 친구가 실행할 수 있는 폴더를 만드세요.
 related-example: reference/console
 ---
@@ -21,6 +21,8 @@ related-example: reference/console
 5. **MyGreeting.exe**를 더블 클릭하고 인사말을 읽은 뒤 Enter를 누르세요.
 
 Publish는 내 컴퓨터에 Windows x64 배포본을 만듭니다. 인터넷에 올리는 기능은 아닙니다. 친구는 Small C++, Qt, 컴파일러를 설치하지 않아도 실행할 수 있습니다. 폴더에는 소스 코드도 들어가므로 친구가 어떻게 만들었는지 읽어 볼 수 있어요.
+
+![새 대상 폴더를 정하고 Publish를 누르세요.](publish.png)
 
 ## Exercise — 나만의 인사말
 

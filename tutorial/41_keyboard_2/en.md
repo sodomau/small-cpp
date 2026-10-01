@@ -1,7 +1,7 @@
 ---
 title: Changing once per key press
 part: making_things
-part-title: Part II — Making Things
+part-title: Small Steps II — Making Things
 goal: Make one change for each new key press.
 related-example: reference/keyboard
 ---

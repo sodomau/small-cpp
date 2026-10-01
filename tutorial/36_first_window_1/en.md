@@ -1,7 +1,7 @@
 ---
 title: Opening a window
 part: making_things
-part-title: Part II — Making Things
+part-title: Small Steps II — Making Things
 goal: Open a window.
 related-example: reference/window
 ---

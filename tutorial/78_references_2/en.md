@@ -1,7 +1,7 @@
 ---
 title: Reading without copying
 part: types
-part-title: Part V — Making Your Own Types
+part-title: Small Steps V — Making Your Own Types
 goal: Read without copying.
 related-example: reference/array
 ---

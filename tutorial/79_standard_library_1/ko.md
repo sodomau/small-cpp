@@ -1,7 +1,7 @@
 ---
 title: 이미 만들어진 도구 사용하기
 part: cpp
-part-title: Part VI — C++로 성장하기
+part-title: 작은 걸음 VI — C++로 성장하기
 goal: 이미 만들어진 도구 사용하기
 related-example: reference/console
 ---

@@ -1,7 +1,7 @@
 ---
 title: Small 없이 인사하기
 part: cpp
-part-title: Part VI — C++로 성장하기
+part-title: 작은 걸음 VI — C++로 성장하기
 goal: Small 없이 인사하기
 related-example: reference/console
 ---

@@ -1,7 +1,7 @@
 ---
 title: Measuring elapsed time
 part: making_things
-part-title: Part II — Making Things
+part-title: Small Steps II — Making Things
 goal: Measure elapsed time.
 related-example: reference/stopwatch
 ---

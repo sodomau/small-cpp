@@ -1,7 +1,7 @@
 ---
 title: Halving the search range
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Small Steps III — Thinking with Programs
 goal: Halve the search range.
 related-example: reference/array
 ---

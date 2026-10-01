@@ -1,7 +1,7 @@
 ---
 title: Counting matching values
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Small Steps III — Thinking with Programs
 goal: Count values that meet a condition.
 related-example: reference/array
 ---

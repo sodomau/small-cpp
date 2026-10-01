@@ -1,7 +1,7 @@
 ---
 title: 두 번째로 큰 값 찾기
 part: algorithms
-part-title: Part III — 프로그램으로 생각하기
+part-title: 작은 걸음 III — 프로그램으로 생각하기
 goal: 두 번째로 큰 값 찾기
 related-example: reference/array
 ---

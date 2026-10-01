@@ -1,7 +1,7 @@
 ---
 title: Waiting for a sound to finish
 part: making_things
-part-title: Part II — Making Things
+part-title: Small Steps II — Making Things
 goal: Wait for a sound to finish.
 related-example: reference/sound
 ---

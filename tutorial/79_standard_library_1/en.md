@@ -1,7 +1,7 @@
 ---
 title: Using tools that already exist
 part: cpp
-part-title: Part VI — Growing into C++
+part-title: Small Steps VI — Growing into C++
 goal: Use tools that already exist.
 related-example: reference/console
 ---

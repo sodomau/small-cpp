@@ -1,7 +1,7 @@
 ---
 title: Adding values in order
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Small Steps III — Thinking with Programs
 goal: Add values in order.
 related-example: reference/array
 ---

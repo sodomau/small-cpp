@@ -1,7 +1,7 @@
 ---
 title: 반씩 줄이는 일은 얼마나 반복될까
 part: algorithms
-part-title: Part III — 프로그램으로 생각하기
+part-title: 작은 걸음 III — 프로그램으로 생각하기
 goal: 반씩 줄이는 일은 얼마나 반복될까
 related-example: reference/array
 ---

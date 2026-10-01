@@ -1,7 +1,7 @@
 ---
 title: 숫자를 바이너리로 저장하기
 part: files
-part-title: Part IV — 저장하고 불러오기
+part-title: 작은 걸음 IV — 저장하고 불러오기
 goal: 숫자를 바이너리로 저장하기
 related-example: reference/file
 ---

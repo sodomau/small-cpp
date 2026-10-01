@@ -1,7 +1,7 @@
 ---
 title: Bouncing by changing direction
 part: making_things
-part-title: Part II — Making Things
+part-title: Small Steps II — Making Things
 goal: Bounce by changing direction.
 related-example: programs/bouncing_ball
 ---

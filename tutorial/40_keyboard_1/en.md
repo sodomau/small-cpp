@@ -1,7 +1,7 @@
 ---
 title: Moving while a key is held
 part: making_things
-part-title: Part II — Making Things
+part-title: Small Steps II — Making Things
 goal: Move while a key is held.
 related-example: reference/keyboard
 ---

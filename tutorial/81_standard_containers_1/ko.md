@@ -1,7 +1,7 @@
 ---
 title: 표준 문자열과 배열 만나기
 part: cpp
-part-title: Part VI — C++로 성장하기
+part-title: 작은 걸음 VI — C++로 성장하기
 goal: 표준 문자열과 배열 만나기
 related-example: reference/console
 ---

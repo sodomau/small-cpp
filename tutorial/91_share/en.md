@@ -1,7 +1,7 @@
 ---
 title: Share with Friends
 part: sharing
-part-title: Part VII — Share Your Program
+part-title: Small Steps VII — Share Your Program
 goal: Test and share the whole program folder as a ZIP.
 related-example: reference/console
 ---
@@ -17,6 +17,8 @@ Save this as MyCard.cpp. Try it, then publish it to a new folder. Or use a progr
 Open the published folder and double-click MyCard.exe. Check the result. If your program uses extra files, check those too. Keep all the files and folders Publish created together, including the DLLs, source, relink, and licenses folders. You do not need to open or edit them to share the program.
 
 **Send the whole folder, not just the exe.** The other files help the program run and include its source and license information. Only include pictures, sounds, and other materials you have permission to share.
+
+![Open Folder takes you to your finished program.](ready.png)
 
 ## Make a ZIP
 

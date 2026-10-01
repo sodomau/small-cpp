@@ -1,7 +1,7 @@
 ---
 title: 지난 시간 재기
 part: making_things
-part-title: Part II — 만들며 배우기
+part-title: 작은 걸음 II — 만들며 배우기
 goal: 지난 시간 재기
 related-example: reference/stopwatch
 ---

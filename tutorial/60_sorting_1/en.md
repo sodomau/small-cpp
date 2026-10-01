@@ -1,7 +1,7 @@
 ---
 title: Ordering from smallest to largest
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Small Steps III — Thinking with Programs
 goal: Order values from smallest to largest.
 related-example: reference/array
 ---

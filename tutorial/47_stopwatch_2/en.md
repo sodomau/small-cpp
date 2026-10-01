@@ -1,7 +1,7 @@
 ---
 title: Moving according to actual time
 part: making_things
-part-title: Part II — Making Things
+part-title: Small Steps II — Making Things
 goal: Move according to actual time.
 related-example: reference/stopwatch
 ---

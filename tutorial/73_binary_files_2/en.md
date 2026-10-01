@@ -1,7 +1,7 @@
 ---
 title: Reading binary data in its written order
 part: files
-part-title: Part IV — Saving and Loading
+part-title: Small Steps IV — Saving and Loading
 goal: Read binary data in its written order.
 related-example: reference/file
 ---

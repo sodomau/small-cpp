@@ -1,7 +1,7 @@
 ---
 title: Counting occurrences of the largest value
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Small Steps III — Thinking with Programs
 goal: Count occurrences of the largest value.
 related-example: reference/array
 ---

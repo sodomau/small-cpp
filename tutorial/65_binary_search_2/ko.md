@@ -1,7 +1,7 @@
 ---
 title: 어떤 값을 비교했는지 보기
 part: algorithms
-part-title: Part III — 프로그램으로 생각하기
+part-title: 작은 걸음 III — 프로그램으로 생각하기
 goal: 어떤 값을 비교했는지 보기
 related-example: reference/array
 ---

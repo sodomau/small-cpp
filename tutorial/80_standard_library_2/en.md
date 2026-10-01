@@ -1,7 +1,7 @@
 ---
 title: Finding the magnitude of a negative number
 part: cpp
-part-title: Part VI — Growing into C++
+part-title: Small Steps VI — Growing into C++
 goal: Find the magnitude of a negative number.
 related-example: reference/console
 ---

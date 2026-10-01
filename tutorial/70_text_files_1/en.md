@@ -1,7 +1,7 @@
 ---
 title: Keeping values after a program ends
 part: files
-part-title: Part IV — Saving and Loading
+part-title: Small Steps IV — Saving and Loading
 goal: Keep values after a program ends.
 related-example: reference/file
 ---

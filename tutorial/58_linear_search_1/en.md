@@ -1,7 +1,7 @@
 ---
 title: Searching for a value
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Small Steps III — Thinking with Programs
 goal: Search for a value.
 related-example: reference/array
 ---

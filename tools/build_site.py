@@ -65,6 +65,14 @@ def render_lesson(text, folder, language):
         elif match := re.match(r'^(#{1,6}) (.+)$', line):
             level = max(2, len(match[1]))
             rendered.append(f'<h{level}>{inline(match[2])}</h{level}>')
+        elif match := re.fullmatch(r'!\[([^\]]*)\]\(([^)]+)\)', line.strip()):
+            image = Path(match[2])
+            if image.is_absolute() or '..' in image.parts or not (folder / image).is_file():
+                raise ValueError(f'Missing or unsafe lesson image: {line}')
+            source = f'{folder.name}/{image.as_posix()}'
+            rendered.append(f'<figure class="lesson-screenshot"><img src="{escape(source, quote=True)}" '
+                            f'alt="{escape(match[1], quote=True)}" loading="lazy">'
+                            f'<figcaption>{escape(match[1])}</figcaption></figure>')
         elif re.match(r'^[-*] ', line):
             items = []
             while position < len(lines) and re.match(r'^[-*] ', lines[position]):
@@ -114,6 +122,13 @@ def build():
         index = []
         for number, (slug, folder) in enumerate(lessons):
             metadata, text = read_lesson(folder / f'{language}.md')
+            for reference in re.findall(r'!\[[^\]]*\]\(([^)]+)\)', text):
+                image = Path(reference)
+                if image.is_absolute() or '..' in image.parts or not (folder / image).is_file():
+                    raise ValueError(f'Missing or unsafe lesson image: {reference}')
+                target = destination / folder.name / image
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(folder / image, target)
             title = metadata.get('title', slug)
             index.append(f'<li><a href="{slug}.html"><span>{number + 1:02}</span>{escape(title)}</a></li>')
             subtitle = metadata.get('part-title', 'Image extension' if language == 'en' else 'Image 확장')

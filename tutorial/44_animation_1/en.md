@@ -1,7 +1,7 @@
 ---
 title: Changing position and drawing again
 part: making_things
-part-title: Part II — Making Things
+part-title: Small Steps II — Making Things
 goal: Change a position and draw again.
 related-example: programs/bouncing_ball
 ---

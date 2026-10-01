@@ -1,7 +1,7 @@
 ---
 title: Writing the real entry function main
 part: cpp
-part-title: Part VI — Growing into C++
+part-title: Small Steps VI — Growing into C++
 goal: Write the real entry function main.
 related-example: reference/console
 ---

@@ -1,7 +1,7 @@
 ---
 title: Showing where a name belongs
 part: cpp
-part-title: Part VI — Growing into C++
+part-title: Small Steps VI — Growing into C++
 goal: Show where a name belongs.
 related-example: reference/console
 ---

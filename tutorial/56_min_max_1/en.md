@@ -1,7 +1,7 @@
 ---
 title: Remembering the largest value so far
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Small Steps III — Thinking with Programs
 goal: Remember the largest value seen so far.
 related-example: reference/array
 ---

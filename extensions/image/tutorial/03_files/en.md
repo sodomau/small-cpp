@@ -51,4 +51,4 @@ Using a second filename preserves the original file.
 
 ## Share your finished program
 
-Part VII — Share Your Program shows how to make a Windows package. Include any image files your program loads with Add Files, then share the whole folder as a ZIP.
+Small Steps VII — Share Your Program shows how to make a Windows package. Include any image files your program loads with Add Files, then share the whole folder as a ZIP.

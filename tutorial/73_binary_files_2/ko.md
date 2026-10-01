@@ -1,7 +1,7 @@
 ---
 title: 쓴 순서대로 바이너리 읽기
 part: files
-part-title: Part IV — 저장하고 불러오기
+part-title: 작은 걸음 IV — 저장하고 불러오기
 goal: 쓴 순서대로 바이너리 읽기
 related-example: reference/file
 ---

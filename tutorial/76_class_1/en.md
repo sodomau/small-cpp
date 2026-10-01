@@ -1,7 +1,7 @@
 ---
 title: Grouping data and operations
 part: types
-part-title: Part V — Making Your Own Types
+part-title: Small Steps V — Making Your Own Types
 goal: Group data and operations.
 related-example: programs/bouncing_ball
 ---

@@ -1,7 +1,7 @@
 ---
 title: Adding colors and text
 part: making_things
-part-title: Part II — Making Things
+part-title: Small Steps II — Making Things
 goal: Add colors and text.
 related-example: reference/drawing
 ---

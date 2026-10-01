@@ -1,7 +1,7 @@
 ---
 title: Naming the original instead of copying
 part: types
-part-title: Part V — Making Your Own Types
+part-title: Small Steps V — Making Your Own Types
 goal: Name the original instead of copying it.
 related-example: reference/array
 ---

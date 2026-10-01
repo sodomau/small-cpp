@@ -48,4 +48,4 @@ create/load → inspect/edit pixels → draw → save가 모두 가능합니다.
 
 ## 완성한 프로그램 공유하기
 
-Part VII — 프로그램 공유하기에서 Windows 배포본을 만드는 방법을 배울 수 있습니다. 프로그램이 불러오는 그림 파일은 Add Files로 함께 넣고, 폴더 전체를 ZIP으로 보내세요.
+작은 걸음 VII — 프로그램 공유하기에서 Windows 배포본을 만드는 방법을 배울 수 있습니다. 프로그램이 불러오는 그림 파일은 Add Files로 함께 넣고, 폴더 전체를 ZIP으로 보내세요.

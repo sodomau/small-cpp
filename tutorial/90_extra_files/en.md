@@ -1,7 +1,7 @@
 ---
 title: Include Extra Files
 part: sharing
-part-title: Part VII — Share Your Program
+part-title: Small Steps VII — Share Your Program
 goal: Publish a program with its data file.
 related-example: reference/console
 ---
@@ -12,7 +12,7 @@ Pictures, sounds, and data are separate files when your code loads them by filen
 
 @code example.cpp
 
-Create a plain text file named **message.txt**, containing one line: Hello from a file! Save it beside your saved MyMessage.cpp, then run the program. If you need help making the text file, use the text-file lessons in Part IV. Check that the name is message.txt, not message.txt.txt.
+Create a plain text file named **message.txt**, containing one line: Hello from a file! Save it beside your saved MyMessage.cpp, then run the program. If you need help making the text file, use the text-file lessons in Small Steps IV. Check that the name is message.txt, not message.txt.txt.
 
 ## Add the file to the package
 
@@ -23,6 +23,8 @@ Create a plain text file named **message.txt**, containing one line: Hello from 
 5. Double-click MyMessage.exe. Check that it reads your line from the file.
 
 Selected files are copied beside the exe. Use simple English filenames such as picture.png or music.wav, matching your code exactly. This version handles files at that same level; keep resource filenames flat rather than using subfolders. Two files with the same name cannot both be added.
+
+![Add Files puts message.txt beside your executable.](extra-files.png)
 
 ## Exercise — A second message
 

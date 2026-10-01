@@ -5,11 +5,15 @@
 
 #include <QGuiApplication>
 #include <QDir>
+#include <QFileInfo>
 #include <QFrame>
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QPushButton>
+#include <QPixmap>
+#include <QRegularExpression>
+#include <QResizeEvent>
 #include <QScreen>
 #include <QScrollArea>
 #include <QScrollBar>
@@ -28,6 +32,33 @@ namespace
 {
 const char* ReadKey = "tutorial/curriculumV2/readLessons";
 const char* LastKey = "tutorial/curriculumV2/lastLesson";
+
+class LessonScreenshot final : public QLabel
+{
+public:
+    LessonScreenshot(const QPixmap& image, const QString& description, QWidget* parent)
+        : QLabel(parent), image_(image)
+    {
+        setObjectName("tutorialScreenshot");
+        setAccessibleName(description);
+        setToolTip(description);
+        setMinimumWidth(0);
+        setAlignment(Qt::AlignLeft | Qt::AlignTop);
+        setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
+        setPixmap(image_);
+    }
+protected:
+    void resizeEvent(QResizeEvent* event) override
+    {
+        QLabel::resizeEvent(event);
+        const int imageWidth = qMax(1, qMin(width(), image_.width()));
+        const QPixmap scaled = image_.scaledToWidth(imageWidth, Qt::SmoothTransformation);
+        setFixedHeight(scaled.height());
+        setPixmap(scaled);
+    }
+private:
+    QPixmap image_;
+};
 
 QPushButton* Button(const QString& text, const QString& name, QWidget* parent)
 {
@@ -205,6 +236,34 @@ QLabel* TutorialBrowser::prose(const QString& markdown, const QString& baseDirec
     return label;
 }
 
+void TutorialBrowser::addProse(const QString& markdown, const QString& baseDirectory, QWidget* page, QVBoxLayout* layout)
+{
+    // Standalone local Markdown images become responsive native widgets.
+    static const QRegularExpression imageLine("^!\\[([^\\]]*)\\]\\(([^)]+)\\)\\s*$",
+                                               QRegularExpression::MultilineOption);
+    auto matches = imageLine.globalMatch(markdown);
+    int offset = 0;
+    while (matches.hasNext())
+    {
+        const auto match = matches.next();
+        const QString before = markdown.mid(offset, match.capturedStart() - offset).trimmed();
+        if (!before.isEmpty()) layout->addWidget(prose(before, baseDirectory, page));
+        const QString relative = match.captured(2);
+        const QDir directory(baseDirectory);
+        const QString root = QFileInfo(directory.absolutePath()).canonicalFilePath();
+        const QString path = QFileInfo(directory.filePath(relative)).canonicalFilePath();
+        const QPixmap image(!QDir::isAbsolutePath(relative) &&
+            path.startsWith(root + "/", Qt::CaseInsensitive) ? path : QString());
+        if (!image.isNull())
+            layout->addWidget(new LessonScreenshot(image, match.captured(1), page));
+        else
+            layout->addWidget(prose(match.captured(1), QString(), page));
+        offset = match.capturedEnd();
+    }
+    const QString remaining = markdown.mid(offset).trimmed();
+    if (!remaining.isEmpty()) layout->addWidget(prose(remaining, baseDirectory, page));
+}
+
 CodeEditor* TutorialBrowser::codePreview(const QString& code, const QString& name, QWidget* parent)
 {
     auto* editor = new CodeEditor(parent);
@@ -240,7 +299,8 @@ void TutorialBrowser::showSelection()
 {
     previews_.clear();
     delete scroll_->takeWidget();
-    auto* page = new QWidget;
+    auto* page = new QWidget(scroll_);
+    page->setPalette(palette());
     page->setObjectName("tutorialPage");
     page->setAutoFillBackground(true);
     auto* layout = new QVBoxLayout(page);
@@ -296,7 +356,7 @@ void TutorialBrowser::showLesson(const TutorialLesson& lesson, QWidget* page, QV
     {
         if (block.kind == TutorialBlock::Kind::Text)
         {
-            layout->addWidget(prose(block.content, lesson.sourceDirectory, page));
+            addProse(block.content, lesson.sourceDirectory, page, layout);
             continue;
         }
         ++codeIndex;
@@ -334,7 +394,7 @@ void TutorialBrowser::showExercises(const TutorialLesson& lesson, QWidget* page,
         group->setObjectName("tutorialExercise" + suffix);
         auto* exerciseLayout = new QVBoxLayout(group);
         exerciseLayout->setSpacing(12);
-        exerciseLayout->addWidget(prose(exercise.prompt, lesson.sourceDirectory, group));
+        addProse(exercise.prompt, lesson.sourceDirectory, group, exerciseLayout);
         auto* row = new QHBoxLayout;
         auto* tryButton = Button("Try", "tryTutorialExercise" + suffix, group);
         tryButton->setProperty("primaryAction", true);
@@ -440,6 +500,7 @@ void TutorialBrowser::setAppearance(const QFont& codeFont, const QPalette& palet
     setPalette(dialogPalette);
     tree_->setPalette(dialogPalette);
     scroll_->setPalette(dialogPalette);
+    if (scroll_->widget()) scroll_->widget()->setPalette(dialogPalette);
     for (const auto& preview : previews_) stylePreview(preview.editor);
     updateReadLabels();
 }

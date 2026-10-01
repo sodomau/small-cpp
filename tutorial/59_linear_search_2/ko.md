@@ -1,7 +1,7 @@
 ---
 title: 못 찾은 경우도 처리하기
 part: algorithms
-part-title: Part III — 프로그램으로 생각하기
+part-title: 작은 걸음 III — 프로그램으로 생각하기
 goal: 못 찾은 경우도 처리하기
 related-example: reference/array
 ---

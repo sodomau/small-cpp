@@ -1,7 +1,7 @@
 ---
 title: 배운 것을 묶어 작은 게임 만들기
 part: making_things
-part-title: Part II — 만들며 배우기
+part-title: 작은 걸음 II — 만들며 배우기
 goal: 배운 것을 묶어 작은 게임 만들기
 related-example: programs/pong
 ---

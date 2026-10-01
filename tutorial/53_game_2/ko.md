@@ -1,7 +1,7 @@
 ---
 title: 게임에 점수 붙이기
 part: making_things
-part-title: Part II — 만들며 배우기
+part-title: 작은 걸음 II — 만들며 배우기
 goal: 게임에 점수 붙이기
 related-example: programs/pong
 ---

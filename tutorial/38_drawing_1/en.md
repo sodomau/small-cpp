@@ -1,7 +1,7 @@
 ---
 title: Drawing with coordinates
 part: making_things
-part-title: Part II — Making Things
+part-title: Small Steps II — Making Things
 goal: Draw with coordinates.
 related-example: reference/drawing
 ---

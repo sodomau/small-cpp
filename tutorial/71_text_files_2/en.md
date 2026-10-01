@@ -1,7 +1,7 @@
 ---
 title: Reading values back from a file
 part: files
-part-title: Part IV — Saving and Loading
+part-title: Small Steps IV — Saving and Loading
 goal: Read values back from a file.
 related-example: reference/file
 ---

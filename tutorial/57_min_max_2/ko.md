@@ -1,7 +1,7 @@
 ---
 title: 값이 있는 위치 기억하기
 part: algorithms
-part-title: Part III — 프로그램으로 생각하기
+part-title: 작은 걸음 III — 프로그램으로 생각하기
 goal: 값이 있는 위치 기억하기
 related-example: reference/array
 ---

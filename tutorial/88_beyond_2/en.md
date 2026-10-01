@@ -1,7 +1,7 @@
 ---
 title: Using the same procedures in standard C++
 part: cpp
-part-title: Part VI — Growing into C++
+part-title: Small Steps VI — Growing into C++
 goal: Use the same procedures in standard C++.
 related-example: reference/console
 ---

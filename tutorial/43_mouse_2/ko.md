@@ -1,7 +1,7 @@
 ---
 title: 마우스 버튼에 반응하기
 part: making_things
-part-title: Part II — 만들며 배우기
+part-title: 작은 걸음 II — 만들며 배우기
 goal: 마우스 버튼에 반응하기
 related-example: reference/mouse
 ---

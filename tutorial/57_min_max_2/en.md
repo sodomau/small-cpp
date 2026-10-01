@@ -1,7 +1,7 @@
 ---
 title: Remembering a value's position
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Small Steps III — Thinking with Programs
 goal: Remember the position of a value.
 related-example: reference/array
 ---

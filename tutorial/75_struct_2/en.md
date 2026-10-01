@@ -1,7 +1,7 @@
 ---
 title: Storing several grouped values
 part: types
-part-title: Part V — Making Your Own Types
+part-title: Small Steps V — Making Your Own Types
 goal: Store several grouped values.
 related-example: reference/array
 ---

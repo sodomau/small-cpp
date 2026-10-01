@@ -1,7 +1,7 @@
 ---
 title: Combining what you learned into a small game
 part: making_things
-part-title: Part II — Making Things
+part-title: Small Steps II — Making Things
 goal: Combine what you learned into a small game.
 related-example: programs/pong
 ---

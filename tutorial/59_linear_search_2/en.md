@@ -1,7 +1,7 @@
 ---
 title: Handling the not-found case
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Small Steps III — Thinking with Programs
 goal: Handle the case when a value is not found.
 related-example: reference/array
 ---

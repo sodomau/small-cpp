@@ -1,7 +1,7 @@
 ---
 title: 데이터와 기능 함께 묶기
 part: types
-part-title: Part V — 나만의 자료형 만들기
+part-title: 작은 걸음 V — 나만의 자료형 만들기
 goal: 데이터와 기능 함께 묶기
 related-example: programs/bouncing_ball
 ---

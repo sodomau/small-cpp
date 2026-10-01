@@ -1,7 +1,7 @@
 ---
 title: 타이머의 값을 화면에 표시하기
 part: making_things
-part-title: Part II — 만들며 배우기
+part-title: 작은 걸음 II — 만들며 배우기
 goal: 타이머의 값을 화면에 표시하기
 related-example: reference/timer
 ---

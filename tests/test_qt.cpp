@@ -397,6 +397,19 @@ private slots:
         for (bool dark : {false, true}) {
             SmallSettings().setValue("appearance/dark", dark);
             MainWindow parent;
+            if (!dark) {
+                PublishDialog greeting("C:/Users/Student/Documents", "MyGreeting", &parent);
+                greeting.show();
+                QTest::qWait(30);
+                QVERIFY(greeting.grab().save(QDir(output).filePath("tutorial-publish.png")));
+                greeting.close();
+                PublishDialog message("C:/Users/Student/Documents", "MyMessage", &parent);
+                message.addFiles({"C:/Users/Student/Documents/message.txt"});
+                message.show();
+                QTest::qWait(30);
+                QVERIFY(message.grab().save(QDir(output).filePath("tutorial-extra-files.png")));
+                message.close();
+            }
             PublishDialog dialog("C:/Users/Student/Documents", "MyGame", &parent);
             dialog.addFiles({"C:/Pictures/cat.png", "C:/Sounds/music.wav"});
             dialog.show();
@@ -409,10 +422,12 @@ private slots:
                 if (complete) {
                     captured = complete->grab().save(QDir(output).filePath(
                         dark ? "publish-complete-dark.png" : "publish-complete-light.png"));
+                    if (!dark)
+                        QVERIFY(complete->grab().save(QDir(output).filePath("tutorial-ready.png")));
                     complete->reject();
                 }
             });
-            ShowPublishComplete("C:/Users/Student/Documents/MyGame-published", "MyGame.exe", &parent);
+            ShowPublishComplete("C:/Users/Student/Documents/MyCard-published", "MyCard.exe", &parent);
             QVERIFY(captured);
         }
         SmallSettings().setValue("appearance/dark", false);

@@ -1,7 +1,7 @@
 ---
 title: Adding a score to a game
 part: making_things
-part-title: Part II — Making Things
+part-title: Small Steps II — Making Things
 goal: Add a score to a game.
 related-example: programs/pong
 ---

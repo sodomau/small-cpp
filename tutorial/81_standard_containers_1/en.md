@@ -1,7 +1,7 @@
 ---
 title: Meeting standard strings and arrays
 part: cpp
-part-title: Part VI — Growing into C++
+part-title: Small Steps VI — Growing into C++
 goal: Meet standard strings and arrays.
 related-example: reference/console
 ---

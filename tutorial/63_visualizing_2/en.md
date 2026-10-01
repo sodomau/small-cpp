@@ -1,7 +1,7 @@
 ---
 title: Watching a sort happen
 part: algorithms
-part-title: Part III — Thinking with Programs
+part-title: Small Steps III — Thinking with Programs
 goal: Watch a sorting process.
 related-example: programs/bouncing_ball
 ---

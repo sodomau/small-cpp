@@ -52,6 +52,7 @@ private:
     void showLesson(const TutorialLesson& lesson, QWidget* page, QVBoxLayout* layout);
     void showExercises(const TutorialLesson& lesson, QWidget* page, QVBoxLayout* layout);
     QLabel* prose(const QString& markdown, const QString& baseDirectory, QWidget* parent);
+    void addProse(const QString& markdown, const QString& baseDirectory, QWidget* page, QVBoxLayout* layout);
     CodeEditor* codePreview(const QString& code, const QString& name, QWidget* parent);
     void stylePreview(CodeEditor* editor);
     void updateReadLabels();

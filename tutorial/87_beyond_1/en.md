@@ -1,7 +1,7 @@
 ---
 title: Greeting without Small
 part: cpp
-part-title: Part VI — Growing into C++
+part-title: Small Steps VI — Growing into C++
 goal: Write a greeting without Small.
 related-example: reference/console
 ---

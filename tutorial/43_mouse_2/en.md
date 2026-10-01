@@ -1,7 +1,7 @@
 ---
 title: Responding to mouse buttons
 part: making_things
-part-title: Part II — Making Things
+part-title: Small Steps II — Making Things
 goal: Respond to mouse buttons.
 related-example: reference/mouse
 ---

@@ -1,7 +1,7 @@
 ---
 title: 위치를 바꾸며 다시 그리기
 part: making_things
-part-title: Part II — 만들며 배우기
+part-title: 작은 걸음 II — 만들며 배우기
 goal: 위치를 바꾸며 다시 그리기
 related-example: programs/bouncing_ball
 ---
