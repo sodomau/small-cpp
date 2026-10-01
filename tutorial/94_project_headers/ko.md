@@ -47,7 +47,7 @@ void SmallMain()
 
 ![세 파일이 들어 있는 Greeting 프로젝트. main.cpp에서 greeting.h를 포함합니다.](project.png)
 
-아래는 같은 동작을 한 파일로 모은 코드입니다. **Open Example**은 이 한 파일을 엽니다. 프로젝트의 세 파일을 자동으로 만들지는 않습니다.
+아래는 같은 동작을 한 파일로 모은 코드입니다. **Try This Code**는 이 한 파일을 엽니다. 프로젝트의 세 파일을 자동으로 만들지는 않습니다.
 
 @code example.cpp
 

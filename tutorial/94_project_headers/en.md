@@ -47,7 +47,7 @@ void SmallMain()
 
 ![The three-file Greeting project. main.cpp includes greeting.h.](project.png)
 
-The following combines the same program into one file. **Open Example** opens this one-file version; it does not create the three project files automatically.
+The following combines the same program into one file. **Try This Code** opens this one-file version; it does not create the three project files automatically.
 
 @code example.cpp
 

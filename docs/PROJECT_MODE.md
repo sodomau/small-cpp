@@ -31,7 +31,7 @@ An omitted extension is added automatically. Existing files are not overwritten.
 The bilingual **Small Steps VIII — Build with Several Files** tutorial introduces
 projects using files in one folder. Its complete multi-file examples are in
 `examples/projects/Greeting` and `examples/projects/ScoreCard`. Open a copy of
-either folder as a project to experiment; the lesson's Open Example button opens
+either folder as a project to experiment; the lesson's Try This Code button opens
 the corresponding single-file practice version.
 
 Build folders (`build`, `CMakeFiles`, `.smallcpp`), version-control folders and
