@@ -47,16 +47,21 @@ public:
         // Keep excluded text gray even when the theme sets selected text white.
         QStyleOptionViewItem view(option);
         initStyleOption(&view, index);
-        auto* style = view.widget ? view.widget->style() : QApplication::style();
-        const QRect textRect = style->subElementRect(QStyle::SE_ItemViewItemText, &view, view.widget);
+        const QRect textRect = view.rect.adjusted(6, 0, -6, 0);
         const QString text = view.fontMetrics.elidedText(view.text, view.textElideMode, textRect.width());
-        view.text.clear();
         painter->save();
-        style->drawControl(QStyle::CE_ItemViewItem, &view, painter, view.widget);
+        // Draw the excluded row directly: native focus/selection styles can
+        // restore their own text color even when a delegate clears the text.
+        painter->fillRect(view.rect, view.palette.brush(view.state & QStyle::State_Selected
+            ? QPalette::Highlight : QPalette::Base));
         painter->setFont(view.font);
         const QBrush foreground = index.data(Qt::ForegroundRole).value<QBrush>();
         painter->setPen(foreground.style() == Qt::NoBrush ? view.palette.color(QPalette::PlaceholderText) : foreground.color());
         painter->drawText(textRect, view.displayAlignment, text);
+        if (view.state & QStyle::State_HasFocus) {
+            painter->setPen(QPen(view.palette.color(QPalette::Mid), 1, Qt::DotLine));
+            painter->drawRect(view.rect.adjusted(1, 1, -2, -2));
+        }
         painter->restore();
     }
 };

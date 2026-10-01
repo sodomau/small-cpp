@@ -161,12 +161,22 @@ private slots:
         QVERIFY(project.setExcluded("logic", true, &error));
         MainWindow window; QVERIFY(window.openProject(directory.path()));
         auto* tree = window.findChild<QTreeWidget*>("projectFiles");
+        window.show(); tree->expandAll();
         for (bool dark : {false, true}) {
             action(window, dark ? "actionThemeDark" : "actionThemeLight")->trigger();
             const auto items = tree->findItems("value.cpp (Excluded)", Qt::MatchExactly | Qt::MatchRecursive);
             QCOMPARE(items.size(), 1);
             QTRY_COMPARE_WITH_TIMEOUT(items.first()->foreground(0).color(), QColor(dark ? "#8993a3" : "#929aa6"), 3000);
             QVERIFY(items.first()->font(0).italic());
+            tree->setCurrentItem(items.first()); tree->setFocus(); QTest::qWait(50);
+            const QColor expected(dark ? "#8993a3" : "#929aa6");
+            const QImage image = tree->viewport()->grab().toImage();
+            const QRect row = tree->visualItemRect(items.first()).intersected(image.rect());
+            int grayPixels = 0;
+            for (int y = row.top(); y <= row.bottom(); ++y)
+                for (int x = row.left(); x <= row.right(); ++x)
+                    if (image.pixelColor(x, y).rgb() == expected.rgb()) ++grayPixels;
+            QVERIFY2(grayPixels > 5, "Focused excluded text must actually render in gray, not only store a gray model value.");
             for (int repeat = 0; repeat < 2; ++repeat) {
                 project = load(directory.path());
                 QVERIFY(project.setExcluded("logic", false, &error));
