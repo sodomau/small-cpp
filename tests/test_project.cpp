@@ -17,6 +17,7 @@
 #include <QJsonArray>
 #include <QLabel>
 #include <QMessageBox>
+#include <QMenu>
 #include <QPlainTextEdit>
 #include <QProcess>
 #include <QProcessEnvironment>
@@ -191,6 +192,38 @@ private slots:
                 auto* excluded = tree->findItems("value.cpp (Excluded)", Qt::MatchExactly | Qt::MatchRecursive).first();
                 QCOMPARE(excluded->foreground(0).color(), QColor(dark ? "#8993a3" : "#929aa6"));
             }
+        }
+    }
+    void contextMenuUpdatesExcludedLabelImmediately()
+    {
+        QTemporaryDir directory; fixture(directory.path());
+        MainWindow window; QVERIFY(window.openProject(directory.path()));
+        auto* tree = window.findChild<QTreeWidget*>("projectFiles");
+        window.show(); tree->expandAll();
+        QVERIFY(window.openDocument(directory.filePath("logic/value.cpp")));
+        for (bool exclude : {true, false, true, false}) {
+            const QString before = exclude ? "value.cpp" : "value.cpp (Excluded)";
+            const auto items = tree->findItems(before, Qt::MatchExactly | Qt::MatchRecursive);
+            QCOMPARE(items.size(), 1);
+            const QPoint position = tree->visualItemRect(items.first()).center();
+            bool triggered = false;
+            QTimer::singleShot(0, &window, [&] {
+                auto* menu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+                if (!menu) return;
+                for (auto* entry : menu->actions()) {
+                    if (entry->text() != (exclude ? "Exclude from Project" : "Include in Project")) continue;
+                    entry->trigger(); triggered = true; break;
+                }
+                menu->close();
+            });
+            QMetaObject::invokeMethod(tree, "customContextMenuRequested", Qt::DirectConnection, Q_ARG(QPoint, position));
+            QVERIFY(triggered);
+            const auto updated = tree->findItems(exclude ? "value.cpp (Excluded)" : "value.cpp", Qt::MatchExactly | Qt::MatchRecursive);
+            QCOMPARE(updated.size(), 1);
+            QCOMPARE(updated.first()->data(0, Qt::UserRole + 1).toBool(), exclude);
+            QCOMPARE(updated.first()->font(0).italic(), exclude);
+            QCOMPARE(load(directory.path()).excludes("logic/value.cpp"), exclude);
+            QCOMPARE(tabs(window)->tabText(tabs(window)->currentIndex()).contains("[Excluded]"), exclude);
         }
     }
     void cancellingCloseKeepsProjectAndText()

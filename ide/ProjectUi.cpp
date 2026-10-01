@@ -247,7 +247,13 @@ void MainWindow::refreshProject()
     QTreeWidgetItemIterator iterator(projectTree_);
     while (*iterator) {
         auto* item = *iterator;
-        const bool excluded = project_.excludes(item->data(0, Qt::UserRole).toString());
+        const QString relative = item->data(0, Qt::UserRole).toString();
+        const bool excluded = project_.excludes(relative);
+        // The context menu updates project_ before refreshProject(), so the tree
+        // can retain its structure while all exclusion presentation must refresh.
+        item->setText(0, QFileInfo(relative).fileName() + (excluded ? " (Excluded)" : ""));
+        item->setData(0, Qt::UserRole + 1, excluded);
+        item->setToolTip(0, project_.absolute(relative) + (excluded ? "\nExcluded; the file is still on disk." : ""));
         item->setForeground(0, QBrush(excluded ? QColor(darkTheme_ ? "#8993a3" : "#929aa6")
                                               : projectTree_->palette().color(QPalette::Text)));
         QFont font = item->font(0);
