@@ -254,6 +254,7 @@ void MainWindow::openProjectDialog()
     // Qt's directory picker can show files as context while accepting folders only.
     QFileDialog dialog(this, "Open Project (Folder)", initialDirectory(currentDocument()));
     dialog.setObjectName("openProjectFolderDialog");
+    dialog.setPalette(palette());
     dialog.setOption(QFileDialog::DontUseNativeDialog);
     dialog.setFileMode(QFileDialog::Directory);
     dialog.setOption(QFileDialog::ShowDirsOnly, false);
@@ -262,10 +263,22 @@ void MainWindow::openProjectDialog()
     dialog.setLabelText(QFileDialog::FileName, "Project folder:");
     // QFileDialog fixes its navigation buttons to icon size. The IDE's generous
     // general button padding otherwise consumes their entire icon area.
-    dialog.setStyleSheet("QToolButton { padding: 4px; }");
+    dialog.setStyleSheet(QString("QToolButton { padding: 4px; } QAbstractItemView, QComboBox { background: %1; color: %2; }")
+        .arg(darkTheme_ ? "#1e1f22" : "#ffffff", darkTheme_ ? "#e6e6e6" : "#202124"));
     for (auto* button : dialog.findChildren<QToolButton*>()) {
         button->setFixedSize(36, 36);
         button->setIconSize(QSize(20, 20));
+        if (!QStringList{"backButton", "forwardButton", "toParentButton"}.contains(button->objectName())) continue;
+        QIcon icon;
+        for (auto mode : {QIcon::Normal, QIcon::Disabled}) {
+            QPixmap glyph = button->icon().pixmap(QSize(20, 20), mode);
+            QPainter painter(&glyph);
+            painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+            painter.fillRect(glyph.rect(), palette().color(mode == QIcon::Disabled ? QPalette::Mid : QPalette::WindowText));
+            painter.end();
+            icon.addPixmap(glyph, mode);
+        }
+        button->setIcon(icon);
     }
     dialog.resize(850, 560);
     if (dialog.exec() == QDialog::Accepted && !dialog.selectedFiles().isEmpty())
