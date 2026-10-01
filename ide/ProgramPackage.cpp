@@ -20,12 +20,12 @@ QString ProgramPackage::executableName(const QString& sourceName)
 
 bool ProgramPackage::plan(const QString& installation, const QStringList& resources,
                           const QVector<SmallExtension>& extensions,
-                          QVector<PackageFile>* files, QString* error, const QString& executable)
+                          QVector<PackageFile>* files, QString* error, const QString& executable, const QString& resourceRoot)
 {
     files->clear();
     error->clear();
     const QDir root(installation);
-    QSet<QString> names{executable.toLower(), "readme.txt", "source", "relink"};
+    QSet<QString> names{executable.toLower(), "readme.txt", ".smallcpp-package"};
     auto add = [&](const QString& source, const QString& relative) {
         const QFileInfo info(source);
         if (!info.isFile() || info.isSymLink() || names.contains(relative.toLower())) {
@@ -49,9 +49,7 @@ bool ProgramPackage::plan(const QString& installation, const QStringList& resour
                                    QString("Qt6Widgets.dll"), QString("Qt6Multimedia.dll"),
                                    QString("platforms/qwindows.dll"), QString("LICENSE"),
                                    QString("licenses/SOURCE_ACCESS.md"), QString("libwinpthread-1.dll"),
-                                   QString("libgcc_s_seh-1.dll"), QString("libstdc++-6.dll"),
-                                   QString("qt/lib/libQt6Core.a"), QString("qt/lib/libQt6Gui.a"),
-                                   QString("qt/lib/libQt6Widgets.a"), QString("qt/lib/libQt6Multimedia.a")}) {
+                                   QString("libgcc_s_seh-1.dll"), QString("libstdc++-6.dll")}) {
         if (!QFileInfo::exists(root.filePath(required))) {
             *error = "Publish needs a prepared Windows portable installation. Missing: " + required;
             return false;
@@ -65,21 +63,13 @@ bool ProgramPackage::plan(const QString& installation, const QStringList& resour
         names.insert(folder.toLower());
     }
     if (!add(root.filePath("LICENSE"), "LICENSE")) return false;
-    // Preserve the matching libraries for relinking; no compiler or IDE is shipped.
-    if (!tree(root.filePath("runtime"), "relink/runtime") ||
-        !tree(root.filePath("qt/lib"), "relink/qt/lib")) return false;
-    for (const auto& extension : extensions) {
-        if (!QRegularExpression("^[A-Za-z0-9_-]+$").match(extension.id).hasMatch() ||
-            !QRegularExpression("^[A-Za-z0-9_.+-]+$").match(QFileInfo(extension.libraryPath).fileName()).hasMatch()) {
-            *error = "Unsupported extension package name: " + extension.id;
-            return false;
-        }
-        if (!add(extension.libraryPath, "relink/extensions/" + extension.id + "/" +
-                 QFileInfo(extension.libraryPath).fileName())) return false;
-        if (!tree(extension.includeDirectory, "relink/extensions/" + extension.id + "/include")) return false;
-    }
+    Q_UNUSED(extensions);
     for (const QString& resource : resources) {
-        const QString name = QFileInfo(resource).fileName();
+        const QString name = resourceRoot.isEmpty() ? QFileInfo(resource).fileName()
+            : QDir(resourceRoot).relativeFilePath(QFileInfo(resource).absoluteFilePath());
+        if (QDir::isAbsolutePath(name) || name.startsWith("../") || names.contains(name.section('/', 0, 0).toLower())) {
+            *error = "Unsupported or conflicting resource path: " + name; return false;
+        }
         if (!add(resource, name)) return false;
     }
     return true;

@@ -4,6 +4,7 @@
 #include "Highlighter.h"
 
 #include <QGuiApplication>
+#include <QClipboard>
 #include <QDir>
 #include <QFileInfo>
 #include <QFrame>
@@ -238,26 +239,41 @@ QLabel* TutorialBrowser::prose(const QString& markdown, const QString& baseDirec
 
 void TutorialBrowser::addProse(const QString& markdown, const QString& baseDirectory, QWidget* page, QVBoxLayout* layout)
 {
-    // Standalone local Markdown images become responsive native widgets.
-    static const QRegularExpression imageLine("^!\\[([^\\]]*)\\]\\(([^)]+)\\)\\s*$",
-                                               QRegularExpression::MultilineOption);
-    auto matches = imageLine.globalMatch(markdown);
+    // C++ listings use the same highlighted editor as runnable examples. They
+    // can be copied, but a header/helper fragment must not open as a program.
+    // Standalone local images remain responsive native widgets.
+    static const QRegularExpression nativeBlock(
+        "^```cpp[ \\t]*\\n([\\s\\S]*?)^```[ \\t]*(?=\\n|$)|^!\\[([^\\]]*)\\]\\(([^)]+)\\)[ \\t]*$",
+        QRegularExpression::MultilineOption);
+    auto matches = nativeBlock.globalMatch(markdown);
     int offset = 0;
     while (matches.hasNext())
     {
         const auto match = matches.next();
         const QString before = markdown.mid(offset, match.capturedStart() - offset).trimmed();
         if (!before.isEmpty()) layout->addWidget(prose(before, baseDirectory, page));
-        const QString relative = match.captured(2);
+        if (match.capturedStart(1) >= 0) {
+            const QString code = match.captured(1).trimmed();
+            auto* group = new QGroupBox(page);
+            auto* codeLayout = new QVBoxLayout(group);
+            codeLayout->addWidget(codePreview(code, "tutorialSnippet", group));
+            auto* copy = Button("Copy Code", "copyTutorialSnippet", group);
+            connect(copy, &QPushButton::clicked, this, [code] { QGuiApplication::clipboard()->setText(code); });
+            codeLayout->addWidget(copy, 0, Qt::AlignRight);
+            layout->addWidget(group);
+            offset = match.capturedEnd();
+            continue;
+        }
+        const QString relative = match.captured(3);
         const QDir directory(baseDirectory);
         const QString root = QFileInfo(directory.absolutePath()).canonicalFilePath();
         const QString path = QFileInfo(directory.filePath(relative)).canonicalFilePath();
         const QPixmap image(!QDir::isAbsolutePath(relative) &&
             path.startsWith(root + "/", Qt::CaseInsensitive) ? path : QString());
         if (!image.isNull())
-            layout->addWidget(new LessonScreenshot(image, match.captured(1), page));
+            layout->addWidget(new LessonScreenshot(image, match.captured(2), page));
         else
-            layout->addWidget(prose(match.captured(1), QString(), page));
+            layout->addWidget(prose(match.captured(2), QString(), page));
         offset = match.capturedEnd();
     }
     const QString remaining = markdown.mid(offset).trimmed();

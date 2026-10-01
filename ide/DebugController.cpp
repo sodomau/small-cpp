@@ -1,6 +1,7 @@
 #include "DebugController.h"
 #include "SmallBuildConfig.h"
 #include "EntryPoint.h"
+#include "BuildController.h"
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
@@ -12,6 +13,22 @@
 
 DebugController::DebugController(QObject* p):QObject(p)
 {
+    projectBuild_ = new BuildController(this);
+    connect(projectBuild_, &BuildController::phaseChanged, this, &DebugController::phaseChanged);
+    connect(projectBuild_, &BuildController::buildError, this, [this](const QString& raw, const QString& source, const QString& file) {
+        setStage(Stage::Idle); emit buildError(raw, source, file);
+    });
+    connect(projectBuild_, &BuildController::finished, this, [this](int, bool) {
+        if (stage_ == Stage::Stopping) { setStage(Stage::Idle); emit finished(); }
+    });
+    connect(projectBuild_, &BuildController::projectBuilt, this, [this](const QString& executable) {
+        if (stage_ == Stage::Stopping) { setStage(Stage::Idle); emit finished(); return; }
+        executablePath_ = executable;
+        projectSnapshots_ = projectBuild_->projectSnapshots();
+        sourcePath_ = project_.absolute(project_.sources.first());
+        sourceSnapshot_ = projectSnapshots_.value(sourcePath_);
+        startGdb();
+    });
     build_.setProcessChannelMode(QProcess::MergedChannels);
     connect(&build_,&QProcess::readyReadStandardOutput,this,[this]{buildOutput_+=build_.readAllStandardOutput();});
     connect(&build_,qOverload<int,QProcess::ExitStatus>(&QProcess::finished),this,[this](int c,QProcess::ExitStatus s){
@@ -38,8 +55,8 @@ QString DebugController::gdbPath() const { QString p=QDir(QFileInfo(compiler()).
 "gdb"
 #endif
 ); return p; }
-void DebugController::configureEnvironment(QProcess& p){auto e=QProcessEnvironment::systemEnvironment();QString sep(QDir::listSeparator());QString path=QFileInfo(compiler()).absolutePath()+sep+QCoreApplication::applicationDirPath();QString recordedQtBin=QString::fromUtf8(SmallBuildConfig::QtBin);if(QFileInfo::exists(recordedQtBin))path+=sep+recordedQtBin;e.insert("PATH",path+sep+e.value("PATH"));e.insert("QT_PLUGIN_PATH",QCoreApplication::applicationDirPath());e.insert("QT_QPA_PLATFORM_PLUGIN_PATH",QDir(QCoreApplication::applicationDirPath()).filePath("platforms"));e.insert("LC_ALL","C");p.setProcessEnvironment(e);}
-void DebugController::start(const QString&s,const QString&orig,const QString&name,const QSet<int>&bps){if(isBusy())return;breakpoints_=bps;gdbBreakpointIds_.clear();breakpointRequestLines_.clear();breakpointRequestEnabled_.clear();sourceSnapshot_=s;sdkDirectory_=QDir(QCoreApplication::applicationDirPath()).filePath("runtime");extensionsDirectory_=QDir(QCoreApplication::applicationDirPath()).filePath("extensions");runtimePath_=QDir(sdkDirectory_).filePath(QString::fromUtf8(SmallBuildConfig::RuntimeFile));entryPath_=QDir(sdkDirectory_).filePath(QString::fromUtf8(SmallBuildConfig::EntryFile));idePausePath_=QDir(sdkDirectory_).filePath(QString::fromUtf8(SmallBuildConfig::IdePauseFile));usesOwnMain_=DetectEntryPoint(s)==SmallEntryPoint::Main;extensions_=ExtensionRegistry::detect(s,ExtensionRegistry::discover(extensionsDirectory_));directory_=std::make_unique<QTemporaryDir>(QDir::tempPath()+"/SmallCpp-debug-XXXXXX");if(!directory_->isValid()){emit buildError("Cannot create debug folder.",s,{});return;}QString n=orig.isEmpty()?QFileInfo(name).fileName():QFileInfo(orig).fileName();if(!n.endsWith(".cpp",Qt::CaseInsensitive))n+=".cpp";sourcePath_=directory_->filePath(n);objectPath_=directory_->filePath("program.o");executablePath_=directory_->filePath(
+void DebugController::configureEnvironment(QProcess& p){auto e=QProcessEnvironment::systemEnvironment();QString sep(QDir::listSeparator());QString path=QFileInfo(compiler()).absolutePath()+sep+QCoreApplication::applicationDirPath();QString recordedQtBin=QString::fromUtf8(SmallBuildConfig::QtBin);if(QFileInfo::exists(recordedQtBin))path+=sep+recordedQtBin;e.insert("PATH",path+sep+e.value("PATH"));e.insert("QT_PLUGIN_PATH",QCoreApplication::applicationDirPath());e.insert("QT_QPA_PLATFORM_PLUGIN_PATH",QDir(QCoreApplication::applicationDirPath()).filePath("platforms"));e.insert("LC_ALL","C");if(projectActive_)e.insert("PATH",project_.libraryPaths.join(QDir::listSeparator())+sep+e.value("PATH"));p.setProcessEnvironment(e);}
+void DebugController::start(const QString&s,const QString&orig,const QString&name,const QSet<int>&bps){if(isBusy())return;projectActive_=false;breakpoints_=bps;gdbBreakpointIds_.clear();breakpointRequestLines_.clear();breakpointRequestEnabled_.clear();sourceSnapshot_=s;sdkDirectory_=QDir(QCoreApplication::applicationDirPath()).filePath("runtime");extensionsDirectory_=QDir(QCoreApplication::applicationDirPath()).filePath("extensions");runtimePath_=QDir(sdkDirectory_).filePath(QString::fromUtf8(SmallBuildConfig::RuntimeFile));entryPath_=QDir(sdkDirectory_).filePath(QString::fromUtf8(SmallBuildConfig::EntryFile));idePausePath_=QDir(sdkDirectory_).filePath(QString::fromUtf8(SmallBuildConfig::IdePauseFile));usesOwnMain_=DetectEntryPoint(s)==SmallEntryPoint::Main;extensions_=ExtensionRegistry::detect(s,ExtensionRegistry::discover(extensionsDirectory_));directory_=std::make_unique<QTemporaryDir>(QDir::tempPath()+"/SmallCpp-debug-XXXXXX");if(!directory_->isValid()){emit buildError("Cannot create debug folder.",s,{});return;}QString n=orig.isEmpty()?QFileInfo(name).fileName():QFileInfo(orig).fileName();if(!n.endsWith(".cpp",Qt::CaseInsensitive))n+=".cpp";sourcePath_=directory_->filePath(n);objectPath_=directory_->filePath("program.o");executablePath_=directory_->filePath(
 #ifdef Q_OS_WIN
 "program.exe"
 #else
@@ -92,6 +109,12 @@ void DebugController::startGdb()
         gdbBreakpointIds_.clear();
         for(int line : initialBreakpoints)
             setBreakpoint(line, true);
+        if (projectActive_) {
+            const auto initial = projectBreakpoints_;
+            projectBreakpointIds_.clear();
+            for (auto it = initial.begin(); it != initial.end(); ++it)
+                for (int line : it.value()) setProjectBreakpoint(it.key(), line, true);
+        }
 
         emit phaseChanged(breakpoints_.isEmpty()
                               ? "Running under debugger..."
@@ -115,13 +138,19 @@ void DebugController::startGdb()
 void DebugController::sendMi(const QString& c,Pending p){pending_=p;gdb_.write((QString::number(++token_)+c+"\n").toUtf8());}
 void DebugController::processMi(){int pos;while((pos=miBuffer_.indexOf('\n'))>=0){QString r=QString::fromUtf8(miBuffer_.left(pos)).trimmed();miBuffer_.remove(0,pos+1);if(!r.isEmpty())handleRecord(r);}}
 QString DebugController::miField(const QString&r,const QString&k){QRegularExpression re(k+"=\"((?:\\\\.|[^\"])*)\"");auto m=re.match(r);if(!m.hasMatch())return{};QString v=m.captured(1);v.replace("\\\\","\\");v.replace("\\\"","\"");return v;}
-bool DebugController::isUserFile(const QString& f)const{return QFileInfo(f).fileName().compare(QFileInfo(sourcePath_).fileName(),Qt::CaseInsensitive)==0;}
+bool DebugController::isUserFile(const QString& f)const{if(projectActive_)return projectSnapshots_.contains(QDir::cleanPath(f));return QFileInfo(f).fileName().compare(QFileInfo(sourcePath_).fileName(),Qt::CaseInsensitive)==0;}
 void DebugController::handleRecord(const QString&r){
     // Track the GDB breakpoint number returned for each live gutter request.
     QRegularExpression tokenResultRe(R"(^(\d+)\^(done|error)(.*)$)");
     auto tokenMatch = tokenResultRe.match(r);
     if (tokenMatch.hasMatch()) {
         const int responseToken = tokenMatch.captured(1).toInt();
+        if (projectBreakpointRequests_.contains(responseToken)) {
+            const QString key = projectBreakpointRequests_.take(responseToken);
+            const QString id = miField(tokenMatch.captured(3), "number");
+            if (tokenMatch.captured(2) == "done" && !id.isEmpty()) projectBreakpointIds_[key] = id;
+            else if (tokenMatch.captured(2) == "error") emit phaseChanged("Could not set project breakpoint");
+        }
         if (breakpointRequestLines_.contains(responseToken)) {
             const int line = breakpointRequestLines_.take(responseToken);
             const bool enabled = breakpointRequestEnabled_.take(responseToken);
@@ -161,7 +190,7 @@ void DebugController::executionStopped(const QString& r)
                               ? "Runtime error"
                               : "Runtime error: " + signalMeaning);
         setStage(Stage::Stopped);
-        emit stoppedAt(miField(r, "line").toInt());
+        emitStop(miField(r, "fullname"), miField(r, "line").toInt());
         return;
     }
 
@@ -200,7 +229,7 @@ void DebugController::executionStopped(const QString& r)
     setStage(Stage::Stopped);
     int line=miField(r,"line").toInt();
     emit phaseChanged("Paused");
-    emit stoppedAt(line);
+    emitStop(file, line);
     refreshVariables();
 }
 void DebugController::refreshVariables(){sendMi("-stack-list-variables --simple-values",Pending::RefreshLocals);}
@@ -245,4 +274,4 @@ void DebugController::continueRun(){if(isStopped()){setStage(Stage::Running);sen
 void DebugController::stepOver(){if(isStopped()){setStage(Stage::Running);sendMi("-exec-next",Pending::Next);}}
 void DebugController::stepInto(){if(isStopped()){setStage(Stage::Running);sendMi("-exec-step",Pending::FilterStep);}}
 void DebugController::stepOut(){if(isStopped()){setStage(Stage::Running);sendMi("-exec-finish",Pending::Finish);}}
-void DebugController::stop(){if(!isBusy())return;setStage(Stage::Stopping);if(build_.state()!=QProcess::NotRunning)build_.kill();if(gdb_.state()!=QProcess::NotRunning){gdb_.write("-gdb-exit\n");QTimer::singleShot(300,&gdb_,[this]{if(gdb_.state()!=QProcess::NotRunning)gdb_.kill();});}else{setStage(Stage::Idle);emit finished();}}
+void DebugController::stop(){if(!isBusy())return;setStage(Stage::Stopping);if(projectBuild_->isBusy()){projectBuild_->stop();return;}if(build_.state()!=QProcess::NotRunning)build_.kill();if(gdb_.state()!=QProcess::NotRunning){gdb_.write("-gdb-exit\n");QTimer::singleShot(300,&gdb_,[this]{if(gdb_.state()!=QProcess::NotRunning)gdb_.kill();});}else{setStage(Stage::Idle);emit finished();}}

@@ -15,5 +15,5 @@ public:
     static bool plan(const QString& installation, const QStringList& resources,
                      const QVector<SmallExtension>& extensions,
                      QVector<PackageFile>* files, QString* error,
-                     const QString& executable = "Program.exe");
+                     const QString& executable = "Program.exe", const QString& resourceRoot = {});
 };

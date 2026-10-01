@@ -29,6 +29,9 @@
 #include <QTemporaryDir>
 #include <QTest>
 #include <QTextDocument>
+#include <QTextBlock>
+#include <QTextLayout>
+#include <QFile>
 #include <QTimer>
 #include <QTreeWidget>
 
@@ -76,14 +79,17 @@ private slots:
     {
         TutorialCatalog catalog;
         QVERIFY2(catalog.isValid(), qPrintable(catalog.errorString()));
-        QCOMPARE(catalog.parts().size(), 8);
-        QCOMPARE(catalog.lessons().size(), 94);
-        QCOMPARE(catalog.availableIds().size(), 94);
+        QCOMPARE(catalog.parts().size(), 9);
+        QCOMPARE(catalog.lessons().size(), 100);
+        QCOMPARE(catalog.availableIds().size(), 100);
         QVERIFY(catalog.find("text_files_1"));
         QVERIFY(catalog.find("binary_files_2"));
         QVERIFY(catalog.find("publish"));
         QVERIFY(catalog.find("extra_files"));
         QVERIFY(catalog.find("share"));
+        QVERIFY(catalog.find("project_folder"));
+        QVERIFY(catalog.find("project_headers"));
+        QVERIFY(catalog.find("project_share"));
         int count = 0;
         for (const auto& lesson : catalog.lessons())
         {
@@ -99,7 +105,7 @@ private slots:
                 QVERIFY(exercise.solution.contains("SmallMain") || exercise.solution.contains("main("));
             }
         }
-        QCOMPARE(count, 97);
+        QCOMPARE(count, 103);
     }
 
     void catalogLoadsWithoutSourceFolderAsWorkingDirectory()
@@ -136,7 +142,8 @@ private slots:
                 browser.resize(1000, 850);
                 browser.show();
                 browser.findChild<QTreeWidget*>("tutorialList")->collapseAll();
-                for (const QString& id : {QString("publish"), QString("extra_files"), QString("share")}) {
+                for (const QString& id : {QString("publish"), QString("extra_files"), QString("share"),
+                                          QString("project_headers"), QString("project_roles")}) {
                     QVERIFY(browser.selectLesson(id));
                     QTest::qWait(10);
                     auto* screenshot = browser.findChild<QLabel*>("tutorialScreenshot");
@@ -173,7 +180,7 @@ private slots:
         for (const auto& part : korean.parts())
         {
             if (part.id.startsWith("extension")) continue;
-            if (part.id == "sharing" || part.id == "algorithms")
+            if (part.id == "sharing" || part.id == "algorithms" || part.id == "projects")
                 QVERIFY(part.title.contains(QRegularExpression("[가-힣]")));
         }
         for (const auto& lesson : korean.lessons())
@@ -244,6 +251,64 @@ private slots:
         QCOMPARE(learnWindowCount<TutorialBrowser>(), 1);
     }
 
+    void projectListingsUseHighlightedCopyableCode()
+    {
+        const QString output = qEnvironmentVariable("SMALL_TUTORIAL_SNIPPET_PREVIEW_DIR");
+        if (!output.isEmpty()) {
+            QFontDatabase::addApplicationFont(qEnvironmentVariable("SystemRoot") + "/Fonts/segoeui.ttf");
+            QFontDatabase::addApplicationFont(qEnvironmentVariable("SystemRoot") + "/Fonts/segoeuib.ttf");
+            QFontDatabase::addApplicationFont(qEnvironmentVariable("SystemRoot") + "/Fonts/consola.ttf");
+            QFontDatabase::addApplicationFont(qEnvironmentVariable("SystemRoot") + "/Fonts/malgun.ttf");
+            QVERIFY(QDir().mkpath(output));
+        }
+        for (const QString& language : {QString("ko"), QString("en")}) {
+            QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+            SmallSettings().setValue("tutorial/language", language);
+            MainWindow window;
+            TutorialBrowser& browser = *browse(window);
+            browser.setFont(QFont("Segoe UI", 11));
+            browser.resize(1120, 900); browser.show();
+            for (bool dark : {false, true}) {
+                action(window, dark ? "actionThemeDark" : "actionThemeLight")->trigger();
+                QVERIFY(browser.selectLesson("project_headers"));
+                const QPalette colors = browser.findChild<CodeEditor*>("tutorialExample1")->palette();
+                browser.setAppearance(QFont("Consolas", 14), colors, dark);
+                const auto snippets = browser.findChildren<CodeEditor*>("tutorialSnippet");
+                const auto copies = browser.findChildren<QPushButton*>("copyTutorialSnippet");
+                QCOMPARE(snippets.size(), 3); QCOMPARE(copies.size(), 3);
+                QSignalSpy tried(&browser, &TutorialBrowser::tryRequested);
+                const QString sample = QFINDTESTDATA("../examples/projects/Greeting");
+                const QStringList names{"greeting.h", "greeting.cpp", "main.cpp"};
+                for (int i = 0; i < snippets.size(); ++i) {
+                    QFile file(QDir(sample).filePath(names[i])); QVERIFY(file.open(QIODevice::ReadOnly));
+                    QCOMPARE(snippets[i]->toPlainText(), QString::fromUtf8(file.readAll()).trimmed());
+                    QVERIFY(snippets[i]->isReadOnly());
+                    QCOMPARE(snippets[i]->font().pointSize(), 14);
+                    QCOMPARE(snippets[i]->palette().color(QPalette::Base), colors.color(QPalette::Base));
+                    QCoreApplication::processEvents();
+                    bool highlighted = false;
+                    for (auto block = snippets[i]->document()->begin(); block.isValid(); block = block.next())
+                        for (const auto& range : block.layout()->formats())
+                            highlighted |= range.format.foreground().color() != colors.color(QPalette::Text);
+                    QVERIFY2(highlighted, "C++ listings need actual syntax highlighting.");
+                    copies[i]->click();
+                    QCOMPARE(QApplication::clipboard()->text(), snippets[i]->toPlainText());
+                }
+                QCOMPARE(tried.size(), 0); // Fragments cannot be tried as standalone programs.
+                QCOMPARE(browser.findChildren<QPushButton*>("tryTutorialExample1").size(), 1);
+                if (!output.isEmpty()) {
+                    auto* scroll = browser.findChild<QScrollArea*>("tutorialScroll");
+                    scroll->verticalScrollBar()->setValue(snippets.first()->mapTo(scroll->widget(), QPoint()).y() - 50);
+                    QTest::qWait(30);
+                    QVERIFY(browser.grab().save(QDir(output).filePath(language + (dark ? "-dark.png" : "-light.png"))));
+                }
+            }
+            QVERIFY(browser.selectLesson("split_files"));
+            QCOMPARE(browser.findChildren<CodeEditor*>("tutorialSnippet").size(), 2);
+            QVERIFY(browser.selectLesson("project_roles"));
+            QCOMPARE(browser.findChildren<CodeEditor*>("tutorialSnippet").size(), 3);
+        }
+    }
     void allPublishedPreviewsMatchCatalogAndStayReadOnly()
     {
         TutorialCatalog catalog;

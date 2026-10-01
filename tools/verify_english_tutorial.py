@@ -17,5 +17,5 @@ for base, core in [(root / 'tutorial', True), (root / 'extensions/image/tutorial
         assert re.findall(r'```[^\n]*\n.*?```', ko, re.S) == re.findall(
             r'```[^\n]*\n.*?```', en, re.S), f'Example/output mismatch: {english}'
         count += 1
-assert count == 94, f'Expected 91 core and 3 Image lessons, found {count}'
-print('English coverage: 91 core + 3 Image lessons; matching examples and exercises.')
+assert count == 100, f'Expected 97 core and 3 Image lessons, found {count}'
+print('English coverage: 97 core + 3 Image lessons; matching examples and exercises.')

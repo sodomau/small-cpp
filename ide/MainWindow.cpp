@@ -12,6 +12,9 @@
 #include "Theme.h"
 
 #include <QAction>
+#include <QAbstractButton>
+#include <QPainter>
+#include <QTabBar>
 #include <QActionGroup>
 #include <QCloseEvent>
 #include <QDir>
@@ -47,6 +50,39 @@
 
 namespace
 {
+class TabCloseButton : public QAbstractButton
+{
+public:
+    explicit TabCloseButton(QWidget* parent) : QAbstractButton(parent)
+    {
+        setFixedSize(24, 24);
+        setToolTip("Close Tab");
+        setAccessibleName("Close Tab");
+        setCursor(Qt::PointingHandCursor);
+    }
+protected:
+    void paintEvent(QPaintEvent*) override
+    {
+        QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setPen(QPen(QColor("#8993a3"), 1.8, Qt::SolidLine, Qt::RoundCap));
+        painter.drawLine(QPointF(8, 8), QPointF(16, 16));
+        painter.drawLine(QPointF(16, 8), QPointF(8, 16));
+    }
+};
+
+void addTabCloseButton(QTabWidget* tabs, QWidget* page)
+{
+    auto* button = new TabCloseButton(tabs->tabBar());
+    const int index = tabs->indexOf(page);
+    tabs->tabBar()->setTabButton(index, QTabBar::LeftSide, nullptr);
+    tabs->tabBar()->setTabButton(index, QTabBar::RightSide, button);
+    QObject::connect(button, &QAbstractButton::clicked, tabs, [tabs, page] {
+        const int currentIndex = tabs->indexOf(page);
+        if (currentIndex >= 0) emit tabs->tabCloseRequested(currentIndex);
+    });
+}
+
 const char* EmptyProgram = "void SmallMain()\n{\n    \n}\n";
 
 QString normalizedPath(const QString& path)
@@ -137,6 +173,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
     });
     connect(build_, &BuildController::buildError, this,
         [this](const QString& raw, const QString& snapshot, const QString& file) {
+            if (projectRun_) { projectDiagnostic(raw, snapshot, file); return; }
             const SmallDiagnostic diagnostic = ExplainDiagnostic(raw, snapshot, file);
             showDiagnostic(raw, diagnostic.text, snapshot, diagnostic.line, false);
         });
@@ -167,11 +204,21 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
     });
     connect(debug_, &DebugController::buildError, this,
         [this](const QString& raw, const QString& snapshot, const QString& file) {
+            if (projectRun_) { projectDiagnostic(raw, snapshot, file); return; }
             const SmallDiagnostic diagnostic = ExplainDiagnostic(raw, snapshot, file);
             showDiagnostic(raw, diagnostic.text, snapshot, diagnostic.line, false);
         });
     connect(debug_, &DebugController::stoppedAt, this, [this](int line) {
+        if (projectRun_) return;
         if (runDocument_) runDocument_->setDebugLine(line);
+        updateDebugActions();
+    });
+    connect(debug_, &DebugController::stoppedAtFile, this, [this](const QString& file, int line) {
+        for (int i = 0; i < tabs_->count(); ++i) if (auto* document = documentAt(i)) document->clearDebugLine();
+        if (project_.contains(file) && QFileInfo(file).isFile() && line > 0) {
+            openDocument(file);
+            if (auto* document = findOpenDocument(file)) document->setDebugLine(line);
+        }
         updateDebugActions();
     });
     connect(debug_, &DebugController::variablesChanged, this,
@@ -184,6 +231,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
             variables_->expandAll();
         });
     connect(debug_, &DebugController::finished, this, [this] {
+        if (projectRun_) for (int i = 0; i < tabs_->count(); ++i) if (auto* document = documentAt(i)) document->clearDebugLine();
         if (runDocument_) runDocument_->clearDebugLine();
         updateDebugActions();
         if (closing_ && !build_->isBusy()) QTimer::singleShot(0, this, [this] { close(); });
@@ -195,6 +243,7 @@ void MainWindow::createUi()
     auto* toolbar = addToolBar("Main");
     toolbar->setMovable(false);
     auto* fileMenu = menuBar()->addMenu("&File");
+    fileMenu->setObjectName("menuFile");
     auto* learnMenu = menuBar()->addMenu("&Learn");
     learnMenu->setObjectName("menuLearn");
     auto* tutorialAction = learnMenu->addAction("Tutorial...");
@@ -438,6 +487,7 @@ void MainWindow::createUi()
     connect(stepIntoAction_, &QAction::triggered, debug_, &DebugController::stepInto);
     connect(stepOutAction_, &QAction::triggered, debug_, &DebugController::stepOut);
     connect(stopAction_, &QAction::triggered, this, [this]{ if(debug_->isBusy()) debug_->stop(); else build_->stop(); });
+    createProjectUi();
     updateDebugActions();
     connect(rawAction_, &QAction::triggered, this, &MainWindow::toggleDiagnostics);
 }
@@ -472,6 +522,14 @@ EditorDocument* MainWindow::addDocument(const QString& text, const QString& path
         if (runDocument_ == document && !friendlyDiagnostics_.isEmpty()) renderDiagnostics();
     });
     connect(document, &CodeEditor::breakpointsChanged, this, [this, document] {
+        if (debug_->isBusy() && projectRun_ && project_.contains(document->filePath())) {
+            const auto now = document->breakpoints();
+            auto& previous = projectDebugBreakpoints_[document->filePath()];
+            for (int line : now - previous) debug_->setProjectBreakpoint(document->filePath(), line, true);
+            for (int line : previous - now) debug_->setProjectBreakpoint(document->filePath(), line, false);
+            previous = now;
+            return;
+        }
         if (!debug_->isBusy() || runDocument_ != document) return;
         const QSet<int> now = document->breakpoints();
         for (int line : now - debugBreakpoints_)
@@ -481,6 +539,7 @@ EditorDocument* MainWindow::addDocument(const QString& text, const QString& path
         debugBreakpoints_ = now;
     });
     tabs_->addTab(document, document->displayName());
+    addTabCloseButton(tabs_, document);
     updateTabTitle(document);
     tabs_->setCurrentWidget(document);
     document->setFocus();
@@ -494,6 +553,10 @@ void MainWindow::updateTabTitle(EditorDocument* document)
     const int index = tabs_->indexOf(document);
     if (index < 0) return;
     QString text = document->displayName();
+    if (!project_.root.isEmpty()) {
+        if (!project_.contains(document->filePath())) text += " [Outside Project]";
+        else if (project_.excludes(QDir(project_.root).relativeFilePath(document->filePath()))) text += " [Excluded]";
+    }
     if (!document->isExample() && document->document()->isModified()) text += " *";
     tabs_->setTabText(index, text.replace('&', "&&"));
     if (document->isExample())
@@ -514,7 +577,17 @@ void MainWindow::updateTitle()
         if (!document->isExample() && document->document()->isModified()) title += " *";
         title += " - Small C++";
     }
+    if (!project_.root.isEmpty()) {
+        title = document ? document->displayName() : QString();
+        if (document && !document->isExample() && document->document()->isModified()) title += " *";
+        if (document) title += " — ";
+        title += project_.name + " — Small C++";
+    }
     setWindowTitle(title);
+    if (projectStatus_) {
+        projectStatus_->setText(project_.root.isEmpty() ? "Single File" : "Project: " + project_.name);
+        projectStatus_->setToolTip(project_.root);
+    }
     if (runAction_) updateDebugActions();
     const bool example = document && document->isExample();
     if (saveAction_) saveAction_->setEnabled(document && !example && !closing_);
@@ -539,6 +612,7 @@ void MainWindow::switchTab(int offset)
 
 QString MainWindow::initialDirectory(const EditorDocument* document) const
 {
+    if (!project_.root.isEmpty()) return project_.root;
     if (document && !document->filePath().isEmpty())
         return QFileInfo(document->filePath()).absolutePath();
     const QString last = SmallSettings().value("files/lastDirectory").toString();
@@ -676,6 +750,7 @@ void MainWindow::closeTab(int index)
 
 void MainWindow::newFile()
 {
+    if (!project_.root.isEmpty()) { newProjectFile("cpp"); return; }
     if (!closing_ && !confirmingClose_) addDocument(QString::fromUtf8(EmptyProgram));
 }
 
@@ -737,6 +812,7 @@ void MainWindow::showWelcome()
     connect(tutorial, &QPushButton::clicked, this, &MainWindow::browseTutorial);
     updateWelcomeAppearance();
     tabs_->addTab(page, "Welcome");
+    addTabCloseButton(tabs_, page);
     tabs_->setCurrentWidget(page);
     updateTitle();
 }
@@ -955,6 +1031,11 @@ void MainWindow::chooseFont()
 
 void MainWindow::run()
 {
+    if (!project_.root.isEmpty()) {
+        if (prepareProject()) build_->startProject(project_);
+        return;
+    }
+    projectRun_ = false;
     auto* document = currentDocument();
     if (!document || build_->isBusy() || closing_) return;
     runDocument_ = document;
@@ -979,6 +1060,19 @@ void MainWindow::run()
 
 void MainWindow::debug()
 {
+    if (!project_.root.isEmpty()) {
+        if (!prepareProject()) return;
+        projectDebugBreakpoints_.clear();
+        for (int i = 0; i < tabs_->count(); ++i) {
+            auto* document = documentAt(i);
+            if (document && project_.contains(document->filePath()) && !project_.excludes(QDir(project_.root).relativeFilePath(document->filePath())))
+                projectDebugBreakpoints_[document->filePath()] = document->breakpoints();
+        }
+        debug_->startProject(project_, projectDebugBreakpoints_);
+        updateDebugActions();
+        return;
+    }
+    projectRun_ = false;
     auto* document=currentDocument();
     if(!document || build_->isBusy() || debug_->isBusy() || closing_) return;
     runDocument_=document; runName_=document->displayName(); runSnapshot_=document->toPlainText();
@@ -992,6 +1086,25 @@ void MainWindow::debug()
 
 void MainWindow::publish()
 {
+    if (!project_.root.isEmpty()) {
+        if (!prepareProject()) return;
+        PublishDialog dialog(project_.root,
+            QFileInfo(ProgramPackage::executableName(project_.name + ".cpp")).completeBaseName(), this);
+        dialog.setProjectRoot(project_.root);
+        QStringList resources;
+        for (const auto& resource : project_.resources) resources << project_.absolute(resource);
+        dialog.addFiles(resources);
+        if (dialog.exec() != QDialog::Accepted) return;
+        ProjectFolder selected = project_;
+        selected.resources.clear();
+        for (const auto& resource : dialog.resources()) {
+            if (!project_.contains(resource)) { QMessageBox::warning(this, "Publish Project", "Put extra files inside the project folder before publishing."); return; }
+            selected.resources << QDir(project_.root).relativeFilePath(resource);
+        }
+        build_->startProject(selected, false, dialog.destination());
+        return;
+    }
+    projectRun_ = false;
     auto* document = currentDocument();
     if (!document || build_->isBusy() || debug_->isBusy() || closing_) return;
     PublishDialog dialog(initialDirectory(document),
@@ -1019,7 +1132,18 @@ void MainWindow::updateDebugActions()
     const bool building=build_->isBusy();
     const bool debugging=debug_->isBusy();
     const bool paused=debug_->isStopped();
-    const bool has=currentDocument()!=nullptr;
+    const bool project = !project_.root.isEmpty();
+    const bool has=project || currentDocument()!=nullptr;
+    runAction_->setText(project ? "Run Project" : "Run");
+    debugAction_->setText(project ? "Debug Project" : "Debug");
+    publishAction_->setText(project ? "Publish Project..." : "Publish...");
+    if (closeProjectAction_) closeProjectAction_->setEnabled(project && !building && !debugging && !closing_);
+    if (openProjectAction_) openProjectAction_->setEnabled(!building && !debugging && !closing_);
+    if (newProjectAction_) newProjectAction_->setEnabled(!building && !debugging && !closing_);
+    if (projectSettingsAction_) projectSettingsAction_->setEnabled(project && !building && !debugging && !closing_);
+    for (int i = 0; i < tabs_->count(); ++i)
+        if (auto* document = documentAt(i); document && !document->isExample() && project_.contains(document->filePath()))
+            document->setReadOnly(building || debugging);
     runAction_->setEnabled(has && !building && !debugging && !closing_);
     publishAction_->setEnabled(has && !building && !debugging && !closing_);
     debugAction_->setEnabled(has && !building && !debugging && !closing_);

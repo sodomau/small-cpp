@@ -24,29 +24,28 @@ finish; run from an existing terminal when you need to read their output.
 Resource paths are relative to the program's working directory, normally the
 export folder when opened from File Explorer.
 
-The package includes your current source in `source/program.cpp`, your compiled
-object, Small libraries and Qt import libraries in `relink/`, and the matching
-runtime license notices and source-access information in `licenses/`. Your code
-is shared with the recipient. You decide your own program's license; the Small
-MIT license does not automatically license your program. `relink/RELINK.cmd`
-can relink the program using the matching MinGW compiler, without IDE pause
-support. Compatible Qt DLLs can be replaced beside the executable.
+The package includes the executable, runtime DLLs/plugins, selected resources,
+and matching license notices and library source-access information in `licenses/`.
+Student source files, object files and relinking libraries are not added.
+You decide your program's license; the Small MIT license does not automatically
+license your program. Compatible Qt DLLs can be replaced beside the executable.
 
 Publish requires a prepared **Windows portable installation** with the matching
 DLLs, plugins, import libraries and license notices. An incomplete development
 build reports which file is missing. It uses the same compiler, SmallMain/manual
 main selection and installed extension detection as Run. Export uses `-O2`.
 
-The first version handles one source file and explicitly selected files with
-flat filenames. It does not discover resource paths, copy an entire source
-directory, support nested resource trees or third-party runtime dependencies,
-create an installer, sign an executable or upload a release. Test the folder on
+Single-file mode handles one source file and explicitly selected files with
+flat filenames. [Project mode](PROJECT_MODE.md) builds all included source files
+and preserves nested resource folders. Neither mode discovers third-party
+runtime dependencies, creates an installer, signs an executable or uploads a
+release. Test the folder on
 another Windows PC before distributing it widely. Files written by your program
 need a writable location.
 
 ## Development validation
 
-Prepare the DLL/plugin deployment, `qt/lib`, `LICENSE` and `licenses/` beside
+Prepare the DLL/plugin deployment, `LICENSE` and `licenses/` beside
 `small_qt_test.exe` using the matching portable package, then run `small_qt`.
 Publish integration tests execute SmallMain, ordinary main and Image/window
 programs with only Windows System32 on PATH and no Qt plugin overrides. They
