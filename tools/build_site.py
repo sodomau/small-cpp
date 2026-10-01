@@ -115,7 +115,18 @@ def build():
     for source in (ROOT / 'ide/assets/smallcpp_128.png', ROOT / 'docs/images/ide-dark.png', ROOT / 'docs/images/ide-light.png'):
         shutil.copy2(source, assets / source.name)
     lessons = [(folder.name, folder) for folder in sorted((ROOT / 'tutorial').iterdir()) if folder.is_dir()]
+    core_count = len(lessons)
     lessons += [('image-' + folder.name, folder) for folder in sorted((ROOT / 'extensions/image/tutorial').iterdir()) if folder.is_dir()]
+    image_count = len(lessons) - core_count
+    homepage = OUTPUT / 'index.html'
+    text = homepage.read_text(encoding='utf-8')
+    text = re.sub(r'(<strong data-core-lesson-count>)\d+(</strong>)',
+                  lambda match: match[1] + str(core_count) + match[2], text)
+    text = re.sub(r'\d+ core lessons', f'{core_count} core lessons', text)
+    text = re.sub(r'핵심 \d+개', f'핵심 {core_count}개', text)
+    text = re.sub(r'plus \d+ Image extension lessons', f'plus {image_count} Image extension lessons', text)
+    text = re.sub(r'Image 확장 \d+개', f'Image 확장 {image_count}개', text)
+    homepage.write_text(text, encoding='utf-8', newline='\n')
     for language, other in (('en', 'ko'), ('ko', 'en')):
         destination = OUTPUT / 'lessons' / language
         destination.mkdir(parents=True, exist_ok=True)
@@ -146,8 +157,8 @@ def build():
             content += '<div class="lesson-navigation">' + ''.join(navigation) + '</div>'
             (destination / f'{slug}.html').write_text(page(title, language, content, f'../{other}/{slug}.html'), encoding='utf-8', newline='\n')
         title = 'One small step at a time.' if language == 'en' else '한 걸음씩, 차근차근.'
-        description = ('97 core lessons + 3 Image lessons. Read, try the examples in the desktop IDE, and make them your own.'
-                       if language == 'en' else '핵심 97개 레슨과 Image 확장 3개 레슨. 설명을 읽고 데스크톱 IDE에서 예제를 실행하며 나만의 코드로 바꿔 보세요.')
+        description = (f'{core_count} core lessons + {image_count} Image lessons. Read, try the examples in the desktop IDE, and make them your own.'
+                       if language == 'en' else f'핵심 {core_count}개 레슨과 Image 확장 {image_count}개 레슨. 설명을 읽고 데스크톱 IDE에서 예제를 실행하며 나만의 코드로 바꿔 보세요.')
         content = f'<p class="eyebrow">SMALL STEPS</p><h1>{title}</h1><p class="lesson-goal">{description}</p><ol class="lesson-index">' + ''.join(index) + '</ol>'
         (destination / 'index.html').write_text(page(title, language, content, f'../{other}/index.html'), encoding='utf-8', newline='\n')
     return OUTPUT

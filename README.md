@@ -7,7 +7,7 @@
 
 A native desktop environment for learning real C++, one small step at a time.
 
-[Project website](https://sodomau.github.io/small-cpp/) · [Getting started](docs/GETTING_STARTED.md) · [88 bilingual lessons](docs/TUTORIAL_ENGLISH.md) · [Build from source](docs/DEVELOPMENT.md) · [MIT license](LICENSE)
+[Project website](https://sodomau.github.io/small-cpp/) · [Getting started](docs/GETTING_STARTED.md) · [97 bilingual lessons](docs/TUTORIAL_ENGLISH.md) · [Build from source](docs/DEVELOPMENT.md) · [MIT license](LICENSE)
 
 </div>
 
@@ -17,7 +17,7 @@ library, and tools in larger programs.
 
 Small C++은 실제 C++을 작은 단계로 배우는 네이티브 교육 환경입니다.
 설정의 복잡함은 줄이고, 배운 내용을 일반 C++로 이어갈 수 있도록 설계했습니다.
-현재 핵심 튜토리얼은 **88개 레슨을 한국어와 영어로** 제공합니다.
+현재 핵심 튜토리얼은 **97개 레슨을 한국어와 영어로** 제공합니다.
 
 ## Why “Small C++”?
 
@@ -78,8 +78,8 @@ void SmallMain()
 
 ## Get started
 
-Try the [current Windows portable preview](https://github.com/sodomau/small-cpp/releases/tag/v0.76.10):
-download **SmallCpp-v0.76.10-Windows-x64.zip**, extract the entire archive,
+Try the [current Windows portable preview](https://github.com/sodomau/small-cpp/releases/tag/v0.76.11):
+download **SmallCpp-v0.76.11-Windows-x64.zip**, extract the entire archive,
 and launch `SmallCppIDE.exe`. The compiler and debugger are included.
 See [portable first use](docs/PORTABLE_START.md) for instructions.
 
@@ -103,14 +103,14 @@ learners. Before publishing a binary release, complete the
 | Resource | Start here |
 | --- | --- |
 | First use | [Getting started](docs/GETTING_STARTED.md) |
-| English curriculum | [88-lesson index](docs/TUTORIAL_ENGLISH.md) |
-| Korean curriculum | [88-lesson contents](docs/tutorial-small-steps/CONTENTS.md) |
+| English curriculum | [97-lesson index](docs/TUTORIAL_ENGLISH.md) |
+| Korean curriculum | [97-lesson contents](https://sodomau.github.io/small-cpp/lessons/ko/index.html) |
 | Teaching | [Teacher notes](docs/tutorial-small-steps/TEACHER.md) |
 | Programming model | [Small C++ guide](docs/SMALL_CPP_GUIDE.md) |
 | Design principles | [Philosophy](docs/PHILOSOPHY.md) |
 | Extensions and lessons | [Authoring guide](docs/EXTENSIONS_AND_TUTORIALS.md) |
 
-The source lesson pack provides all 88 core lessons and three Image lessons
+The source lesson pack provides all 97 core lessons and three Image lessons
 in Korean and English. Choose **Settings → Tutorial Language → English**.
 See the [English lesson index](docs/TUTORIAL_ENGLISH.md). Korean remains the
 default; unavailable languages fall back to it. IDE controls use English.
