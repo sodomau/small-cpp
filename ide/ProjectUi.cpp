@@ -54,7 +54,8 @@ public:
         painter->save();
         style->drawControl(QStyle::CE_ItemViewItem, &view, painter, view.widget);
         painter->setFont(view.font);
-        painter->setPen(index.data(Qt::ForegroundRole).value<QBrush>().color());
+        const QBrush foreground = index.data(Qt::ForegroundRole).value<QBrush>();
+        painter->setPen(foreground.style() == Qt::NoBrush ? view.palette.color(QPalette::PlaceholderText) : foreground.color());
         painter->drawText(textRect, view.displayAlignment, text);
         painter->restore();
     }
@@ -225,6 +226,8 @@ void MainWindow::refreshProject()
                 path = path.isEmpty() ? segment : path + "/" + segment;
                 if (!items.contains(path)) {
                     auto* item = parent ? new QTreeWidgetItem(parent) : new QTreeWidgetItem(projectTree_);
+                    item->setForeground(0, QBrush(project_.excludes(path)
+                        ? QColor(darkTheme_ ? "#8993a3" : "#929aa6") : projectTree_->palette().color(QPalette::Text)));
                     item->setText(0, segment + (project_.excludes(path) ? " (Excluded)" : ""));
                     item->setData(0, Qt::UserRole, path);
                     item->setData(0, Qt::UserRole + 1, project_.excludes(path));
@@ -240,7 +243,8 @@ void MainWindow::refreshProject()
     while (*iterator) {
         auto* item = *iterator;
         const bool excluded = project_.excludes(item->data(0, Qt::UserRole).toString());
-        item->setForeground(0, excluded ? QBrush(QColor(darkTheme_ ? "#8993a3" : "#929aa6")) : QBrush());
+        item->setForeground(0, QBrush(excluded ? QColor(darkTheme_ ? "#8993a3" : "#929aa6")
+                                              : projectTree_->palette().color(QPalette::Text)));
         QFont font = item->font(0);
         font.setItalic(excluded);
         item->setFont(0, font);

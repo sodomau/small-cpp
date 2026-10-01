@@ -167,6 +167,20 @@ private slots:
             QCOMPARE(items.size(), 1);
             QTRY_COMPARE_WITH_TIMEOUT(items.first()->foreground(0).color(), QColor(dark ? "#8993a3" : "#929aa6"), 3000);
             QVERIFY(items.first()->font(0).italic());
+            for (int repeat = 0; repeat < 2; ++repeat) {
+                project = load(directory.path());
+                QVERIFY(project.setExcluded("logic", false, &error));
+                QTRY_COMPARE_WITH_TIMEOUT(tree->findItems("value.cpp", Qt::MatchExactly | Qt::MatchRecursive).size(), 1, 3000);
+                auto* included = tree->findItems("value.cpp", Qt::MatchExactly | Qt::MatchRecursive).first();
+                QCOMPARE(included->foreground(0).color(), tree->palette().color(QPalette::Text));
+                QVERIFY(included->foreground(0).style() != Qt::NoBrush);
+                QVERIFY(!included->font(0).italic());
+                project = load(directory.path());
+                QVERIFY(project.setExcluded("logic", true, &error));
+                QTRY_COMPARE_WITH_TIMEOUT(tree->findItems("value.cpp (Excluded)", Qt::MatchExactly | Qt::MatchRecursive).size(), 1, 3000);
+                auto* excluded = tree->findItems("value.cpp (Excluded)", Qt::MatchExactly | Qt::MatchRecursive).first();
+                QCOMPARE(excluded->foreground(0).color(), QColor(dark ? "#8993a3" : "#929aa6"));
+            }
         }
     }
     void cancellingCloseKeepsProjectAndText()
