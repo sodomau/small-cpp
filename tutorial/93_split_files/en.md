@@ -10,7 +10,7 @@ related-example: reference/console
 
 @code example.cpp
 
-We will move `SayHello` to another file. Continue in the `Greeting` project from the previous lesson.
+We will move `say_hello` to another file. Continue in the `Greeting` project from the previous lesson.
 
 ## Create greeting.cpp
 
@@ -18,27 +18,27 @@ Right-click a blank area in the file list and choose **New Source File…**. Ent
 
 ### greeting.cpp
 ```cpp
-void SayHello()
+void say_hello()
 {
-    Print("Hello from another file!");
+    print("Hello from another file!");
 }
 ```
 
-Replace `main.cpp` with the following. Remove the body of `SayHello` from this file and add its declaration at the top.
+Replace `main.cpp` with the following. Remove the body of `say_hello` from this file and add its declaration at the top.
 
 ### main.cpp
 ```cpp
-void SayHello();
+void say_hello();
 
-void SmallMain()
+void small_main()
 {
-    SayHello();
+    say_hello();
 }
 ```
 
-`void SayHello();`, ending with a semicolon, introduces the function. The version with braces supplies its body. Choose **Run Project**: the result is unchanged.
+`void say_hello();`, ending with a semicolon, introduces the function. The version with braces supplies its body. Choose **Run Project**: the result is unchanged.
 
-Keep only one `SmallMain` in the whole project. Do not `#include` a `.cpp` file. The IDE compiles each included `.cpp` separately and links them together.
+Keep only one `small_main` in the whole project. Do not `#include` a `.cpp` file. The IDE compiles each included `.cpp` separately and links them together.
 
 ## Exercise — Check it yourself
 

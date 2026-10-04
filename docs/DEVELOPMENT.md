@@ -95,13 +95,13 @@ For separate work, create a short descriptive branch such as `fix/tutorial-links
 Before committing: `git diff --check`, stage selected paths, then
 `git diff --cached --stat` and `git diff --cached`.
 Examples: `fix: restore tutorial navigation`, `feat: reload external theme`,
-`docs: clarify SmallMain lifecycle`.
+`docs: clarify small_main lifecycle`.
 Never commit unrelated edits or silently rewrite history.
 
 ## Continuous work in Codex
 
 Add this repository folder as a local project and use it as the primary folder.
-Start future development chats from that project so they use the same code and
+start future development chats from that project so they use the same code and
 root `AGENTS.md`. This setup chat itself is projectless; saving the repository
 does not register it automatically in the app.
 Official project guidance: https://learn.chatgpt.com/docs/projects

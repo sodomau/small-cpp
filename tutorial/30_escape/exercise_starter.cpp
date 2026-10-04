@@ -1,5 +1,5 @@
-void SmallMain()
+void small_main()
 {
-    Print("Hello\nSmall");
-    Print("\"Hi\"");
+    print("Hello\nSmall");
+    print("\"Hi\"");
 }

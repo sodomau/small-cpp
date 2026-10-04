@@ -15,16 +15,16 @@ Interfaces are classified as:
 | `String()` | `reference/string.cpp` |
 | `String(const char*)` via `String s = "Hello";` | `reference/string.cpp` |
 | copy / assignment | `reference/string.cpp` |
-| `Length()` | `reference/string.cpp` |
+| `length()` | `reference/string.cpp` |
 | `operator[]` read | `reference/string.cpp` |
 | `operator[]` write | `reference/string.cpp` |
-| `Substring(start)` | `reference/string.cpp` |
-| `Substring(start, length)` | `reference/string.cpp` |
+| `substring(start)` | `reference/string.cpp` |
+| `substring(start, length)` | `reference/string.cpp` |
 | `operator+` | `reference/string.cpp` |
 | `operator+=` | `reference/string.cpp` |
 | `== != < <= > >=` | `reference/string.cpp` |
 | literal-on-left comparisons | `reference/string.cpp` |
-| printing through `Print` / `Write` | `reference/string.cpp` |
+| printing through `print` / `write` | `reference/string.cpp` |
 
 ### Interoperability / implementation-facing
 | API | Planned example |
@@ -44,7 +44,7 @@ Interfaces are classified as:
 | `Array(length)` | `reference/array.cpp` |
 | initializer-list construction | `reference/array.cpp` |
 | copy / assignment, including different lengths | `reference/array.cpp` |
-| `Length()` | `reference/array.cpp` |
+| `length()` | `reference/array.cpp` |
 | `operator[]` read | `reference/array.cpp` |
 | `operator[]` write | `reference/array.cpp` |
 | `Array<bool>` real-reference behavior | `reference/array.cpp` |
@@ -55,14 +55,14 @@ No `Resize`, `Append`, or pointer API is part of Small Array.
 
 | API | Planned reference example |
 |---|---|
-| `Print()` | `reference/console.cpp` |
-| `Print(args...)` | `reference/console.cpp` |
-| `Format(args...)` — build a `String` with Print-like arguments | `reference/console.cpp` |
-| `Write()` / `Write(args...)` | `reference/console.cpp` |
-| `Input()` | `reference/console.cpp` |
-| `Input(prompt)` | `reference/console.cpp` |
-| `InputInt()` / `InputInt(prompt)` | `reference/console.cpp` |
-| `InputReal()` / `InputReal(prompt)` | `reference/console.cpp` |
+| `print()` | `reference/console.cpp` |
+| `print(args...)` | `reference/console.cpp` |
+| `format(args...)` — build a `String` with Print-like arguments | `reference/console.cpp` |
+| `write()` / `write(args...)` | `reference/console.cpp` |
+| `input()` | `reference/console.cpp` |
+| `input(prompt)` | `reference/console.cpp` |
+| `input_int()` / `input_int(prompt)` | `reference/console.cpp` |
+| `input_real()` / `input_real(prompt)` | `reference/console.cpp` |
 
 Program console is a real native console; the IDE lower pane is diagnostics only.
 
@@ -73,40 +73,40 @@ Program console is a real native console; the IDE lower pane is diagnostics only
 | API | Reference example |
 |---|---|
 | `File` | `reference/file.cpp` |
-| `Open(filename)` | `reference/file.cpp` |
-| `Open(filename, FileMode::Read)` | `reference/file.cpp` |
-| `Open(filename, FileMode::Write)` | `reference/file.cpp` |
-| `Open(filename, FileMode::Append)` | `reference/file.cpp` |
-| `Open(filename, FileMode::ReadBinary)` | `reference/file.cpp` |
-| `Open(filename, FileMode::WriteBinary)` | `reference/file.cpp` |
-| `Close()` | `reference/file.cpp` |
-| `IsOpen()` | `reference/file.cpp` |
-| `End()` | `reference/file.cpp` |
-| `Input()` | `reference/file.cpp` |
-| `InputInt()` | `reference/file.cpp` |
-| `InputReal()` | `reference/file.cpp` |
-| `Write(...)` | `reference/file.cpp` |
-| `Print(...)` | `reference/file.cpp` |
-| `ReadInt()` — native `int` representation | `reference/file.cpp` |
-| `ReadReal()` — native `double` representation | `reference/file.cpp` |
-| `WriteInt(int)` — native `int` representation | `reference/file.cpp` |
-| `WriteReal(double)` — native `double` representation | `reference/file.cpp` |
+| `open(filename)` | `reference/file.cpp` |
+| `open(filename, FileMode::Read)` | `reference/file.cpp` |
+| `open(filename, FileMode::Write)` | `reference/file.cpp` |
+| `open(filename, FileMode::Append)` | `reference/file.cpp` |
+| `open(filename, FileMode::ReadBinary)` | `reference/file.cpp` |
+| `open(filename, FileMode::WriteBinary)` | `reference/file.cpp` |
+| `close()` | `reference/file.cpp` |
+| `is_open()` | `reference/file.cpp` |
+| `end()` | `reference/file.cpp` |
+| `input()` | `reference/file.cpp` |
+| `input_int()` | `reference/file.cpp` |
+| `input_real()` | `reference/file.cpp` |
+| `write(...)` | `reference/file.cpp` |
+| `print(...)` | `reference/file.cpp` |
+| `read_int()` — native `int` representation | `reference/file.cpp` |
+| `read_real()` — native `double` representation | `reference/file.cpp` |
+| `write_int(int)` — native `int` representation | `reference/file.cpp` |
+| `write_real(double)` — native `double` representation | `reference/file.cpp` |
 
-`File` is RAII-safe internally: destruction closes an open file, while learners still use explicit `Open` / `Close` because it matches the real-world model.
+`File` is RAII-safe internally: destruction closes an open file, while learners still use explicit `open` / `close` because it matches the real-world model.
 
 
 ## 4. Color
 
 | API | Planned reference example |
 |---|---|
-| `RGB(r,g,b)` | `reference/color.cpp` |
-| `Red()` / `Green()` / `Blue()` | `reference/color.cpp` |
+| `rgb(r,g,b)` | `reference/color.cpp` |
+| `red()` / `green()` / `blue()` | `reference/color.cpp` |
 | `Black White Red Green Blue Yellow Cyan Magenta Gray` | `reference/color.cpp` |
 | default `Color()` | `reference/color.cpp` |
 
-`SetRGB()` is public today but `RGB()` is the intended beginner constructor vocabulary.
+`set_rgb()` is public today but `rgb()` is the intended beginner constructor vocabulary.
 
-**v1 audit note:** consider hiding `SetRGB()` before final API freeze if no compelling educational use appears.
+**v1 audit note:** consider hiding `set_rgb()` before final API freeze if no compelling educational use appears.
 
 ## 5. Keyboard
 
@@ -114,12 +114,12 @@ Program console is a real native console; the IDE lower pane is diagnostics only
 
 | API | Planned reference example |
 |---|---|
-| `KeyDown(Key)` | `reference/keyboard.cpp` |
-| `KeyPressed(Key)` | `reference/keyboard.cpp` |
-| `KeyReleased(Key)` | `reference/keyboard.cpp` |
-| `KeyDown(char)` | `reference/keyboard.cpp` |
-| `KeyPressed(char)` | `reference/keyboard.cpp` |
-| `KeyReleased(char)` | `reference/keyboard.cpp` |
+| `key_down(Key)` | `reference/keyboard.cpp` |
+| `key_pressed(Key)` | `reference/keyboard.cpp` |
+| `key_released(Key)` | `reference/keyboard.cpp` |
+| `key_down(char)` | `reference/keyboard.cpp` |
+| `key_pressed(char)` | `reference/keyboard.cpp` |
+| `key_released(char)` | `reference/keyboard.cpp` |
 
 The example will exercise every named `Key` value at least once, without making the program artificially complicated.
 
@@ -129,10 +129,10 @@ The example will exercise every named `Key` value at least once, without making 
 
 | API | Planned reference example |
 |---|---|
-| `MouseX()` / `MouseY()` | `reference/mouse.cpp` |
-| `MouseDown(button)` | `reference/mouse.cpp` |
-| `MousePressed(button)` | `reference/mouse.cpp` |
-| `MouseReleased(button)` | `reference/mouse.cpp` |
+| `mouse_x()` / `mouse_y()` | `reference/mouse.cpp` |
+| `mouse_down(button)` | `reference/mouse.cpp` |
+| `mouse_pressed(button)` | `reference/mouse.cpp` |
+| `mouse_released(button)` | `reference/mouse.cpp` |
 
 Every mouse button value will appear.
 
@@ -142,26 +142,26 @@ Every mouse button value will appear.
 | API | Planned reference example |
 |---|---|
 | `Window()` | `reference/drawing.cpp` |
-| `Open(width,height)` | `reference/drawing.cpp` |
-| `SetTitle(args...)` — Print-like arguments; valid before or after `Open()` | `reference/window.cpp` |
-| `Title()` — valid even while closed | `reference/window.cpp` |
-| `Close()` | `reference/window.cpp` |
-| `IsOpen()` | `reference/window.cpp` |
-| `Width()` / `Height()` | `reference/window.cpp` |
+| `open(width,height)` | `reference/drawing.cpp` |
+| `set_title(args...)` — Print-like arguments; valid before or after `open()` | `reference/window.cpp` |
+| `title()` — valid even while closed | `reference/window.cpp` |
+| `close()` | `reference/window.cpp` |
+| `is_open()` | `reference/window.cpp` |
+| `width()` / `height()` | `reference/window.cpp` |
 
 ### Drawing
 | API | Planned reference example |
 |---|---|
-| `Clear()` | `reference/drawing.cpp` |
-| `SetPixel()` | `reference/drawing.cpp` |
-| `DrawLine()` | `reference/drawing.cpp` |
-| `DrawRectangle()` | `reference/drawing.cpp` |
-| `FillRectangle()` | `reference/drawing.cpp` |
-| `DrawCircle()` | `reference/drawing.cpp` |
-| `FillCircle()` | `reference/drawing.cpp` |
-| `DrawText(x,y,text)` | `reference/drawing.cpp` |
-| `DrawText(x,y,text,color,size)` | `reference/drawing.cpp` |
-| `Show()` | `reference/drawing.cpp` |
+| `clear()` | `reference/drawing.cpp` |
+| `set_pixel()` | `reference/drawing.cpp` |
+| `draw_line()` | `reference/drawing.cpp` |
+| `draw_rectangle()` | `reference/drawing.cpp` |
+| `fill_rectangle()` | `reference/drawing.cpp` |
+| `draw_circle()` | `reference/drawing.cpp` |
+| `fill_circle()` | `reference/drawing.cpp` |
+| `draw_text(x,y,text)` | `reference/drawing.cpp` |
+| `draw_text(x,y,text,color,size)` | `reference/drawing.cpp` |
+| `show()` | `reference/drawing.cpp` |
 
 Copying Window is intentionally unsupported and is not a learner operation.
 
@@ -171,22 +171,22 @@ Copying Window is intentionally unsupported and is not a learner operation.
 | API | Planned reference example |
 |---|---|
 | construction starts timing | `reference/stopwatch.cpp` |
-| `Elapsed()` | `reference/stopwatch.cpp` |
-| `Reset()` | `reference/stopwatch.cpp` |
+| `elapsed()` | `reference/stopwatch.cpp` |
+| `reset()` | `reference/stopwatch.cpp` |
 
 ### Timer
 | API | Planned reference example |
 |---|---|
-| `Start(interval, callback)` | `reference/timer.cpp` |
-| `Stop()` | `reference/timer.cpp` |
-| `IsRunning()` | `reference/timer.cpp` |
+| `start(interval, callback)` | `reference/timer.cpp` |
+| `stop()` | `reference/timer.cpp` |
+| `is_running()` | `reference/timer.cpp` |
 
-The callback example uses a plain `void OnTimer()` function first, so event-based programming appears before lambdas or `std::function`.
+The callback example uses a plain `void on_timer()` function first, so event-based programming appears before lambdas or `std::function`.
 
 ### Sleep
 | API | Planned reference example |
 |---|---|
-| `Sleep(seconds)` | `reference/time.cpp` |
+| `sleep(seconds)` | `reference/time.cpp` |
 
 ## 9. Sound
 
@@ -194,10 +194,10 @@ The callback example uses a plain `void OnTimer()` function first, so event-base
 
 | API | Planned reference example |
 |---|---|
-| `PlaySound()` | `reference/sound.cpp` |
-| `PlaySoundAndWait()` | `reference/sound.cpp` |
-| `Beep()` | `reference/sound.cpp` |
-| `BeepAndWait()` | `reference/sound.cpp` |
+| `play_sound()` | `reference/sound.cpp` |
+| `play_sound_and_wait()` | `reference/sound.cpp` |
+| `beep()` | `reference/sound.cpp` |
+| `beep_and_wait()` | `reference/sound.cpp` |
 
 The sound example will play every preset once.
 
@@ -205,10 +205,10 @@ The sound example will play every preset once.
 
 | API / concept | Planned reference example |
 |---|---|
-| global `void SmallMain()` | every example |
+| global `void small_main()` | every example |
 | `namespace Small` | `reference/cpp_interop.cpp` |
 | `SMALL_BEGINNER_MODE` behavior | documentation/test, not learner code |
-| explicit `Small::Window`, `Small::Print`, etc. | `reference/cpp_interop.cpp` |
+| explicit `Small::Window`, `Small::print`, etc. | `reference/cpp_interop.cpp` |
 
 ## Phase 3B planned reference set
 
@@ -260,7 +260,7 @@ These are for motivation and composition, not API completeness.
 
 | API | Classification | Tutorial |
 |---|---|---|
-| `InitializeSmall()` | Advanced / Interop | Lesson 35 |
-| `InitializeSmall(argc, argv)` | Advanced / Interop | Lesson 35 |
+| `initialize_small()` | Advanced / Interop | Lesson 35 |
+| `initialize_small(argc, argv)` | Advanced / Interop | Lesson 35 |
 
-`SmallMain()` remains the beginner entry point. A learner-written top-level `main()` is detected automatically by the IDE and takes precedence. No mode switch is exposed.
+`small_main()` remains the beginner entry point. A learner-written top-level `main()` is detected automatically by the IDE and takes precedence. No mode switch is exposed.

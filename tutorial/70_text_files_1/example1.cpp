@@ -1,11 +1,11 @@
-void SmallMain()
+void small_main()
 {
     File file;
 
-    file.Open("score.txt", FileMode::Write);
-    file.Print("Alex");
-    file.Print(1200);
-    file.Close();
+    file.open("score.txt", FileMode::Write);
+    file.print("Alex");
+    file.print(1200);
+    file.close();
 
-    Print("Saved score.txt");
+    print("Saved score.txt");
 }

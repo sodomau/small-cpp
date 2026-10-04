@@ -36,7 +36,7 @@ def render_lesson(text, folder, language):
     lines = text.splitlines()
     rendered = []
     position = 0
-    labels = {'en': {'code': 'Example', 'exercise': 'Exercise starter', 'solution': 'Show solution'},
+    labels = {'en': {'code': 'Example', 'exercise': 'Exercise starter', 'solution': 'show solution'},
               'ko': {'code': '예제', 'exercise': '연습 문제 코드', 'solution': '풀이 보기'}}[language]
     while position < len(lines):
         line = lines[position]

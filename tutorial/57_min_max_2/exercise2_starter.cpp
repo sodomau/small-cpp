@@ -1,6 +1,6 @@
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {4, 11, 6, 20, 9};
 
-    // Find the index of the largest value.
+    // find the index of the largest value.
 }

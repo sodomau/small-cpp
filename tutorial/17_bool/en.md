@@ -2,7 +2,7 @@
 title: Remembering true and false
 part: basics
 part-title: Small Steps I — Creating with Text and Numbers
-goal: Change ready to false and check how the output changes.
+goal: Change is_ready to false and check how the output changes.
 related-example: reference/console
 ---
 
@@ -14,7 +14,7 @@ related-example: reference/console
 
 @code example.cpp
 
-You can put a bool variable directly in if. Small's Print displays true as 1 and false as 0. You can also store a comparison result, as in `bool passed = score >= 60;`.
+You can put a bool variable directly in if. Small's `print` displays true as 1 and false as 0. You can also store a comparison result, as in `bool passed = score >= 60;`.
 
 Expected output:
 
@@ -25,7 +25,7 @@ Start
 
 ## Exercise
 
-Change ready to false and check how the output changes.
+Change is_ready to false and check how the output changes.
 
 @exercise exercise_starter.cpp
 

@@ -1,4 +1,4 @@
-void SmallMain()
+void small_main()
 {
-    Print("Alex");
+    print("Alex");
 }

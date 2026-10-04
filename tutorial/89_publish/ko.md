@@ -10,7 +10,7 @@ related-example: reference/console
 
 @code example.cpp
 
-**Try This Code**로 열고 **MyGreeting.cpp**로 저장한 뒤 **Run**을 누르세요. 마지막 Input은 Enter를 누를 때까지 기다려서 인사말을 읽을 시간을 줍니다. 배포한 콘솔 프로그램은 할 일이 끝나면 닫힙니다. IDE에서 제공하는 자동 종료 대기는 배포본에 들어가지 않습니다.
+**Try This Code**로 열고 **MyGreeting.cpp**로 저장한 뒤 **Run**을 누르세요. 마지막 input은 Enter를 누를 때까지 기다려서 인사말을 읽을 시간을 줍니다. 배포한 콘솔 프로그램은 할 일이 끝나면 닫힙니다. IDE에서 제공하는 자동 종료 대기는 배포본에 들어가지 않습니다.
 
 ## Windows 배포 폴더 만들기
 
@@ -32,6 +32,6 @@ Publish는 내 컴퓨터에 Windows x64 배포본을 만듭니다. 인터넷에 
 
 ### Hint
 
-Print의 큰따옴표 안을 바꾸고 마지막 Input은 남겨 두세요. Publish할 때마다 새 대상 폴더가 필요합니다. 기존 폴더를 덮어쓰지 않습니다.
+print의 큰따옴표 안을 바꾸고 마지막 input은 남겨 두세요. Publish할 때마다 새 대상 폴더가 필요합니다. 기존 폴더를 덮어쓰지 않습니다.
 
 @solution exercise_solution.cpp

@@ -14,7 +14,7 @@ related-example: reference/console
 
 @code example.cpp
 
-At 2, Print is skipped. for increases i and checks the next condition. At 4, the entire loop ends, so neither 4 nor 5 is printed.
+At 2, `print` is skipped. for increases i and checks the next condition. At 4, the entire loop ends, so neither 4 nor 5 is printed.
 
 Expected output:
 

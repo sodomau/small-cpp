@@ -1,7 +1,7 @@
-void SmallMain()
+void small_main()
 {
     StopWatch watch;
 
-    Sleep(2.0);
-    Print("Elapsed: ", watch.Elapsed());
+    sleep(2.0);
+    print("Elapsed: ", watch.elapsed());
 }

@@ -1,10 +1,10 @@
-int TextLength(const std::string& text)
+int text_length(const std::string& text)
 {
     return static_cast<int>(text.size());
 }
 
-void SmallMain()
+void small_main()
 {
     std::string text = "Small";
-    Print(TextLength(text));
+    print(text_length(text));
 }

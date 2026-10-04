@@ -2,7 +2,7 @@
 title: 함수에 값 전달하기
 part: basics
 part-title: 작은 걸음 I — 글자와 숫자로 만들기
-goal: ShowDouble에 7과 10을 전달해 차례로 출력하세요.
+goal: show_double에 7과 10을 전달해 차례로 출력하세요.
 related-example: reference/console
 ---
 
@@ -25,7 +25,7 @@ related-example: reference/console
 
 ## Exercise — 한 가지 바꾸기
 
-ShowDouble에 7과 10을 전달해 차례로 출력하세요.
+show_double에 7과 10을 전달해 차례로 출력하세요.
 
 @exercise exercise_starter.cpp
 

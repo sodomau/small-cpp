@@ -16,9 +16,9 @@ A **program** tells a computer what to do. The written instructions are **code**
 
 Open the code with **Try This Code**, then press **Run or F5**. The text appears in a console window.
 
-A **string** is a value made of characters in order. The double quotes in `"Hello!"` mark its beginning and end. A **function** groups instructions under a name. Print is a function that produces output; `Print("Hello!");` passes it a greeting and calls it.
+A **string** is a value made of characters in order. The double quotes in `"Hello!"` mark its beginning and end. A **function** groups instructions under a name. `print` is a function that produces output; `print("Hello!");` passes it a greeting and calls it.
 
-SmallMain is the function where we write our instructions. For now, keep the surrounding structure and change only Print inside `{ }`. Keep the `;` at the end of the statement too.
+small_main is the function where we write our instructions. For now, keep the surrounding structure and change only `print` inside `{ }`. Keep the `;` at the end of the statement too.
 
 Expected output:
 
@@ -34,6 +34,6 @@ Print your own name instead of "Hello!".
 
 ### Hint
 
-Change only the text inside the double quotes. Print starts with an uppercase P.
+Change only the text inside the double quotes. `print` starts with a lowercase p.
 
 @solution exercise_solution.cpp

@@ -16,11 +16,11 @@ related-example: reference/console
 
 iostream은 표준 입출력, string은 std::string을 위해 포함합니다. std::cout << 값은 출력, std::getline(std::cin, name)은 한 줄 입력입니다. Alex를 넣으면 Hello, Alex가 나옵니다.
 
-이번에는 SmallMain을 유지하며 입출력 도구만 바꿉니다.
+이번에는 small_main을 유지하며 입출력 도구만 바꿉니다.
 
 ## Exercise — std::cout 사용하기
 
-`#include <iostream>`을 적고 `std::cout`으로 `Hello C++`과 줄바꿈을 출력하세요. `SmallMain()`은 아직 그대로 사용합니다.
+`#include <iostream>`을 적고 `std::cout`으로 `Hello C++`과 줄바꿈을 출력하세요. `small_main()`은 아직 그대로 사용합니다.
 
 @exercise exercise1_starter.cpp
 

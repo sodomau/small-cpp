@@ -1,12 +1,12 @@
-void AddOne(int number)
+void add_one(int number)
 {
     number = number + 1;
-    Print(number);
+    print(number);
 }
 
-void SmallMain()
+void small_main()
 {
     int score = 10;
-    AddOne(score);
-    Print(score);
+    add_one(score);
+    print(score);
 }

@@ -1,16 +1,16 @@
-int Sum(const Array<int>& numbers)
+int sum(const Array<int>& numbers)
 {
     int total = 0;
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
         total = total + numbers[i];
 
     return total;
 }
 
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {3, 7, 2, 9, 4};
 
-    Print("Sum: ", Sum(numbers));
+    print("Sum: ", sum(numbers));
 }

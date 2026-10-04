@@ -1,10 +1,10 @@
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {4, 8, 15, 16, 23, 42};
     int value = 23;
     int index = -1;
     int left = 0;
-    int right = numbers.Length() - 1;
+    int right = numbers.length() - 1;
 
     while (left <= right)
     {
@@ -22,5 +22,5 @@ void SmallMain()
             left = middle + 1;
     }
 
-    Print(index);
+    print(index);
 }

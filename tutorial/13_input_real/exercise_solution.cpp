@@ -1,6 +1,6 @@
-void SmallMain()
+void small_main()
 {
-    double width = InputReal();
-    double height = InputReal();
-    Print(width * height);
+    double width = input_real();
+    double height = input_real();
+    print(width * height);
 }

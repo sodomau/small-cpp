@@ -1,5 +1,5 @@
-void SmallMain()
+void small_main()
 {
     String word = "Small";
-    Print(word[1]);
+    print(word[1]);
 }

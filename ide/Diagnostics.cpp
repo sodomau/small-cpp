@@ -206,11 +206,11 @@ SmallDiagnostic ExplainDiagnostic(const QString& raw, const QString& source,
         title = "Wrong return value";
         explanation = "The return statement does not match the function's return type.";
     }
-    else if (clean.contains("undefined reference to") && clean.contains("SmallMain()"))
+    else if (clean.contains("undefined reference to") && clean.contains("small_main()"))
     {
-        title = "SmallMain is missing";
-        explanation = "The program needs a function named SmallMain with no parameters and no return value.";
-        suggestion = "void SmallMain()\n{\n    // Your program\n}";
+        title = "small_main is missing";
+        explanation = "The program needs a function named small_main with no parameters and no return value.";
+        suggestion = "void small_main()\n{\n    // Your program\n}";
     }
 
     result.text = title + "\n\n";

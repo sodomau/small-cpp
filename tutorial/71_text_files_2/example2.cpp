@@ -1,13 +1,13 @@
-void SmallMain()
+void small_main()
 {
     File file;
 
-    file.Open("score.txt");
+    file.open("score.txt");
 
-    String name = file.Input();
-    int score = file.InputInt();
+    String name = file.input();
+    int score = file.input_int();
 
-    file.Close();
+    file.close();
 
-    Print(name, "'s score: ", score);
+    print(name, "'s score: ", score);
 }

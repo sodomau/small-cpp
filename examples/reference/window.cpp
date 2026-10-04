@@ -1,28 +1,28 @@
-void SmallMain()
+void small_main()
 {
     Window window;
 
-    Print("Default title: ", window.Title());
+    print("Default title: ", window.title());
 
-    window.SetTitle("Window Example");
-    Print("Title before Open: ", window.Title());
+    window.set_title("Window Example");
+    print("Title before Open: ", window.title());
 
-    window.Open(400, 200);
+    window.open(400, 200);
 
-    Print("Width: ", window.Width());
-    Print("Height: ", window.Height());
-    Print("Open: ", window.IsOpen());
+    print("Width: ", window.width());
+    print("Height: ", window.height());
+    print("Open: ", window.is_open());
 
-    window.Clear(Black);
-    window.DrawText(20, 20, "Title changes in one second.", White, 16);
-    window.Show();
+    window.clear(Black);
+    window.draw_text(20, 20, "Title changes in one second.", White, 16);
+    window.show();
 
-    Sleep(1.0);
-    window.SetTitle("Level ", 2, " - Score: ", 100);
+    sleep(1.0);
+    window.set_title("Level ", 2, " - Score: ", 100);
 
-    Sleep(1.0);
-    window.Close();
+    sleep(1.0);
+    window.close();
 
-    Print("Open: ", window.IsOpen());
-    Print("Title after Close: ", window.Title());
+    print("Open: ", window.is_open());
+    print("Title after Close: ", window.title());
 }

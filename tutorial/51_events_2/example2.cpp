@@ -1,24 +1,24 @@
 int seconds = 0;
 
-void OnSecond()
+void on_second()
 {
     seconds = seconds + 1;
 }
 
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(500, 250);
+    window.open(500, 250);
 
     Timer timer;
-    timer.Start(1.0, OnSecond);
+    timer.start(1.0, on_second);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        window.Clear(Black);
-        window.DrawText(30, 80, Format("Seconds: ", seconds), White, 28);
-        window.Show();
+        window.clear(Black);
+        window.draw_text(30, 80, format("Seconds: ", seconds), White, 28);
+        window.show();
     }
 
-    timer.Stop();
+    timer.stop();
 }

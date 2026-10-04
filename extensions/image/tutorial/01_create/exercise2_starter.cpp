@@ -1,6 +1,6 @@
 #include <small/image.h>
-void SmallMain()
+void small_main()
 {
     Image image(64, 48, Blue);
-    // Print its size.
+    // print its size.
 }

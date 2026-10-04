@@ -1,25 +1,25 @@
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     double x = 50;
     double speed = 200;
 
     StopWatch watch;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        double dt = watch.Elapsed();
-        watch.Reset();
+        double dt = watch.elapsed();
+        watch.reset();
 
         x = x + speed * dt;
 
         if (x > 620 || x < 20)
             speed = -speed;
 
-        window.Clear(Black);
-        window.FillCircle(x, 240, 20, Yellow);
-        window.Show();
+        window.clear(Black);
+        window.fill_circle(x, 240, 20, Yellow);
+        window.show();
     }
 }

@@ -34,6 +34,6 @@ related-example: reference/console
 
 ### Hint
 
-file.Open의 이름을 바꾸세요. 코드만 바꿔서는 파일이 복사되지 않습니다. Add Files에서도 friend.txt를 골라야 합니다. 그림과 소리를 불러오는 프로그램도 같은 방법으로 함께 넣습니다.
+file.open의 이름을 바꾸세요. 코드만 바꿔서는 파일이 복사되지 않습니다. Add Files에서도 friend.txt를 골라야 합니다. 그림과 소리를 불러오는 프로그램도 같은 방법으로 함께 넣습니다.
 
 @solution exercise_solution.cpp

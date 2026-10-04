@@ -8,7 +8,7 @@ related-example: reference/keyboard
 
 ## 이번에 배울 것
 
-**키 입력 상태**는 지금 어떤 키가 눌려 있는지 알려 줍니다. KeyDown은 키를 누르고 있는 동안 참입니다.
+**키 입력 상태**는 지금 어떤 키가 눌려 있는지 알려 줍니다. key_down은 키를 누르고 있는 동안 참입니다.
 
 ## 실행해 보기
 
@@ -26,7 +26,7 @@ related-example: reference/keyboard
 
 ### Hint
 
-문자 키는 `window.KeyDown('W')`처럼 확인할 수 있습니다.
+문자 키는 `window.key_down('W')`처럼 확인할 수 있습니다.
 
 @solution exercise1_solution.cpp
 

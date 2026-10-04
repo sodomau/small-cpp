@@ -20,7 +20,7 @@ The sum needs no copy of the whole array. Attempting to change it causes a compi
 
 ## Exercise
 
-Change the earlier `FindLargest(Array<int> numbers)` to use `const Array<int>&`. The function does not modify the Array.
+Change the earlier `find_largest(Array<int> numbers)` to use `const Array<int>&`. The function does not modify the Array.
 
 @exercise exercise2_starter.cpp
 

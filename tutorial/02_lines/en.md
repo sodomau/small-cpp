@@ -8,13 +8,13 @@ related-example: reference/console
 
 ## What you will learn
 
-When you write several instructions, they run from top to bottom. Print moves to a new line after producing its output.
+When you write several instructions, they run from top to bottom. `print` moves to a new line after producing its output.
 
 ## Try it
 
 @code example.cpp
 
-After the first Print finishes, the second one runs. Swapping the two lines swaps the order of the output.
+After the first `print` finishes, the second one runs. Swapping the two lines swaps the order of the output.
 
 In code, everything from `//` to the end of that line is a **comment**. It is a note for people and does not run. Put // before the first instruction and see what changes.
 

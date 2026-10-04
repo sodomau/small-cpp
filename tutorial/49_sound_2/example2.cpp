@@ -1,8 +1,8 @@
-void SmallMain()
+void small_main()
 {
-    BeepAndWait(440, 0.25);
-    BeepAndWait(550, 0.25);
-    BeepAndWait(660, 0.4);
+    beep_and_wait(440, 0.25);
+    beep_and_wait(550, 0.25);
+    beep_and_wait(660, 0.4);
 
-    PlaySoundAndWait(Sound::Win);
+    play_sound_and_wait(Sound::Win);
 }

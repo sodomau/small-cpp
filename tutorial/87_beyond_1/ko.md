@@ -14,9 +14,9 @@ related-example: reference/console
 
 @code example1.cpp
 
-SmallMain 대신 main, String 대신 std::string, Input 대신 getline, Print 대신 cout을 씁니다. Alex를 입력하면 Hello, Alex가 나옵니다.
+small_main 대신 main, String 대신 std::string, `input` 대신 getline, `print` 대신 cout을 씁니다. Alex를 입력하면 Hello, Alex가 나옵니다.
 
-Small 기능을 쓰지 않으므로 small.h나 InitializeSmall, ShutdownSmall도 필요 없습니다.
+Small 기능을 쓰지 않으므로 small.h나 initialize_small, shutdown_small도 필요 없습니다.
 
 ## Exercise — Small 없는 합계
 

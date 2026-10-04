@@ -8,7 +8,7 @@ related-example: reference/console
 
 ## What you will learn
 
-**Input** means receiving a value from outside the program. The Input function returns a line typed on the keyboard as a string.
+`input` means receiving a value from outside the program. The Input function returns a line typed on the keyboard as a string.
 
 ## Try it
 
@@ -16,7 +16,7 @@ related-example: reference/console
 
 After Run, type Alex in the console and press Enter. The program is not broken while Input waits. When you finish, it stores the string in name and runs the next line.
 
-You can also put a prompt inside the parentheses, as in `Input("Name: ")`.
+You can also put a prompt inside the parentheses, as in `input("Name: ")`.
 
 Expected output (excluding input prompts):
 

@@ -1,7 +1,7 @@
-void SmallMain()
+void small_main()
 {
     String first = "Small";
     String text = first + " C++";
-    Print(text);
-    Print(text.Length());
+    print(text);
+    print(text.length());
 }

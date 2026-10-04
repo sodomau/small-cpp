@@ -16,7 +16,7 @@ related-example: reference/console
 
 `score = score + 5;`는 ① 현재 값 10을 읽고 ② 5를 더하고 ③ 결과 15를 score에 저장합니다. 수학의 등식처럼 양쪽이 같다는 뜻이 아닙니다.
 
-`Print(score + 5);`만 실행하면 계산 결과를 보여 줄 뿐, score 자체는 바뀌지 않습니다.
+`print(score + 5);`만 실행하면 계산 결과를 보여 줄 뿐, score 자체는 바뀌지 않습니다.
 
 예상 출력:
 

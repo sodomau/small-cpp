@@ -10,7 +10,7 @@ related-example: reference/console
 
 @code example.cpp
 
-`SayHello`를 다른 파일로 옮겨 보겠습니다. 새 프로젝트가 아니라 앞 수업의 `Greeting` 프로젝트에서 작업하세요.
+`say_hello`를 다른 파일로 옮겨 보겠습니다. 새 프로젝트가 아니라 앞 수업의 `Greeting` 프로젝트에서 작업하세요.
 
 ## greeting.cpp 만들기
 
@@ -18,27 +18,27 @@ related-example: reference/console
 
 ### greeting.cpp
 ```cpp
-void SayHello()
+void say_hello()
 {
-    Print("Hello from another file!");
+    print("Hello from another file!");
 }
 ```
 
-이제 `main.cpp`를 아래처럼 바꿉니다. `SayHello`의 함수 내용은 지우고, 첫 줄에 함수 선언을 넣습니다.
+이제 `main.cpp`를 아래처럼 바꿉니다. `say_hello`의 함수 내용은 지우고, 첫 줄에 함수 선언을 넣습니다.
 
 ### main.cpp
 ```cpp
-void SayHello();
+void say_hello();
 
-void SmallMain()
+void small_main()
 {
-    SayHello();
+    say_hello();
 }
 ```
 
-끝에 세미콜론이 있는 `void SayHello();`는 함수가 있다는 소개입니다. 중괄호가 있는 쪽은 실제 함수 내용입니다. **Run Project**를 누르면 이전과 같은 결과가 나옵니다.
+끝에 세미콜론이 있는 `void say_hello();`는 함수가 있다는 소개입니다. 중괄호가 있는 쪽은 실제 함수 내용입니다. **Run Project**를 누르면 이전과 같은 결과가 나옵니다.
 
-`SmallMain`은 프로젝트 전체에 하나만 두세요. `.cpp`를 `#include`하지 마세요. IDE가 모든 포함된 `.cpp`를 각각 컴파일하고 합칩니다.
+`small_main`은 프로젝트 전체에 하나만 두세요. `.cpp`를 `#include`하지 마세요. IDE가 모든 포함된 `.cpp`를 각각 컴파일하고 합칩니다.
 
 ## 연습 — 직접 확인하기
 

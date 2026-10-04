@@ -222,7 +222,7 @@ void BuildController::compile()
         if (debugBuild_) args << "-fno-omit-frame-pointer";
     }
 
-    // SmallMain is the beginner-facing path: the IDE supplies the Small
+    // small_main is the beginner-facing path: the IDE supplies the Small
     // header and namespace shortcut. A real main() is ordinary C++ source,
     // so Small must be included and qualified explicitly by the learner.
     if (!usesOwnMain_)

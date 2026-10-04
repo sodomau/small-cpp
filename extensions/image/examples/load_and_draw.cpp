@@ -1,17 +1,17 @@
 #include <small/image.h>
 
-void SmallMain()
+void small_main()
 {
-    Image image = LoadImage("cat.png");
-    Print(image.Width(), " x ", image.Height());
+    Image image = load_image("cat.png");
+    print(image.width(), " x ", image.height());
 
     Window window;
-    window.Open(800, 600);
+    window.open(800, 600);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        window.Clear(Black);
-        DrawImage(window, image, 100, 100);
-        window.Show();
+        window.clear(Black);
+        draw_image(window, image, 100, 100);
+        window.show();
     }
 }

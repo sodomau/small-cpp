@@ -1,9 +1,9 @@
-void SmallMain()
+void small_main()
 {
     String text = "Small C++";
     int index = -1;
 
-    // Find the first 'a'.
+    // find the first 'a'.
 
-    Print(index);
+    print(index);
 }

@@ -405,7 +405,7 @@ void MainWindow::newProject()
     const QString folder = QDir(parent).filePath(name);
     if (QFileInfo::exists(folder) || !QDir().mkpath(folder)) { QMessageBox::warning(this, "New Project", "Choose a new project name. Existing folders are kept."); return; }
     QSaveFile file(QDir(folder).filePath("main.cpp"));
-    const QByteArray text("void SmallMain()\n{\n    Print(\"Hello!\");\n}\n");
+    const QByteArray text("void small_main()\n{\n    print(\"Hello!\");\n}\n");
     if (!file.open(QIODevice::WriteOnly) || file.write(text) != text.size() || !file.commit()) { QMessageBox::warning(this, "New Project", "Cannot create main.cpp."); return; }
     openProject(folder);
 }

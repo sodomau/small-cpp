@@ -1,20 +1,20 @@
-void SmallMain()
+void small_main()
 {
     Array<int> a(5);
     Array<int> b = {10, 20, 30};
 
     a[0] = 100;
 
-    Print("Length: ", a.Length());
-    Print("First value: ", a[0]);
+    print("Length: ", a.length());
+    print("First value: ", a[0]);
 
     a = b;
-    Print("New length: ", a.Length());
+    print("New length: ", a.length());
 
-    for (int i = 0; i < a.Length(); i++)
-        Print(a[i]);
+    for (int i = 0; i < a.length(); i++)
+        print(a[i]);
 
     Array<bool> flags = {true, false, true};
     flags[1] = true;
-    Print(flags[1]);
+    print(flags[1]);
 }

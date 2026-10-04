@@ -1,12 +1,12 @@
-void SmallMain()
+void small_main()
 {
-    Print("Pop!");
-    PlaySound(Sound::Pop);
+    print("Pop!");
+    play_sound(Sound::Pop);
 
-    Sleep(0.5);
+    sleep(0.5);
 
-    Print("Coin!");
-    PlaySound(Sound::Coin);
+    print("Coin!");
+    play_sound(Sound::Coin);
 
-    Sleep(1.0);
+    sleep(1.0);
 }

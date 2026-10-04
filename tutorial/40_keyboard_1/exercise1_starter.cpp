@@ -1,17 +1,17 @@
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     double x = 320;
     double y = 240;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
         // Move with W, A, S, D.
 
-        window.Clear(Black);
-        window.FillCircle(x, y, 20, Cyan);
-        window.Show();
+        window.clear(Black);
+        window.fill_circle(x, y, 20, Cyan);
+        window.show();
     }
 }

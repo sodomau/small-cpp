@@ -14,13 +14,13 @@ related-example: reference/array
 
 @code example1.cpp
 
-먼저 예제를 실행하면 Inside: 11, Outside: 10입니다. `AddOne(int x)`를 `AddOne(int& x)`로 바꾸어 다시 실행하세요. 이번에는 둘 다 11입니다.
+먼저 예제를 실행하면 Inside: 11, Outside: 10입니다. `add_one(int x)`를 `add_one(int& x)`로 바꾸어 다시 실행하세요. 이번에는 둘 다 11입니다.
 
 처음에는 x가 복사본이었고, &를 붙인 뒤에는 n의 다른 이름이기 때문입니다. 원본을 바꾸겠다는 의도가 있을 때 사용합니다.
 
 ## Exercise — Swap 만들기
 
-두 int의 원래 값을 서로 바꾸는 `Swap(int& a, int& b)` 함수를 만드세요.
+두 int의 원래 값을 서로 바꾸는 `swap(int& a, int& b)` 함수를 만드세요.
 
 @exercise exercise1_starter.cpp
 

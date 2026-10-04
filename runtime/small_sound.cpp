@@ -50,7 +50,7 @@ void Validate(Tone tone)
 {
     if (!std::isfinite(tone.frequency) || tone.frequency <= 0 ||
         !std::isfinite(tone.seconds) || tone.seconds <= 0)
-        throw std::invalid_argument("Beep frequency and duration must be positive, finite numbers.");
+        throw std::invalid_argument("beep frequency and duration must be positive, finite numbers.");
 }
 
 QByteArray MakePcm(Tone tone, const QAudioFormat& format)
@@ -60,7 +60,7 @@ QByteArray MakePcm(Tone tone, const QAudioFormat& format)
     if (bytesPerFrame <= 0 || frameCount > std::numeric_limits<int>::max() / bytesPerFrame)
         throw std::length_error("The requested sound is too long.");
     if (tone.frequency >= format.sampleRate() / 2.0)
-        throw std::invalid_argument("Beep frequency is too high for the audio device.");
+        throw std::invalid_argument("beep frequency is too high for the audio device.");
 
     const int frames = static_cast<int>(frameCount);
     QByteArray bytes(frames * bytesPerFrame, '\0');
@@ -122,8 +122,8 @@ struct Player
         buffer.open(QIODevice::ReadOnly);
         sink->start(&buffer);
     }
-    ~Player() { Stop(); }
-    void Stop()
+    ~Player() { stop(); }
+    void stop()
     {
         if (sink)
         {
@@ -155,11 +155,11 @@ struct SoundSystem
 
     void Shutdown()
     {
-        // ShutdownSmall() calls this while QApplication is still alive.
-        // Stop asynchronous cleanup first, then release every audio player.
+        // shutdown_small() calls this while QApplication is still alive.
+        // stop asynchronous cleanup first, then release every audio player.
         cleanupTimer.stop();
         for (auto& player : players)
-            if (player) player->Stop();
+            if (player) player->stop();
         players.clear();
     }
 };
@@ -220,9 +220,9 @@ void ShutdownAudio()
 }
 }
 
-void PlaySound(Sound sound) { Play(Preset(sound), false); }
-void PlaySoundAndWait(Sound sound) { Play(Preset(sound), true); }
-void Beep(double frequency, double seconds) { Play({frequency, seconds, 0.25}, false); }
-void BeepAndWait(double frequency, double seconds) { Play({frequency, seconds, 0.25}, true); }
+void play_sound(Sound sound) { Play(Preset(sound), false); }
+void play_sound_and_wait(Sound sound) { Play(Preset(sound), true); }
+void beep(double frequency, double seconds) { Play({frequency, seconds, 0.25}, false); }
+void beep_and_wait(double frequency, double seconds) { Play({frequency, seconds, 0.25}, true); }
 
 } // namespace Small

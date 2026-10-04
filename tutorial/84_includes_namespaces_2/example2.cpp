@@ -1,11 +1,11 @@
 #include <iostream>
 #include <string>
 
-void SmallMain()
+void small_main()
 {
-    Small::String smallText = "Small namespace";
-    Small::Print(smallText);
+    Small::String small_text = "Small namespace";
+    Small::print(small_text);
 
-    std::string standardText = "Standard namespace";
-    std::cout << standardText << "\n";
+    std::string standard_text = "Standard namespace";
+    std::cout << standard_text << "\n";
 }

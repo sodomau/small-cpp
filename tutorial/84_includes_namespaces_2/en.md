@@ -16,7 +16,7 @@ A **namespace** groups names to distinguish them. :: identifies the namespace a 
 
 Small::Print and std::cout are different tools. The example prints Small namespace and Standard namespace in that order.
 
-A namespace is not an object. Distinguish the dot in window.Show() from :: in Small::Print.
+A namespace is not an object. Distinguish the dot in window.show() from :: in Small::Print.
 
 ## Exercise
 

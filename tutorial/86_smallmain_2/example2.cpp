@@ -2,20 +2,20 @@
 
 int main(int argc, char* argv[])
 {
-    Small::InitializeSmall(argc, argv);
+    Small::initialize_small(argc, argv);
 
     {
         Small::Window window;
-        window.SetTitle("Real main()");
-        window.Open(500, 300);
+        window.set_title("Real main()");
+        window.open(500, 300);
 
-        while (window.IsOpen())
+        while (window.is_open())
         {
-            window.Clear(Small::Black);
-            window.DrawText(30, 80, "This is ordinary C++ main()");
-            window.Show();
+            window.clear(Small::Black);
+            window.draw_text(30, 80, "This is ordinary C++ main()");
+            window.show();
         }
     } // Destroy Window before shutting down the runtime.
-    Small::ShutdownSmall();
+    Small::shutdown_small();
     return 0;
 }

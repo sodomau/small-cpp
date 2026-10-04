@@ -1,5 +1,5 @@
-void SmallMain()
+void small_main()
 {
-    int age = InputInt();
-    Print(age + 1);
+    int age = input_int();
+    print(age + 1);
 }

@@ -21,7 +21,7 @@ def main():
         def __init__(self, *values, **kwargs):
             super().__init__(*values, directory=str(output), **kwargs)
 
-    print(f'Open http://127.0.0.1:{args.port} (Ctrl+C to stop)', flush=True)
+    print(f'open http://127.0.0.1:{args.port} (Ctrl+C to stop)', flush=True)
     with ThreadingHTTPServer(('127.0.0.1', args.port), PreviewHandler) as server:
         server.serve_forever()
 

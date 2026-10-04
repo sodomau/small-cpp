@@ -14,7 +14,7 @@ have **[Outside Project]** on their tabs.
 
 All `.cpp` files in the folder and its subfolders compile together. Include
 headers normally, for example `#include "logic/player.h"`. A project produces
-one program and needs one `SmallMain()` or one ordinary `main()`. Additional
+one program and needs one `small_main()` or one ordinary `main()`. Additional
 practice programs should be excluded or kept in another project folder.
 
 Right-click the tree to create a source file or header, add existing files, or

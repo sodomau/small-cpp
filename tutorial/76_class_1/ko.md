@@ -14,19 +14,18 @@ related-example: programs/bouncing_ball
 
 @code example1.cpp
 
-Counter 객체는 자신이 센 값 value를 가집니다. AddOne을 두 번 호출하고 Value를 읽으면 2입니다.
+Counter 객체는 자신이 센 값 value를 가집니다. `add_one`을 두 번 호출하고 `get_value()`로 읽으면 2입니다.
 
 public은 사용하는 쪽에 공개한 부분, private은 바깥에서 직접 접근하지 못하게 한 부분입니다. String이나 Window도 데이터와 관련 기능을 가진 객체로 사용해 왔습니다. 이번에는 생성자나 상속까지 배우지 않습니다.
 
-## Exercise — Counter에 Reset 추가
+## Exercise — Counter에 `reset` 추가
 
-Counter class에 값을 0으로 만드는 public `Reset()`을 추가하고 동작을 확인하세요.
+Counter class에 값을 0으로 만드는 public `reset()`을 추가하고 동작을 확인하세요.
 
 @exercise exercise1_starter.cpp
 
 ### Hint
 
-Reset 안에서 private value에 0을 대입하세요.
+`reset` 안에서 private value에 0을 대입하세요.
 
 @solution exercise1_solution.cpp
-

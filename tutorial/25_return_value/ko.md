@@ -2,7 +2,7 @@
 title: 함수의 결과 돌려받기
 part: basics
 part-title: 작은 걸음 I — 글자와 숫자로 만들기
-goal: Square(6)의 결과를 받아 출력하세요.
+goal: square(6)의 결과를 받아 출력하세요.
 related-example: reference/console
 ---
 
@@ -14,9 +14,9 @@ related-example: reference/console
 
 @code example.cpp
 
-맨 앞 int는 결과가 정수라는 뜻입니다. Square(4)가 돌려준 16을 result에 저장합니다. 함수는 계산을 맡고, 출력은 SmallMain에서 합니다.
+맨 앞 int는 결과가 정수라는 뜻입니다. square(4)가 돌려준 16을 result에 저장합니다. 함수는 계산을 맡고, 출력은 small_main에서 합니다.
 
-InputInt도 이렇게 읽은 정수를 돌려주는 함수였습니다.
+input_int도 이렇게 읽은 정수를 돌려주는 함수였습니다.
 
 예상 출력:
 
@@ -26,7 +26,7 @@ InputInt도 이렇게 읽은 정수를 돌려주는 함수였습니다.
 
 ## Exercise — 한 가지 바꾸기
 
-Square(6)의 결과를 받아 출력하세요.
+square(6)의 결과를 받아 출력하세요.
 
 @exercise exercise_starter.cpp
 

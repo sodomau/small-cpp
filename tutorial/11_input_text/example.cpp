@@ -1,5 +1,5 @@
-void SmallMain()
+void small_main()
 {
-    String name = Input();
-    Print("Hello, ", name);
+    String name = input();
+    print("Hello, ", name);
 }

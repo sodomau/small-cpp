@@ -14,9 +14,9 @@ related-example: reference/sound
 
 @code example1.cpp
 
-PlaySound는 재생을 시작하고 바로 돌아옵니다. Sound::Pop과 Sound::Coin은 준비된 효과음 이름입니다.
+play_sound는 재생을 시작하고 바로 돌아옵니다. Sound::Pop과 Sound::Coin은 준비된 효과음 이름입니다.
 
-예제에서는 프로그램이 바로 끝나지 않도록 Sleep으로 기다립니다. 두 효과음이 순서대로 시작되는지 들어 보세요.
+예제에서는 프로그램이 바로 끝나지 않도록 sleep으로 기다립니다. 두 효과음이 순서대로 시작되는지 들어 보세요.
 
 ## Exercise — 세 가지 효과음
 
@@ -26,7 +26,7 @@ Click, Coin, Win 효과음을 순서대로 들려주세요. 각 소리가 끝난
 
 ### Hint
 
-`PlaySoundAndWait`를 세 번 사용하세요.
+`play_sound_and_wait`를 세 번 사용하세요.
 
 @solution exercise1_solution.cpp
 

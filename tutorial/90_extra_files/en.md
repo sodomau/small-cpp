@@ -34,6 +34,6 @@ Create a second one-line text file named friend.txt beside your source. Change t
 
 ### Hint
 
-Change the name in file.Open. Changing the code alone does not copy the file: select friend.txt with Add Files too. The same steps work for pictures and sounds your program loads.
+Change the name in file.open. Changing the code alone does not copy the file: select friend.txt with Add Files too. The same steps work for pictures and sounds your program loads.
 
 @solution exercise_solution.cpp

@@ -14,9 +14,9 @@ related-example: reference/console
 
 @code example2.cpp
 
-Small::Print와 std::cout은 서로 다른 도구입니다. 예제는 Small namespace와 Standard namespace를 차례로 출력합니다.
+Small::print와 std::cout은 서로 다른 도구입니다. 예제는 Small namespace와 Standard namespace를 차례로 출력합니다.
 
-이름 공간은 객체가 아닙니다. window.Show()의 점과 Small::Print의 ::를 구분하세요.
+이름 공간은 객체가 아닙니다. window.show()의 점과 Small::print의 ::를 구분하세요.
 
 ## Exercise — 표준 입출력으로 이름 읽기
 

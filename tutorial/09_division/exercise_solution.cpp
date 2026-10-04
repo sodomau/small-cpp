@@ -1,5 +1,5 @@
-void SmallMain()
+void small_main()
 {
-    Print(18 / 5);
-    Print(18 % 5);
+    print(18 / 5);
+    print(18 % 5);
 }

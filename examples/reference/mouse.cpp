@@ -1,21 +1,21 @@
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        if (window.MousePressed(MouseButton::Left))
-            Print("Left button pressed");
+        if (window.mouse_pressed(MouseButton::Left))
+            print("Left button pressed");
 
-        if (window.MouseReleased(MouseButton::Right))
-            Print("Right button released");
+        if (window.mouse_released(MouseButton::Right))
+            print("Right button released");
 
-        if (window.MouseDown(MouseButton::Middle))
-            Print("Middle button is down");
+        if (window.mouse_down(MouseButton::Middle))
+            print("Middle button is down");
 
-        window.Clear(White);
-        window.FillCircle(window.MouseX(), window.MouseY(), 8, Red);
-        window.Show();
+        window.clear(White);
+        window.fill_circle(window.mouse_x(), window.mouse_y(), 8, Red);
+        window.show();
     }
 }

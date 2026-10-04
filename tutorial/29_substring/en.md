@@ -14,7 +14,7 @@ A **substring** is a consecutive part of a string. Pass Substring a starting pos
 
 @code example.cpp
 
-Position 1 is m. Taking three characters from there gives mal. Omitting the length, as in `Substring(1)`, takes everything from position 1 to the end.
+Position 1 is m. Taking three characters from there gives mal. Omitting the length, as in `substring(1)`, takes everything from position 1 to the end.
 
 In a string of length 5, character positions are 0–4. Stay within those bounds when reading a character with brackets.
 

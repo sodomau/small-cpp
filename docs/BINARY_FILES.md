@@ -2,10 +2,10 @@
 
 Small C++ binary file I/O deliberately follows native C++ representation.
 
-- `WriteInt(x)` writes the `sizeof(int)` bytes of `x` as represented by the current C++ implementation.
-- `ReadInt()` reads `sizeof(int)` bytes into an `int`.
-- `WriteReal(x)` writes the `sizeof(double)` bytes of `x`.
-- `ReadReal()` reads `sizeof(double)` bytes into a `double`.
+- `write_int(x)` writes the `sizeof(int)` bytes of `x` as represented by the current C++ implementation.
+- `read_int()` reads `sizeof(int)` bytes into an `int`.
+- `write_real(x)` writes the `sizeof(double)` bytes of `x`.
+- `read_real()` reads `sizeof(double)` bytes into a `double`.
 
 Small does not define its own endian conversion, integer width, floating-point wire format, or portable serialization format.
 

@@ -1,7 +1,7 @@
-void SmallMain()
+void small_main()
 {
     Array<int> scores = {80, 95, 70};
-    Print(scores[0]);
+    print(scores[0]);
     scores[1] = 100;
-    Print(scores[1]);
+    print(scores[1]);
 }

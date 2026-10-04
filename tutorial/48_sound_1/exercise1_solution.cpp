@@ -1,6 +1,6 @@
-void SmallMain()
+void small_main()
 {
-    PlaySoundAndWait(Sound::Click);
-    PlaySoundAndWait(Sound::Coin);
-    PlaySoundAndWait(Sound::Win);
+    play_sound_and_wait(Sound::Click);
+    play_sound_and_wait(Sound::Coin);
+    play_sound_and_wait(Sound::Win);
 }

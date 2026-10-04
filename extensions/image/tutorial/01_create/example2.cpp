@@ -1,17 +1,17 @@
 #include <small/image.h>
 
-void SmallMain()
+void small_main()
 {
     Image image(100, 100, Red);
-    Print(image.Width(), " x ", image.Height());
+    print(image.width(), " x ", image.height());
 
     Window window;
-    window.Open(400, 250);
+    window.open(400, 250);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        window.Clear(White);
-        DrawImage(window, image, 150, 75);
-        window.Show();
+        window.clear(White);
+        draw_image(window, image, 150, 75);
+        window.show();
     }
 }

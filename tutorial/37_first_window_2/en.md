@@ -14,9 +14,9 @@ Writing a function name after an object's dot uses an operation belonging to tha
 
 @code example2.cpp
 
-`window.Width()` and `window.Height()` return the window's width and height. Check that the console shows `Size: 400 x 300`.
+`window.width()` and `window.height()` return the window's width and height. Check that the console shows `Size: 400 x 300`.
 
-Creating the object and opening the actual window are separate actions. You can call SetTitle before Open. Call Close to close it from your program.
+Creating the object and opening the actual window are separate actions. You can call set_title before Open. Call Close to close it from your program.
 
 ## Exercise
 
@@ -26,6 +26,6 @@ Open a 320 × 240 window, print its actual Width and Height in the console, and 
 
 ### Hint
 
-Pass `window.Width()` and `window.Height()` to Print.
+Pass `window.width()` and `window.height()` to `print`.
 
 @solution exercise2_solution.cpp

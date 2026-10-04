@@ -1,12 +1,12 @@
-void SmallMain()
+void small_main()
 {
     File file;
 
-    file.Open("save.dat", FileMode::WriteBinary);
-    file.WriteInt(3);
-    file.WriteInt(1250);
-    file.WriteReal(42.5);
-    file.Close();
+    file.open("save.dat", FileMode::WriteBinary);
+    file.write_int(3);
+    file.write_int(1250);
+    file.write_real(42.5);
+    file.close();
 
-    Print("Binary save written");
+    print("Binary save written");
 }

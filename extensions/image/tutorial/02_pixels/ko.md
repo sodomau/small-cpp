@@ -1,10 +1,10 @@
 ---
 title: Pixels
-goal: Pixel과 SetPixel로 이미지의 개별 픽셀을 읽고 바꿉니다.
+goal: pixel과 set_pixel로 이미지의 개별 픽셀을 읽고 바꿉니다.
 ---
 
 ## 이미지는 픽셀의 격자입니다
-`SetPixel(x, y, color)`로 한 픽셀의 색을 바꾸고 `Pixel(x, y)`로 읽을 수 있습니다. 좌표는 Window와 마찬가지로 왼쪽 위가 (0, 0)입니다.
+`set_pixel(x, y, color)`로 한 픽셀의 색을 바꾸고 `pixel(x, y)`로 읽을 수 있습니다. 좌표는 Window와 마찬가지로 왼쪽 위가 (0, 0)입니다.
 
 ## 먼저 실행해 보세요
 
@@ -18,7 +18,7 @@ goal: Pixel과 SetPixel로 이미지의 개별 픽셀을 읽고 바꿉니다.
 @code example2.cpp
 
 ## Pixel 작업과 drawing은 분리되어 있습니다
-Image 안의 데이터를 바꾸는 것은 member function이고, 그 결과를 Window에 보여주는 것은 `DrawImage`입니다.
+Image 안의 데이터를 바꾸는 것은 member function이고, 그 결과를 Window에 보여주는 것은 `draw_image`입니다.
 
 ## Exercise — 대각선
 
@@ -40,6 +40,6 @@ Red 이미지의 (10,10) 픽셀을 읽어 Red 성분을 출력하세요.
 
 ### Hint
 
-`Color color = image.Pixel(10, 10);` 다음 `color.Red()`를 사용하세요.
+`Color color = image.pixel(10, 10);` 다음 `color.red()`를 사용하세요.
 
 @solution exercise2_solution.cpp

@@ -1,17 +1,17 @@
-void SmallMain()
+void small_main()
 {
     File file;
 
-    file.Open("state.dat", FileMode::WriteBinary);
-    file.WriteInt(7);
-    file.WriteReal(3.5);
-    file.Close();
+    file.open("state.dat", FileMode::WriteBinary);
+    file.write_int(7);
+    file.write_real(3.5);
+    file.close();
 
-    file.Open("state.dat", FileMode::ReadBinary);
-    int number = file.ReadInt();
-    double value = file.ReadReal();
-    file.Close();
+    file.open("state.dat", FileMode::ReadBinary);
+    int number = file.read_int();
+    double value = file.read_real();
+    file.close();
 
-    Print(number);
-    Print(value);
+    print(number);
+    print(value);
 }

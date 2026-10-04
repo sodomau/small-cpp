@@ -16,12 +16,12 @@ namespace Small
 {
 
 // Prepares the Small runtime when you write the real C++ main() yourself.
-// SmallMain() programs are initialized automatically by Small's hidden entry point.
-void InitializeSmall(int argc = 0, char** argv = nullptr);
+// small_main() programs are initialized automatically by Small's hidden entry point.
+void initialize_small(int argc = 0, char** argv = nullptr);
 
 // Finishes the Small runtime. Call this before returning from your own main().
-// SmallMain() programs call it automatically through Small's hidden entry point.
-void ShutdownSmall();
+// small_main() programs call it automatically through Small's hidden entry point.
+void shutdown_small();
 
 
 class String
@@ -49,30 +49,30 @@ public:
         if (length != 0) data_.assign(text, static_cast<std::size_t>(length));
     }
 
-    int Length() const { return static_cast<int>(data_.size()); }
+    int length() const { return static_cast<int>(data_.size()); }
     const char* c_str() const { return data_.c_str(); }
 
     char& operator[](int index) { CheckIndex(index); return data_[index]; }
     const char& operator[](int index) const { CheckIndex(index); return data_[index]; }
 
-    String Substring(int start) const
+    String substring(int start) const
     {
         CheckStart(start);
-        return Substring(start, Length() - start);
+        return substring(start, length() - start);
     }
 
-    String Substring(int start, int length) const
+    String substring(int start, int length) const
     {
         CheckStart(start);
         // Subtraction avoids overflowing start + length.
-        if (length < 0 || length > Length() - start)
-            throw std::out_of_range("Substring extends beyond the String.");
+        if (length < 0 || length > this->length() - start)
+            throw std::out_of_range("substring extends beyond the String.");
         return String(data_.data() + start, length);
     }
 
     String& operator+=(const String& other)
     {
-        if (other.Length() > std::numeric_limits<int>::max() - Length())
+        if (other.length() > std::numeric_limits<int>::max() - length())
             throw std::length_error("String is too long.");
         data_ += other.data_;
         return *this;
@@ -95,14 +95,14 @@ private:
     }
     void CheckStart(int start) const
     {
-        if (start < 0 || start > Length())
-            throw std::out_of_range("Substring start index is out of range.");
+        if (start < 0 || start > length())
+            throw std::out_of_range("substring start index is out of range.");
     }
     void CheckIndex(int index) const
     {
-        if (index < 0 || index >= Length())
+        if (index < 0 || index >= length())
             throw std::out_of_range("String index " + std::to_string(index) +
-                " is out of range. Length: " + std::to_string(Length()) + ".");
+                " is out of range. length: " + std::to_string(length()) + ".");
     }
 };
 
@@ -113,7 +113,7 @@ inline String operator+(String left, const String& right)
 }
 inline std::ostream& operator<<(std::ostream& out, const String& text)
 {
-    return out.write(text.c_str(), text.Length());
+    return out.write(text.c_str(), text.length());
 }
 
 // Allow a literal on the left, too. No friend functions are needed.
@@ -142,7 +142,7 @@ public:
         for (const T& value : values) data_.push_back(Element{value});
     }
 
-    int Length() const { return static_cast<int>(data_.size()); }
+    int length() const { return static_cast<int>(data_.size()); }
     T& operator[](int index) { CheckIndex(index); return data_[index].value; }
     const T& operator[](int index) const { CheckIndex(index); return data_[index].value; }
 
@@ -155,9 +155,9 @@ private:
 
     void CheckIndex(int index) const
     {
-        if (index < 0 || index >= Length())
+        if (index < 0 || index >= length())
             throw std::out_of_range("Array index " + std::to_string(index) +
-                " is out of range. Length: " + std::to_string(Length()) + ".");
+                " is out of range. length: " + std::to_string(length()) + ".");
     }
 };
 
@@ -167,7 +167,7 @@ namespace small_detail
 }
 
 template<typename... Args>
-void Write(const Args&... args)
+void write(const Args&... args)
 {
     std::ostream& out = small_detail::Console();
     if constexpr (sizeof...(Args) > 0) (out << ... << args);
@@ -175,7 +175,7 @@ void Write(const Args&... args)
 }
 
 template<typename... Args>
-void Print(const Args&... args)
+void print(const Args&... args)
 {
     std::ostream& out = small_detail::Console();
     if constexpr (sizeof...(Args) > 0) (out << ... << args);
@@ -184,7 +184,7 @@ void Print(const Args&... args)
 }
 
 template<typename... Args>
-String Format(const Args&... args)
+String format(const Args&... args)
 {
     std::ostringstream out;
     if constexpr (sizeof...(Args) > 0) (out << ... << args);
@@ -194,12 +194,12 @@ String Format(const Args&... args)
     return String(text.data(), static_cast<int>(text.size()));
 }
 
-String Input();
-String Input(const String& prompt);
-int InputInt();
-int InputInt(const String& prompt);
-double InputReal();
-double InputReal(const String& prompt);
+String input();
+String input(const String& prompt);
+int input_int();
+int input_int(const String& prompt);
+double input_real();
+double input_real(const String& prompt);
 
 
 enum class FileMode
@@ -216,14 +216,14 @@ class File
 {
 public:
     File() = default;
-    ~File() { Close(); }
+    ~File() { close(); }
 
     File(const File&) = delete;
     File& operator=(const File&) = delete;
 
-    void Open(const String& filename, FileMode mode = FileMode::Read)
+    void open(const String& file_name, FileMode mode = FileMode::Read)
     {
-        Close();
+        close();
 
         std::ios::openmode flags = std::ios::in;
         if (mode == FileMode::Write)
@@ -237,27 +237,27 @@ public:
         else if (mode == FileMode::AppendBinary)
             flags = std::ios::out | std::ios::app | std::ios::binary;
 
-        stream_.open(filename.c_str(), flags);
+        stream_.open(file_name.c_str(), flags);
         if (!stream_.is_open())
-            throw std::runtime_error("Could not open file: " + std::string(filename.c_str()) + ".");
+            throw std::runtime_error("Could not open file: " + std::string(file_name.c_str()) + ".");
 
         mode_ = mode;
     }
 
-    void Close()
+    void close()
     {
         if (stream_.is_open()) stream_.close();
     }
 
-    bool IsOpen() const { return stream_.is_open(); }
+    bool is_open() const { return stream_.is_open(); }
 
-    bool End()
+    bool end()
     {
         CheckReadable();
         return stream_.peek() == std::char_traits<char>::eof();
     }
 
-    String Input()
+    String input()
     {
         CheckReadable();
         std::string line;
@@ -268,22 +268,22 @@ public:
         }
         if (!line.empty() && line.back() == '\r') line.pop_back();
         if (line.size() > static_cast<std::size_t>(std::numeric_limits<int>::max()))
-            throw std::length_error("Input is too long.");
+            throw std::length_error("input is too long.");
         return String(line.data(), static_cast<int>(line.size()));
     }
 
-    int InputInt()
+    int input_int()
     {
         return ReadNumber<int>("integer");
     }
 
-    double InputReal()
+    double input_real()
     {
         return ReadNumber<double>("number");
     }
 
     template<typename... Args>
-    void Write(const Args&... args)
+    void write(const Args&... args)
     {
         CheckWritable();
         if constexpr (sizeof...(Args) > 0) (stream_ << ... << args);
@@ -292,7 +292,7 @@ public:
     }
 
     template<typename... Args>
-    void Print(const Args&... args)
+    void print(const Args&... args)
     {
         CheckWritable();
         if constexpr (sizeof...(Args) > 0) (stream_ << ... << args);
@@ -301,7 +301,7 @@ public:
         stream_.flush();
     }
 
-    int ReadInt()
+    int read_int()
     {
         CheckBinaryReadable();
         int value = 0;
@@ -310,7 +310,7 @@ public:
         return value;
     }
 
-    double ReadReal()
+    double read_real()
     {
         CheckBinaryReadable();
         double value = 0.0;
@@ -319,14 +319,14 @@ public:
         return value;
     }
 
-    void WriteInt(int value)
+    void write_int(int value)
     {
         CheckBinaryWritable();
         stream_.write(reinterpret_cast<const char*>(&value), sizeof(value));
         if (!stream_) throw std::runtime_error("Could not write an int to file.");
     }
 
-    void WriteReal(double value)
+    void write_real(double value)
     {
         CheckBinaryWritable();
         stream_.write(reinterpret_cast<const char*>(&value), sizeof(value));
@@ -385,15 +385,15 @@ class Color
 {
 public:
     Color() = default;
-    int Red() const { return red_; }
-    int Green() const { return green_; }
-    int Blue() const { return blue_; }
-    void SetRGB(int red, int green, int blue);
+    int red() const { return red_; }
+    int green() const { return green_; }
+    int blue() const { return blue_; }
+    void set_rgb(int red, int green, int blue);
 private:
     int red_ = 0, green_ = 0, blue_ = 0;
 };
 
-Color RGB(int red, int green, int blue);
+Color rgb(int red, int green, int blue);
 extern const Color Black, White, Red, Green, Blue, Yellow, Cyan, Magenta, Gray;
 
 enum class Key
@@ -415,8 +415,8 @@ class StopWatch
 {
 public:
     StopWatch() : start_(std::chrono::steady_clock::now()) {}
-    void Reset() { start_ = std::chrono::steady_clock::now(); }
-    double Elapsed() const
+    void reset() { start_ = std::chrono::steady_clock::now(); }
+    double elapsed() const
     {
         return std::chrono::duration<double>(std::chrono::steady_clock::now() - start_).count();
     }
@@ -424,11 +424,11 @@ private:
     std::chrono::steady_clock::time_point start_;
 };
 
-// RandomInt includes both endpoints. RandomReal includes min and excludes max.
-int RandomInt(int min, int max);
-double RandomReal(double min, double max);
+// random_int includes both endpoints. random_real includes min and excludes max.
+int random_int(int min, int max);
+double random_real(double min, double max);
 
-void Sleep(double seconds);
+void sleep(double seconds);
 
 // Calls a function repeatedly at the requested interval.
 // The callback must take no parameters and return void.
@@ -440,9 +440,9 @@ public:
     Timer(const Timer&) = delete;
     Timer& operator=(const Timer&) = delete;
 
-    void Start(double interval, void (*callback)());
-    void Stop();
-    bool IsRunning() const;
+    void start(double interval, void (*callback)());
+    void stop();
+    bool is_running() const;
 
 private:
     struct Impl;
@@ -460,57 +460,57 @@ public:
     Window(const Window&) = delete;
     Window& operator=(const Window&) = delete;
 
-    void Open(int width, int height);
-    void SetTitle(const String& title);
+    void open(int width, int height);
+    void set_title(const String& title);
 
     template<typename First, typename... Rest>
-    void SetTitle(const First& first, const Rest&... rest)
+    void set_title(const First& first, const Rest&... rest)
     {
-        SetTitle(Format(first, rest...));
+        set_title(Small::format(first, rest...));
     }
 
-    String Title() const;
-    void Close();
-    bool IsOpen();
-    int Width() const;
-    int Height() const;
+    String title() const;
+    void close();
+    bool is_open();
+    int width() const;
+    int height() const;
 
-    void Clear(Color color);
-    void SetPixel(int x, int y, Color color);
-    void DrawLine(double x1, double y1, double x2, double y2, Color color);
-    void DrawRectangle(double x, double y, double width, double height, Color color);
-    void FillRectangle(double x, double y, double width, double height, Color color);
-    void DrawCircle(double x, double y, double radius, Color color);
-    void FillCircle(double x, double y, double radius, Color color);
-    void DrawText(double x, double y, const String& text);
-    void DrawText(double x, double y, const String& text, Color color, int size);
-    void Show();
+    void clear(Color color);
+    void set_pixel(int x, int y, Color color);
+    void draw_line(double x1, double y1, double x2, double y2, Color color);
+    void draw_rectangle(double x, double y, double width, double height, Color color);
+    void fill_rectangle(double x, double y, double width, double height, Color color);
+    void draw_circle(double x, double y, double radius, Color color);
+    void fill_circle(double x, double y, double radius, Color color);
+    void draw_text(double x, double y, const String& text);
+    void draw_text(double x, double y, const String& text, Color color, int size);
+    void show();
 
-    bool KeyDown(Key key) const;
-    bool KeyPressed(Key key) const;
-    bool KeyReleased(Key key) const;
-    bool KeyDown(char key) const;
-    bool KeyPressed(char key) const;
-    bool KeyReleased(char key) const;
+    bool key_down(Key key) const;
+    bool key_pressed(Key key) const;
+    bool key_released(Key key) const;
+    bool key_down(char key) const;
+    bool key_pressed(char key) const;
+    bool key_released(char key) const;
 
-    int MouseX() const;
-    int MouseY() const;
-    bool MouseDown(MouseButton button) const;
-    bool MousePressed(MouseButton button) const;
-    bool MouseReleased(MouseButton button) const;
+    int mouse_x() const;
+    int mouse_y() const;
+    bool mouse_down(MouseButton button) const;
+    bool mouse_pressed(MouseButton button) const;
+    bool mouse_released(MouseButton button) const;
 
 private:
     friend struct small_detail::WindowAccess;
     struct Impl;
-    Impl* impl_ = nullptr;   // Owned; allocated only by Open().
+    Impl* impl_ = nullptr;   // Owned; allocated only by open().
     String title_ = "Small C++";
     void CheckOpen() const;
 };
 
-void PlaySound(Sound sound);
-void PlaySoundAndWait(Sound sound);
-void Beep(double frequency, double seconds);
-void BeepAndWait(double frequency, double seconds);
+void play_sound(Sound sound);
+void play_sound_and_wait(Sound sound);
+void beep(double frequency, double seconds);
+void beep_and_wait(double frequency, double seconds);
 
 } // namespace Small
 
@@ -518,4 +518,4 @@ void BeepAndWait(double frequency, double seconds);
 using namespace Small;
 #endif
 
-void SmallMain();
+void small_main();

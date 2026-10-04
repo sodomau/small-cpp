@@ -38,8 +38,8 @@ try:
                 not isinstance(value, str) or not value.strip() for value in concepts):
             errors.append(f"{source}: invalid concepts")
         text = (EXAMPLES / source).read_text(encoding="utf-8")
-        if "void SmallMain()" not in text:
-            errors.append(f"{source}: no SmallMain entry point found")
+        if "void small_main()" not in text:
+            errors.append(f"{source}: no small_main entry point found")
 
     actual = {p.relative_to(EXAMPLES).as_posix()
               for group in ("reference", "programs")

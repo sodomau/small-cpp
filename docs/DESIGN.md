@@ -12,7 +12,7 @@ presents **simple C++**, not a toy language.
 2.  **Complex implementation, simple use.** GDB/MI complexity is
     internal; learners see familiar debugging actions.
 3.  **Prefer explicit structure over hidden magic.** Runtime lifetime is
-    `InitializeSmall → learner code → ShutdownSmall`; exit-time cleanup
+    `initialize_small → learner code → shutdown_small`; exit-time cleanup
     was removed after Qt/audio ordering problems.
 4.  **Keep the core small.** Domain-specific educational capabilities
     belong in extensions when practical.
@@ -37,7 +37,7 @@ frames are normally filtered from learner stepping.
 
 ## Learning path
 
-`SmallMain()` → basic C++ → visual/interactive programs →
+`small_main()` → basic C++ → visual/interactive programs →
 algorithms/files → types/references → standard library → real `main()` →
 ordinary C++.
 
@@ -100,7 +100,7 @@ premature build-system complexity, an overly generic extension
 ecosystem, duplicated content that can drift, and altered programming
 semantics merely to avoid explanation.
 
-## Open Project Mode questions
+## open Project Mode questions
 
 What is the smallest useful project model? Manifest or convention? How
 should header/source pairs be introduced? How should multi-file errors
@@ -112,7 +112,7 @@ standard tooling?
 Small runtime resources have explicit lifetime:
 
 ``` text
-InitializeSmall → program → ShutdownSmall
+initialize_small → program → shutdown_small
 ```
 
 Qt/audio cleanup is not delegated to exit-time static destruction. The

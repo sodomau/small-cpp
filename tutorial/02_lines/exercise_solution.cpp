@@ -1,6 +1,6 @@
-void SmallMain()
+void small_main()
 {
-    Print("Alex");
-    Print("Games");
-    Print("My game");
+    print("Alex");
+    print("Games");
+    print("My game");
 }

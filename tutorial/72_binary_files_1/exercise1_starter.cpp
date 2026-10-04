@@ -1,8 +1,8 @@
-void SmallMain()
+void small_main()
 {
     int level = 5;
     int score = 2300;
-    double playTime = 18.75;
+    double play_time = 18.75;
 
     File file;
 

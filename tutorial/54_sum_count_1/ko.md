@@ -26,7 +26,7 @@ Array의 합계를 구한 뒤 값의 개수로 나누어 평균을 출력하세�
 
 ### Hint
 
-`double total = 0;`으로 시작하고 마지막에 `total / numbers.Length()`를 계산하세요.
+`double total = 0;`으로 시작하고 마지막에 `total / numbers.length()`를 계산하세요.
 
 @solution exercise1_solution.cpp
 

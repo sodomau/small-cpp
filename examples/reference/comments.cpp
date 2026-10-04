@@ -1,13 +1,13 @@
-void SmallMain()
+void small_main()
 {
     // Explain intent or a reason that is not already obvious from the code.
     int score = 10;
     int bonus = 5;
 
     // Comments are also handy when temporarily testing a change.
-    // Print("This line is temporarily disabled.");
+    // print("This line is temporarily disabled.");
 
-    Print("Score: ", score + bonus);
+    print("Score: ", score + bonus);
 
     /*
         Use a block comment when a longer explanation

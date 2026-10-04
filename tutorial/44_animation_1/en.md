@@ -16,7 +16,7 @@ related-example: programs/bouncing_ball
 
 Each iteration increases x by 2, clears the background, and draws and displays the circle. When it passes the right edge, x returns to 0.
 
-Sleep(0.01) waits about 0.01 seconds. Check that the circle moves right and reappears on the left.
+sleep(0.01) waits about 0.01 seconds. Check that the circle moves right and reappears on the left.
 
 ## Exercise
 

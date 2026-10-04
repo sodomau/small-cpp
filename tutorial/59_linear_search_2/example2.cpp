@@ -1,10 +1,10 @@
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {7, 2, 9, 4, 5};
-    int value = InputInt("Find: ");
+    int value = input_int("Find: ");
     int index = -1;
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
         if (numbers[i] == value)
         {
             index = i;
@@ -12,7 +12,7 @@ void SmallMain()
         }
 
     if (index == -1)
-        Print("Not found");
+        print("Not found");
     else
-        Print("Found at ", index);
+        print("Found at ", index);
 }

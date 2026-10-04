@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 
-void SmallMain()
+void small_main()
 {
     std::string name;
 

@@ -20,13 +20,13 @@ related-example: programs/pong
 
 ## Exercise — paddle이 화면 밖으로 못 나가게
 
-시작 코드는 첫 Pong 예제에서 paddle 이동만 분리한 것입니다. paddleY가 0보다 작아지거나 420보다 커지지 않도록 제한하는 코드를 추가하세요. 위아래 방향키를 오래 눌러도 paddle 전체가 창 안에 남아 있어야 합니다. 확인한 제한 코드는 첫 Pong 예제에도 옮겨 사용할 수 있습니다.
+시작 코드는 첫 Pong 예제에서 paddle 이동만 분리한 것입니다. paddle_y가 0보다 작아지거나 420보다 커지지 않도록 제한하는 코드를 추가하세요. 위아래 방향키를 오래 눌러도 paddle 전체가 창 안에 남아 있어야 합니다. 확인한 제한 코드는 첫 Pong 예제에도 옮겨 사용할 수 있습니다.
 
 @exercise exercise1_starter.cpp
 
 ### Hint
 
-입력으로 paddleY를 바꾼 뒤 두 개의 if로 0과 420 범위에 맞추세요.
+입력으로 paddle_y를 바꾼 뒤 두 개의 if로 0과 420 범위에 맞추세요.
 
 @solution exercise1_solution.cpp
 

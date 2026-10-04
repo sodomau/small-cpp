@@ -1,13 +1,13 @@
 int count = 0;
 
-void OnTimer()
+void on_timer()
 {
     // Increase and print count.
 }
 
-void SmallMain()
+void small_main()
 {
     Timer timer;
 
-    // Start the timer, wait about 2.2 seconds, then stop it.
+    // start the timer, wait about 2.2 seconds, then stop it.
 }

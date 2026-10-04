@@ -2,7 +2,7 @@
 title: Including quotes and newlines
 part: basics
 part-title: Small Steps I — Creating with Text and Numbers
-goal: Print A and B on different lines with a single Print call.
+goal: Print A and B on different lines with a single `print` call.
 related-example: reference/console
 ---
 
@@ -16,7 +16,7 @@ Use **escape sequences** beginning with a backslash to include special character
 
 `\n` represents a newline, `\"` one double quote, and `\\` one backslash. Although written with two symbols in code, each represents one character.
 
-`""` is an empty string; `" "` contains one space. Even when Print outputs an empty string, it adds a newline at the end.
+`""` is an empty string; `" "` contains one space. Even when `print` outputs an empty string, it adds a newline at the end.
 
 Expected output:
 
@@ -28,7 +28,7 @@ Small
 
 ## Exercise
 
-Print A and B on different lines with a single Print call.
+Print A and B on different lines with a single `print` call.
 
 @exercise exercise_starter.cpp
 

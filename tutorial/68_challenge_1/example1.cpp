@@ -1,4 +1,4 @@
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {8, 3, 12, 5, 10};
 
@@ -12,7 +12,7 @@ void SmallMain()
         second = temp;
     }
 
-    for (int i = 2; i < numbers.Length(); i = i + 1)
+    for (int i = 2; i < numbers.length(); i = i + 1)
     {
         if (numbers[i] > largest)
         {
@@ -25,5 +25,5 @@ void SmallMain()
         }
     }
 
-    Print("Second largest: ", second);
+    print("Second largest: ", second);
 }

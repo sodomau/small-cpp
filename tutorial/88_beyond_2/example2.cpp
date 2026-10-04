@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-int Sum(const std::vector<int>& numbers)
+int sum(const std::vector<int>& numbers)
 {
     int total = 0;
 
@@ -15,7 +15,7 @@ int main()
 {
     std::vector<int> numbers = {3, 7, 2, 9, 4};
 
-    std::cout << "Sum: " << Sum(numbers) << "\n";
+    std::cout << "Sum: " << sum(numbers) << "\n";
 
     return 0;
 }

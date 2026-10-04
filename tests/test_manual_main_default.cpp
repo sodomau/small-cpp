@@ -2,7 +2,7 @@
 
 int main()
 {
-    Small::InitializeSmall();
-    Small::Print("default initialization works");
+    Small::initialize_small();
+    Small::print("default initialization works");
     return 0;
 }

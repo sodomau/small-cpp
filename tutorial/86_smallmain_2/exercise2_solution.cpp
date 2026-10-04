@@ -2,10 +2,10 @@
 
 int main(int argc, char* argv[])
 {
-    Small::InitializeSmall(argc, argv);
+    Small::initialize_small(argc, argv);
 
-    Small::Print("argc: ", argc);
+    Small::print("argc: ", argc);
 
-    Small::ShutdownSmall();
+    Small::shutdown_small();
     return 0;
 }

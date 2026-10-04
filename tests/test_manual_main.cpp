@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[])
 {
-    Small::InitializeSmall(argc, argv);
-    Small::Print("manual main works");
+    Small::initialize_small(argc, argv);
+    Small::print("manual main works");
     return 0;
 }

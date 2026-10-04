@@ -26,6 +26,6 @@ String에서 문자 'a'가 처음 나타나는 위치를 linear search처럼 찾
 
 ### Hint
 
-String도 Length와 []를 사용할 수 있으므로 Array 검색과 거의 같습니다.
+String도 length와 []를 사용할 수 있으므로 Array 검색과 거의 같습니다.
 
 @solution exercise2_solution.cpp

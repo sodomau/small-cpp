@@ -2,10 +2,10 @@
 
 int main()
 {
-    Small::InitializeSmall();
+    Small::initialize_small();
 
-    Small::Print("Hello from main!");
+    Small::print("Hello from main!");
 
-    Small::ShutdownSmall();
+    Small::shutdown_small();
     return 0;
 }

@@ -14,9 +14,9 @@ The mouse's **position** and **button state** are separate. Reading both lets yo
 
 @code example2.cpp
 
-MouseDown(MouseButton::Left) asks whether the left button is held. The program draws a blue circle while held and a black outline when released.
+mouse_down(MouseButton::Left) asks whether the left button is held. The program draws a blue circle while held and a black outline when released.
 
-MousePressed reports a new press; MouseReleased reports a release. Use Pressed to remember a position once.
+mouse_pressed reports a new press; mouse_released reports a release. Use Pressed to remember a position once.
 
 ## Exercise
 
@@ -26,6 +26,6 @@ Display a Red circle at the mouse position when the left button is held, and a B
 
 ### Hint
 
-Check MouseDown for Left and Right separately.
+Check mouse_down for Left and Right separately.
 
 @solution exercise2_solution.cpp

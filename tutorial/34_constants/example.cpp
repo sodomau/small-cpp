@@ -1,6 +1,6 @@
-void SmallMain()
+void small_main()
 {
-    const int GoalScore = 100;
+    const int goal_score = 100;
     int score = 80;
-    Print(GoalScore - score);
+    print(goal_score - score);
 }

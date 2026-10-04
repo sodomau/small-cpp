@@ -21,18 +21,18 @@ The IDE shows a short learner-facing explanation first and keeps the original C+
 - calling a non-function
 - malformed code position / likely punctuation error
 - wrong return value
-- missing `SmallMain`
+- missing `small_main`
 
 ## Runtime cases covered
 
 - Array and String index range errors
 - Substring range errors
 - negative Array length
-- invalid RGB values
-- Window used before `Open`
+- invalid rgb values
+- Window used before `open`
 - invalid Window size / pixel position
 - invalid rectangle, circle, and text sizes
-- invalid Sleep, Timer, and Beep arguments
+- invalid Sleep, Timer, and beep arguments
 - missing Timer callback
 - input ending unexpectedly
 

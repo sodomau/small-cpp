@@ -69,7 +69,7 @@ private slots:
 
     void diagnosticsUsesPreviousDeclaration()
     {
-        const QString source = "void SmallMain()\n{\n    Window window\n    window.Open(10, 10);\n}\n";
+        const QString source = "void small_main()\n{\n    Window window\n    window.open(10, 10);\n}\n";
         auto error = ExplainDiagnostic("/tmp/program.cpp:4:5: error: expected initializer before 'window'\n",
                                        source, "/tmp/program.cpp");
         QCOMPARE(error.line, 3);
@@ -214,58 +214,58 @@ private slots:
         const auto before = QApplication::topLevelWidgets();
         Window window;
         QCOMPARE(QApplication::topLevelWidgets().size(), before.size());
-        QVERIFY(!window.IsOpen());
-        window.Open(64, 48);
+        QVERIFY(!window.is_open());
+        window.open(64, 48);
         QWidget* surface = nullptr;
         for (QWidget* candidate : QApplication::topLevelWidgets())
             if (!before.contains(candidate)) surface = candidate;
         QVERIFY(surface);
-        window.Clear(Red);
+        window.clear(Red);
         QCOMPARE(surface->grab().toImage().pixelColor(10, 10), QColor(0, 0, 0));
-        window.Show();
+        window.show();
         QCOMPARE(surface->grab().toImage().pixelColor(10, 10), QColor(255, 0, 0));
-        window.Clear(Blue);
+        window.clear(Blue);
         QCOMPARE(surface->grab().toImage().pixelColor(10, 10), QColor(255, 0, 0));
-        window.Show();
+        window.show();
         QCOMPARE(surface->grab().toImage().pixelColor(10, 10), QColor(0, 0, 255));
-        window.Close();
-        QVERIFY(!window.IsOpen());
+        window.close();
+        QVERIFY(!window.is_open());
     }
 
     void keyboardEdgeAndFocusLoss()
     {
         const auto before = QApplication::topLevelWidgets();
         Window window;
-        window.Open(64, 48);
+        window.open(64, 48);
         QWidget* surface = nullptr;
         for (QWidget* candidate : QApplication::topLevelWidgets())
             if (!before.contains(candidate)) surface = candidate;
         QVERIFY(surface);
-        // Post the event: Show must keep this NEW edge for the next frame.
+        // Post the event: show must keep this NEW edge for the next frame.
         QCoreApplication::postEvent(surface, new QKeyEvent(QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier, " "));
-        window.Show();
-        QVERIFY(window.KeyPressed(Key::Space));
-        QVERIFY(window.KeyDown(Key::Space));
-        window.Show();
-        QVERIFY(!window.KeyPressed(Key::Space));
+        window.show();
+        QVERIFY(window.key_pressed(Key::Space));
+        QVERIFY(window.key_down(Key::Space));
+        window.show();
+        QVERIFY(!window.key_pressed(Key::Space));
         QKeyEvent release(QEvent::KeyRelease, Qt::Key_Space, Qt::NoModifier);
         QCoreApplication::sendEvent(surface, &release);
-        QVERIFY(window.KeyReleased(Key::Space));
-        QVERIFY(!window.KeyDown(Key::Space));
+        QVERIFY(window.key_released(Key::Space));
+        QVERIFY(!window.key_down(Key::Space));
         QKeyEvent letter(QEvent::KeyPress, Qt::Key_A, Qt::ControlModifier, "");
         QCoreApplication::sendEvent(surface, &letter);
-        QVERIFY(window.KeyDown('A'));
-        QVERIFY(window.KeyDown('a'));
+        QVERIFY(window.key_down('A'));
+        QVERIFY(window.key_down('a'));
         QFocusEvent blur(QEvent::FocusOut);
         QCoreApplication::sendEvent(surface, &blur);
-        QVERIFY(!window.KeyDown('A'));
+        QVERIFY(!window.key_down('A'));
     }
 
     void mousePositionAndButtons()
     {
         const auto before = QApplication::topLevelWidgets();
         Window window;
-        window.Open(64, 48);
+        window.open(64, 48);
         QWidget* surface = nullptr;
         for (QWidget* candidate : QApplication::topLevelWidgets())
             if (!before.contains(candidate)) surface = candidate;
@@ -274,40 +274,40 @@ private slots:
         QMouseEvent move(QEvent::MouseMove, QPointF(21, 17), QPointF(21, 17),
                          Qt::NoButton, Qt::NoButton, Qt::NoModifier);
         QCoreApplication::sendEvent(surface, &move);
-        QCOMPARE(window.MouseX(), 21);
-        QCOMPARE(window.MouseY(), 17);
+        QCOMPARE(window.mouse_x(), 21);
+        QCOMPARE(window.mouse_y(), 17);
 
         QMouseEvent press(QEvent::MouseButtonPress, QPointF(21, 17), QPointF(21, 17),
                           Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
         QCoreApplication::sendEvent(surface, &press);
-        QVERIFY(window.MouseDown(MouseButton::Left));
-        QVERIFY(window.MousePressed(MouseButton::Left));
-        window.Show();
-        QVERIFY(!window.MousePressed(MouseButton::Left));
-        QVERIFY(window.MouseDown(MouseButton::Left));
+        QVERIFY(window.mouse_down(MouseButton::Left));
+        QVERIFY(window.mouse_pressed(MouseButton::Left));
+        window.show();
+        QVERIFY(!window.mouse_pressed(MouseButton::Left));
+        QVERIFY(window.mouse_down(MouseButton::Left));
 
         QMouseEvent release(QEvent::MouseButtonRelease, QPointF(22, 18), QPointF(22, 18),
                             Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
         QCoreApplication::sendEvent(surface, &release);
-        QVERIFY(window.MouseReleased(MouseButton::Left));
-        QVERIFY(!window.MouseDown(MouseButton::Left));
-        QCOMPARE(window.MouseX(), 22);
-        QCOMPARE(window.MouseY(), 18);
+        QVERIFY(window.mouse_released(MouseButton::Left));
+        QVERIFY(!window.mouse_down(MouseButton::Left));
+        QCOMPARE(window.mouse_x(), 22);
+        QCOMPARE(window.mouse_y(), 18);
     }
 
     void callbackTimer()
     {
         timerCallbackCount = 0;
         Timer timer;
-        QVERIFY(!timer.IsRunning());
-        timer.Start(0.01, TestTimerCallback);
-        QVERIFY(timer.IsRunning());
-        Sleep(0.06);
+        QVERIFY(!timer.is_running());
+        timer.start(0.01, TestTimerCallback);
+        QVERIFY(timer.is_running());
+        sleep(0.06);
         QVERIFY(timerCallbackCount >= 2);
-        timer.Stop();
-        QVERIFY(!timer.IsRunning());
+        timer.stop();
+        QVERIFY(!timer.is_running());
         const int stoppedAt = timerCallbackCount;
-        Sleep(0.03);
+        sleep(0.03);
         QCOMPARE(timerCallbackCount, stoppedAt);
     }
 
@@ -326,11 +326,11 @@ private slots:
         heartbeat.start();
         QTemporaryDir folder;
         QVERIFY(folder.isValid());
-        build.start(R"cpp(void SmallMain() {
+        build.start(R"cpp(void small_main() {
     Array<int> a = {1, 2, 3};
     File f;
-    f.Open("result.txt", FileMode::Write);
-    f.Print("OK ", a.Length());
+    f.open("result.txt", FileMode::Write);
+    f.print("OK ", a.length());
 }
 )cpp", folder.filePath("program.cpp"));
         QTRY_VERIFY_WITH_TIMEOUT(!finished.isEmpty() || !failed.isEmpty(), 30000);
@@ -353,7 +353,7 @@ private slots:
         marker.write("keep"); marker.close();
         BuildController build;
         QSignalSpy failed(&build, &BuildController::buildError);
-        build.publish("void SmallMain() {}", {}, folder.path());
+        build.publish("void small_main() {}", {}, folder.path());
         QCOMPARE(failed.size(), 1);
         QVERIFY(!build.isBusy());
         QVERIFY(marker.open(QIODevice::ReadOnly));
@@ -436,14 +436,14 @@ private slots:
     void publishStandalone_data()
     {
         QTest::addColumn<QString>("source");
-        QTest::newRow("SmallMain") << QString(
-            "void SmallMain() { File f; f.Open(\"result.txt\", FileMode::Write); f.Print(\"published\"); }");
+        QTest::newRow("small_main") << QString(
+            "void small_main() { File f; f.open(\"result.txt\", FileMode::Write); f.print(\"published\"); }");
         QTest::newRow("manual-main") << QString(
             "#include <fstream>\nint main() { std::ofstream(\"result.txt\") << \"published\"; }");
         QTest::newRow("Image") << QString(
-            "#include <small/image.h>\nvoid SmallMain() { Image image(8, 8); "
-            "Window window; window.Open(64, 64); DrawImage(window, image, 0, 0); window.Close(); "
-            "File f; f.Open(\"result.txt\", FileMode::Write); f.Print(\"published\"); }");
+            "#include <small/image.h>\nvoid small_main() { Image image(8, 8); "
+            "Window window; window.open(64, 64); draw_image(window, image, 0, 0); window.close(); "
+            "File f; f.open(\"result.txt\", FileMode::Write); f.print(\"published\"); }");
     }
 
     void publishStandalone()
@@ -505,11 +505,11 @@ private slots:
         const QString target = parent.filePath("export");
         QFile conflict(parent.filePath("PROGRAM.EXE"));
         QVERIFY(conflict.open(QIODevice::WriteOnly)); conflict.write("keep"); conflict.close();
-        build.publish("void SmallMain() {}", {}, target, {conflict.fileName()});
+        build.publish("void small_main() {}", {}, target, {conflict.fileName()});
         QCOMPARE(failed.size(), 1);
         QVERIFY(!QFileInfo::exists(target));
         failed.clear();
-        build.publish("void SmallMain() { invalid syntax; }", {}, target);
+        build.publish("void small_main() { invalid syntax; }", {}, target);
         QTRY_VERIFY_WITH_TIMEOUT(!failed.isEmpty(), 30000);
         QVERIFY(!QFileInfo::exists(target));
         QVERIFY(!build.isBusy());
@@ -527,7 +527,7 @@ private slots:
         connect(&build, &BuildController::phaseChanged, &build, [&](const QString& text) {
             if (text.startsWith("Packaging")) QTimer::singleShot(0, &build, &BuildController::stop);
         });
-        build.publish("void SmallMain() {}", {}, parent.filePath("export"));
+        build.publish("void small_main() {}", {}, parent.filePath("export"));
         QTRY_VERIFY_WITH_TIMEOUT(!finished.isEmpty() || !failed.isEmpty(), 30000);
         QVERIFY2(failed.isEmpty(), qPrintable(failed.isEmpty() ? QString{} : failed.first().first().toString()));
         QVERIFY(finished.first().at(1).toBool());
@@ -542,25 +542,25 @@ private slots:
         const auto installed = ExtensionRegistry::discover(
             QCoreApplication::applicationDirPath() + "/extensions");
         QVERIFY(!installed.isEmpty());
-        QCOMPARE(ExtensionRegistry::detect("#include <small/image.h>\nvoid SmallMain(){}", installed).size(), 1);
-        QCOMPARE(ExtensionRegistry::detect(" // #include <small/image.h>\nvoid SmallMain(){}", installed).size(), 0);
-        QCOMPARE(ExtensionRegistry::detect("#include <small.h>\nvoid SmallMain(){}", installed).size(), 0);
+        QCOMPARE(ExtensionRegistry::detect("#include <small/image.h>\nvoid small_main(){}", installed).size(), 1);
+        QCOMPARE(ExtensionRegistry::detect(" // #include <small/image.h>\nvoid small_main(){}", installed).size(), 0);
+        QCOMPARE(ExtensionRegistry::detect("#include <small.h>\nvoid small_main(){}", installed).size(), 0);
     }
 
     void detectsRealMainOnly()
     {
-        QCOMPARE(DetectEntryPoint("void SmallMain() {}"), SmallEntryPoint::SmallMain);
+        QCOMPARE(DetectEntryPoint("void small_main() {}"), SmallEntryPoint::SmallMain);
         QCOMPARE(DetectEntryPoint("int main() { return 0; }"), SmallEntryPoint::Main);
         QCOMPARE(DetectEntryPoint("int main(int argc, char* argv[]) { return argc + (argv != nullptr); }"),
                  SmallEntryPoint::Main);
-        QCOMPARE(DetectEntryPoint("// int main() { }\nvoid SmallMain() {}"), SmallEntryPoint::SmallMain);
-        QCOMPARE(DetectEntryPoint("const char* s = \"int main() { }\";\nvoid SmallMain() {}"),
+        QCOMPARE(DetectEntryPoint("// int main() { }\nvoid small_main() {}"), SmallEntryPoint::SmallMain);
+        QCOMPARE(DetectEntryPoint("const char* s = \"int main() { }\";\nvoid small_main() {}"),
                  SmallEntryPoint::SmallMain);
-        QCOMPARE(DetectEntryPoint("int main();\nvoid SmallMain() {}"), SmallEntryPoint::SmallMain);
-        QCOMPARE(DetectEntryPoint("namespace Demo { int main() { return 0; } }\nvoid SmallMain() {}"),
+        QCOMPARE(DetectEntryPoint("int main();\nvoid small_main() {}"), SmallEntryPoint::SmallMain);
+        QCOMPARE(DetectEntryPoint("namespace Demo { int main() { return 0; } }\nvoid small_main() {}"),
                  SmallEntryPoint::SmallMain);
-        // An explicit real main wins even if SmallMain is also present.
-        QCOMPARE(DetectEntryPoint("void SmallMain() {}\nint main() { return 0; }"), SmallEntryPoint::Main);
+        // An explicit real main wins even if small_main is also present.
+        QCOMPARE(DetectEntryPoint("void small_main() {}\nint main() { return 0; }"), SmallEntryPoint::Main);
     }
 
 
@@ -575,9 +575,9 @@ private slots:
         build.start(R"cpp(#include <small.h>
 int main(int argc, char* argv[])
 {
-    Small::InitializeSmall(argc, argv);
-    Small::Print("manual main");
-    Small::ShutdownSmall();
+    Small::initialize_small(argc, argv);
+    Small::print("manual main");
+    Small::shutdown_small();
     return 0;
 }
 )cpp", folder.filePath("program.cpp"));
@@ -604,7 +604,7 @@ int main(int argc, char* argv[])
             }
             valuesReady = true;
         });
-        debug.start("void SmallMain()\n{\n String label=\"hello \\\"world\\\"\";\n String empty;\n Print(label);\n}\n",
+        debug.start("void small_main()\n{\n String label=\"hello \\\"world\\\"\";\n String empty;\n print(label);\n}\n",
                     {}, "StringDebug.cpp", {5});
         QTRY_VERIFY_WITH_TIMEOUT(valuesReady || !failed.isEmpty(), 30000);
         QVERIFY2(failed.isEmpty(), qPrintable(failed.isEmpty() ? QString{} : failed.first().first().toString()));
@@ -617,11 +617,29 @@ int main(int argc, char* argv[])
         QVERIFY(!debug.isBusy());
     }
 
+    void removedApiNamesDoNotCompile_data()
+    {
+        QTest::addColumn<QString>("source");
+        QTest::newRow("old-console") << "void small_main() { Print(\"hello\"); }";
+        QTest::newRow("old-entry") << "void SmallMain() {}";
+        QTest::newRow("old-window-method") << "void small_main() { Window w; w.Open(100, 100); }";
+        QTest::newRow("old-image-function") << "#include <small/image.h>\nvoid small_main() { Image image = LoadImage(\"picture.png\"); }";
+    }
+    void removedApiNamesDoNotCompile()
+    {
+        QFETCH(QString, source);
+        BuildController build;
+        QSignalSpy failed(&build, &BuildController::buildError);
+        build.start(source, {});
+        QTRY_VERIFY_WITH_TIMEOUT(!failed.isEmpty(), 30000);
+        QVERIFY(!failed.first().first().toString().isEmpty());
+        QVERIFY(!build.isBusy());
+    }
     void stopDuringCompilation()
     {
         BuildController build;
         QSignalSpy finished(&build, &BuildController::finished);
-        build.start("void SmallMain() { Print(\"hello\"); }\n", {});
+        build.start("void small_main() { print(\"hello\"); }\n", {});
         build.stop();
         QTRY_VERIFY_WITH_TIMEOUT(!build.isBusy(), 10000);
         QVERIFY(!finished.isEmpty());

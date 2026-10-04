@@ -1,11 +1,11 @@
-int TextLength(const std::string& text)
+int text_length(const std::string& text)
 {
     // Return the length.
     return 0;
 }
 
-void SmallMain()
+void small_main()
 {
     std::string text = "Small";
-    Print(TextLength(text));
+    print(text_length(text));
 }

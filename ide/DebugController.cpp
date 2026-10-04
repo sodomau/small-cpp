@@ -101,7 +101,7 @@ void DebugController::startGdb()
         sendMi("-file-exec-and-symbols \""+QDir::fromNativeSeparators(executablePath_)+"\"",Pending::None);
 
         // Register only breakpoints explicitly created by the user.
-        // Debug means "run under GDB", not "stop automatically at main/SmallMain".
+        // Debug means "run under GDB", not "stop automatically at main/small_main".
         // Register the initial snapshot through the same live-breakpoint path
         // used by gutter clicks, so GDB breakpoint IDs are tracked consistently.
         const auto initialBreakpoints = breakpoints_;

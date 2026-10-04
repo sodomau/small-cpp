@@ -1,8 +1,8 @@
-void SmallMain()
+void small_main()
 {
     int number = 3;
     if (number > 0)
     {
-        Print("Positive");
+        print("Positive");
     }
 }

@@ -14,9 +14,9 @@ related-example: reference/console
 
 @code example.cpp
 
-Run한 뒤 콘솔 창에 Alex를 쓰고 Enter를 누르세요. Input이 기다리는 동안은 고장이 아닙니다. 입력을 마치면 그 문자열을 name에 저장하고 다음 줄을 실행합니다.
+Run한 뒤 콘솔 창에 Alex를 쓰고 Enter를 누르세요. input이 기다리는 동안은 고장이 아닙니다. 입력을 마치면 그 문자열을 name에 저장하고 다음 줄을 실행합니다.
 
-`Input("Name: ")`처럼 괄호 안에 안내문을 넣을 수도 있습니다.
+`input("Name: ")`처럼 괄호 안에 안내문을 넣을 수도 있습니다.
 
 예상 출력 (입력 안내문 제외):
 

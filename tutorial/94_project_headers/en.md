@@ -16,16 +16,16 @@ Right-click a blank area and choose **New Header File…** to create `greeting.h
 ```cpp
 #pragma once
 
-void SayHello();
+void say_hello();
 ```
 
 ### greeting.cpp
 ```cpp
 #include "greeting.h"
 
-void SayHello()
+void say_hello()
 {
-    Print("Hello from another file!");
+    print("Hello from another file!");
 }
 ```
 
@@ -33,9 +33,9 @@ void SayHello()
 ```cpp
 #include "greeting.h"
 
-void SmallMain()
+void small_main()
 {
-    SayHello();
+    say_hello();
 }
 ```
 
@@ -53,7 +53,7 @@ The following combines the same program into one file. **Try This Code** opens t
 
 ## Exercise — Check it yourself
 
-Call SayHello twice in the one-file practice. Then get the same result in your project by changing only main.cpp.
+Call say_hello twice in the one-file practice. Then get the same result in your project by changing only main.cpp.
 
 @exercise exercise_starter.cpp
 

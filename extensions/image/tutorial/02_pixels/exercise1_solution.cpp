@@ -1,8 +1,8 @@
 #include <small/image.h>
-void SmallMain()
+void small_main()
 {
     Image image(100, 100, Black);
     for (int i = 0; i < 100; i++)
-        image.SetPixel(i, i, Yellow);
-    SaveImage(image, "diagonal.png");
+        image.set_pixel(i, i, Yellow);
+    save_image(image, "diagonal.png");
 }

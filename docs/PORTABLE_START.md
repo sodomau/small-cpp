@@ -5,9 +5,9 @@
 3. Enter this program and press **Run** (F5):
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    Print("Hello, Small C++!");
+    print("Hello, Small C++!");
 }
 ```
 

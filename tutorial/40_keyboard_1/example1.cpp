@@ -1,24 +1,24 @@
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     double x = 320;
     double y = 240;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        if (window.KeyDown(Key::Left))
+        if (window.key_down(Key::Left))
             x = x - 2;
-        if (window.KeyDown(Key::Right))
+        if (window.key_down(Key::Right))
             x = x + 2;
-        if (window.KeyDown(Key::Up))
+        if (window.key_down(Key::Up))
             y = y - 2;
-        if (window.KeyDown(Key::Down))
+        if (window.key_down(Key::Down))
             y = y + 2;
 
-        window.Clear(Black);
-        window.FillCircle(x, y, 20, Yellow);
-        window.Show();
+        window.clear(Black);
+        window.fill_circle(x, y, 20, Yellow);
+        window.show();
     }
 }

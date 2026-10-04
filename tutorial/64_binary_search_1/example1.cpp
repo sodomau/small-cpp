@@ -1,7 +1,7 @@
-int BinarySearch(Array<int> numbers, int value)
+int binary_search(Array<int> numbers, int value)
 {
     int left = 0;
-    int right = numbers.Length() - 1;
+    int right = numbers.length() - 1;
 
     while (left <= right)
     {
@@ -19,8 +19,8 @@ int BinarySearch(Array<int> numbers, int value)
     return -1;
 }
 
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {1, 3, 5, 7, 9, 11, 13};
-    Print(BinarySearch(numbers, 11));
+    print(binary_search(numbers, 11));
 }

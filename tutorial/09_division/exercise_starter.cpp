@@ -1,6 +1,6 @@
-void SmallMain()
+void small_main()
 {
-    Print(17 / 5);
-    Print(17 % 5);
-    Print(5.0 / 2);
+    print(17 / 5);
+    print(17 % 5);
+    print(5.0 / 2);
 }

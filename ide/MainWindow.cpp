@@ -83,7 +83,7 @@ void addTabCloseButton(QTabWidget* tabs, QWidget* page)
     });
 }
 
-const char* EmptyProgram = "void SmallMain()\n{\n    \n}\n";
+const char* EmptyProgram = "void small_main()\n{\n    \n}\n";
 
 QString normalizedPath(const QString& path)
 {
@@ -781,7 +781,7 @@ void MainWindow::showWelcome()
     preview->setObjectName("welcomeCodePreview");
     preview->setReadOnly(true);
     preview->setDebugGutterEnabled(false);
-    preview->setPlainText("void SmallMain()\n{\n    Print(\"Hello!\");\n}\n");
+    preview->setPlainText("void small_main()\n{\n    print(\"Hello!\");\n}\n");
     preview->setFixedHeight(140);
     welcomeHighlighter_ = new Highlighter(preview->document());
     layout->addWidget(preview);

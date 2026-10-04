@@ -1,7 +1,7 @@
 #include <small/image.h>
-void SmallMain()
+void small_main()
 {
     Image image(100, 100, Black);
-    // Draw a yellow diagonal with SetPixel.
-    SaveImage(image, "diagonal.png");
+    // Draw a yellow diagonal with set_pixel.
+    save_image(image, "diagonal.png");
 }

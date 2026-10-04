@@ -16,7 +16,7 @@ A **variable** is a named place to store a value. Let us remember a score under 
 
 `int score = 10;` creates a variable named score and gives it the initial value 10. **int is an integer type**. A type describes the kind of value stored; integers such as 0, 10, and -3 have no fractional part.
 
-Creating a variable is called **declaration**; giving it its first value is **initialization**. For now, always give a variable a value when you create it. `Print(score);` prints the stored value, rather than the letters score.
+Creating a variable is called **declaration**; giving it its first value is **initialization**. For now, always give a variable a value when you create it. `print(score);` prints the stored value, rather than the letters score.
 
 Expected output:
 

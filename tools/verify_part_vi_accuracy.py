@@ -10,8 +10,8 @@ if "No Resize/Append operations." not in header:
 for phrase in ["Add가 push_back으로", "Array.Add", "numbers.Add"]:
     if phrase in part6:
         raise SystemExit("Part VI incorrectly implies a Small Array growth API: "+phrase)
-if "Length()" not in part6 or "size()" not in part6 or "push_back" not in part6:
-    raise SystemExit("Expected corrected Length/size transition missing.")
+if "length()" not in part6 or "size()" not in part6 or "push_back" not in part6:
+    raise SystemExit("Expected corrected length/size transition missing.")
 if "SMALL_BEGINNER_MODE" not in header:
     raise SystemExit("Beginner namespace mechanism changed; review Part VI.")
 print("Part VI API/prose consistency check passed.")

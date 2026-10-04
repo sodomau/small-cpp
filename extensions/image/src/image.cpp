@@ -11,8 +11,8 @@ namespace Small
 {
 namespace
 {
-Color FromQt(const QColor& color) { return RGB(color.red(), color.green(), color.blue()); }
-QColor ToQt(Color color) { return QColor(color.Red(), color.Green(), color.Blue()); }
+Color FromQt(const QColor& color) { return rgb(color.red(), color.green(), color.blue()); }
+QColor ToQt(Color color) { return QColor(color.red(), color.green(), color.blue()); }
 void CheckPixel(const QImage& image, int x, int y)
 {
     if (x < 0 || x >= image.width() || y < 0 || y >= image.height())
@@ -43,41 +43,41 @@ Image& Image::operator=(Image&& other)
     return *this;
 }
 
-Image LoadImage(const String& filename)
+Image load_image(const String& file_name)
 {
     QImage loaded;
-    if (!loaded.load(filename.c_str()))
-        throw std::runtime_error("Could not load image: " + std::string(filename.c_str()) + ".");
+    if (!loaded.load(file_name.c_str()))
+        throw std::runtime_error("Could not load image: " + std::string(file_name.c_str()) + ".");
 
     Image image(loaded.width(), loaded.height());
     image.impl_->image = loaded.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
     return image;
 }
 
-void SaveImage(const Image& image, const String& filename)
+void save_image(const Image& image, const String& file_name)
 {
-    if (!image.impl_->image.save(filename.c_str()))
-        throw std::runtime_error("Could not save image: " + std::string(filename.c_str()) + ".");
+    if (!image.impl_->image.save(file_name.c_str()))
+        throw std::runtime_error("Could not save image: " + std::string(file_name.c_str()) + ".");
 }
 
-int Image::Width() const { return impl_->image.width(); }
-int Image::Height() const { return impl_->image.height(); }
+int Image::width() const { return impl_->image.width(); }
+int Image::height() const { return impl_->image.height(); }
 
-Color Image::Pixel(int x, int y) const
+Color Image::pixel(int x, int y) const
 {
     CheckPixel(impl_->image, x, y);
     return FromQt(impl_->image.pixelColor(x, y));
 }
-int Image::Alpha(int x, int y) const
+int Image::alpha(int x, int y) const
 {
     CheckPixel(impl_->image, x, y);
     return impl_->image.pixelColor(x, y).alpha();
 }
-void Image::SetPixel(int x, int y, Color color)
+void Image::set_pixel(int x, int y, Color color)
 {
-    SetPixel(x, y, color, 255);
+    set_pixel(x, y, color, 255);
 }
-void Image::SetPixel(int x, int y, Color color, int alpha)
+void Image::set_pixel(int x, int y, Color color, int alpha)
 {
     CheckPixel(impl_->image, x, y);
     if (alpha < 0 || alpha > 255)
@@ -87,18 +87,18 @@ void Image::SetPixel(int x, int y, Color color, int alpha)
     impl_->image.setPixelColor(x, y, q);
 }
 
-void DrawImage(Window& window, const Image& image, double x, double y)
+void draw_image(Window& window, const Image& image, double x, double y)
 {
-    DrawImage(window, image, x, y, image.Width(), image.Height());
+    draw_image(window, image, x, y, image.width(), image.height());
 }
-void DrawImage(Window& window, const Image& image, double x, double y,
+void draw_image(Window& window, const Image& image, double x, double y,
                double width, double height)
 {
     if (!std::isfinite(x) || !std::isfinite(y) ||
         !std::isfinite(width) || !std::isfinite(height))
-        throw std::invalid_argument("DrawImage values must be finite.");
+        throw std::invalid_argument("draw_image values must be finite.");
     if (width < 0 || height < 0)
-        throw std::invalid_argument("DrawImage size cannot be negative.");
+        throw std::invalid_argument("draw_image size cannot be negative.");
     if (width == 0 || height == 0) return;
 
     const QImage& q = image.impl_->image;

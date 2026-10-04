@@ -1,16 +1,16 @@
 int ticks = 0;
 
-void OnTimer()
+void on_timer()
 {
     ticks = ticks + 1;
-    Print("Tick ", ticks);
+    print("Tick ", ticks);
 }
 
-void SmallMain()
+void small_main()
 {
     Timer timer;
 
-    timer.Start(1.0, OnTimer);
-    Sleep(3.2);
-    timer.Stop();
+    timer.start(1.0, on_timer);
+    sleep(3.2);
+    timer.stop();
 }

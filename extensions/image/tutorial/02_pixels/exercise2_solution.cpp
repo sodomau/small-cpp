@@ -1,7 +1,7 @@
 #include <small/image.h>
-void SmallMain()
+void small_main()
 {
     Image image(30, 30, Red);
-    Color color = image.Pixel(10, 10);
-    Print(color.Red());
+    Color color = image.pixel(10, 10);
+    print(color.red());
 }

@@ -14,7 +14,7 @@ related-example: reference/console
 
 @code example.cpp
 
-2에서는 Print를 건너뜁니다. for는 i를 늘린 뒤 다음 조건을 검사합니다. 4에서는 반복 자체를 끝내므로 4와 5 모두 출력하지 않습니다.
+2에서는 print를 건너뜁니다. for는 i를 늘린 뒤 다음 조건을 검사합니다. 4에서는 반복 자체를 끝내므로 4와 5 모두 출력하지 않습니다.
 
 예상 출력:
 

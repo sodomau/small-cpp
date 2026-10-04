@@ -1,29 +1,29 @@
-void SmallMain()
+void small_main()
 {
-    int level = InputInt("Level: ");
-    int score = InputInt("Score: ");
-    double playTime = InputReal("Play time: ");
+    int level = input_int("Level: ");
+    int score = input_int("Score: ");
+    double play_time = input_real("Play time: ");
 
     // Save values using their native binary representations.
     File file;
-    file.Open("save.dat", FileMode::WriteBinary);
-    file.WriteInt(level);
-    file.WriteInt(score);
-    file.WriteReal(playTime);
-    file.Close();
+    file.open("save.dat", FileMode::WriteBinary);
+    file.write_int(level);
+    file.write_int(score);
+    file.write_real(play_time);
+    file.close();
 
-    Print("Game saved.");
+    print("Game saved.");
 
     // Reopen the file and verify what was stored.
-    file.Open("save.dat", FileMode::ReadBinary);
-    int loadedLevel = file.ReadInt();
-    int loadedScore = file.ReadInt();
-    double loadedTime = file.ReadReal();
-    file.Close();
+    file.open("save.dat", FileMode::ReadBinary);
+    int loaded_level = file.read_int();
+    int loaded_score = file.read_int();
+    double loaded_time = file.read_real();
+    file.close();
 
-    Print("Loaded level: ", loadedLevel);
-    Print("Loaded score: ", loadedScore);
-    Print("Loaded play time: ", loadedTime);
-    Print("Native binary size: ",
+    print("Loaded level: ", loaded_level);
+    print("Loaded score: ", loaded_score);
+    print("Loaded play time: ", loaded_time);
+    print("Native binary size: ",
           2 * sizeof(int) + sizeof(double), " bytes");
 }

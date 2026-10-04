@@ -16,7 +16,7 @@ This is the one-file practice version of the score program. Keep using the three
 
 ## Send a runnable program
 
-Add `Input();` after `Print(score);` in `main.cpp` and save before publishing, so the console stays open.
+Add `input();` after `print(score);` in `main.cpp` and save before publishing, so the console stays open.
 
 Choose **File → Publish Project…** and a new export folder. All included source files are compiled into one exe. Selecting the score.h tab does not change the program you publish.
 

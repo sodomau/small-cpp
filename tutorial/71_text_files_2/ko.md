@@ -16,7 +16,7 @@ related-example: reference/file
 
 먼저 앞 수업 예제로 score.txt를 만드세요. 이번 소스도 같은 폴더에 저장해야 같은 파일을 읽습니다.
 
-Open의 기본 모드는 읽기입니다. Input은 첫 줄을 문자열로, InputInt는 둘째 줄을 정수로 읽습니다. Alex's score: 1200이 나오는지 보세요. 오류가 나면 파일 위치와 줄 내용을 확인하세요.
+open의 기본 모드는 읽기입니다. input은 첫 줄을 문자열로, input_int는 둘째 줄을 정수로 읽습니다. Alex's score: 1200이 나오는지 보세요. 오류가 나면 파일 위치와 줄 내용을 확인하세요.
 
 ## Exercise — high score 저장하고 읽기
 
@@ -26,6 +26,6 @@ Open의 기본 모드는 읽기입니다. Input은 첫 줄을 문자열로, Inpu
 
 ### Hint
 
-Write/Close 후 다시 Open하고 `InputInt()`를 사용하세요.
+Write/`close` 후 다시 open하고 `input_int()`를 사용하세요.
 
 @solution exercise2_solution.cpp

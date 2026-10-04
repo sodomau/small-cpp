@@ -1,20 +1,20 @@
 #include <small/image.h>
 
-void SmallMain()
+void small_main()
 {
     Image image(256, 256, Black);
 
-    for (int y = 0; y < image.Height(); y++)
-        for (int x = 0; x < image.Width(); x++)
-            image.SetPixel(x, y, RGB(x, y, 180));
+    for (int y = 0; y < image.height(); y++)
+        for (int x = 0; x < image.width(); x++)
+            image.set_pixel(x, y, rgb(x, y, 180));
 
     Window window;
-    window.Open(520, 320);
+    window.open(520, 320);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        window.Clear(Black);
-        DrawImage(window, image, 32, 32);
-        window.Show();
+        window.clear(Black);
+        draw_image(window, image, 32, 32);
+        window.show();
     }
 }

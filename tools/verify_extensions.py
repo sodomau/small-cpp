@@ -11,7 +11,7 @@ assert (base/"src/image.cpp").exists()
 assert (base/"examples").is_dir()
 assert (base/"tutorial").is_dir()
 core=(root/"runtime/small.h").read_text(encoding="utf-8")
-assert "class Image" not in core and "DrawImage" not in core
+assert "class Image" not in core and "draw_image" not in core
 registry=(root/"ide/ExtensionRegistry.cpp").read_text(encoding="utf-8")
 assert "extension.json" in registry and "QJsonDocument" in registry
 build=(root/"ide/BuildController.cpp").read_text(encoding="utf-8")
@@ -35,5 +35,5 @@ internal=(root/"runtime/small_internal.h").read_text(encoding="utf-8")
 runtime=(root/"runtime/small_runtime.cpp").read_text(encoding="utf-8")
 imagecpp=(base/"src/image.cpp").read_text(encoding="utf-8")
 assert "BlitRgba" in internal and "BlitRgba" in runtime and "BlitRgba" in imagecpp
-assert "window.SetPixel" not in imagecpp
+assert "window.set_pixel" not in imagecpp
 print("Image completeness content checks passed.")

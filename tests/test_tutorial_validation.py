@@ -14,7 +14,7 @@ class LessonValidationTests(unittest.TestCase):
         self.lesson = self.base / '01_hello'
         self.lesson.mkdir()
         for name in ('example.cpp', 'starter.cpp', 'solution.cpp'):
-            (self.lesson / name).write_text('void SmallMain() {}\n', encoding='utf-8')
+            (self.lesson / name).write_text('void small_main() {}\n', encoding='utf-8')
         self.content = ('---\ntitle: Hello\ngoal: Say hello\npart: basics\npart-title: Basics\n'
                         'related-example: reference/console\n---\n'
                         '@code example.cpp\n@exercise starter.cpp\n@solution solution.cpp\n')

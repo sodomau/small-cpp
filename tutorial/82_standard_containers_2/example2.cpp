@@ -1,4 +1,4 @@
-int Sum(const std::vector<int>& numbers)
+int sum(const std::vector<int>& numbers)
 {
     int total = 0;
 
@@ -8,10 +8,10 @@ int Sum(const std::vector<int>& numbers)
     return total;
 }
 
-void SmallMain()
+void small_main()
 {
     std::vector<int> numbers = {10, 20, 30};
     numbers.push_back(40);
 
-    Print("Sum: ", Sum(numbers));
+    print("Sum: ", sum(numbers));
 }

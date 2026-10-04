@@ -1,4 +1,4 @@
-void SmallMain()
+void small_main()
 {
-    Print(std::abs(-25));
+    print(std::abs(-25));
 }

@@ -4,12 +4,12 @@ struct Player
     int score;
 };
 
-void SmallMain()
+void small_main()
 {
     Player player;
 
     player.name = "Alex";
     player.score = 1200;
 
-    Print(player.name, ": ", player.score);
+    print(player.name, ": ", player.score);
 }

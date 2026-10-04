@@ -1,4 +1,4 @@
-void SmallMain()
+void small_main()
 {
-    Print("Practice saved!");
+    print("Practice saved!");
 }

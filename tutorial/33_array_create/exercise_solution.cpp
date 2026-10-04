@@ -1,9 +1,9 @@
-void SmallMain()
+void small_main()
 {
     Array<int> numbers(5);
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
     {
         numbers[i] = i + 1;
-        Print(numbers[i]);
+        print(numbers[i]);
     }
 }

@@ -1,11 +1,11 @@
-void SmallMain()
+void small_main()
 {
     StopWatch watch;
 
-    Sleep(1.0);
-    Print("About one second: ", watch.Elapsed());
+    sleep(1.0);
+    print("About one second: ", watch.elapsed());
 
-    watch.Reset();
-    Sleep(0.5);
-    Print("About half a second: ", watch.Elapsed());
+    watch.reset();
+    sleep(0.5);
+    print("About half a second: ", watch.elapsed());
 }

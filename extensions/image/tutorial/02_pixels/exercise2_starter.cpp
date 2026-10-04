@@ -1,5 +1,5 @@
 #include <small/image.h>
-void SmallMain()
+void small_main()
 {
     Image image(30, 30, Red);
     // Read and print the red component.

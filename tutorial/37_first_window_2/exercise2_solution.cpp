@@ -1,10 +1,10 @@
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(320, 240);
+    window.open(320, 240);
 
-    Print(window.Width(), " x ", window.Height());
+    print(window.width(), " x ", window.height());
 
-    while (window.IsOpen())
-        window.Show();
+    while (window.is_open())
+        window.show();
 }

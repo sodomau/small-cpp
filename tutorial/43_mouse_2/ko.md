@@ -14,9 +14,9 @@ related-example: reference/mouse
 
 @code example2.cpp
 
-MouseDown(MouseButton::Left)은 왼쪽 버튼을 누르고 있는지 묻습니다. 누르는 동안 파란 원, 떼면 검은 테두리를 그립니다.
+mouse_down(MouseButton::Left)은 왼쪽 버튼을 누르고 있는지 묻습니다. 누르는 동안 파란 원, 떼면 검은 테두리를 그립니다.
 
-MousePressed는 누른 순간, MouseReleased는 뗀 순간입니다. 위치를 한 번 기억하려면 Pressed를 사용할 수 있습니다.
+mouse_pressed는 누른 순간, mouse_released는 뗀 순간입니다. 위치를 한 번 기억하려면 Pressed를 사용할 수 있습니다.
 
 ## Exercise — 두 버튼 두 색
 
@@ -26,6 +26,6 @@ MousePressed는 누른 순간, MouseReleased는 뗀 순간입니다. 위치를 �
 
 ### Hint
 
-Left와 Right에 대해 각각 MouseDown을 검사하면 됩니다.
+Left와 Right에 대해 각각 mouse_down을 검사하면 됩니다.
 
 @solution exercise2_solution.cpp

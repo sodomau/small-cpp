@@ -16,11 +16,11 @@ A **header** provides declarations so you can use tools from other code. #includ
 
 Include iostream for standard input/output and string for std::string. std::cout << value produces output; std::getline(std::cin, name) reads a line. Entering Alex produces Hello, Alex.
 
-Keep SmallMain this time and change only the input/output tools.
+Keep small_main this time and change only the input/output tools.
 
 ## Exercise
 
-Write `#include <iostream>` and use `std::cout` to print `Hello C++` and a newline. Keep using `SmallMain()` for now.
+Write `#include <iostream>` and use `std::cout` to print `Hello C++` and a newline. Keep using `small_main()` for now.
 
 @exercise exercise1_starter.cpp
 

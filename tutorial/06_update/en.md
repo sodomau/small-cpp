@@ -16,7 +16,7 @@ You can use stored values in calculations. Store the result again to increase a 
 
 `score = score + 5;` first reads the current value 10, adds 5, then stores the result 15 in score. It does not mean that both sides are equal, as a mathematical equation would.
 
-Running only `Print(score + 5);` displays the calculated result but does not change score itself.
+Running only `print(score + 5);` displays the calculated result but does not change score itself.
 
 Expected output:
 

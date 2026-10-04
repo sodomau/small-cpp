@@ -14,7 +14,7 @@ Distance = speed × time. Choosing a speed per second and moving by the elapsed 
 
 @code example2.cpp
 
-dt stores the time since the previous iteration. Read it with Elapsed, Reset the watch, and add `speed * dt` to the position.
+dt stores the time since the previous iteration. Read it with `elapsed`, then `reset` the watch, and add `speed * dt` to the position.
 
 At 200 pixels per second, the object moves 2 pixels in 0.01 seconds and 4 in 0.02 seconds. dt is not new syntax. Change speed to 100 and compare.
 
@@ -26,6 +26,6 @@ Update the vertically moving ball from lesson 44 to use dt and a speed of 150 pi
 
 ### Hint
 
-Each loop, use `double dt = watch.Elapsed(); watch.Reset();`, then move with `y = y + speed * dt;`.
+Each loop, use `double dt = watch.elapsed(); watch.reset();`, then move with `y = y + speed * dt;`.
 
 @solution exercise2_solution.cpp

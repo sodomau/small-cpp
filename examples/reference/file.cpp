@@ -1,52 +1,52 @@
-void SmallMain()
+void small_main()
 {
     File file;
 
     // Text file
-    file.Open("example.txt", FileMode::Write);
-    file.Print("Alice");
-    file.Print(10);
-    file.Write("Score: ", 95);
-    file.Print();
-    file.Close();
+    file.open("example.txt", FileMode::Write);
+    file.print("Alice");
+    file.print(10);
+    file.write("Score: ", 95);
+    file.print();
+    file.close();
 
-    file.Open("example.txt");
-    Print("File open: ", file.IsOpen());
-    while (!file.End())
-        Print(file.Input());
-    file.Close();
+    file.open("example.txt");
+    print("File open: ", file.is_open());
+    while (!file.end())
+        print(file.input());
+    file.close();
 
-    file.Open("example.txt", FileMode::Read);
-    Print("First line again: ", file.Input());
-    file.Close();
+    file.open("example.txt", FileMode::Read);
+    print("First line again: ", file.input());
+    file.close();
 
-    file.Open("example.txt", FileMode::Append);
-    file.Print("One more line");
-    file.Close();
+    file.open("example.txt", FileMode::Append);
+    file.print("One more line");
+    file.close();
 
     // Binary file: values are written using their native C++ representation.
-    file.Open("numbers.txt", FileMode::Write);
-    file.Print(123);
-    file.Print(4.5);
-    file.Close();
+    file.open("numbers.txt", FileMode::Write);
+    file.print(123);
+    file.print(4.5);
+    file.close();
 
-    file.Open("numbers.txt");
-    int textInt = file.InputInt();
-    double textReal = file.InputReal();
-    file.Close();
-    Print("Text integer: ", textInt);
-    Print("Text real: ", textReal);
+    file.open("numbers.txt");
+    int text_int = file.input_int();
+    double text_real = file.input_real();
+    file.close();
+    print("Text integer: ", text_int);
+    print("Text real: ", text_real);
 
-    file.Open("save.dat", FileMode::WriteBinary);
-    file.WriteInt(100);
-    file.WriteReal(3.14);
-    file.Close();
+    file.open("save.dat", FileMode::WriteBinary);
+    file.write_int(100);
+    file.write_real(3.14);
+    file.close();
 
-    file.Open("save.dat", FileMode::ReadBinary);
-    int score = file.ReadInt();
-    double value = file.ReadReal();
-    file.Close();
+    file.open("save.dat", FileMode::ReadBinary);
+    int score = file.read_int();
+    double value = file.read_real();
+    file.close();
 
-    Print("Binary score: ", score);
-    Print("Binary real: ", value);
+    print("Binary score: ", score);
+    print("Binary real: ", value);
 }

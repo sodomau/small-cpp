@@ -14,13 +14,13 @@ related-example: programs/pong
 
 @code example2.cpp
 
-Move the paddle with the left and right arrow keys. When the ball touches the paddle's range, it bounces and score increases by 1. SetTitle displays the current score in the window title.
+Move the paddle with the left and right arrow keys. When the ball touches the paddle's range, it bounces and score increases by 1. set_title displays the current score in the window title.
 
 After a miss, only the ball returns to its starting position. Test both hits and misses. Diagnose problems by separating position updates, conditions, and score changes.
 
 ## Exercise
 
-Move the starter's paddle with the left and right arrow keys. Increase score by 1 only when the ball hits it, and show it with `window.SetTitle("Score: ", score)`. Moving the paddle aside and missing must not increase the score. Collision detection is provided in the starter.
+Move the starter's paddle with the left and right arrow keys. Increase score by 1 only when the ball hits it, and show it with `window.set_title("Score: ", score)`. Moving the paddle aside and missing must not increase the score. Collision detection is provided in the starter.
 
 @exercise exercise2_starter.cpp
 

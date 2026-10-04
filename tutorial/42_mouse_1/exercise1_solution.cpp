@@ -1,17 +1,17 @@
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        window.Clear(Black);
+        window.clear(Black);
 
-        if (window.MouseDown(MouseButton::Left))
-            window.FillCircle(window.MouseX(), window.MouseY(), 25, Yellow);
+        if (window.mouse_down(MouseButton::Left))
+            window.fill_circle(window.mouse_x(), window.mouse_y(), 25, Yellow);
         else
-            window.FillCircle(window.MouseX(), window.MouseY(), 8, Gray);
+            window.fill_circle(window.mouse_x(), window.mouse_y(), 8, Gray);
 
-        window.Show();
+        window.show();
     }
 }

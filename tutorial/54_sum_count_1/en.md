@@ -26,6 +26,6 @@ Find an Array's sum, divide by its number of values, and print the average. Make
 
 ### Hint
 
-Start with `double total = 0;` and calculate `total / numbers.Length()` at the end.
+Start with `double total = 0;` and calculate `total / numbers.length()` at the end.
 
 @solution exercise1_solution.cpp

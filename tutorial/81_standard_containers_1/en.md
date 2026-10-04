@@ -14,7 +14,7 @@ A **container** holds several values. std::string and std::vector are standard t
 
 @code example1.cpp
 
-The length operation is named size() instead of Length(). The example prints Hello, Characters: 5, Numbers: 4, and First number: 3.
+The length operation is named size() instead of length(). The example prints Hello, Characters: 5, Numbers: 4, and First number: 3.
 
 Bracket positions still start at 0. Do not expect standard containers' [] to report out-of-range errors the way Small does.
 

@@ -14,13 +14,13 @@ related-example: programs/pong
 
 @code example2.cpp
 
-좌우 키로 막대를 움직이세요. 공이 막대의 범위에 닿으면 튕기고 score가 1 증가합니다. SetTitle은 현재 점수를 창 제목에 보여 줍니다.
+좌우 키로 막대를 움직이세요. 공이 막대의 범위에 닿으면 튕기고 score가 1 증가합니다. set_title은 현재 점수를 창 제목에 보여 줍니다.
 
 놓쳤을 때는 공만 시작 위치로 돌립니다. 적중과 실패를 각각 시험하세요. 문제가 있으면 위치 갱신·조건·점수 변경 중 어느 단계인지 나누어 확인합니다.
 
 ## Exercise — score를 제목에 표시
 
-시작 코드의 paddle을 좌우 방향키로 움직여 보세요. 공이 paddle에 맞을 때만 score를 1 증가시키고 `window.SetTitle("Score: ", score)`로 창 제목에 표시하세요. paddle을 옆으로 치워 공을 놓쳤을 때에는 점수가 늘어나면 안 됩니다. 충돌 검사는 시작 코드에 제공되어 있습니다.
+시작 코드의 paddle을 좌우 방향키로 움직여 보세요. 공이 paddle에 맞을 때만 score를 1 증가시키고 `window.set_title("Score: ", score)`로 창 제목에 표시하세요. paddle을 옆으로 치워 공을 놓쳤을 때에는 점수가 늘어나면 안 됩니다. 충돌 검사는 시작 코드에 제공되어 있습니다.
 
 @exercise exercise2_starter.cpp
 

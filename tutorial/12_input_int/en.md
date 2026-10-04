@@ -8,7 +8,7 @@ related-example: reference/console
 
 ## What you will learn
 
-InputInt reads the input as an **integer** and returns it. Use it differently from Input, which returns a string.
+input_int reads the input as an **integer** and returns it. Use it differently from Input, which returns a string.
 
 ## Try it
 

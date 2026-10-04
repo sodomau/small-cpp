@@ -1,9 +1,9 @@
 #include "score.h"
 
-void SmallMain()
+void small_main()
 {
     int score = 0;
-    score = AddPoints(score, 10);
-    score = AddPoints(score, 20);
-    Print(score);
+    score = add_points(score, 10);
+    score = add_points(score, 20);
+    print(score);
 }

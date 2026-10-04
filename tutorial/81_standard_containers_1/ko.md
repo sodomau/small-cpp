@@ -14,7 +14,7 @@ related-example: reference/console
 
 @code example1.cpp
 
-길이를 묻는 이름이 Length() 대신 size()입니다. 예제는 Hello, Characters: 5, Numbers: 4, First number: 3을 출력합니다.
+길이를 묻는 이름이 length() 대신 size()입니다. 예제는 Hello, Characters: 5, Numbers: 4, First number: 3을 출력합니다.
 
 대괄호의 위치는 여전히 0부터입니다. 표준 컨테이너의 []는 Small처럼 범위 오류를 알려 준다고 기대하면 안 됩니다.
 

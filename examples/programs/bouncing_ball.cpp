@@ -1,7 +1,7 @@
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     double x = 100;
     double y = 100;
@@ -11,11 +11,11 @@ void SmallMain()
 
     StopWatch watch;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
         // Use elapsed time so speed does not depend on frame rate.
-        double dt = watch.Elapsed();
-        watch.Reset();
+        double dt = watch.elapsed();
+        watch.reset();
 
         x = x + vx * dt;
         y = y + vy * dt;
@@ -24,29 +24,29 @@ void SmallMain()
         {
             x = radius;
             vx = -vx;
-            PlaySound(Sound::Pop);
+            play_sound(Sound::Pop);
         }
-        if (x + radius > window.Width())
+        if (x + radius > window.width())
         {
-            x = window.Width() - radius;
+            x = window.width() - radius;
             vx = -vx;
-            PlaySound(Sound::Pop);
+            play_sound(Sound::Pop);
         }
         if (y - radius < 0)
         {
             y = radius;
             vy = -vy;
-            PlaySound(Sound::Pop);
+            play_sound(Sound::Pop);
         }
-        if (y + radius > window.Height())
+        if (y + radius > window.height())
         {
-            y = window.Height() - radius;
+            y = window.height() - radius;
             vy = -vy;
-            PlaySound(Sound::Pop);
+            play_sound(Sound::Pop);
         }
 
-        window.Clear(Black);
-        window.FillCircle(x, y, radius, Yellow);
-        window.Show();
+        window.clear(Black);
+        window.fill_circle(x, y, radius, Yellow);
+        window.show();
     }
 }

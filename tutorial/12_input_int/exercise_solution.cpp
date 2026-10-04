@@ -1,5 +1,5 @@
-void SmallMain()
+void small_main()
 {
-    int number = InputInt();
-    Print(number * 2);
+    int number = input_int();
+    print(number * 2);
 }

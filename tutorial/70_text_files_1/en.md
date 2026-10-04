@@ -26,6 +26,6 @@ Save a name on one line and an age on another in `profile.txt`, then close the f
 
 ### Hint
 
-Open in Write mode and use `file.Print` twice.
+Open in Write mode and use `file.print` twice.
 
 @solution exercise1_solution.cpp

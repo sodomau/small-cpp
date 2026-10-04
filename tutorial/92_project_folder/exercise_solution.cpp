@@ -1,4 +1,4 @@
-void SmallMain()
+void small_main()
 {
-    Print("Welcome back!");
+    print("Welcome back!");
 }
