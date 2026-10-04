@@ -18,6 +18,7 @@ See the `docs` folder:
 -   `API.md`
 -   `DESIGN.md`
 -   `TUTORIAL_ENGLISH.md`
+-   `NAMING_CONVENTIONS.md` — API naming and migration from older programs
 
 No separate compiler or Qt installation is required for the portable
 package.

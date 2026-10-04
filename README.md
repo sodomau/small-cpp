@@ -78,13 +78,13 @@ void small_main()
 
 ## Get started
 
-Try the [current Windows portable preview](https://github.com/sodomau/small-cpp/releases/tag/v0.76.11):
-download **SmallCpp-v0.76.11-Windows-x64.zip**, extract the entire archive,
+Try the [current Windows portable preview](https://github.com/sodomau/small-cpp/releases/tag/v0.76.12):
+download **SmallCpp-v0.76.12-Windows-x64.zip**, extract the entire archive,
 and launch `SmallCppIDE.exe`. The compiler and debugger are included.
 See [portable first use](docs/PORTABLE_START.md) for instructions.
 
-The v0.76.11 download uses the earlier PascalCase API. The snake_case examples
-in this source tree require a build from this tree. See
+The preview and current tutorials use the snake_case API. Older programs need
+their PascalCase function names updated. See
 [naming conventions and migration](docs/NAMING_CONVENTIONS.md).
 
 The documented development setup is **Windows with a matching Qt MinGW
