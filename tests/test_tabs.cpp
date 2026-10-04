@@ -83,6 +83,33 @@ private:
     }
 
 private slots:
+    void homepagePreview()
+    {
+        const QString output = qEnvironmentVariable("SMALL_HOMEPAGE_PREVIEW_DIR");
+        if (output.isEmpty()) return;
+        const QString source = qEnvironmentVariable("SMALL_HOMEPAGE_PREVIEW_SOURCE");
+        QVERIFY(QFile::exists(source));
+        QVERIFY(QDir().mkpath(output));
+        QFontDatabase::addApplicationFont("C:/Windows/Fonts/segoeui.ttf");
+        QFontDatabase::addApplicationFont("C:/Windows/Fonts/segoeuib.ttf");
+        QFontDatabase::addApplicationFont("C:/Windows/Fonts/consola.ttf");
+        const QFont previousFont = QApplication::font();
+        QApplication::setFont(QFont("Segoe UI", 10));
+        const QString previousVersion = QCoreApplication::applicationVersion();
+        QCoreApplication::setApplicationVersion(qEnvironmentVariable("SMALL_HOMEPAGE_PREVIEW_VERSION"));
+        for (const bool dark : {false, true}) {
+            MainWindow window;
+            action(window, dark ? "actionThemeDark" : "actionThemeLight")->trigger();
+            QVERIFY(window.openDocument(source));
+            window.resize(1200, 850);
+            window.show();
+            QTest::qWait(50);
+            QVERIFY(window.grab().save(output + (dark ? "/ide-dark.png" : "/ide-light.png")));
+        }
+        QCoreApplication::setApplicationVersion(previousVersion);
+        QApplication::setFont(previousFont);
+    }
+
     void welcomeIsNotAFileAndCanBeClosedAndReopened()
     {
         MainWindow window;

@@ -17,10 +17,11 @@ local computer. Stop it with Ctrl+C.
 
 The build renders all 97 core lessons and 3 Image extension lessons in both languages as static HTML, including
 the shared examples, exercise starters, and collapsible solutions. The lesson
-index and previous/next links work without a Markdown viewer or extra packages.
+index groups lessons into collapsible parts with titles, lesson counts, and ranges.
+The index and previous/next links work without a Markdown viewer or extra packages.
 Generated pages remain in `build/`; the original lesson content is unchanged.
 The preview server serves only the generated site directory. The download button
-points to the v0.76.11 preview, which includes the complete English and Korean
+points to the v0.76.12 preview, which includes the complete English and Korean
 lesson packs. No external fonts, scripts, or analytics are loaded.
 
 The Pages workflow builds and publishes only `build/project-page` when the site,

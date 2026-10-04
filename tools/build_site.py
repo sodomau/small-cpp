@@ -97,7 +97,7 @@ def page(title, language, content, switch_link):
     return f'''<!doctype html>
 <html lang="{language}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{escape(title)} — Small C++</title><link rel="icon" href="../../assets/smallcpp_128.png">
-<link rel="stylesheet" href="../../style.css"></head><body>
+<link rel="stylesheet" href="../../style.css?v=0.76.12"></head><body>
 <header class="navigation wrap"><a class="brand" href="../../index.html">Small C++<span class="brand-dot">.</span></a>
 <nav aria-label="Navigation"><a href="../../index.html">{home}</a><a href="index.html">{lessons}</a></nav>
 <a class="language" href="{switch_link}">{switch}</a></header>
@@ -130,7 +130,7 @@ def build():
     for language, other in (('en', 'ko'), ('ko', 'en')):
         destination = OUTPUT / 'lessons' / language
         destination.mkdir(parents=True, exist_ok=True)
-        index = []
+        sections = {}
         for number, (slug, folder) in enumerate(lessons):
             metadata, text = read_lesson(folder / f'{language}.md')
             for reference in re.findall(r'!\[[^\]]*\]\(([^)]+)\)', text):
@@ -141,8 +141,10 @@ def build():
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(folder / image, target)
             title = metadata.get('title', slug)
-            index.append(f'<li><a href="{slug}.html"><span>{number + 1:02}</span>{escape(title)}</a></li>')
             subtitle = metadata.get('part-title', 'Image extension' if language == 'en' else 'Image 확장')
+            part = metadata.get('part', 'image' if slug.startswith('image-') else 'core')
+            section = sections.setdefault(part, {'title': subtitle, 'items': [], 'first': number + 1})
+            section['items'].append(f'<li><a href="{slug}.html"><span>{number + 1:02}</span>{escape(title)}</a></li>')
             content = f'<p class="eyebrow">{escape(subtitle)}</p><h1>{escape(title)}</h1>'
             if goal := metadata.get('goal'):
                 content += f'<p class="lesson-goal">{escape(goal)}</p>'
@@ -159,7 +161,16 @@ def build():
         title = 'One small step at a time.' if language == 'en' else '한 걸음씩, 차근차근.'
         description = (f'{core_count} core lessons + {image_count} Image lessons. Read, try the examples in the desktop IDE, and make them your own.'
                        if language == 'en' else f'핵심 {core_count}개 레슨과 Image 확장 {image_count}개 레슨. 설명을 읽고 데스크톱 IDE에서 예제를 실행하며 나만의 코드로 바꿔 보세요.')
-        content = f'<p class="eyebrow">SMALL STEPS</p><h1>{title}</h1><p class="lesson-goal">{description}</p><ol class="lesson-index">' + ''.join(index) + '</ol>'
+        instruction = 'Choose a part to explore its lessons.' if language == 'en' else '배우고 싶은 파트를 눌러 레슨을 펼쳐 보세요.'
+        content = f'<p class="eyebrow">SMALL STEPS</p><h1>{title}</h1><p class="lesson-goal">{description}</p><p>{instruction}</p>'
+        for part, section in sections.items():
+            count = len(section['items'])
+            count_label = f'{count} lessons' if language == 'en' else f'{count}개 레슨'
+            first, last = section['first'], section['first'] + count - 1
+            content += (f'<details class="lesson-section" id="part-{escape(part, quote=True)}">'
+                        f'<summary><span class="lesson-section-title">{escape(section["title"])}</span>'
+                        f'<span class="lesson-section-count">{first:02}–{last:02} · {count_label}</span></summary>'
+                        f'<ol class="lesson-index" start="{first}">' + ''.join(section['items']) + '</ol></details>')
         (destination / 'index.html').write_text(page(title, language, content, f'../{other}/index.html'), encoding='utf-8', newline='\n')
     return OUTPUT
 

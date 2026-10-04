@@ -21,7 +21,8 @@ languageButton.addEventListener('click', () => {
 });
 document.querySelectorAll('[data-theme]').forEach(button => {
   button.addEventListener('click', () => {
-    document.querySelector('#ide-screenshot').src = `assets/ide-${button.dataset.theme}.png`;
+    const screenshot = document.querySelector('#ide-screenshot');
+    screenshot.src = `assets/ide-${button.dataset.theme}.png?v=${screenshot.dataset.version}`;
     document.querySelectorAll('[data-theme]').forEach(option => {
       option.setAttribute('aria-pressed', String(option === button));
     });
