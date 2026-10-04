@@ -1,6 +1,6 @@
-void SmallMain()
+void small_main()
 {
     int score = 10;
     score = score + 5;
-    Print(score);
+    print(score);
 }

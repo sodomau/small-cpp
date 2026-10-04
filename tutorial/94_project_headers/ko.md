@@ -16,16 +16,16 @@ related-example: reference/console
 ```cpp
 #pragma once
 
-void SayHello();
+void say_hello();
 ```
 
 ### greeting.cpp
 ```cpp
 #include "greeting.h"
 
-void SayHello()
+void say_hello()
 {
-    Print("Hello from another file!");
+    print("Hello from another file!");
 }
 ```
 
@@ -33,9 +33,9 @@ void SayHello()
 ```cpp
 #include "greeting.h"
 
-void SmallMain()
+void small_main()
 {
-    SayHello();
+    say_hello();
 }
 ```
 
@@ -53,7 +53,7 @@ void SmallMain()
 
 ## 연습 — 직접 확인하기
 
-한 파일 연습에서 SayHello를 두 번 호출하세요. 그 다음 프로젝트에서도 main.cpp만 바꿔 같은 결과를 만들어 보세요.
+한 파일 연습에서 say_hello를 두 번 호출하세요. 그 다음 프로젝트에서도 main.cpp만 바꿔 같은 결과를 만들어 보세요.
 
 @exercise exercise_starter.cpp
 

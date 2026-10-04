@@ -1,24 +1,24 @@
 int level = 1;
 
-void OnSecond()
+void on_second()
 {
     // Increase level.
 }
 
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(500, 300);
+    window.open(500, 300);
 
     Timer timer;
-    timer.Start(1.0, OnSecond);
+    timer.start(1.0, on_second);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        // Show level in the title.
-        window.Clear(Black);
-        window.Show();
+        // show level in the title.
+        window.clear(Black);
+        window.show();
     }
 
-    timer.Stop();
+    timer.stop();
 }

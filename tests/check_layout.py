@@ -12,7 +12,7 @@ checks = {
     'public API lives in Small namespace': 'namespace Small' in header,
     'beginner using is macro guarded': '#ifdef SMALL_BEGINNER_MODE' in header and 'using namespace Small;' in header,
     'learner build enables beginner mode': '-DSMALL_BEGINNER_MODE' in controller,
-    'SmallMain is the learner entry point': 'void SmallMain();' in header and 'SmallMain();' in (root / 'runtime/small_main.cpp').read_text(),
+    'small_main is the learner entry point': 'void small_main();' in header and 'small_main();' in (root / 'runtime/small_main.cpp').read_text(),
     'Window does not inherit QWidget in public API': 'public QWidget' not in header,
     'fixed real main exists': 'int main(' in (root / 'runtime/small_main.cpp').read_text(),
     'runtime prebuilt by CMake': 'add_library(small_runtime STATIC' in cmake,

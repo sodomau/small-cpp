@@ -1,4 +1,4 @@
-void SmallMain()
+void small_main()
 {
     std::vector<int> numbers = {5, 10};
 

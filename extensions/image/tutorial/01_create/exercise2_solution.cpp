@@ -1,6 +1,6 @@
 #include <small/image.h>
-void SmallMain()
+void small_main()
 {
     Image image(64, 48, Blue);
-    Print(image.Width(), " x ", image.Height());
+    print(image.width(), " x ", image.height());
 }

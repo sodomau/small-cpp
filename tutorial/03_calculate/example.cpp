@@ -1,6 +1,6 @@
-void SmallMain()
+void small_main()
 {
-    Print(3 + 5);
-    Print(9 - 2);
-    Print("3 + 5");
+    print(3 + 5);
+    print(9 - 2);
+    print("3 + 5");
 }

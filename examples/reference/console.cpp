@@ -1,17 +1,17 @@
-void SmallMain()
+void small_main()
 {
-    Print("Hello, Small C++!");
-    Write("Two ", "words");
-    Print();
+    print("Hello, Small C++!");
+    write("Two ", "words");
+    print();
 
-    String name = Input("Name: ");
-    int age = InputInt("Age: ");
-    double height = InputReal("Height in meters: ");
+    String name = input("Name: ");
+    int age = input_int("Age: ");
+    double height = input_real("Height in meters: ");
 
-    Print("Hello, ", name, "!");
-    Print("Age: ", age);
-    Print("Height: ", height);
+    print("Hello, ", name, "!");
+    print("Age: ", age);
+    print("Height: ", height);
 
-    String message = Format("Name: ", name, ", age: ", age);
-    Print(message);
+    String message = format("Name: ", name, ", age: ", age);
+    print(message);
 }

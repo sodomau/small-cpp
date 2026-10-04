@@ -20,12 +20,12 @@ Remember the types and order needed when reading. This mode also replaces existi
 
 ## Exercise
 
-Save level=5, score=2300, and playTime=18.75 in binary form in `game.dat`.
+Save level=5, score=2300, and play_time=18.75 in binary form in `game.dat`.
 
 @exercise exercise1_starter.cpp
 
 ### Hint
 
-Use WriteBinary mode, WriteInt twice, and WriteReal once.
+Use WriteBinary mode, write_int twice, and write_real once.
 
 @solution exercise1_solution.cpp

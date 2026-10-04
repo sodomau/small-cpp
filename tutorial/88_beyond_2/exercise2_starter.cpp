@@ -1,13 +1,13 @@
 #include <iostream>
 #include <string>
 
-// Write Greet here.
+// write greet here.
 
 int main()
 {
     std::string name = "Alex";
 
-    // Call Greet.
+    // Call greet.
 
     return 0;
 }

@@ -1,10 +1,10 @@
-int Square(int number)
+int square(int number)
 {
     return number * number;
 }
 
-void SmallMain()
+void small_main()
 {
-    int result = Square(6);
-    Print(result);
+    int result = square(6);
+    print(result);
 }

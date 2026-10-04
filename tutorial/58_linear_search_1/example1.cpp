@@ -1,14 +1,14 @@
-int Find(Array<int> numbers, int value)
+int find(Array<int> numbers, int value)
 {
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
         if (numbers[i] == value)
             return i;
 
     return -1;
 }
 
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {7, 2, 9, 4, 5};
-    Print("Index: ", Find(numbers, 9));
+    print("Index: ", find(numbers, 9));
 }

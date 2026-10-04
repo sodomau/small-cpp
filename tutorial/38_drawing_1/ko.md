@@ -14,9 +14,9 @@ related-example: reference/drawing
 
 @code example1.cpp
 
-Clear는 배경을 지웁니다. `FillCircle(320, 240, 80, Yellow)`는 중심 (320, 240), 반지름 80인 노란 원을 채웁니다. DrawCircle은 테두리만 그립니다.
+clear는 배경을 지웁니다. `fill_circle(320, 240, 80, Yellow)`는 중심 (320, 240), 반지름 80인 노란 원을 채웁니다. draw_circle은 테두리만 그립니다.
 
-DrawLine의 네 숫자는 시작점 x, y와 끝점 x, y입니다. 나중에 그린 것이 먼저 그린 것을 덮습니다. 노란 얼굴이 보이면 원의 위치 하나를 바꾸어 보세요.
+draw_line의 네 숫자는 시작점 x, y와 끝점 x, y입니다. 나중에 그린 것이 먼저 그린 것을 덮습니다. 노란 얼굴이 보이면 원의 위치 하나를 바꾸어 보세요.
 
 예제 끝의 while처럼 실행할 문장이 하나이면 중괄호를 생략하기도 합니다. 직접 쓸 때는 중괄호로 묶어도 됩니다.
 
@@ -28,7 +28,7 @@ DrawLine의 네 숫자는 시작점 x, y와 끝점 x, y입니다. 나중에 그�
 
 ### Hint
 
-먼저 FillRectangle로 몸체를 그리고 FillCircle을 세 번 사용하세요.
+먼저 fill_rectangle로 몸체를 그리고 fill_circle을 세 번 사용하세요.
 
 @solution exercise1_solution.cpp
 

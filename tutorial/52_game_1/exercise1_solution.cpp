@@ -1,26 +1,26 @@
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(800, 500);
+    window.open(800, 500);
 
-    double paddleY = 210;
+    double paddle_y = 210;
     StopWatch watch;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        double dt = watch.Elapsed();
-        watch.Reset();
+        double dt = watch.elapsed();
+        watch.reset();
 
-        if (window.KeyDown(Key::Up))
-            paddleY = paddleY - 300 * dt;
-        if (window.KeyDown(Key::Down))
-            paddleY = paddleY + 300 * dt;
+        if (window.key_down(Key::Up))
+            paddle_y = paddle_y - 300 * dt;
+        if (window.key_down(Key::Down))
+            paddle_y = paddle_y + 300 * dt;
 
-        if (paddleY < 0) paddleY = 0;
-        if (paddleY > 420) paddleY = 420;
+        if (paddle_y < 0) paddle_y = 0;
+        if (paddle_y > 420) paddle_y = 420;
 
-        window.Clear(Black);
-        window.FillRectangle(30, paddleY, 15, 80, White);
-        window.Show();
+        window.clear(Black);
+        window.fill_rectangle(30, paddle_y, 15, 80, White);
+        window.show();
     }
 }

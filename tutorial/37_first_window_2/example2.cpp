@@ -1,14 +1,14 @@
-void SmallMain()
+void small_main()
 {
     Window window;
 
-    window.SetTitle("Small Window");
-    window.Open(400, 300);
+    window.set_title("Small Window");
+    window.open(400, 300);
 
-    Print("Size: ", window.Width(), " x ", window.Height());
+    print("Size: ", window.width(), " x ", window.height());
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        window.Show();
+        window.show();
     }
 }

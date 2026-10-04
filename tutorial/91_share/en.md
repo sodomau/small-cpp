@@ -37,6 +37,6 @@ Personalize the card below and publish it. Make a ZIP, extract it to a different
 
 ### Hint
 
-Change the strings in Print. Keep Input so the card stays visible. The code below is one possible card; the important check is running the complete extracted package.
+Change the strings in `print`. Keep `input` so the card stays visible. The code below is one possible card; the important check is running the complete extracted package.
 
 @solution exercise_solution.cpp

@@ -8,7 +8,7 @@ related-example: reference/console
 
 ## 시작점은 하나
 
-프로젝트의 모든 포함된 `.cpp`는 하나의 프로그램으로 합쳐집니다. 예전 연습 파일에도 `SmallMain`이 있다면 시작점이 두 개가 되어 실행할 수 없습니다.
+프로젝트의 모든 포함된 `.cpp`는 하나의 프로그램으로 합쳐집니다. 예전 연습 파일에도 `small_main`이 있다면 시작점이 두 개가 되어 실행할 수 없습니다.
 
 앞의 Greeting 프로젝트에 **New Source File…**로 `practice.cpp`를 만들고 아래 코드를 넣어 보세요.
 

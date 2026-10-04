@@ -1,6 +1,6 @@
-void SmallMain()
+void small_main()
 {
-    double a = InputReal();
-    double b = InputReal();
-    Print(a + b);
+    double a = input_real();
+    double b = input_real();
+    print(a + b);
 }

@@ -16,7 +16,7 @@ To count matches, add 1 only when you encounter an element that meets the condit
 
 `numbers[i] % 2 == 0` asks whether division by 2 has remainder 0: whether the number is even. 8, 4, and 10 match, producing Even: 3. Zero also meets this condition.
 
-CountEven takes an array parameter. Here, it receives a copy of an Array<int> value; later lessons on references show how to avoid copying.
+count_even takes an array parameter. Here, it receives a copy of an Array<int> value; later lessons on references show how to avoid copying.
 
 ## Exercise
 

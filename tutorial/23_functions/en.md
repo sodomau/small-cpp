@@ -2,19 +2,19 @@
 title: Naming a task you created
 part: basics
 part-title: Small Steps I — Creating with Text and Numbers
-goal: Call Greet three times.
+goal: Call greet three times.
 related-example: reference/console
 ---
 
 ## What you will learn
 
-A **function** groups instructions under a name. You have used Print; now you will create a function named Greet yourself.
+A **function** groups instructions under a name. You have used `print`; now you will create a function named greet yourself.
 
 ## Try it
 
 @code example.cpp
 
-The upper section is the **definition** of what Greet does. `Greet();` below is a **call** that asks it to do that work. A definition alone does not run. Calling it from SmallMain goes to Greet, then returns after it finishes.
+The upper section is the **definition** of what greet does. `greet();` below is a **call** that asks it to do that work. A definition alone does not run. Calling it from small_main goes to greet, then returns after it finishes.
 
 **void** means the function does not return a result value to its caller. It can still produce output. Empty () means that no values are passed in.
 
@@ -27,7 +27,7 @@ Hello!
 
 ## Exercise
 
-Call Greet three times.
+Call greet three times.
 
 @exercise exercise_starter.cpp
 

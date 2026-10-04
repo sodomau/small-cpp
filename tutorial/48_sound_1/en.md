@@ -14,9 +14,9 @@ related-example: reference/sound
 
 @code example1.cpp
 
-PlaySound starts playback and returns immediately. Sound::Pop and Sound::Coin name built-in sound effects.
+play_sound starts playback and returns immediately. Sound::Pop and Sound::Coin name built-in sound effects.
 
-The example uses Sleep to keep the program from ending immediately. Listen for the two effects starting in sequence.
+The example uses `sleep` to keep the program from ending immediately. Listen for the two effects starting in sequence.
 
 ## Exercise
 
@@ -26,6 +26,6 @@ Play Click, Coin, and Win in order. Start each sound only after the previous one
 
 ### Hint
 
-Use `PlaySoundAndWait` three times.
+Use `play_sound_and_wait` three times.
 
 @solution exercise1_solution.cpp

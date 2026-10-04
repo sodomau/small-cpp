@@ -26,7 +26,7 @@ SmallRuntimeDiagnostic ExplainRuntimeError(const QString& raw, const QString& so
     QString explanation = message;
     QString suggestion;
 
-    auto m = QRegularExpression(R"(^Array index (-?\d+) is out of range\. Length: (\d+)\.$)").match(message);
+    auto m = QRegularExpression(R"(^Array index (-?\d+) is out of range\. length: (\d+)\.$)").match(message);
     if (m.hasMatch()) {
         const int index = m.captured(1).toInt(), length = m.captured(2).toInt();
         title = "Array index out of range";
@@ -35,7 +35,7 @@ SmallRuntimeDiagnostic ExplainRuntimeError(const QString& raw, const QString& so
                                  : QString("Valid indices are 0 to %1.").arg(length - 1);
         d.line = uniqueLineContaining(lines, QRegularExpression(QString(R"(\[\s*%1\s*\])").arg(index)));
     }
-    else if ((m = QRegularExpression(R"(^String index (-?\d+) is out of range\. Length: (\d+)\.$)").match(message)).hasMatch()) {
+    else if ((m = QRegularExpression(R"(^String index (-?\d+) is out of range\. length: (\d+)\.$)").match(message)).hasMatch()) {
         const int index = m.captured(1).toInt(), length = m.captured(2).toInt();
         title = "String index out of range";
         explanation = QString("Index %1 was used, but this String has %2 characters.").arg(index).arg(length);
@@ -43,17 +43,17 @@ SmallRuntimeDiagnostic ExplainRuntimeError(const QString& raw, const QString& so
                                  : QString("Valid indices are 0 to %1.").arg(length - 1);
         d.line = uniqueLineContaining(lines, QRegularExpression(QString(R"(\[\s*%1\s*\])").arg(index)));
     }
-    else if (message == "Substring start index is out of range.") {
-        title = "Substring start is out of range";
+    else if (message == "substring start index is out of range.") {
+        title = "substring start is out of range";
         explanation = "The starting position is outside this String.";
-        suggestion = "Use a start position from 0 through the String's Length().";
-        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\.Substring\s*\()"));
+        suggestion = "Use a start position from 0 through the String's length().";
+        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\.substring\s*\()"));
     }
-    else if (message == "Substring extends beyond the String.") {
-        title = "Substring is too long";
+    else if (message == "substring extends beyond the String.") {
+        title = "substring is too long";
         explanation = "The requested substring goes past the end of the String.";
         suggestion = "Reduce the start position or the substring length.";
-        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\.Substring\s*\()"));
+        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\.substring\s*\()"));
     }
     else if (message == "Array length cannot be negative.") {
         title = "Invalid Array length"; explanation = "An Array cannot have a negative length.";
@@ -61,58 +61,58 @@ SmallRuntimeDiagnostic ExplainRuntimeError(const QString& raw, const QString& so
         d.line = uniqueLineContaining(lines, QRegularExpression(R"(\bArray\s*<[^>]+>\s+\w+\s*\()"));
     }
     else if (message == "Color values must be between 0 and 255.") {
-        title = "Invalid color value"; explanation = "Each RGB value must be between 0 and 255.";
-        suggestion = "For example: RGB(255, 128, 0)";
+        title = "Invalid color value"; explanation = "Each rgb value must be between 0 and 255.";
+        suggestion = "For example: rgb(255, 128, 0)";
         d.line = uniqueLineContaining(lines, QRegularExpression(R"(\bRGB\s*\()"));
     }
-    else if (message == "The Window is not open. Call Open(width, height) first.") {
+    else if (message == "The Window is not open. Call open(width, height) first.") {
         title = "Window is not open"; explanation = "This operation needs an open Window.";
-        suggestion = "Call window.Open(width, height) before drawing or showing the Window.";
+        suggestion = "Call window.open(width, height) before drawing or showing the Window.";
     }
     else if (message == "Window width and height must be positive.") {
         title = "Invalid Window size"; explanation = "Window width and height must both be greater than zero.";
-        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\.Open\s*\()"));
+        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\.open\s*\()"));
     }
-    else if (message == "Pixel position is outside the Window.") {
-        title = "Pixel is outside the Window"; explanation = "SetPixel was given a position outside the Window.";
-        suggestion = "x must be from 0 to Width()-1 and y from 0 to Height()-1.";
-        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\.SetPixel\s*\()"));
+    else if (message == "pixel position is outside the Window.") {
+        title = "pixel is outside the Window"; explanation = "set_pixel was given a position outside the Window.";
+        suggestion = "x must be from 0 to width()-1 and y from 0 to height()-1.";
+        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\.set_pixel\s*\()"));
     }
     else if (message == "Rectangle size cannot be negative.") {
         title = "Invalid rectangle size"; explanation = "Rectangle width and height cannot be negative.";
         suggestion = "Use zero or positive values for width and height.";
-        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\.(?:DrawRectangle|FillRectangle)\s*\()"));
+        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\.(?:draw_rectangle|fill_rectangle)\s*\()"));
     }
     else if (message == "Circle radius cannot be negative.") {
         title = "Invalid circle radius"; explanation = "A circle radius cannot be negative.";
         suggestion = "Use zero or a positive radius.";
-        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\.(?:DrawCircle|FillCircle)\s*\()"));
+        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\.(?:draw_circle|fill_circle)\s*\()"));
     }
     else if (message == "Text size must be positive.") {
         title = "Invalid text size"; explanation = "Text size must be greater than zero.";
-        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\.DrawText\s*\()"));
+        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\.draw_text\s*\()"));
     }
-    else if (message == "Sleep duration must be a non-negative, finite number.") {
-        title = "Invalid Sleep duration"; explanation = "Sleep needs a finite duration of zero seconds or more.";
+    else if (message == "sleep duration must be a non-negative, finite number.") {
+        title = "Invalid sleep duration"; explanation = "sleep needs a finite duration of zero seconds or more.";
         d.line = uniqueLineContaining(lines, QRegularExpression(R"(\bSleep\s*\()"));
     }
     else if (message == "Timer interval must be a positive, finite number.") {
         title = "Invalid Timer interval"; explanation = "A Timer interval must be a finite number greater than zero.";
-        suggestion = "For example: timer.Start(1.0, OnTimer);";
-        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\.Start\s*\()"));
+        suggestion = "For example: timer.start(1.0, on_timer);";
+        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\.start\s*\()"));
     }
     else if (message == "Timer callback cannot be empty.") {
-        title = "Timer callback is missing"; explanation = "Timer.Start needs a function to call when the timer fires.";
-        suggestion = "For example: timer.Start(1.0, OnTimer);";
-        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\.Start\s*\()"));
+        title = "Timer callback is missing"; explanation = "Timer.start needs a function to call when the timer fires.";
+        suggestion = "For example: timer.start(1.0, on_timer);";
+        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\.start\s*\()"));
     }
-    else if (message.startsWith("Beep frequency and duration must be positive")) {
-        title = "Invalid Beep"; explanation = "Beep needs a positive frequency and a positive duration.";
-        suggestion = "For example: Beep(440, 0.5);";
-        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\b(?:Beep|BeepAndWait)\s*\()"));
+    else if (message.startsWith("beep frequency and duration must be positive")) {
+        title = "Invalid beep"; explanation = "beep needs a positive frequency and a positive duration.";
+        suggestion = "For example: beep(440, 0.5);";
+        d.line = uniqueLineContaining(lines, QRegularExpression(R"(\b(?:beep|beep_and_wait)\s*\()"));
     }
-    else if (message == "Input ended before a value was entered.") {
-        title = "Input ended"; explanation = "The program asked for input, but no more input was available.";
+    else if (message == "input ended before a value was entered.") {
+        title = "input ended"; explanation = "The program asked for input, but no more input was available.";
     }
 
     d.text = title + "\n\n";

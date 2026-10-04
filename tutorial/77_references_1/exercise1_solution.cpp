@@ -1,16 +1,16 @@
-void Swap(int& a, int& b)
+void swap(int& a, int& b)
 {
     int temp = a;
     a = b;
     b = temp;
 }
 
-void SmallMain()
+void small_main()
 {
     int x = 3;
     int y = 7;
 
-    Swap(x, y);
+    swap(x, y);
 
-    Print(x, ", ", y);
+    print(x, ", ", y);
 }

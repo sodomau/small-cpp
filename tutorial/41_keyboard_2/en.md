@@ -8,15 +8,15 @@ related-example: reference/keyboard
 
 ## What you will learn
 
-**KeyPressed** reports a new press. Distinguish it from KeyDown, which is true every frame while a key remains held.
+**key_pressed** reports a new press. Distinguish it from key_down, which is true every frame while a key remains held.
 
 ## Try it
 
 @code example2.cpp
 
-When Space is newly pressed, `red = !red;` toggles true and false. That value chooses red or blue. Hold Space, release it, and press it again.
+When Space is newly pressed, `is_red = !is_red;` toggles true and false. That value chooses is_red or blue. Hold Space, release it, and press it again.
 
-KeyReleased reports the moment a key is released. Down is convenient for movement; Pressed is convenient for a single change.
+key_released reports the moment a key is released. Down is convenient for movement; Pressed is convenient for a single change.
 
 ## Exercise
 
@@ -26,6 +26,6 @@ Alternate the circle's radius between 20 and 60 each time Space is pressed. It m
 
 ### Hint
 
-Use `KeyPressed(Key::Space)` and a bool variable to alternate between two states.
+Use `key_pressed(Key::Space)` and a bool variable to alternate between two states.
 
 @solution exercise2_solution.cpp

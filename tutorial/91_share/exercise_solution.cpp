@@ -1,8 +1,8 @@
-void SmallMain()
+void small_main()
 {
-    Print("====================");
-    Print("Hello, Alex!");
-    Print("Have a wonderful day!");
-    Print("====================");
-    Input("Press Enter to close.");
+    print("====================");
+    print("Hello, Alex!");
+    print("Have a wonderful day!");
+    print("====================");
+    input("Press Enter to close.");
 }

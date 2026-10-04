@@ -1,14 +1,14 @@
-void SmallMain()
+void small_main()
 {
     File file;
 
-    file.Open("highscore.txt", FileMode::Write);
-    file.Print(950);
-    file.Close();
+    file.open("highscore.txt", FileMode::Write);
+    file.print(950);
+    file.close();
 
-    file.Open("highscore.txt");
-    int score = file.InputInt();
-    file.Close();
+    file.open("highscore.txt");
+    int score = file.input_int();
+    file.close();
 
-    Print("High score: ", score);
+    print("High score: ", score);
 }

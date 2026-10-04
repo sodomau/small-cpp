@@ -102,7 +102,7 @@ private slots:
         action(window, "actionCloseTab")->trigger();
         action(window, "actionNew")->trigger();
         QCOMPARE(current(window)->displayName(), QString("Untitled.cpp"));
-        QVERIFY(current(window)->toPlainText().contains("void SmallMain()"));
+        QVERIFY(current(window)->toPlainText().contains("void small_main()"));
         action(window, "actionCloseTab")->trigger();
         QCOMPARE(tabs(window)->count(), 0);
     }
@@ -320,7 +320,7 @@ private slots:
     {
         QTemporaryDir folder;
         const QString path = folder.filePath("same.cpp");
-        writeFile(path, "void SmallMain() {}\n");
+        writeFile(path, "void small_main() {}\n");
         MainWindow window;
         OpenNewProgram(window);
         QVERIFY(window.openDocument(path));
@@ -572,7 +572,7 @@ private slots:
         MainWindow window;
         OpenNewProgram(window);
         auto* origin = current(window);
-        const QString bad = "void SmallMain()\n{\n    Print(noSuchName);\n}\n";
+        const QString bad = "void small_main()\n{\n    print(noSuchName);\n}\n";
         origin->setPlainText(bad);
         auto* build = window.findChild<BuildController*>();
         QSignalSpy errors(build, &BuildController::buildError);
@@ -592,11 +592,11 @@ private slots:
         MainWindow window;
         OpenNewProgram(window);
         auto* origin = current(window);
-        origin->setPlainText("void SmallMain(){ Print(noSuchName); }\n");
+        origin->setPlainText("void small_main(){ print(noSuchName); }\n");
         auto* build = window.findChild<BuildController*>();
         QSignalSpy errors(build, &BuildController::buildError);
         action(window, "actionRun")->trigger();
-        origin->setPlainText("void SmallMain() {}\n");
+        origin->setPlainText("void small_main() {}\n");
         QTRY_VERIFY_WITH_TIMEOUT(!errors.isEmpty(), 30000);
         QVERIFY(!hasError(origin));
         QVERIFY(window.findChild<QPlainTextEdit*>("output")->toPlainText().contains("earlier snapshot"));
@@ -607,7 +607,7 @@ private slots:
         MainWindow window;
         OpenNewProgram(window);
         QPointer<EditorDocument> origin = current(window);
-        const QString bad = "void SmallMain(){ Print(noSuchName); }\n";
+        const QString bad = "void small_main(){ print(noSuchName); }\n";
         origin->setPlainText(bad);
         origin->document()->setModified(false);
         auto* build = window.findChild<BuildController*>();
@@ -631,7 +631,7 @@ private slots:
         const QString validPath = folder.filePath("run-me.cpp");
         writeFile(invalidPath, "this is deliberately not C++;\n");
         writeFile(validPath,
-            "void SmallMain(){ File f; f.Open(\"selected.txt\", FileMode::Write); f.Print(42); }\n");
+            "void small_main(){ File f; f.open(\"selected.txt\", FileMode::Write); f.print(42); }\n");
         MainWindow window;
         OpenNewProgram(window);
         QVERIFY(window.openDocument(invalidPath));
@@ -654,7 +654,7 @@ private slots:
         MainWindow window;
         OpenNewProgram(window);
         auto* origin = current(window);
-        origin->setPlainText("void SmallMain(){ Array<int> a(2); Print(a[5]); }\n");
+        origin->setPlainText("void small_main(){ Array<int> a(2); print(a[5]); }\n");
         auto* build = window.findChild<BuildController*>();
         QSignalSpy failed(build, &BuildController::buildError);
         QSignalSpy runtime(build, &BuildController::runtimeError);

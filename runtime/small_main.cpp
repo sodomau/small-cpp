@@ -12,9 +12,9 @@ int main(int argc, char* argv[])
 
     try
     {
-        Small::InitializeSmall(argc, argv);
+        Small::initialize_small(argc, argv);
         initialized = true;
-        SmallMain();
+        small_main();
     }
     catch (const std::exception& error)
     {
@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
     }
 
     if (initialized)
-        Small::ShutdownSmall();
+        Small::shutdown_small();
 
     return result;
 }

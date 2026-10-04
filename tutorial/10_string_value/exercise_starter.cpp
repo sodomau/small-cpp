@@ -1,5 +1,5 @@
-void SmallMain()
+void small_main()
 {
     String name = "Alex";
-    Print("Hello, ", name);
+    print("Hello, ", name);
 }

@@ -8,7 +8,7 @@ related-example: reference/keyboard
 
 ## What you will learn
 
-The **keyboard state** tells you which keys are currently held. KeyDown is true while a key is held down.
+The **keyboard state** tells you which keys are currently held. key_down is true while a key is held down.
 
 ## Try it
 
@@ -26,6 +26,6 @@ Use W, A, S, and D instead of the arrow keys to move the circle up, left, down, 
 
 ### Hint
 
-Check a letter key with `window.KeyDown('W')`.
+Check a letter key with `window.key_down('W')`.
 
 @solution exercise1_solution.cpp

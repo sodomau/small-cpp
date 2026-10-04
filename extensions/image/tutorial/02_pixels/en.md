@@ -1,11 +1,11 @@
 ---
 title: Pixels
-goal: Read and change individual Image pixels using Pixel and SetPixel.
+goal: Read and change individual Image pixels using Pixel and set_pixel.
 ---
 
 ## An image is a grid of pixels
 
-Change a pixel's color with `SetPixel(x, y, color)` and read it with `Pixel(x, y)`. As in Window, (0, 0) is the top-left corner.
+Change a pixel's color with `set_pixel(x, y, color)` and read it with `pixel(x, y)`. As in Window, (0, 0) is the top-left corner.
 
 ## Try it first
 
@@ -21,7 +21,7 @@ Two nested loops visiting every pixel let you build gradients, patterns, and sim
 
 ## Pixel work and drawing are separate
 
-Changing data inside Image is a member operation. Displaying the result in a Window uses `DrawImage`.
+Changing data inside Image is a member operation. Displaying the result in a Window uses `draw_image`.
 
 ## Exercise — A diagonal
 
@@ -43,6 +43,6 @@ Read pixel (10, 10) in a Red image and print its red component.
 
 ### Hint
 
-After `Color color = image.Pixel(10, 10);`, use `color.Red()`.
+After `Color color = image.pixel(10, 10);`, use `color.red()`.
 
 @solution exercise2_solution.cpp

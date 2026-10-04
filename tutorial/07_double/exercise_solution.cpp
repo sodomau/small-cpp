@@ -1,5 +1,5 @@
-void SmallMain()
+void small_main()
 {
     double seconds = 12.5;
-    Print(seconds);
+    print(seconds);
 }

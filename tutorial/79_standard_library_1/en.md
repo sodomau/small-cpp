@@ -26,6 +26,6 @@ Use `std::min` and `std::max` on the ints 17 and 42 and print the smaller and la
 
 ### Hint
 
-You can put a standard function directly inside Print, as in `Print(std::min(17, 42));`.
+You can put a standard function directly inside `print`, as in `print(std::min(17, 42));`.
 
 @solution exercise1_solution.cpp

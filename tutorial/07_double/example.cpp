@@ -1,5 +1,5 @@
-void SmallMain()
+void small_main()
 {
     double height = 1.45;
-    Print(height);
+    print(height);
 }

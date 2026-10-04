@@ -1,9 +1,9 @@
-void SayHello()
+void say_hello()
 {
-    Print("Hello, friends!");
+    print("Hello, friends!");
 }
 
-void SmallMain()
+void small_main()
 {
-    SayHello();
+    say_hello();
 }

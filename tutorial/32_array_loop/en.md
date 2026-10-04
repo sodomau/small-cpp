@@ -8,7 +8,7 @@ related-example: reference/console
 
 ## What you will learn
 
-Using a loop variable as an array index lets you read the elements in order. Length() tells you how many elements there are.
+Using a loop variable as an array index lets you read the elements in order. length() tells you how many elements there are.
 
 ## Try it
 

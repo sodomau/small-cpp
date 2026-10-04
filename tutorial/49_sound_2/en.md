@@ -14,13 +14,13 @@ Functions ending in **AndWait** wait for the sound to finish before returning.
 
 @code example2.cpp
 
-BeepAndWait's first value is the frequency in Hz, which sets pitch; the second is duration in seconds. Three rising tones at 440, 550, and 660 are followed by a sound effect.
+beep_and_wait's first value is the frequency in Hz, which sets pitch; the second is duration in seconds. Three rising tones at 440, 550, and 660 are followed by a sound effect.
 
-When a game screen must keep moving, non-waiting PlaySound or Beep is convenient.
+When a game screen must keep moving, non-waiting play_sound or beep is convenient.
 
 ## Exercise
 
-Use BeepAndWait to play three tones of different frequencies in sequence. Choose any frequencies and durations.
+Use beep_and_wait to play three tones of different frequencies in sequence. Choose any frequencies and durations.
 
 @exercise exercise2_starter.cpp
 

@@ -5,17 +5,17 @@
 Small C++은 새로운 언어가 아니다.
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int x = 10;
 
     if (x > 5)
-        Print("Large");
+        print("Large");
 }
 
 ```
 
-`Print()` 같은 일부 vocabulary만 Small이 제공할 뿐, 학생이 사용하는 문법과 type system은 처음부터 실제 C++이다.
+`print()` 같은 일부 vocabulary만 Small이 제공할 뿐, 학생이 사용하는 문법과 type system은 처음부터 실제 C++이다.
 
 따라서 목표는:
 
@@ -34,9 +34,9 @@ Small의 가장 중요한 교육 원칙.
 처음에는:
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    Print("Hello!");
+    print("Hello!");
 }
 
 ```
@@ -49,7 +49,7 @@ void SmallMain()
 int main(...)
 {
     ...
-    SmallMain();
+    small_main();
 }
 
 ```
@@ -125,8 +125,8 @@ using namespace Small;
 ```cpp
 StopWatch watch;
 
-Print(watch.Elapsed());
-watch.Reset();
+print(watch.elapsed());
+watch.reset();
 
 ```
 
@@ -137,9 +137,9 @@ watch.Reset();
 ```cpp
 File file;
 
-file.Open("data.txt");
+file.open("data.txt");
 ...
-file.Close();
+file.close();
 
 ```
 
@@ -149,7 +149,7 @@ file.Close();
 
 ```cpp
 Window window;
-window.Open(640, 480);
+window.open(640, 480);
 
 ```
 
@@ -183,7 +183,7 @@ Window window(640, 480);
 
 ```cpp
 Window window;
-window.Open(640, 480);
+window.open(640, 480);
 
 ```
 
@@ -204,7 +204,7 @@ Small은 가능한 한 **처음에는 하나의 좋은 표현만 보여준다.**
 예:
 
 ```cpp
-Color orange = RGB(255, 128, 0);
+Color orange = rgb(255, 128, 0);
 
 ```
 
@@ -212,7 +212,7 @@ Color orange = RGB(255, 128, 0);
 
 ```cpp
 Color orange;
-orange.SetRGB(...);
+orange.set_rgb(...);
 
 ```
 
@@ -247,9 +247,9 @@ Small API를 세 층으로 생각한다.
 **Learner API**
 
 ```text
-Length
-Substring
-Print
+length
+substring
+print
 Window
 File
 StopWatch
@@ -312,13 +312,13 @@ Interface
 예를 들어 `File`은:
 
 ```cpp
-file.Open(...);
+file.open(...);
 ...
-file.Close();
+file.close();
 
 ```
 
-라고 명시적으로 사용하지만, `Close()`를 잊어도 destructor에서 resource를 정리한다.
+라고 명시적으로 사용하지만, `close()`를 잊어도 destructor에서 resource를 정리한다.
 
 즉 RAII는 내부에서 정상적으로 사용한다.
 
@@ -375,11 +375,11 @@ Small과 standard C++도 함께 사용할 수 있어야 한다.
 ```cpp
 #include <cmath>
 
-void SmallMain()
+void small_main()
 {
     double x = std::sqrt(2.0);
 
-    Print(x);
+    print(x);
 }
 
 ```
@@ -410,7 +410,7 @@ int main()
 따라서 tutorial 후반부에서는 의도적으로 Small의 껍질을 벗긴다.
 
 ```text
-SmallMain
+small_main
 → main
 
 Window
@@ -422,7 +422,7 @@ Array
 String
 → std::string
 
-Print
+print
 → std::cout
 
 ```
@@ -470,9 +470,9 @@ private:
 학생은 이미:
 
 ```cpp
-window.Open();
-timer.Reset();
-name.Length();
+window.open();
+timer.reset();
+name.length();
 
 ```
 
@@ -503,12 +503,12 @@ executable
 
 이 만들어진다.
 
-`Print()`는 실제 console에 출력한다.
+`print()`는 실제 console에 출력한다.
 
 `File`은 실제 filesystem에 파일을 만든다.
 
 ```cpp
-file.WriteInt(x);
+file.write_int(x);
 
 ```
 
@@ -525,7 +525,7 @@ Binary File이 좋은 예다.
 Small만의 portable serialization format을 정의하지 않는다.
 
 ```cpp
-WriteInt(x)
+write_int(x)
 
 ```
 
@@ -538,7 +538,7 @@ sizeof(int) bytes
 
 를 native representation 그대로 기록한다.
 
-`WriteReal()`도 native `double` representation을 사용한다.
+`write_real()`도 native `double` representation을 사용한다.
 
 그 결과 나중에:
 
@@ -564,8 +564,8 @@ sizeof(int) bytes
 학생 프로그램의 console을 IDE의 diagnostic panel과 섞지 않는다.
 
 ```cpp
-Print(...)
-Input(...)
+print(...)
+input(...)
 
 ```
 
@@ -591,7 +591,7 @@ Diagnostics
 
 학생 입장에서는:
 
-> `Print` → text screen
+> `print` → text screen
 >
 > `Window` → graphics screen
 
@@ -628,7 +628,7 @@ Add ';' here.
 
 를 먼저 보여준다.
 
-하지만 실제 compiler message도 `Show C++ Error`를 통해 볼 수 있게 한다.
+하지만 실제 compiler message도 `show C++ Error`를 통해 볼 수 있게 한다.
 
 학생이 성장하면 compiler의 실제 언어도 배울 수 있다.
 
@@ -816,7 +816,7 @@ Professional C++
 학생이:
 
 ```cpp
-Print("Hello");
+print("Hello");
 
 ```
 
@@ -942,16 +942,16 @@ Small의 API는 단지 짧기만 해서는 안 된다.
 그래서:
 
 ```cpp
-PlaySound(Sound::Pop);
-PlaySoundAndWait(Sound::Pop);
+play_sound(Sound::Pop);
+play_sound_and_wait(Sound::Pop);
 
 ```
 
 를:
 
 ```cpp
-PlaySound(Sound::Pop, false);
-PlaySound(Sound::Pop, true);
+play_sound(Sound::Pop, false);
+play_sound(Sound::Pop, true);
 
 ```
 
@@ -998,18 +998,18 @@ Small은 첫 프로그램을 쉽게 만드는 환경이지만 교육용 장난�
 
 > **Small is simple C++, not toy C++.**
 
-처음에는 `SmallMain`과 작은 vocabulary로 시작하고, 필요해지면 `main`, namespace, standard library, multiple files, Small Extensions로 자연스럽게 성장한다. 처음부터 실제 C++이므로 프로그램이 커졌다는 이유로 배운 것을 버릴 필요가 없다.
+처음에는 `small_main`과 작은 vocabulary로 시작하고, 필요해지면 `main`, namespace, standard library, multiple files, Small Extensions로 자연스럽게 성장한다. 처음부터 실제 C++이므로 프로그램이 커졌다는 이유로 배운 것을 버릴 필요가 없다.
 
 ---
 
-## 30. Start small. Grow as far as you want.
+## 30. start small. Grow as far as you want.
 
-> **Start small. Grow as far as you want.**
+> **start small. Grow as far as you want.**
 
 pure standard C++을 보여주는 이유는 Small을 버리게 하기 위해서가 아니라 Small 없이도 갈 수 있는 길이 열려 있음을 보여주기 위해서다.
 
 ```text
-SmallMain
+small_main
   ↓
 main + Small
   ↓
@@ -1050,12 +1050,12 @@ Small IDE가 모든 규모에서 가장 강력한 IDE일 필요는 없다.
 
 class의 member는 그 abstraction 자체에 본질적인 operation으로 제한한다.
 
-`image.Width()`, `image.Save()`, `window.Open()`, `window.Show()`는 자연스러운 member다.
+`image.width()`, `image.pixel()`, `window.open()`, `window.show()`는 자연스러운 member다.
 
 반면 Image와 Window처럼 독립적인 abstraction을 연결하는 operation은:
 
 ```cpp
-DrawImage(window, image, x, y);
+draw_image(window, image, x, y);
 ```
 
 처럼 free function으로 둔다.
@@ -1070,7 +1070,7 @@ Extension은 Core를 사용할 수 있지만 Core는 Extension type을 알아서
 
 > **Extensions may depend on Core. Core never depends on Extensions.**
 
-Image가 Window를 사용하는 것은 괜찮지만 Image가 생겼다는 이유로 Window에 `DrawImage()`를 추가하지 않는다. 기능이 늘어나도 Core는 작게 유지한다.
+Image가 Window를 사용하는 것은 괜찮지만 Image가 생겼다는 이유로 Window에 `draw_image()`를 추가하지 않는다. 기능이 늘어나도 Core는 작게 유지한다.
 
 ---
 
@@ -1168,4 +1168,3 @@ extensions/image/include/small/image.h
 Small C++은 **C++을 덜 가르치는 프로젝트가 아니라, C++을 올바른 순서로 보여주고 불필요한 마찰을 줄이는 프로젝트**다.
 
 처음에는 아름답고 작은 부분만 보여준다. 학생과 프로그램이 성장하면 그 뒤에 원래부터 존재했던 진짜 C++ 세계를 조금씩 드러낸다. 그리고 그 세계를 이해한 뒤에도 Small이 여전히 편하다면 계속 사용하면 된다.
-

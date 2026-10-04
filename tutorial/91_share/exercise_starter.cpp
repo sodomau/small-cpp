@@ -1,8 +1,8 @@
-void SmallMain()
+void small_main()
 {
-    Print("====================");
-    Print("Hello, friend!");
-    Print("Made with Small C++");
-    Print("====================");
-    Input("Press Enter to close.");
+    print("====================");
+    print("Hello, friend!");
+    print("Made with Small C++");
+    print("====================");
+    input("Press Enter to close.");
 }

@@ -14,7 +14,7 @@ related-example: reference/console
 
 @code example.cpp
 
-if에 bool 변수를 바로 넣을 수 있습니다. Small의 Print는 true를 1, false를 0으로 출력합니다. `bool passed = score >= 60;`처럼 비교 결과를 저장할 수도 있습니다.
+if에 bool 변수를 바로 넣을 수 있습니다. Small의 print는 true를 1, false를 0으로 출력합니다. `bool passed = score >= 60;`처럼 비교 결과를 저장할 수도 있습니다.
 
 예상 출력:
 

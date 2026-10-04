@@ -5,7 +5,7 @@ goal: Save image files and load them again.
 
 ## Connecting Image to files
 
-`SaveImage` saves an Image to a file; `LoadImage` reads one. Supported formats such as PNG and JPEG depend on the Qt image plugins supplied with the application.
+`save_image` saves an Image to a file; `load_image` reads one. Supported formats such as PNG and JPEG depend on the Qt image plugins supplied with the application.
 
 ## Try it first
 
@@ -13,9 +13,9 @@ goal: Save image files and load them again.
 
 ## The filename chooses the format
 
-An extension such as in `SaveImage(image, "picture.png")` chooses the saved format. Small reports a runtime error if a file cannot be opened or saved.
+An extension such as in `save_image(image, "picture.png")` chooses the saved format. Small reports a runtime error if a file cannot be opened or saved.
 
-DrawImage composites the loaded image's alpha information.
+draw_image composites the loaded image's alpha information.
 
 ## One step further
 
@@ -33,7 +33,7 @@ Save a 50 × 50 Cyan image as `cyan.png`, then load it into a new Image.
 
 ### Hint
 
-Use `Image loaded = LoadImage("cyan.png");`.
+Use `Image loaded = load_image("cyan.png");`.
 
 @solution exercise1_solution.cpp
 

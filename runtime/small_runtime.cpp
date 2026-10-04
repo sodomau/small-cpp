@@ -43,22 +43,22 @@ struct RuntimeState
 RuntimeState& Runtime()
 {
     // Intentionally leaked so C++ static-destruction order never owns the
-    // Small runtime lifetime. InitializeSmall/ShutdownSmall define it explicitly.
+    // Small runtime lifetime. initialize_small/shutdown_small define it explicitly.
     static RuntimeState* state = new RuntimeState;
     return *state;
 }
 
 }
 
-void InitializeSmall(int argc, char** argv)
+void initialize_small(int argc, char** argv)
 {
     auto& state = Runtime();
     if (state.app) return; // Safe and simple if called twice.
 
     if (argc < 0)
-        throw std::invalid_argument("InitializeSmall(): argc cannot be negative.");
+        throw std::invalid_argument("initialize_small(): argc cannot be negative.");
     if (argc > 0 && !argv)
-        throw std::invalid_argument("InitializeSmall(): argv cannot be null when argc is positive.");
+        throw std::invalid_argument("initialize_small(): argv cannot be null when argc is positive.");
 
     small_detail::InitializePlatform();
 
@@ -92,7 +92,7 @@ void InitializeSmall(int argc, char** argv)
 
 }
 
-void ShutdownSmall()
+void shutdown_small()
 {
     auto& state = Runtime();
     if (!state.app) return; // Safe if called twice or after partial setup.
@@ -122,7 +122,7 @@ std::string ReadLine()
 {
     std::string line;
     if (!std::getline(std::cin, line))
-        throw std::runtime_error("Input ended before a value was entered.");
+        throw std::runtime_error("input ended before a value was entered.");
     // Windows console/pipe input may end with CRLF.
     if (!line.empty() && line.back() == '\r') line.pop_back();
     return line;
@@ -141,13 +141,13 @@ T ReadNumber(const char* retryMessage)
             in >> std::ws;
             if (in.eof() && std::isfinite(static_cast<double>(value))) return value;
         }
-        Write(retryMessage);
+        write(retryMessage);
     }
 }
 
 QColor ToQt(Color color)
 {
-    return QColor(color.Red(), color.Green(), color.Blue());
+    return QColor(color.red(), color.green(), color.blue());
 }
 
 void CheckFinite(std::initializer_list<double> values)
@@ -191,20 +191,20 @@ int MapSpecial(int key)
 }
 }
 
-String Input()
+String input()
 {
     const std::string line = ReadLine();
     if (line.size() > static_cast<std::size_t>(std::numeric_limits<int>::max()))
-        throw std::length_error("Input is too long.");
+        throw std::length_error("input is too long.");
     return String(line.data(), static_cast<int>(line.size()));
 }
-String Input(const String& prompt) { Write(prompt); return Input(); }
-int InputInt() { return ReadNumber<int>("Please enter an integer: "); }
-int InputInt(const String& prompt) { Write(prompt); return InputInt(); }
-double InputReal() { return ReadNumber<double>("Please enter a number: "); }
-double InputReal(const String& prompt) { Write(prompt); return InputReal(); }
+String input(const String& prompt) { write(prompt); return input(); }
+int input_int() { return ReadNumber<int>("Please enter an integer: "); }
+int input_int(const String& prompt) { write(prompt); return input_int(); }
+double input_real() { return ReadNumber<double>("Please enter a number: "); }
+double input_real(const String& prompt) { write(prompt); return input_real(); }
 
-void Color::SetRGB(int red, int green, int blue)
+void Color::set_rgb(int red, int green, int blue)
 {
     if (red < 0 || red > 255 || green < 0 || green > 255 || blue < 0 || blue > 255)
         throw std::out_of_range("Color values must be between 0 and 255.");
@@ -213,22 +213,22 @@ void Color::SetRGB(int red, int green, int blue)
     blue_ = blue;
 }
 
-Color RGB(int red, int green, int blue)
+Color rgb(int red, int green, int blue)
 {
     Color result;
-    result.SetRGB(red, green, blue);
+    result.set_rgb(red, green, blue);
     return result;
 }
 
-const Color Black   = RGB(0, 0, 0);
-const Color White   = RGB(255, 255, 255);
-const Color Red     = RGB(255, 0, 0);
-const Color Green   = RGB(0, 255, 0);
-const Color Blue    = RGB(0, 0, 255);
-const Color Yellow  = RGB(255, 255, 0);
-const Color Cyan    = RGB(0, 255, 255);
-const Color Magenta = RGB(255, 0, 255);
-const Color Gray    = RGB(128, 128, 128);
+const Color Black   = rgb(0, 0, 0);
+const Color White   = rgb(255, 255, 255);
+const Color Red     = rgb(255, 0, 0);
+const Color Green   = rgb(0, 255, 0);
+const Color Blue    = rgb(0, 0, 255);
+const Color Yellow  = rgb(255, 255, 0);
+const Color Cyan    = rgb(0, 255, 255);
+const Color Magenta = rgb(255, 0, 255);
+const Color Gray    = rgb(128, 128, 128);
 
 namespace
 {
@@ -239,34 +239,34 @@ std::mt19937& RandomEngine()
 }
 }
 
-int RandomInt(int min, int max)
+int random_int(int min, int max)
 {
     if (min > max)
-        throw std::invalid_argument("RandomInt minimum cannot be greater than maximum.");
+        throw std::invalid_argument("random_int minimum cannot be greater than maximum.");
     std::uniform_int_distribution<int> distribution(min, max);
     return distribution(RandomEngine());
 }
 
-double RandomReal(double min, double max)
+double random_real(double min, double max)
 {
     if (!std::isfinite(min) || !std::isfinite(max))
-        throw std::invalid_argument("RandomReal bounds must be finite.");
+        throw std::invalid_argument("random_real bounds must be finite.");
     if (min > max)
-        throw std::invalid_argument("RandomReal minimum cannot be greater than maximum.");
+        throw std::invalid_argument("random_real minimum cannot be greater than maximum.");
     if (min == max) return min;
     std::uniform_real_distribution<double> distribution(min, max);
     return distribution(RandomEngine());
 }
 
-void Sleep(double seconds)
+void sleep(double seconds)
 {
     if (!std::isfinite(seconds) || seconds < 0)
-        throw std::invalid_argument("Sleep duration must be a non-negative, finite number.");
+        throw std::invalid_argument("sleep duration must be a non-negative, finite number.");
     StopWatch timer;
-    while (timer.Elapsed() < seconds)
+    while (timer.elapsed() < seconds)
     {
         ProcessEvents();
-        const double remaining = seconds - timer.Elapsed();
+        const double remaining = seconds - timer.elapsed();
         if (remaining > 0)
             QThread::usleep(static_cast<unsigned long>(std::max(1.0, std::min(remaining, 0.005) * 1.0e6)));
     }
@@ -302,7 +302,7 @@ struct Timer::Impl
 
 Timer::~Timer() { delete impl_; }
 
-void Timer::Start(double interval, void (*callback)())
+void Timer::start(double interval, void (*callback)())
 {
     if (!std::isfinite(interval) || interval <= 0)
         throw std::invalid_argument("Timer interval must be a positive, finite number.");
@@ -314,12 +314,12 @@ void Timer::Start(double interval, void (*callback)())
         std::chrono::duration<double>(interval)));
 }
 
-void Timer::Stop()
+void Timer::stop()
 {
     if (impl_) impl_->timer.stop();
 }
 
-bool Timer::IsRunning() const
+bool Timer::is_running() const
 {
     return impl_ && impl_->timer.isActive();
 }
@@ -481,7 +481,7 @@ void BlitRgba(Window& window, const std::uint8_t* pixels,
         throw std::invalid_argument("Image pixel layout is invalid.");
     CheckFinite({x, y, width, height});
     if (width < 0 || height < 0)
-        throw std::invalid_argument("DrawImage size cannot be negative.");
+        throw std::invalid_argument("draw_image size cannot be negative.");
     if (width == 0 || height == 0) return;
 
     WindowAccess::BlitRgba(window, pixels, sourceWidth, sourceHeight,
@@ -495,16 +495,16 @@ Window::~Window() { delete impl_; }
 void Window::CheckOpen() const
 {
     if (!impl_ || impl_->closed || impl_->back.isNull())
-        throw std::runtime_error("The Window is not open. Call Open(width, height) first.");
+        throw std::runtime_error("The Window is not open. Call open(width, height) first.");
 }
 
-void Window::Open(int width, int height)
+void Window::open(int width, int height)
 {
     if (width <= 0 || height <= 0)
         throw std::invalid_argument("Window width and height must be positive.");
     auto* app = qobject_cast<QApplication*>(QCoreApplication::instance());
     if (!app || QThread::currentThread() != app->thread())
-        throw std::runtime_error("Small C++ is not initialized. Call InitializeSmall() near the beginning of main().");
+        throw std::runtime_error("Small C++ is not initialized. Call initialize_small() near the beginning of main().");
 
     QImage image(width, height, QImage::Format_ARGB32_Premultiplied);
     if (image.isNull()) throw std::runtime_error("Cannot allocate the Window image.");
@@ -515,55 +515,55 @@ void Window::Open(int width, int height)
     impl_->ResetKeys();
     impl_->closed = false;
     impl_->setFixedSize(width, height);
-    impl_->setWindowTitle(QString::fromUtf8(title_.c_str(), title_.Length()));
+    impl_->setWindowTitle(QString::fromUtf8(title_.c_str(), title_.length()));
     impl_->show();
     impl_->activateWindow();
     impl_->setFocus();
     ProcessEvents();
 }
 
-void Window::SetTitle(const String& title)
+void Window::set_title(const String& title)
 {
     title_ = title;
     if (impl_ && !impl_->closed)
     {
-        impl_->setWindowTitle(QString::fromUtf8(title.c_str(), title.Length()));
+        impl_->setWindowTitle(QString::fromUtf8(title.c_str(), title.length()));
         ProcessEvents();
     }
 }
 
-String Window::Title() const
+String Window::title() const
 {
     return title_;
 }
 
 
-void Window::Close() { if (impl_) impl_->close(); }
-bool Window::IsOpen()
+void Window::close() { if (impl_) impl_->close(); }
+bool Window::is_open()
 {
     ProcessEvents();
     return impl_ && !impl_->closed && impl_->isVisible();
 }
-int Window::Width() const { return impl_ ? impl_->back.width() : 0; }
-int Window::Height() const { return impl_ ? impl_->back.height() : 0; }
-void Window::Clear(Color color) { CheckOpen(); impl_->back.fill(ToQt(color)); }
+int Window::width() const { return impl_ ? impl_->back.width() : 0; }
+int Window::height() const { return impl_ ? impl_->back.height() : 0; }
+void Window::clear(Color color) { CheckOpen(); impl_->back.fill(ToQt(color)); }
 
-void Window::SetPixel(int x, int y, Color color)
+void Window::set_pixel(int x, int y, Color color)
 {
     CheckOpen();
-    if (x < 0 || x >= Width() || y < 0 || y >= Height())
-        throw std::out_of_range("Pixel position is outside the Window.");
+    if (x < 0 || x >= width() || y < 0 || y >= height())
+        throw std::out_of_range("pixel position is outside the Window.");
     impl_->back.setPixelColor(x, y, ToQt(color));
 }
 
-void Window::DrawLine(double x1, double y1, double x2, double y2, Color color)
+void Window::draw_line(double x1, double y1, double x2, double y2, Color color)
 {
     CheckOpen(); CheckFinite({x1, y1, x2, y2});
     QPainter painter(&impl_->back);
     painter.setPen(ToQt(color));
     painter.drawLine(QLineF(x1, y1, x2, y2));
 }
-void Window::DrawRectangle(double x, double y, double width, double height, Color color)
+void Window::draw_rectangle(double x, double y, double width, double height, Color color)
 {
     CheckOpen(); CheckFinite({x, y, width, height});
     if (width < 0 || height < 0) throw std::invalid_argument("Rectangle size cannot be negative.");
@@ -572,14 +572,14 @@ void Window::DrawRectangle(double x, double y, double width, double height, Colo
     painter.setBrush(Qt::NoBrush);
     painter.drawRect(QRectF(x, y, width, height));
 }
-void Window::FillRectangle(double x, double y, double width, double height, Color color)
+void Window::fill_rectangle(double x, double y, double width, double height, Color color)
 {
     CheckOpen(); CheckFinite({x, y, width, height});
     if (width < 0 || height < 0) throw std::invalid_argument("Rectangle size cannot be negative.");
     QPainter painter(&impl_->back);
     painter.fillRect(QRectF(x, y, width, height), ToQt(color));
 }
-void Window::DrawCircle(double x, double y, double radius, Color color)
+void Window::draw_circle(double x, double y, double radius, Color color)
 {
     CheckOpen(); CheckFinite({x, y, radius});
     if (radius < 0) throw std::invalid_argument("Circle radius cannot be negative.");
@@ -588,7 +588,7 @@ void Window::DrawCircle(double x, double y, double radius, Color color)
     painter.setBrush(Qt::NoBrush);
     painter.drawEllipse(QPointF(x, y), radius, radius);
 }
-void Window::FillCircle(double x, double y, double radius, Color color)
+void Window::fill_circle(double x, double y, double radius, Color color)
 {
     CheckOpen(); CheckFinite({x, y, radius});
     if (radius < 0) throw std::invalid_argument("Circle radius cannot be negative.");
@@ -597,11 +597,11 @@ void Window::FillCircle(double x, double y, double radius, Color color)
     painter.setBrush(ToQt(color));
     painter.drawEllipse(QPointF(x, y), radius, radius);
 }
-void Window::DrawText(double x, double y, const String& text)
+void Window::draw_text(double x, double y, const String& text)
 {
-    DrawText(x, y, text, White, 16);
+    draw_text(x, y, text, White, 16);
 }
-void Window::DrawText(double x, double y, const String& text, Color color, int size)
+void Window::draw_text(double x, double y, const String& text, Color color, int size)
 {
     CheckOpen(); CheckFinite({x, y});
     if (size <= 0) throw std::invalid_argument("Text size must be positive.");
@@ -611,26 +611,26 @@ void Window::DrawText(double x, double y, const String& text, Color color, int s
     font.setPixelSize(size);
     painter.setFont(font);
     painter.drawText(QPointF(x, y + QFontMetricsF(font).ascent()),
-                     QString::fromUtf8(text.c_str(), text.Length()));
+                     QString::fromUtf8(text.c_str(), text.length()));
 }
-void Window::Show()
+void Window::show()
 {
     CheckOpen();
     // QImage uses copy-on-write. The next drawing operation detaches back;
     // front keeps the last submitted image without an unconditional copy.
     impl_->front = impl_->back;
     impl_->repaint();
-    // Clear the OLD frame's edge flags before processing the NEW events.
+    // clear the OLD frame's edge flags before processing the NEW events.
     impl_->BeginNextFrame();
     ProcessEvents();
 }
 
-bool Window::KeyDown(Key key) const { return impl_ && impl_->down[SpecialIndex(key)]; }
-bool Window::KeyPressed(Key key) const { return impl_ && impl_->pressed[SpecialIndex(key)]; }
-bool Window::KeyReleased(Key key) const { return impl_ && impl_->released[SpecialIndex(key)]; }
-bool Window::KeyDown(char key) const { return impl_ && impl_->charDown[CharacterIndex(key)]; }
-bool Window::KeyPressed(char key) const { return impl_ && impl_->charPressed[CharacterIndex(key)]; }
-bool Window::KeyReleased(char key) const { return impl_ && impl_->charReleased[CharacterIndex(key)]; }
+bool Window::key_down(Key key) const { return impl_ && impl_->down[SpecialIndex(key)]; }
+bool Window::key_pressed(Key key) const { return impl_ && impl_->pressed[SpecialIndex(key)]; }
+bool Window::key_released(Key key) const { return impl_ && impl_->released[SpecialIndex(key)]; }
+bool Window::key_down(char key) const { return impl_ && impl_->charDown[CharacterIndex(key)]; }
+bool Window::key_pressed(char key) const { return impl_ && impl_->charPressed[CharacterIndex(key)]; }
+bool Window::key_released(char key) const { return impl_ && impl_->charReleased[CharacterIndex(key)]; }
 
 namespace
 {
@@ -645,10 +645,10 @@ int MouseButtonIndex(MouseButton button)
     return 0;
 }
 }
-int Window::MouseX() const { return impl_ ? impl_->mouseX : 0; }
-int Window::MouseY() const { return impl_ ? impl_->mouseY : 0; }
-bool Window::MouseDown(MouseButton button) const { return impl_ && impl_->mouseDown[MouseButtonIndex(button)]; }
-bool Window::MousePressed(MouseButton button) const { return impl_ && impl_->mousePressed[MouseButtonIndex(button)]; }
-bool Window::MouseReleased(MouseButton button) const { return impl_ && impl_->mouseReleased[MouseButtonIndex(button)]; }
+int Window::mouse_x() const { return impl_ ? impl_->mouseX : 0; }
+int Window::mouse_y() const { return impl_ ? impl_->mouseY : 0; }
+bool Window::mouse_down(MouseButton button) const { return impl_ && impl_->mouseDown[MouseButtonIndex(button)]; }
+bool Window::mouse_pressed(MouseButton button) const { return impl_ && impl_->mousePressed[MouseButtonIndex(button)]; }
+bool Window::mouse_released(MouseButton button) const { return impl_ && impl_->mouseReleased[MouseButtonIndex(button)]; }
 
 } // namespace Small

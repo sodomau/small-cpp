@@ -20,7 +20,7 @@ Here value is a copied integer, so changing it does not change an array element.
 
 ## Exercise
 
-Create `TextLength` taking a `const std::string&` and returning its length. Print the length of "Small".
+Create `text_length` taking a `const std::string&` and returning its length. Print the length of "Small".
 
 @exercise exercise2_starter.cpp
 

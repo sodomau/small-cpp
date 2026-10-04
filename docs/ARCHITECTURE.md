@@ -9,7 +9,7 @@ SmallCppIDE
 └─ Extension discovery → extension.json
 
 Learner executable
-├─ small_entry (SmallMain programs)
+├─ small_entry (small_main programs)
 ├─ small_runtime
 ├─ small_ide_pause (IDE Run/Debug only)
 └─ optional extension libraries
@@ -19,7 +19,7 @@ Learner executable
 
 `small_runtime` has no `main()`. `small_entry` supplies the hidden entry
 point. Lifetime is explicit:
-`InitializeSmall → SmallMain → ShutdownSmall`. Qt-dependent resources
+`initialize_small → small_main → shutdown_small`. Qt-dependent resources
 such as audio are destroyed before `QApplication`.
 
 In v0.76f the runtime itself does not register a console exit pause.

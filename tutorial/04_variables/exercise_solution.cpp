@@ -1,5 +1,5 @@
-void SmallMain()
+void small_main()
 {
     int age = 10;
-    Print(age);
+    print(age);
 }

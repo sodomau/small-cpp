@@ -14,7 +14,7 @@ You can put a loop inside another loop. The outer loop counts rows; the inner lo
 
 @code example.cpp
 
-**Write** does not move to a new line after output. **Print()** moves to a new line without printing content. The program therefore prints three adjacent stars and then a newline, twice.
+`write` does not move to a new line after output. **print()** moves to a new line without printing content. The program therefore prints three adjacent stars and then a newline, twice.
 
 Expected output:
 

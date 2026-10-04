@@ -1,23 +1,23 @@
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(800, 600);
+    window.open(800, 600);
 
-    window.Clear(White);
-    window.Show();
+    window.clear(White);
+    window.show();
 
     // Left draws, right erases, and Space clears the canvas.
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        if (window.MouseDown(MouseButton::Left))
-            window.FillCircle(window.MouseX(), window.MouseY(), 8, Blue);
+        if (window.mouse_down(MouseButton::Left))
+            window.fill_circle(window.mouse_x(), window.mouse_y(), 8, Blue);
 
-        if (window.MouseDown(MouseButton::Right))
-            window.FillCircle(window.MouseX(), window.MouseY(), 16, White);
+        if (window.mouse_down(MouseButton::Right))
+            window.fill_circle(window.mouse_x(), window.mouse_y(), 16, White);
 
-        if (window.KeyPressed(Key::Space))
-            window.Clear(White);
+        if (window.key_pressed(Key::Space))
+            window.clear(White);
 
-        window.Show();
+        window.show();
     }
 }

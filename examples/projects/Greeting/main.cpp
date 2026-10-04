@@ -1,6 +1,6 @@
 #include "greeting.h"
 
-void SmallMain()
+void small_main()
 {
-    SayHello();
+    say_hello();
 }

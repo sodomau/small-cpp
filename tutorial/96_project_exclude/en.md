@@ -8,7 +8,7 @@ related-example: reference/console
 
 ## One starting point
 
-All included `.cpp` files become one program. An old practice file with another `SmallMain` introduces a second starting point.
+All included `.cpp` files become one program. An old practice file with another `small_main` introduces a second starting point.
 
 In your Greeting project, use **New Source File…** to create `practice.cpp` and put the following code in it.
 

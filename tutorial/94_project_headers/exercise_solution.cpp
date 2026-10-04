@@ -1,10 +1,10 @@
-void SayHello()
+void say_hello()
 {
-    Print("Hello from another file!");
+    print("Hello from another file!");
 }
 
-void SmallMain()
+void small_main()
 {
-    SayHello();
-    SayHello();
+    say_hello();
+    say_hello();
 }

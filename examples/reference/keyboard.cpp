@@ -1,27 +1,27 @@
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        if (window.KeyPressed(Key::Space)) Print("Space pressed");
-        if (window.KeyReleased(Key::Enter)) Print("Enter released");
-        if (window.KeyDown(Key::Left)) Print("Left");
-        if (window.KeyDown(Key::Right)) Print("Right");
-        if (window.KeyDown(Key::Up)) Print("Up");
-        if (window.KeyDown(Key::Down)) Print("Down");
-        if (window.KeyPressed(Key::Escape)) Print("Escape");
-        if (window.KeyPressed(Key::Tab)) Print("Tab");
-        if (window.KeyPressed(Key::Backspace)) Print("Backspace");
-        if (window.KeyPressed(Key::Delete)) Print("Delete");
+        if (window.key_pressed(Key::Space)) print("Space pressed");
+        if (window.key_released(Key::Enter)) print("Enter released");
+        if (window.key_down(Key::Left)) print("Left");
+        if (window.key_down(Key::Right)) print("Right");
+        if (window.key_down(Key::Up)) print("Up");
+        if (window.key_down(Key::Down)) print("Down");
+        if (window.key_pressed(Key::Escape)) print("Escape");
+        if (window.key_pressed(Key::Tab)) print("Tab");
+        if (window.key_pressed(Key::Backspace)) print("Backspace");
+        if (window.key_pressed(Key::Delete)) print("Delete");
 
-        if (window.KeyDown('A')) Print("A is down");
-        if (window.KeyPressed('B')) Print("B pressed");
-        if (window.KeyReleased('C')) Print("C released");
+        if (window.key_down('A')) print("A is down");
+        if (window.key_pressed('B')) print("B pressed");
+        if (window.key_released('C')) print("C released");
 
-        window.Clear(Black);
-        window.DrawText(20, 20, "Press keys", White, 20);
-        window.Show();
+        window.clear(Black);
+        window.draw_text(20, 20, "Press keys", White, 20);
+        window.show();
     }
 }

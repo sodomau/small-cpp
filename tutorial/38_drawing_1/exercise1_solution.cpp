@@ -1,15 +1,15 @@
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(300, 500);
+    window.open(300, 500);
 
-    window.Clear(White);
-    window.FillRectangle(75, 30, 150, 420, Gray);
-    window.FillCircle(150, 110, 50, Red);
-    window.FillCircle(150, 240, 50, Yellow);
-    window.FillCircle(150, 370, 50, Green);
-    window.Show();
+    window.clear(White);
+    window.fill_rectangle(75, 30, 150, 420, Gray);
+    window.fill_circle(150, 110, 50, Red);
+    window.fill_circle(150, 240, 50, Yellow);
+    window.fill_circle(150, 370, 50, Green);
+    window.show();
 
-    while (window.IsOpen())
-        window.Show();
+    while (window.is_open())
+        window.show();
 }

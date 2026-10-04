@@ -4,7 +4,7 @@ struct Player
     int score;
 };
 
-void SmallMain()
+void small_main()
 {
     Array<Player> players = {
         {"A", 10},
@@ -12,5 +12,5 @@ void SmallMain()
         {"C", 20}
     };
 
-    // Find and print the best player's name.
+    // find and print the best player's name.
 }

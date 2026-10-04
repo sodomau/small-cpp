@@ -63,7 +63,7 @@ void BuildController::startProject(const ProjectFolder& project, bool debugBuild
         }
     }
     if (entries.size() != 1) {
-        fail(entries.isEmpty() ? "No program start function was found. Add SmallMain() or main() to one .cpp file."
+        fail(entries.isEmpty() ? "No program start function was found. Add small_main() or main() to one .cpp file."
             : "Program start functions were found in more than one place:\n" + entries.join("\n") +
               "\n\nKeep one start function. Exclude the other program file or turn it into helper functions."); return;
     }

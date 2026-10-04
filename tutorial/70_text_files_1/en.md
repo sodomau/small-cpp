@@ -16,7 +16,7 @@ A **file** holds data that can remain on a storage device after the program ends
 
 Save the source before running. The program writes Alex and 1200 on separate lines in score.txt. FileMode::Write replaces existing contents. Use a practice file you created yourself.
 
-Follow Open → write → Close. A relative-path file usually appears in the saved source's folder. Open it in a text editor and check the two lines.
+Follow open → write → close. A relative-path file usually appears in the saved source's folder. Open it in a text editor and check the two lines.
 
 ## Exercise
 
@@ -26,6 +26,6 @@ Save a name on one line and an age on another in `profile.txt`, then close the f
 
 ### Hint
 
-Open in Write mode and use `file.Print` twice.
+Open in Write mode and use `file.print` twice.
 
 @solution exercise1_solution.cpp

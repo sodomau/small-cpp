@@ -1,12 +1,12 @@
-void SmallMain()
+void small_main()
 {
     int answer = 4;
     if (answer == 4)
     {
-        Print("Correct");
+        print("Correct");
     }
     else
     {
-        Print("Try again");
+        print("Try again");
     }
 }

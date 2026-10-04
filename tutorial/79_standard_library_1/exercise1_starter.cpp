@@ -1,4 +1,4 @@
-void SmallMain()
+void small_main()
 {
-    // Print the smaller and larger values using std::min and std::max.
+    // print the smaller and larger values using std::min and std::max.
 }

@@ -1,12 +1,12 @@
 class Counter
 {
 public:
-    void AddOne()
+    void add_one()
     {
         value = value + 1;
     }
 
-    int Value()
+    int get_value()
     {
         return value;
     }
@@ -15,12 +15,12 @@ private:
     int value = 0;
 };
 
-void SmallMain()
+void small_main()
 {
     Counter counter;
 
-    counter.AddOne();
-    counter.AddOne();
+    counter.add_one();
+    counter.add_one();
 
-    Print(counter.Value());
+    print(counter.get_value());
 }

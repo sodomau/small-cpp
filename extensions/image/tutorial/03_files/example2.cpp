@@ -1,11 +1,11 @@
 #include <small/image.h>
 
-void SmallMain()
+void small_main()
 {
     Image image(120, 80, Yellow);
-    SaveImage(image, "picture.png");
+    save_image(image, "picture.png");
 
-    Image copy = LoadImage("picture.png");
+    Image copy = load_image("picture.png");
 
-    Print(copy.Width(), " x ", copy.Height());
+    print(copy.width(), " x ", copy.height());
 }

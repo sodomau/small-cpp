@@ -87,7 +87,7 @@ private slots:
             QVERIFY(!entry.description.isEmpty());
             QVERIFY(!entry.concepts.isEmpty());
             QVERIFY(!entry.notes.isEmpty());
-            QVERIFY(entry.code.contains("void SmallMain()"));
+            QVERIFY(entry.code.contains("void small_main()"));
             const QString path = entry.group.startsWith("Extensions / ")
                 ? QCoreApplication::applicationDirPath() + "/extensions/image/examples/" + entry.sourceName
                 : ":/small/examples/" + entry.sourceName;

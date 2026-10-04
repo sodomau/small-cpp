@@ -1,67 +1,67 @@
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.SetTitle("Mini Pong");
-    window.Open(800, 500);
+    window.set_title("Mini Pong");
+    window.open(800, 500);
 
-    double paddleY = 210;
-    double ballX = 400;
-    double ballY = 250;
-    double ballVX = 260;
-    double ballVY = 180;
+    double paddle_y = 210;
+    double ball_x = 400;
+    double ball_y = 250;
+    double ball_vx = 260;
+    double ball_vy = 180;
 
     StopWatch watch;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        double dt = watch.Elapsed();
-        watch.Reset();
+        double dt = watch.elapsed();
+        watch.reset();
 
-        if (window.KeyDown(Key::Up))
-            paddleY = paddleY - 300 * dt;
-        if (window.KeyDown(Key::Down))
-            paddleY = paddleY + 300 * dt;
+        if (window.key_down(Key::Up))
+            paddle_y = paddle_y - 300 * dt;
+        if (window.key_down(Key::Down))
+            paddle_y = paddle_y + 300 * dt;
 
-        ballX = ballX + ballVX * dt;
-        ballY = ballY + ballVY * dt;
+        ball_x = ball_x + ball_vx * dt;
+        ball_y = ball_y + ball_vy * dt;
 
-        if (ballY < 10)
+        if (ball_y < 10)
         {
-            ballY = 10;
-            ballVY = -ballVY;
+            ball_y = 10;
+            ball_vy = -ball_vy;
         }
 
-        if (ballY > 490)
+        if (ball_y > 490)
         {
-            ballY = 490;
-            ballVY = -ballVY;
+            ball_y = 490;
+            ball_vy = -ball_vy;
         }
 
-        if (ballX < 50 && ballX > 30 &&
-            ballY > paddleY && ballY < paddleY + 80)
+        if (ball_x < 50 && ball_x > 30 &&
+            ball_y > paddle_y && ball_y < paddle_y + 80)
         {
-            ballX = 50;
-            ballVX = -ballVX;
-            PlaySound(Sound::Hit);
+            ball_x = 50;
+            ball_vx = -ball_vx;
+            play_sound(Sound::Hit);
         }
 
-        if (ballX > 790)
+        if (ball_x > 790)
         {
-            ballX = 790;
-            ballVX = -ballVX;
+            ball_x = 790;
+            ball_vx = -ball_vx;
         }
 
-        if (ballX < 0)
+        if (ball_x < 0)
         {
-            ballX = 400;
-            ballY = 250;
-            ballVX = 260;
-            PlaySound(Sound::Lose);
+            ball_x = 400;
+            ball_y = 250;
+            ball_vx = 260;
+            play_sound(Sound::Lose);
         }
 
-        window.Clear(Black);
-        window.FillRectangle(30, paddleY, 15, 80, White);
-        window.FillCircle(ballX, ballY, 10, Yellow);
-        window.Show();
+        window.clear(Black);
+        window.fill_rectangle(30, paddle_y, 15, 80, White);
+        window.fill_circle(ball_x, ball_y, 10, Yellow);
+        window.show();
     }
 }

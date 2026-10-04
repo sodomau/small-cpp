@@ -1,22 +1,22 @@
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
-    bool red = true;
+    bool is_red = true;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        if (window.KeyPressed(Key::Space))
-            red = !red;
+        if (window.key_pressed(Key::Space))
+            is_red = !is_red;
 
-        window.Clear(Black);
+        window.clear(Black);
 
-        if (red)
-            window.FillCircle(320, 240, 60, Red);
+        if (is_red)
+            window.fill_circle(320, 240, 60, Red);
         else
-            window.FillCircle(320, 240, 60, Blue);
+            window.fill_circle(320, 240, 60, Blue);
 
-        window.Show();
+        window.show();
     }
 }

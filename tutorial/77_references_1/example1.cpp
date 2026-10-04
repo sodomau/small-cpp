@@ -1,14 +1,14 @@
-void AddOne(int x)
+void add_one(int x)
 {
     x = x + 1;
-    Print("Inside: ", x);
+    print("Inside: ", x);
 }
 
-void SmallMain()
+void small_main()
 {
     int n = 10;
 
-    AddOne(n);
+    add_one(n);
 
-    Print("Outside: ", n);
+    print("Outside: ", n);
 }

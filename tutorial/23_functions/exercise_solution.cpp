@@ -1,11 +1,11 @@
-void Greet()
+void greet()
 {
-    Print("Hello!");
+    print("Hello!");
 }
 
-void SmallMain()
+void small_main()
 {
-    Greet();
-    Greet();
-    Greet();
+    greet();
+    greet();
+    greet();
 }

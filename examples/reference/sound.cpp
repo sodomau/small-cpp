@@ -1,19 +1,19 @@
-void SmallMain()
+void small_main()
 {
-    PlaySoundAndWait(Sound::Click);
-    PlaySoundAndWait(Sound::Pop);
-    PlaySoundAndWait(Sound::Jump);
-    PlaySoundAndWait(Sound::Hit);
-    PlaySoundAndWait(Sound::Coin);
-    PlaySoundAndWait(Sound::Shoot);
-    PlaySoundAndWait(Sound::Explosion);
-    PlaySoundAndWait(Sound::Win);
-    PlaySoundAndWait(Sound::Lose);
+    play_sound_and_wait(Sound::Click);
+    play_sound_and_wait(Sound::Pop);
+    play_sound_and_wait(Sound::Jump);
+    play_sound_and_wait(Sound::Hit);
+    play_sound_and_wait(Sound::Coin);
+    play_sound_and_wait(Sound::Shoot);
+    play_sound_and_wait(Sound::Explosion);
+    play_sound_and_wait(Sound::Win);
+    play_sound_and_wait(Sound::Lose);
 
-    PlaySound(Sound::Pop);
-    Sleep(0.2);
+    play_sound(Sound::Pop);
+    sleep(0.2);
 
-    BeepAndWait(440, 0.3);
-    Beep(660, 0.3);
-    Sleep(0.4);
+    beep_and_wait(440, 0.3);
+    beep(660, 0.3);
+    sleep(0.4);
 }

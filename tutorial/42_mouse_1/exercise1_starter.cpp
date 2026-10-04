@@ -1,14 +1,14 @@
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        window.Clear(Black);
+        window.clear(Black);
 
         // Draw a different circle while the left button is down.
 
-        window.Show();
+        window.show();
     }
 }

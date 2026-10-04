@@ -26,7 +26,7 @@ std::는 표준 라이브러리에 속한 이름이라는 표시입니다. 지�
 
 ### Hint
 
-`Print(std::min(17, 42));`처럼 표준 함수를 Print 안에서도 바로 사용할 수 있습니다.
+`print(std::min(17, 42));`처럼 표준 함수를 `print` 안에서도 바로 사용할 수 있습니다.
 
 @solution exercise1_solution.cpp
 

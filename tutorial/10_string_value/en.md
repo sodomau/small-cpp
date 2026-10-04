@@ -14,7 +14,7 @@ You can store names and sentences in variables too. A **string** is a kind of va
 
 @code example.cpp
 
-`Print("Hello, ", name);` prints the greeting followed by the value of name. It does not print the comma or automatically add a space. Put any spaces you need inside the double quotes.
+`print("Hello, ", name);` prints the greeting followed by the value of name. It does not print the comma or automatically add a space. Put any spaces you need inside the double quotes.
 
 `"123"` is a string of characters. It is a different kind of value from the integer 123 used in numeric calculations.
 

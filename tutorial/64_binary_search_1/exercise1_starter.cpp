@@ -1,4 +1,4 @@
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {4, 8, 15, 16, 23, 42};
     int value = 23;
@@ -6,5 +6,5 @@ void SmallMain()
 
     // Binary Search here.
 
-    Print(index);
+    print(index);
 }

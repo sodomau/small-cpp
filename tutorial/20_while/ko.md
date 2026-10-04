@@ -14,7 +14,7 @@ related-example: reference/console
 
 @code example.cpp
 
-count가 0이 되면 반복을 끝냅니다. 처음부터 0이면 한 번도 출력하지 않습니다. count를 줄이는 줄을 지우면 끝나지 않으므로, 그런 경우 IDE의 Stop으로 멈추세요.
+count가 0이 되면 반복을 끝냅니다. 처음부터 0이면 한 번도 출력하지 않습니다. count를 줄이는 줄을 지우면 끝나지 않으므로, 그런 경우 IDE의 stop으로 멈추세요.
 
 횟수를 세며 반복할 때는 for가 편하고, 조건이 바뀔 때까지 기다릴 때는 while이 편합니다.
 

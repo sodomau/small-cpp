@@ -1,13 +1,13 @@
 #include <small/image.h>
-void SmallMain()
+void small_main()
 {
     Image image(120, 80, Green);
     Window window;
-    window.Open(600, 300);
-    while (window.IsOpen())
+    window.open(600, 300);
+    while (window.is_open())
     {
-        window.Clear(Black);
+        window.clear(Black);
         // Draw twice here.
-        window.Show();
+        window.show();
     }
 }

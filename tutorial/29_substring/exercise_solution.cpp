@@ -1,5 +1,5 @@
-void SmallMain()
+void small_main()
 {
     String word = "Small";
-    Print(word.Substring(0, 2));
+    print(word.substring(0, 2));
 }

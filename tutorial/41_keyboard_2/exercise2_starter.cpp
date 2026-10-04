@@ -1,21 +1,21 @@
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
-    bool big = false;
+    bool is_big = false;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        // Toggle big when Space is pressed.
+        // Toggle is_big when Space is pressed.
 
-        window.Clear(Black);
+        window.clear(Black);
 
-        if (big)
-            window.FillCircle(320, 240, 60, Yellow);
+        if (is_big)
+            window.fill_circle(320, 240, 60, Yellow);
         else
-            window.FillCircle(320, 240, 20, Yellow);
+            window.fill_circle(320, 240, 20, Yellow);
 
-        window.Show();
+        window.show();
     }
 }

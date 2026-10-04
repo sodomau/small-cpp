@@ -15,17 +15,17 @@ IDE용 tutorial과 같은 한국어 수업입니다. 코드를 복사해 Small I
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    Print("Hello!");
+    print("Hello!");
 }
 ```
 
 **Try This Code**로 코드를 열고 **Run 또는 F5**를 누르세요. 글자는 콘솔 창에 나옵니다.
 
-**문자열**은 글자들이 순서대로 이어진 값입니다. `"Hello!"`의 큰따옴표는 그 시작과 끝을 표시합니다. **함수**는 할 일을 묶어 이름 붙인 것입니다. Print는 출력하는 함수이고, `Print("Hello!");`는 그 함수에 인사말을 전달해 실행합니다.
+**문자열**은 글자들이 순서대로 이어진 값입니다. `"Hello!"`의 큰따옴표는 그 시작과 끝을 표시합니다. **함수**는 할 일을 묶어 이름 붙인 것입니다. print는 출력하는 함수이고, `print("Hello!");`는 그 함수에 인사말을 전달해 실행합니다.
 
-SmallMain은 우리가 할 일을 적는 함수입니다. 지금은 바깥 틀을 유지하고 `{ }` 안의 Print만 바꾸세요. 문장 끝의 `;`도 함께 둡니다.
+small_main은 우리가 할 일을 적는 함수입니다. 지금은 바깥 틀을 유지하고 `{ }` 안의 print만 바꾸세요. 문장 끝의 `;`도 함께 둡니다.
 
 예상 출력:
 
@@ -41,14 +41,14 @@ Hello! 대신 자신의 이름을 출력하세요.
 
 ### Hint
 
-큰따옴표 안의 글자만 바꾸세요. Print의 P는 대문자입니다.
+큰따옴표 안의 글자만 바꾸세요. print의 P는 대문자입니다.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    Print("Alex");
+    print("Alex");
 }
 ```
 
@@ -58,21 +58,21 @@ void SmallMain()
 
 ## 이번에 배울 것
 
-명령을 여러 개 적으면 위에서 아래로 실행합니다. Print는 출력한 뒤 다음 줄로 내려갑니다.
+명령을 여러 개 적으면 위에서 아래로 실행합니다. print는 출력한 뒤 다음 줄로 내려갑니다.
 
 ## 실행해 보기
 
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    Print("Hello!");
-    Print("Small C++");
+    print("Hello!");
+    print("Small C++");
 }
 ```
 
-첫 Print가 끝나면 둘째 Print를 실행합니다. 두 줄의 순서를 바꾸면 출력 순서도 바뀝니다.
+첫 print가 끝나면 둘째 print를 실행합니다. 두 줄의 순서를 바꾸면 출력 순서도 바뀝니다.
 
 코드에서 `//`부터 그 줄 끝까지는 **주석**입니다. 사람에게 남기는 메모라서 실행하지 않습니다. 첫 줄 앞에 //를 붙이고 차이를 확인해 보세요.
 
@@ -96,11 +96,11 @@ Small C++
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    Print("Alex");
-    Print("Games");
-    Print("My game");
+    print("Alex");
+    print("Games");
+    print("My game");
 }
 ```
 
@@ -117,11 +117,11 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    Print(3 + 5);
-    Print(9 - 2);
-    Print("3 + 5");
+    print(3 + 5);
+    print(9 - 2);
+    print("3 + 5");
 }
 ```
 
@@ -148,10 +148,10 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    Print(12 + 7);
-    Print(12 - 7);
+    print(12 + 7);
+    print(12 - 7);
 }
 ```
 
@@ -168,16 +168,16 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int score = 10;
-    Print(score);
+    print(score);
 }
 ```
 
 `int score = 10;`은 score라는 변수를 만들고 처음 값 10을 넣습니다. **int는 정수 타입**입니다. 타입은 저장할 값의 종류이고, 정수는 0, 10, -3처럼 소수 부분이 없는 수입니다.
 
-변수를 만드는 것을 **선언**, 처음 값을 넣는 것을 **초기화**라고 합니다. 이번에는 항상 값을 넣으며 만드세요. `Print(score);`는 score라는 글자가 아니라 저장된 값을 출력합니다.
+변수를 만드는 것을 **선언**, 처음 값을 넣는 것을 **초기화**라고 합니다. 이번에는 항상 값을 넣으며 만드세요. `print(score);`는 score라는 글자가 아니라 저장된 값을 출력합니다.
 
 예상 출력:
 
@@ -198,10 +198,10 @@ score 대신 age라는 이름을 사용하세요.
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int age = 10;
-    Print(age);
+    print(age);
 }
 ```
 
@@ -218,12 +218,12 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int score = 10;
-    Print(score);
+    print(score);
     score = 20;
-    Print(score);
+    print(score);
 }
 ```
 
@@ -249,12 +249,12 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int score = 3;
-    Print(score);
+    print(score);
     score = 8;
-    Print(score);
+    print(score);
 }
 ```
 
@@ -271,17 +271,17 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int score = 10;
     score = score + 5;
-    Print(score);
+    print(score);
 }
 ```
 
 `score = score + 5;`는 ① 현재 값 10을 읽고 ② 5를 더하고 ③ 결과 15를 score에 저장합니다. 수학의 등식처럼 양쪽이 같다는 뜻이 아닙니다.
 
-`Print(score + 5);`만 실행하면 계산 결과를 보여 줄 뿐, score 자체는 바뀌지 않습니다.
+`print(score + 5);`만 실행하면 계산 결과를 보여 줄 뿐, score 자체는 바뀌지 않습니다.
 
 예상 출력:
 
@@ -302,11 +302,11 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int lives = 3;
     lives = lives - 1;
-    Print(lives);
+    print(lives);
 }
 ```
 
@@ -323,10 +323,10 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     double height = 1.45;
-    Print(height);
+    print(height);
 }
 ```
 
@@ -353,10 +353,10 @@ double도 모든 수를 무한히 정확하게 저장하지는 못하지만, 지
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     double seconds = 12.5;
-    Print(seconds);
+    print(seconds);
 }
 ```
 
@@ -373,10 +373,10 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    Print(2 + 3 * 4);
-    Print((2 + 3) * 4);
+    print(2 + 3 * 4);
+    print((2 + 3) * 4);
 }
 ```
 
@@ -402,11 +402,11 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     double width = 3.5;
     double height = 2.0;
-    Print(width * height);
+    print(width * height);
 }
 ```
 
@@ -423,11 +423,11 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    Print(17 / 5);
-    Print(17 % 5);
-    Print(5.0 / 2);
+    print(17 / 5);
+    print(17 % 5);
+    print(5.0 / 2);
 }
 ```
 
@@ -456,10 +456,10 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    Print(18 / 5);
-    Print(18 % 5);
+    print(18 / 5);
+    print(18 % 5);
 }
 ```
 
@@ -476,14 +476,14 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     String name = "Alex";
-    Print("Hello, ", name);
+    print("Hello, ", name);
 }
 ```
 
-`Print("Hello, ", name);`은 인사말과 name의 값을 이어 출력합니다. 쉼표가 화면에 나오거나 공백이 자동으로 생기지는 않습니다. 필요한 공백은 큰따옴표 안에 넣습니다.
+`print("Hello, ", name);`은 인사말과 name의 값을 이어 출력합니다. 쉼표가 화면에 나오거나 공백이 자동으로 생기지는 않습니다. 필요한 공백은 큰따옴표 안에 넣습니다.
 
 `"123"`은 글자로 된 문자열입니다. 숫자 계산에 쓰는 정수 123과는 종류가 다릅니다.
 
@@ -506,10 +506,10 @@ Hello, Alex
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     String food = "Pizza";
-    Print("Food: ", food);
+    print("Food: ", food);
 }
 ```
 
@@ -519,23 +519,23 @@ void SmallMain()
 
 ## 이번에 배울 것
 
-**입력**은 프로그램 밖에서 값을 받아 오는 일입니다. Input 함수는 키보드로 쓴 한 줄을 문자열로 돌려줍니다.
+**입력**은 프로그램 밖에서 값을 받아 오는 일입니다. input 함수는 키보드로 쓴 한 줄을 문자열로 돌려줍니다.
 
 ## 실행해 보기
 
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    String name = Input();
-    Print("Hello, ", name);
+    String name = input();
+    print("Hello, ", name);
 }
 ```
 
-Run한 뒤 콘솔 창에 Alex를 쓰고 Enter를 누르세요. Input이 기다리는 동안은 고장이 아닙니다. 입력을 마치면 그 문자열을 name에 저장하고 다음 줄을 실행합니다.
+Run한 뒤 콘솔 창에 Alex를 쓰고 Enter를 누르세요. input이 기다리는 동안은 고장이 아닙니다. 입력을 마치면 그 문자열을 name에 저장하고 다음 줄을 실행합니다.
 
-`Input("Name: ")`처럼 괄호 안에 안내문을 넣을 수도 있습니다.
+`input("Name: ")`처럼 괄호 안에 안내문을 넣을 수도 있습니다.
 
 예상 출력 (입력 안내문 제외):
 
@@ -556,10 +556,10 @@ Hello, Alex
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    String name = Input();
-    Print("Nice to meet you, ", name);
+    String name = input();
+    print("Nice to meet you, ", name);
 }
 ```
 
@@ -569,17 +569,17 @@ void SmallMain()
 
 ## 이번에 배울 것
 
-InputInt는 입력한 내용을 **정수**로 읽어 돌려주는 함수입니다. Input이 돌려주는 문자열과 구분해서 사용합니다.
+input_int는 입력한 내용을 **정수**로 읽어 돌려주는 함수입니다. input이 돌려주는 문자열과 구분해서 사용합니다.
 
 ## 실행해 보기
 
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    int age = InputInt();
-    Print(age + 1);
+    int age = input_int();
+    print(age + 1);
 }
 ```
 
@@ -604,10 +604,10 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    int number = InputInt();
-    Print(number * 2);
+    int number = input_int();
+    print(number * 2);
 }
 ```
 
@@ -617,18 +617,18 @@ void SmallMain()
 
 ## 이번에 배울 것
 
-InputReal은 소수 부분이 있는 수를 double 값으로 읽습니다. **입력 → 계산 → 출력**을 연결하면 계산기가 됩니다.
+input_real은 소수 부분이 있는 수를 double 값으로 읽습니다. **입력 → 계산 → 출력**을 연결하면 계산기가 됩니다.
 
 ## 실행해 보기
 
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    double a = InputReal();
-    double b = InputReal();
-    Print(a + b);
+    double a = input_real();
+    double b = input_real();
+    print(a + b);
 }
 ```
 
@@ -653,11 +653,11 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    double width = InputReal();
-    double height = InputReal();
-    Print(width * height);
+    double width = input_real();
+    double height = input_real();
+    print(width * height);
 }
 ```
 
@@ -674,14 +674,14 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int score = 80;
     if (score >= 60)
     {
-        Print("Pass");
+        print("Pass");
     }
-    Print("Done");
+    print("Done");
 }
 ```
 
@@ -709,12 +709,12 @@ number가 0보다 클 때만 Positive를 출력하세요. 먼저 3으로 시험�
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int number = 3;
     if (number > 0)
     {
-        Print("Positive");
+        print("Positive");
     }
 }
 ```
@@ -732,16 +732,16 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int answer = 4;
     if (answer == 4)
     {
-        Print("Correct");
+        print("Correct");
     }
     else
     {
-        Print("Try again");
+        print("Try again");
     }
 }
 ```
@@ -756,7 +756,7 @@ Correct
 
 ## Exercise — 한 가지 바꾸기
 
-비밀번호가 1234와 같으면 Open, 다르면 Locked를 출력하세요. 1111로 시험하세요.
+비밀번호가 1234와 같으면 open, 다르면 Locked를 출력하세요. 1111로 시험하세요.
 
 연습은 위 예제를 복사해 시작하세요.
 
@@ -767,16 +767,16 @@ Correct
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int password = 1111;
     if (password == 1234)
     {
-        Print("Open");
+        print("Open");
     }
     else
     {
-        Print("Locked");
+        print("Locked");
     }
 }
 ```
@@ -794,20 +794,20 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int number = 0;
     if (number > 0)
     {
-        Print("Positive");
+        print("Positive");
     }
     else if (number < 0)
     {
-        Print("Negative");
+        print("Negative");
     }
     else
     {
-        Print("Zero");
+        print("Zero");
     }
 }
 ```
@@ -833,20 +833,20 @@ number를 -2로 바꾸어 어떤 갈래가 실행되는지 확인하세요.
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int number = -2;
     if (number > 0)
     {
-        Print("Positive");
+        print("Positive");
     }
     else if (number < 0)
     {
-        Print("Negative");
+        print("Negative");
     }
     else
     {
-        Print("Zero");
+        print("Zero");
     }
 }
 ```
@@ -864,18 +864,18 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     bool ready = true;
     if (ready)
     {
-        Print("Start");
+        print("Start");
     }
-    Print(ready);
+    print(ready);
 }
 ```
 
-if에 bool 변수를 바로 넣을 수 있습니다. Small의 Print는 true를 1, false를 0으로 출력합니다. `bool passed = score >= 60;`처럼 비교 결과를 저장할 수도 있습니다.
+if에 bool 변수를 바로 넣을 수 있습니다. Small의 print는 true를 1, false를 0으로 출력합니다. `bool passed = score >= 60;`처럼 비교 결과를 저장할 수도 있습니다.
 
 예상 출력:
 
@@ -897,14 +897,14 @@ ready를 false로 바꾸고 출력 차이를 확인하세요.
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     bool ready = false;
     if (ready)
     {
-        Print("Start");
+        print("Start");
     }
-    Print(ready);
+    print(ready);
 }
 ```
 
@@ -921,12 +921,12 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int age = 15;
     if (age >= 13 && age <= 19)
     {
-        Print("Teen");
+        print("Teen");
     }
 }
 ```
@@ -954,12 +954,12 @@ Teen
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int age = 20;
     if (age < 13 || age > 19)
     {
-        Print("Outside");
+        print("Outside");
     }
 }
 ```
@@ -977,11 +977,11 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     for (int i = 1; i <= 3; i = i + 1)
     {
-        Print(i);
+        print(i);
     }
 }
 ```
@@ -1009,11 +1009,11 @@ i를 1로 시작합니다. 조건이 참이면 출력한 뒤 i를 1 늘리고 �
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     for (int i = 1; i <= 5; i = i + 1)
     {
-        Print(i);
+        print(i);
     }
 }
 ```
@@ -1031,18 +1031,18 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int count = 3;
     while (count > 0)
     {
-        Print(count);
+        print(count);
         count = count - 1;
     }
 }
 ```
 
-count가 0이 되면 반복을 끝냅니다. 처음부터 0이면 한 번도 출력하지 않습니다. count를 줄이는 줄을 지우면 끝나지 않으므로, 그런 경우 IDE의 Stop으로 멈추세요.
+count가 0이 되면 반복을 끝냅니다. 처음부터 0이면 한 번도 출력하지 않습니다. count를 줄이는 줄을 지우면 끝나지 않으므로, 그런 경우 IDE의 stop으로 멈추세요.
 
 횟수를 세며 반복할 때는 for가 편하고, 조건이 바뀔 때까지 기다릴 때는 while이 편합니다.
 
@@ -1067,12 +1067,12 @@ count가 0이 되면 반복을 끝냅니다. 처음부터 0이면 한 번도 출
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int count = 5;
     while (count > 0)
     {
-        Print(count);
+        print(count);
         count = count - 1;
     }
 }
@@ -1091,7 +1091,7 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     for (int i = 1; i <= 5; i = i + 1)
     {
@@ -1103,12 +1103,12 @@ void SmallMain()
         {
             break;
         }
-        Print(i);
+        print(i);
     }
 }
 ```
 
-2에서는 Print를 건너뜁니다. for는 i를 늘린 뒤 다음 조건을 검사합니다. 4에서는 반복 자체를 끝내므로 4와 5 모두 출력하지 않습니다.
+2에서는 print를 건너뜁니다. for는 i를 늘린 뒤 다음 조건을 검사합니다. 4에서는 반복 자체를 끝내므로 4와 5 모두 출력하지 않습니다.
 
 예상 출력:
 
@@ -1130,7 +1130,7 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     for (int i = 1; i <= 5; i = i + 1)
     {
@@ -1142,7 +1142,7 @@ void SmallMain()
         {
             break;
         }
-        Print(i);
+        print(i);
     }
 }
 ```
@@ -1160,20 +1160,20 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     for (int row = 0; row < 2; row = row + 1)
     {
         for (int col = 0; col < 3; col = col + 1)
         {
-            Write("*");
+            write("*");
         }
-        Print();
+        print();
     }
 }
 ```
 
-**Write**는 출력 뒤 줄을 바꾸지 않습니다. **Print()**는 내용 없이 줄만 바꿉니다. 따라서 별 세 개를 붙여 쓴 뒤 줄을 바꾸는 일을 두 번 합니다.
+**write**는 출력 뒤 줄을 바꾸지 않습니다. **print()**는 내용 없이 줄만 바꿉니다. 따라서 별 세 개를 붙여 쓴 뒤 줄을 바꾸는 일을 두 번 합니다.
 
 예상 출력:
 
@@ -1195,15 +1195,15 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     for (int row = 0; row < 3; row = row + 1)
     {
         for (int col = 0; col < 4; col = col + 1)
         {
-            Write("*");
+            write("*");
         }
-        Print();
+        print();
     }
 }
 ```
@@ -1214,26 +1214,26 @@ void SmallMain()
 
 ## 이번에 배울 것
 
-**함수**는 할 일을 묶어 이름 붙인 것입니다. Print를 사용했듯, 이번에는 Greet라는 함수를 직접 만듭니다.
+**함수**는 할 일을 묶어 이름 붙인 것입니다. print를 사용했듯, 이번에는 greet라는 함수를 직접 만듭니다.
 
 ## 실행해 보기
 
 **예제**
 
 ```cpp
-void Greet()
+void greet()
 {
-    Print("Hello!");
+    print("Hello!");
 }
 
-void SmallMain()
+void small_main()
 {
-    Greet();
-    Greet();
+    greet();
+    greet();
 }
 ```
 
-위쪽은 Greet가 할 일을 정하는 **정의**, 아래의 `Greet();`는 실제로 시키는 **호출**입니다. 정의만으로 실행되지는 않습니다. SmallMain에서 호출하면 Greet로 갔다가 끝난 뒤 돌아옵니다.
+위쪽은 greet가 할 일을 정하는 **정의**, 아래의 `greet();`는 실제로 시키는 **호출**입니다. 정의만으로 실행되지는 않습니다. small_main에서 호출하면 greet로 갔다가 끝난 뒤 돌아옵니다.
 
 **void**는 호출한 쪽에 결과값을 돌려주지 않는다는 뜻입니다. 화면 출력은 할 수 있습니다. 빈 ()는 전달받는 값이 없다는 뜻입니다.
 
@@ -1246,7 +1246,7 @@ Hello!
 
 ## Exercise — 한 가지 바꾸기
 
-Greet를 세 번 호출해 보세요.
+greet를 세 번 호출해 보세요.
 
 연습은 위 예제를 복사해 시작하세요.
 
@@ -1257,16 +1257,16 @@ Greet를 세 번 호출해 보세요.
 **정답**
 
 ```cpp
-void Greet()
+void greet()
 {
-    Print("Hello!");
+    print("Hello!");
 }
 
-void SmallMain()
+void small_main()
 {
-    Greet();
-    Greet();
-    Greet();
+    greet();
+    greet();
+    greet();
 }
 ```
 
@@ -1283,15 +1283,15 @@ void SmallMain()
 **예제**
 
 ```cpp
-void ShowDouble(int number)
+void show_double(int number)
 {
-    Print(number * 2);
+    print(number * 2);
 }
 
-void SmallMain()
+void small_main()
 {
-    ShowDouble(3);
-    ShowDouble(5);
+    show_double(3);
+    show_double(5);
 }
 ```
 
@@ -1306,7 +1306,7 @@ void SmallMain()
 
 ## Exercise — 한 가지 바꾸기
 
-ShowDouble에 7과 10을 전달해 차례로 출력하세요.
+show_double에 7과 10을 전달해 차례로 출력하세요.
 
 연습은 위 예제를 복사해 시작하세요.
 
@@ -1317,15 +1317,15 @@ ShowDouble에 7과 10을 전달해 차례로 출력하세요.
 **정답**
 
 ```cpp
-void ShowDouble(int number)
+void show_double(int number)
 {
-    Print(number * 2);
+    print(number * 2);
 }
 
-void SmallMain()
+void small_main()
 {
-    ShowDouble(7);
-    ShowDouble(10);
+    show_double(7);
+    show_double(10);
 }
 ```
 
@@ -1342,21 +1342,21 @@ void SmallMain()
 **예제**
 
 ```cpp
-int Square(int number)
+int square(int number)
 {
     return number * number;
 }
 
-void SmallMain()
+void small_main()
 {
-    int result = Square(4);
-    Print(result);
+    int result = square(4);
+    print(result);
 }
 ```
 
-맨 앞 int는 결과가 정수라는 뜻입니다. Square(4)가 돌려준 16을 result에 저장합니다. 함수는 계산을 맡고, 출력은 SmallMain에서 합니다.
+맨 앞 int는 결과가 정수라는 뜻입니다. square(4)가 돌려준 16을 result에 저장합니다. 함수는 계산을 맡고, 출력은 small_main에서 합니다.
 
-InputInt도 이렇게 읽은 정수를 돌려주는 함수였습니다.
+input_int도 이렇게 읽은 정수를 돌려주는 함수였습니다.
 
 예상 출력:
 
@@ -1366,7 +1366,7 @@ InputInt도 이렇게 읽은 정수를 돌려주는 함수였습니다.
 
 ## Exercise — 한 가지 바꾸기
 
-Square(6)의 결과를 받아 출력하세요.
+square(6)의 결과를 받아 출력하세요.
 
 연습은 위 예제를 복사해 시작하세요.
 
@@ -1377,15 +1377,15 @@ Square(6)의 결과를 받아 출력하세요.
 **정답**
 
 ```cpp
-int Square(int number)
+int square(int number)
 {
     return number * number;
 }
 
-void SmallMain()
+void small_main()
 {
-    int result = Square(6);
-    Print(result);
+    int result = square(6);
+    print(result);
 }
 ```
 
@@ -1402,17 +1402,17 @@ void SmallMain()
 **예제**
 
 ```cpp
-void AddOne(int number)
+void add_one(int number)
 {
     number = number + 1;
-    Print(number);
+    print(number);
 }
 
-void SmallMain()
+void small_main()
 {
     int score = 10;
-    AddOne(score);
-    Print(score);
+    add_one(score);
+    print(score);
 }
 ```
 
@@ -1440,17 +1440,17 @@ score를 20으로 시작하면 두 출력이 무엇인지 예상하고 확인하
 **정답**
 
 ```cpp
-void AddOne(int number)
+void add_one(int number)
 {
     number = number + 1;
-    Print(number);
+    print(number);
 }
 
-void SmallMain()
+void small_main()
 {
     int score = 20;
-    AddOne(score);
-    Print(score);
+    add_one(score);
+    print(score);
 }
 ```
 
@@ -1467,16 +1467,16 @@ String 값에 쓰는 `+`는 숫자 덧셈 대신 **이어 붙이기**를 합니�
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     String first = "Small";
     String text = first + " C++";
-    Print(text);
-    Print(text.Length());
+    print(text);
+    print(text.length());
 }
 ```
 
-`text.Length()`는 text의 길이를 돌려주는 기능입니다. 점은 text에 속한 기능을 사용한다는 뜻입니다. 여기에는 공백도 포함됩니다.
+`text.length()`는 text의 길이를 돌려주는 기능입니다. 점은 text에 속한 기능을 사용한다는 뜻입니다. 여기에는 공백도 포함됩니다.
 
 길이는 **바이트**라는 데이터 크기 단위로 셉니다. 이번 영문 예제에서는 한 글자가 한 바이트입니다. UTF-8 한글 한 글자는 여러 바이트라서 글자 수와 다를 수 있습니다.
 
@@ -1500,11 +1500,11 @@ Good과 공백 하나, morning을 이어 붙여 출력하세요.
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     String first = "Good";
     String text = first + " morning";
-    Print(text);
+    print(text);
 }
 ```
 
@@ -1521,12 +1521,12 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     char grade = 'A';
-    Print(grade);
+    print(grade);
     String word = "Small";
-    Print(word[0]);
+    print(word[0]);
 }
 ```
 
@@ -1554,10 +1554,10 @@ Small에서 둘째 문자인 m을 출력하세요.
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     String word = "Small";
-    Print(word[1]);
+    print(word[1]);
 }
 ```
 
@@ -1567,21 +1567,21 @@ void SmallMain()
 
 ## 이번에 배울 것
 
-**부분 문자열**은 문자열의 연속된 일부입니다. Substring에 시작 위치와 가져올 길이를 전달합니다.
+**부분 문자열**은 문자열의 연속된 일부입니다. substring에 시작 위치와 가져올 길이를 전달합니다.
 
 ## 실행해 보기
 
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     String word = "Small";
-    Print(word.Substring(1, 3));
+    print(word.substring(1, 3));
 }
 ```
 
-위치 1은 m입니다. 여기부터 세 글자를 가져오므로 mal이 됩니다. `Substring(1)`처럼 길이를 생략하면 위치 1부터 끝까지 가져옵니다.
+위치 1은 m입니다. 여기부터 세 글자를 가져오므로 mal이 됩니다. `substring(1)`처럼 길이를 생략하면 위치 1부터 끝까지 가져옵니다.
 
 길이가 5인 문자열에서 문자 위치는 0–4입니다. 대괄호로 문자를 읽을 때 범위를 벗어나지 않게 하세요.
 
@@ -1604,10 +1604,10 @@ Small의 맨 앞 두 글자 Sm을 가져오세요.
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     String word = "Small";
-    Print(word.Substring(0, 2));
+    print(word.substring(0, 2));
 }
 ```
 
@@ -1624,16 +1624,16 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    Print("Hello\nSmall");
-    Print("\"Hi\"");
+    print("Hello\nSmall");
+    print("\"Hi\"");
 }
 ```
 
 `\n`은 줄바꿈, `\"`는 큰따옴표 하나, `\\`는 역슬래시 하나입니다. 코드에서 두 기호로 적어도 하나의 문자를 나타냅니다.
 
-`""`는 내용이 없는 빈 문자열이고 `" "`는 공백 하나가 있는 문자열입니다. Print는 빈 문자열을 출력해도 마지막에 줄을 바꿉니다.
+`""`는 내용이 없는 빈 문자열이고 `" "`는 공백 하나가 있는 문자열입니다. print는 빈 문자열을 출력해도 마지막에 줄을 바꿉니다.
 
 예상 출력:
 
@@ -1645,7 +1645,7 @@ Small
 
 ## Exercise — 한 가지 바꾸기
 
-Print 한 번으로 A와 B를 서로 다른 줄에 출력하세요.
+print 한 번으로 A와 B를 서로 다른 줄에 출력하세요.
 
 연습은 위 예제를 복사해 시작하세요.
 
@@ -1656,9 +1656,9 @@ Print 한 번으로 A와 B를 서로 다른 줄에 출력하세요.
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    Print("A\nB");
+    print("A\nB");
 }
 ```
 
@@ -1675,12 +1675,12 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> scores = {80, 95, 70};
-    Print(scores[0]);
+    print(scores[0]);
     scores[1] = 100;
-    Print(scores[1]);
+    print(scores[1]);
 }
 ```
 
@@ -1706,11 +1706,11 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> scores = {80, 95, 70};
     scores[2] = 90;
-    Print(scores[2]);
+    print(scores[2]);
 }
 ```
 
@@ -1720,19 +1720,19 @@ void SmallMain()
 
 ## 이번에 배울 것
 
-반복문의 변수를 배열의 위치로 사용하면 원소를 차례로 읽을 수 있습니다. Length()는 원소 개수를 알려 줍니다.
+반복문의 변수를 배열의 위치로 사용하면 원소를 차례로 읽을 수 있습니다. length()는 원소 개수를 알려 줍니다.
 
 ## 실행해 보기
 
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> scores = {80, 95, 70};
-    for (int i = 0; i < scores.Length(); i = i + 1)
+    for (int i = 0; i < scores.length(); i = i + 1)
     {
-        Print(scores[i]);
+        print(scores[i]);
     }
 }
 ```
@@ -1760,12 +1760,12 @@ i가 0, 1, 2일 때 각각 출력합니다. 3은 원소 개수와 같아서 조�
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> scores = {80, 95, 70};
-    for (int i = 0; i < scores.Length(); i = i + 1)
+    for (int i = 0; i < scores.length(); i = i + 1)
     {
-        Print(scores[i] * 2);
+        print(scores[i] * 2);
     }
 }
 ```
@@ -1783,13 +1783,13 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers(3);
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
     {
         numbers[i] = i + 1;
-        Print(numbers[i]);
+        print(numbers[i]);
     }
 }
 ```
@@ -1819,13 +1819,13 @@ Small Array는 만든 뒤 길이를 늘리는 기능이 없습니다. 각 원소
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers(5);
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
     {
         numbers[i] = i + 1;
-        Print(numbers[i]);
+        print(numbers[i]);
     }
 }
 ```
@@ -1843,15 +1843,15 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    const int GoalScore = 100;
+    const int goal_score = 100;
     int score = 80;
-    Print(GoalScore - score);
+    print(goal_score - score);
 }
 ```
 
-GoalScore에 나중에 다른 값을 넣으면 컴파일 오류입니다.
+goal_score에 나중에 다른 값을 넣으면 컴파일 오류입니다.
 
 이 과정에서는 이름을 영문자로 시작하고 영문자·숫자·밑줄로 만드세요. 공백은 넣지 않습니다. score와 Score는 다르고 int, if 같은 C++ 예약어는 이름으로 사용할 수 없습니다.
 
@@ -1874,11 +1874,11 @@ GoalScore에 나중에 다른 값을 넣으면 컴파일 오류입니다.
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    const int GoalScore = 200;
+    const int goal_score = 200;
     int score = 80;
-    Print(GoalScore - score);
+    print(goal_score - score);
 }
 ```
 
@@ -1895,12 +1895,12 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int score = 10;
     score += 5;
     score--;
-    Print(score);
+    print(score);
 }
 ```
 
@@ -1925,12 +1925,12 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int score = 10;
     score *= 2;
     score++;
-    Print(score);
+    print(score);
 }
 ```
 
@@ -1947,22 +1947,22 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.SetTitle("My First Window");
-    window.Open(640, 480);
+    window.set_title("My First Window");
+    window.open(640, 480);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        window.Show();
+        window.show();
     }
 }
 ```
 
-`Open(640, 480)`은 가로 640, 세로 480픽셀의 창을 엽니다. **픽셀**은 화면을 이루는 작은 점입니다. `SetTitle`은 제목을 정합니다.
+`open(640, 480)`은 가로 640, 세로 480픽셀의 창을 엽니다. **픽셀**은 화면을 이루는 작은 점입니다. `set_title`은 제목을 정합니다.
 
-IsOpen이 참인 동안 Show를 반복합니다. Show는 화면을 보여 주고 닫기 같은 입력도 처리합니다. 창이 반응하려면 이 호출이 필요합니다. 창의 닫기 버튼을 누르면 반복을 끝냅니다.
+is_open이 참인 동안 show를 반복합니다. show는 화면을 보여 주고 닫기 같은 입력도 처리합니다. 창이 반응하려면 이 호출이 필요합니다. 창의 닫기 버튼을 누르면 반복을 끝냅니다.
 
 이후 그림 예제에서도 이 창 열기 틀을 다시 사용합니다.
 
@@ -1973,7 +1973,7 @@ IsOpen이 참인 동안 Show를 반복합니다. Show는 화면을 보여 주고
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
 
@@ -1983,19 +1983,19 @@ void SmallMain()
 
 ### Hint
 
-`SetTitle`을 `Open` 전에 호출해도 됩니다.
+`set_title`을 `open` 전에 호출해도 됩니다.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.SetTitle("Alex");
-    window.Open(500, 300);
+    window.set_title("Alex");
+    window.open(500, 300);
 
-    while (window.IsOpen())
-        window.Show();
+    while (window.is_open())
+        window.show();
 }
 ```
 
@@ -2013,37 +2013,37 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
 
-    window.SetTitle("Small Window");
-    window.Open(400, 300);
+    window.set_title("Small Window");
+    window.open(400, 300);
 
-    Print("Size: ", window.Width(), " x ", window.Height());
+    print("Size: ", window.width(), " x ", window.height());
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        window.Show();
+        window.show();
     }
 }
 ```
 
-`window.Width()`와 `window.Height()`는 창의 가로·세로 크기를 돌려줍니다. 콘솔에 `Size: 400 x 300`이 나오는지 보세요.
+`window.width()`와 `window.height()`는 창의 가로·세로 크기를 돌려줍니다. 콘솔에 `Size: 400 x 300`이 나오는지 보세요.
 
-객체 만들기와 실제 창 열기는 별개입니다. SetTitle은 Open 전에 해도 됩니다. 프로그램에서 직접 닫으려면 Close를 호출합니다.
+객체 만들기와 실제 창 열기는 별개입니다. set_title은 open 전에 해도 됩니다. 프로그램에서 직접 닫으려면 close를 호출합니다.
 
 ## Exercise — 크기 확인하기
 
-320 x 240 창을 열고 실제 Width와 Height를 콘솔에 출력한 뒤 창을 유지하세요.
+320 x 240 창을 열고 실제 width와 height를 콘솔에 출력한 뒤 창을 유지하세요.
 
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(320, 240);
+    window.open(320, 240);
 
     // Print the size, then keep the window alive.
 }
@@ -2051,20 +2051,20 @@ void SmallMain()
 
 ### Hint
 
-`window.Width()`와 `window.Height()`를 Print에 전달하세요.
+`window.width()`와 `window.height()`를 print에 전달하세요.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(320, 240);
+    window.open(320, 240);
 
-    Print(window.Width(), " x ", window.Height());
+    print(window.width(), " x ", window.height());
 
-    while (window.IsOpen())
-        window.Show();
+    while (window.is_open())
+        window.show();
 }
 ```
 
@@ -2081,26 +2081,26 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
-    window.Clear(White);
-    window.FillCircle(320, 240, 80, Yellow);
-    window.DrawCircle(290, 220, 10, Black);
-    window.DrawCircle(350, 220, 10, Black);
-    window.DrawLine(285, 275, 355, 275, Black);
-    window.Show();
+    window.clear(White);
+    window.fill_circle(320, 240, 80, Yellow);
+    window.draw_circle(290, 220, 10, Black);
+    window.draw_circle(350, 220, 10, Black);
+    window.draw_line(285, 275, 355, 275, Black);
+    window.show();
 
-    while (window.IsOpen())
-        window.Show();
+    while (window.is_open())
+        window.show();
 }
 ```
 
-Clear는 배경을 지웁니다. `FillCircle(320, 240, 80, Yellow)`는 중심 (320, 240), 반지름 80인 노란 원을 채웁니다. DrawCircle은 테두리만 그립니다.
+clear는 배경을 지웁니다. `fill_circle(320, 240, 80, Yellow)`는 중심 (320, 240), 반지름 80인 노란 원을 채웁니다. draw_circle은 테두리만 그립니다.
 
-DrawLine의 네 숫자는 시작점 x, y와 끝점 x, y입니다. 나중에 그린 것이 먼저 그린 것을 덮습니다. 노란 얼굴이 보이면 원의 위치 하나를 바꾸어 보세요.
+draw_line의 네 숫자는 시작점 x, y와 끝점 x, y입니다. 나중에 그린 것이 먼저 그린 것을 덮습니다. 노란 얼굴이 보이면 원의 위치 하나를 바꾸어 보세요.
 
 예제 끝의 while처럼 실행할 문장이 하나이면 중괄호를 생략하기도 합니다. 직접 쓸 때는 중괄호로 묶어도 됩니다.
 
@@ -2111,42 +2111,42 @@ DrawLine의 네 숫자는 시작점 x, y와 끝점 x, y입니다. 나중에 그�
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(300, 500);
+    window.open(300, 500);
 
-    window.Clear(White);
+    window.clear(White);
 
     // Draw a traffic light here.
 
-    window.Show();
-    while (window.IsOpen())
-        window.Show();
+    window.show();
+    while (window.is_open())
+        window.show();
 }
 ```
 
 ### Hint
 
-먼저 FillRectangle로 몸체를 그리고 FillCircle을 세 번 사용하세요.
+먼저 fill_rectangle로 몸체를 그리고 fill_circle을 세 번 사용하세요.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(300, 500);
+    window.open(300, 500);
 
-    window.Clear(White);
-    window.FillRectangle(75, 30, 150, 420, Gray);
-    window.FillCircle(150, 110, 50, Red);
-    window.FillCircle(150, 240, 50, Yellow);
-    window.FillCircle(150, 370, 50, Green);
-    window.Show();
+    window.clear(White);
+    window.fill_rectangle(75, 30, 150, 420, Gray);
+    window.fill_circle(150, 110, 50, Red);
+    window.fill_circle(150, 240, 50, Yellow);
+    window.fill_circle(150, 370, 50, Green);
+    window.show();
 
-    while (window.IsOpen())
-        window.Show();
+    while (window.is_open())
+        window.show();
 }
 ```
 
@@ -2157,34 +2157,34 @@ void SmallMain()
 
 ## 이번에 배울 것
 
-**RGB**는 빨강·초록·파랑의 세기를 섞어 색을 만드는 방식입니다. 각 값은 0부터 255까지 씁니다.
+**rgb**는 빨강·초록·파랑의 세기를 섞어 색을 만드는 방식입니다. 각 값은 0부터 255까지 씁니다.
 
 ## 실행해 보기
 
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
-    Color orange = RGB(255, 140, 0);
+    Color orange = rgb(255, 140, 0);
 
-    window.Clear(White);
-    window.FillRectangle(60, 80, 180, 120, orange);
-    window.DrawRectangle(60, 80, 180, 120, Black);
-    window.DrawText(80, 110, "Small C++", Blue, 24);
-    window.Show();
+    window.clear(White);
+    window.fill_rectangle(60, 80, 180, 120, orange);
+    window.draw_rectangle(60, 80, 180, 120, Black);
+    window.draw_text(80, 110, "Small C++", Blue, 24);
+    window.show();
 
-    while (window.IsOpen())
-        window.Show();
+    while (window.is_open())
+        window.show();
 }
 ```
 
-Color는 색을 저장하는 타입이고 RGB는 그 색을 만들어 돌려주는 함수입니다.
+Color는 색을 저장하는 타입이고 rgb는 그 색을 만들어 돌려주는 함수입니다.
 
-FillRectangle의 숫자는 왼쪽 위 x, y와 가로·세로 크기입니다. DrawRectangle은 테두리만 그립니다. DrawText는 x, y, 문자열, 색, 글자 크기를 받습니다. 주황 사각형 위에 글자가 보이는지 확인하세요.
+fill_rectangle의 숫자는 왼쪽 위 x, y와 가로·세로 크기입니다. draw_rectangle은 테두리만 그립니다. draw_text는 x, y, 문자열, 색, 글자 크기를 받습니다. 주황 사각형 위에 글자가 보이는지 확인하세요.
 
 ## Exercise — 나만의 얼굴
 
@@ -2193,42 +2193,42 @@ FillRectangle의 숫자는 왼쪽 위 x, y와 가로·세로 크기입니다. Dr
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(500, 500);
+    window.open(500, 500);
 
-    window.Clear(White);
+    window.clear(White);
 
     // Draw your face here.
 
-    window.Show();
-    while (window.IsOpen())
-        window.Show();
+    window.show();
+    while (window.is_open())
+        window.show();
 }
 ```
 
 ### Hint
 
-큰 FillCircle 하나를 얼굴로 만든 뒤 작은 원 두 개와 DrawLine을 추가해 보세요.
+큰 fill_circle 하나를 얼굴로 만든 뒤 작은 원 두 개와 draw_line을 추가해 보세요.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(500, 500);
+    window.open(500, 500);
 
-    window.Clear(White);
-    window.FillCircle(250, 250, 160, Yellow);
-    window.FillCircle(195, 210, 18, Black);
-    window.FillCircle(305, 210, 18, Black);
-    window.DrawLine(190, 315, 310, 315, Black);
-    window.Show();
+    window.clear(White);
+    window.fill_circle(250, 250, 160, Yellow);
+    window.fill_circle(195, 210, 18, Black);
+    window.fill_circle(305, 210, 18, Black);
+    window.draw_line(190, 315, 310, 315, Black);
+    window.show();
 
-    while (window.IsOpen())
-        window.Show();
+    while (window.is_open())
+        window.show();
 }
 ```
 
@@ -2238,35 +2238,35 @@ void SmallMain()
 
 ## 이번에 배울 것
 
-**키 입력 상태**는 지금 어떤 키가 눌려 있는지 알려 줍니다. KeyDown은 키를 누르고 있는 동안 참입니다.
+**키 입력 상태**는 지금 어떤 키가 눌려 있는지 알려 줍니다. key_down은 키를 누르고 있는 동안 참입니다.
 
 ## 실행해 보기
 
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     double x = 320;
     double y = 240;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        if (window.KeyDown(Key::Left))
+        if (window.key_down(Key::Left))
             x = x - 2;
-        if (window.KeyDown(Key::Right))
+        if (window.key_down(Key::Right))
             x = x + 2;
-        if (window.KeyDown(Key::Up))
+        if (window.key_down(Key::Up))
             y = y - 2;
-        if (window.KeyDown(Key::Down))
+        if (window.key_down(Key::Down))
             y = y + 2;
 
-        window.Clear(Black);
-        window.FillCircle(x, y, 20, Yellow);
-        window.Show();
+        window.clear(Black);
+        window.fill_circle(x, y, 20, Yellow);
+        window.show();
     }
 }
 ```
@@ -2282,50 +2282,50 @@ void SmallMain()
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     double x = 320;
     double y = 240;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
         // Move with W, A, S, D.
 
-        window.Clear(Black);
-        window.FillCircle(x, y, 20, Cyan);
-        window.Show();
+        window.clear(Black);
+        window.fill_circle(x, y, 20, Cyan);
+        window.show();
     }
 }
 ```
 
 ### Hint
 
-문자 키는 `window.KeyDown('W')`처럼 확인할 수 있습니다.
+문자 키는 `window.key_down('W')`처럼 확인할 수 있습니다.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     double x = 320;
     double y = 240;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        if (window.KeyDown('A')) x = x - 2;
-        if (window.KeyDown('D')) x = x + 2;
-        if (window.KeyDown('W')) y = y - 2;
-        if (window.KeyDown('S')) y = y + 2;
+        if (window.key_down('A')) x = x - 2;
+        if (window.key_down('D')) x = x + 2;
+        if (window.key_down('W')) y = y - 2;
+        if (window.key_down('S')) y = y + 2;
 
-        window.Clear(Black);
-        window.FillCircle(x, y, 20, Cyan);
-        window.Show();
+        window.clear(Black);
+        window.fill_circle(x, y, 20, Cyan);
+        window.show();
     }
 }
 ```
@@ -2337,40 +2337,40 @@ void SmallMain()
 
 ## 이번에 배울 것
 
-**KeyPressed**는 새로 누른 순간을 알려 줍니다. 길게 눌러도 매 프레임 참이 되는 KeyDown과 구분합니다.
+**key_pressed**는 새로 누른 순간을 알려 줍니다. 길게 눌러도 매 프레임 참이 되는 key_down과 구분합니다.
 
 ## 실행해 보기
 
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     bool red = true;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        if (window.KeyPressed(Key::Space))
+        if (window.key_pressed(Key::Space))
             red = !red;
 
-        window.Clear(Black);
+        window.clear(Black);
 
         if (red)
-            window.FillCircle(320, 240, 60, Red);
+            window.fill_circle(320, 240, 60, Red);
         else
-            window.FillCircle(320, 240, 60, Blue);
+            window.fill_circle(320, 240, 60, Blue);
 
-        window.Show();
+        window.show();
     }
 }
 ```
 
 Space를 새로 누를 때 `red = !red;`로 참과 거짓을 뒤집습니다. 그 값에 따라 빨강과 파랑을 고릅니다. Space를 길게 눌렀다가 떼고 다시 눌러 보세요.
 
-KeyReleased는 키를 뗀 순간을 알려 줍니다. 이동에는 Down, 한 번 바꾸는 동작에는 Pressed가 편합니다.
+key_released는 키를 뗀 순간을 알려 줍니다. 이동에는 Down, 한 번 바꾸는 동작에는 Pressed가 편합니다.
 
 ## Exercise — Space로 크기 바꾸기
 
@@ -2379,56 +2379,56 @@ Space를 누를 때마다 원의 radius가 20과 60 사이에서 바뀌게 하�
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     bool big = false;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
         // Toggle big when Space is pressed.
 
-        window.Clear(Black);
+        window.clear(Black);
 
         if (big)
-            window.FillCircle(320, 240, 60, Yellow);
+            window.fill_circle(320, 240, 60, Yellow);
         else
-            window.FillCircle(320, 240, 20, Yellow);
+            window.fill_circle(320, 240, 20, Yellow);
 
-        window.Show();
+        window.show();
     }
 }
 ```
 
 ### Hint
 
-`KeyPressed(Key::Space)`와 bool 변수를 사용해 두 상태를 번갈아 보세요.
+`key_pressed(Key::Space)`와 bool 변수를 사용해 두 상태를 번갈아 보세요.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     bool big = false;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        if (window.KeyPressed(Key::Space))
+        if (window.key_pressed(Key::Space))
             big = !big;
 
-        window.Clear(Black);
+        window.clear(Black);
 
         if (big)
-            window.FillCircle(320, 240, 60, Yellow);
+            window.fill_circle(320, 240, 60, Yellow);
         else
-            window.FillCircle(320, 240, 20, Yellow);
+            window.fill_circle(320, 240, 20, Yellow);
 
-        window.Show();
+        window.show();
     }
 }
 ```
@@ -2446,21 +2446,21 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        window.Clear(White);
-        window.FillCircle(window.MouseX(), window.MouseY(), 12, Red);
-        window.Show();
+        window.clear(White);
+        window.fill_circle(window.mouse_x(), window.mouse_y(), 12, Red);
+        window.show();
     }
 }
 ```
 
-MouseX와 MouseY가 돌려준 위치를 원의 중심으로 사용합니다. 매번 배경을 지우고 새 위치에 그리므로 원 하나가 마우스를 따라갑니다. 창 안에서 마우스를 움직여 보세요.
+mouse_x와 mouse_y가 돌려준 위치를 원의 중심으로 사용합니다. 매번 배경을 지우고 새 위치에 그리므로 원 하나가 마우스를 따라갑니다. 창 안에서 마우스를 움직여 보세요.
 
 ## Exercise — 클릭 위치 표시
 
@@ -2469,44 +2469,44 @@ MouseX와 MouseY가 돌려준 위치를 원의 중심으로 사용합니다. 매
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        window.Clear(Black);
+        window.clear(Black);
 
         // Draw a different circle while the left button is down.
 
-        window.Show();
+        window.show();
     }
 }
 ```
 
 ### Hint
 
-`MouseDown(MouseButton::Left)`로 두 경우를 나누세요.
+`mouse_down(MouseButton::Left)`로 두 경우를 나누세요.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        window.Clear(Black);
+        window.clear(Black);
 
-        if (window.MouseDown(MouseButton::Left))
-            window.FillCircle(window.MouseX(), window.MouseY(), 25, Yellow);
+        if (window.mouse_down(MouseButton::Left))
+            window.fill_circle(window.mouse_x(), window.mouse_y(), 25, Yellow);
         else
-            window.FillCircle(window.MouseX(), window.MouseY(), 8, Gray);
+            window.fill_circle(window.mouse_x(), window.mouse_y(), 8, Gray);
 
-        window.Show();
+        window.show();
     }
 }
 ```
@@ -2525,28 +2525,28 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        window.Clear(White);
+        window.clear(White);
 
-        if (window.MouseDown(MouseButton::Left))
-            window.FillCircle(window.MouseX(), window.MouseY(), 30, Blue);
+        if (window.mouse_down(MouseButton::Left))
+            window.fill_circle(window.mouse_x(), window.mouse_y(), 30, Blue);
         else
-            window.DrawCircle(window.MouseX(), window.MouseY(), 30, Black);
+            window.draw_circle(window.mouse_x(), window.mouse_y(), 30, Black);
 
-        window.Show();
+        window.show();
     }
 }
 ```
 
-MouseDown(MouseButton::Left)은 왼쪽 버튼을 누르고 있는지 묻습니다. 누르는 동안 파란 원, 떼면 검은 테두리를 그립니다.
+mouse_down(MouseButton::Left)은 왼쪽 버튼을 누르고 있는지 묻습니다. 누르는 동안 파란 원, 떼면 검은 테두리를 그립니다.
 
-MousePressed는 누른 순간, MouseReleased는 뗀 순간입니다. 위치를 한 번 기억하려면 Pressed를 사용할 수 있습니다.
+mouse_pressed는 누른 순간, mouse_released는 뗀 순간입니다. 위치를 한 번 기억하려면 Pressed를 사용할 수 있습니다.
 
 ## Exercise — 두 버튼 두 색
 
@@ -2555,45 +2555,45 @@ MousePressed는 누른 순간, MouseReleased는 뗀 순간입니다. 위치를 �
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        window.Clear(White);
+        window.clear(White);
 
         // Left = red, Right = blue.
 
-        window.Show();
+        window.show();
     }
 }
 ```
 
 ### Hint
 
-Left와 Right에 대해 각각 MouseDown을 검사하면 됩니다.
+Left와 Right에 대해 각각 mouse_down을 검사하면 됩니다.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        window.Clear(White);
+        window.clear(White);
 
-        if (window.MouseDown(MouseButton::Left))
-            window.FillCircle(window.MouseX(), window.MouseY(), 30, Red);
+        if (window.mouse_down(MouseButton::Left))
+            window.fill_circle(window.mouse_x(), window.mouse_y(), 30, Red);
 
-        if (window.MouseDown(MouseButton::Right))
-            window.FillCircle(window.MouseX(), window.MouseY(), 30, Blue);
+        if (window.mouse_down(MouseButton::Right))
+            window.fill_circle(window.mouse_x(), window.mouse_y(), 30, Blue);
 
-        window.Show();
+        window.show();
     }
 }
 ```
@@ -2611,31 +2611,31 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     double x = 50;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
         x = x + 2;
 
         if (x > 640)
             x = 0;
 
-        window.Clear(Black);
-        window.FillCircle(x, 240, 20, Yellow);
-        window.Show();
-        Sleep(0.01);
+        window.clear(Black);
+        window.fill_circle(x, 240, 20, Yellow);
+        window.show();
+        sleep(0.01);
     }
 }
 ```
 
 반복할 때마다 x를 2 늘리고, 배경을 지우고, 원을 그려 보여 줍니다. 오른쪽을 넘으면 x를 0으로 되돌립니다.
 
-Sleep(0.01)은 약 0.01초 기다립니다. 원이 오른쪽으로 움직이다 왼쪽에서 다시 나타나는지 보세요.
+sleep(0.01)은 약 0.01초 기다립니다. 원이 오른쪽으로 움직이다 왼쪽에서 다시 나타나는지 보세요.
 
 ## Exercise — 위아래로 움직이기
 
@@ -2644,22 +2644,22 @@ Sleep(0.01)은 약 0.01초 기다립니다. 원이 오른쪽으로 움직이다 
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     double y = 100;
     double speed = 3;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
         // Update y and bounce.
 
-        window.Clear(Black);
-        window.FillCircle(320, y, 20, Green);
-        window.Show();
-        Sleep(0.01);
+        window.clear(Black);
+        window.fill_circle(320, y, 20, Green);
+        window.show();
+        sleep(0.01);
     }
 }
 ```
@@ -2671,25 +2671,25 @@ y와 speed를 만들고, `y > 460 || y < 20`이면 speed의 부호를 바꾸세�
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     double y = 100;
     double speed = 3;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
         y = y + speed;
 
         if (y > 460 || y < 20)
             speed = -speed;
 
-        window.Clear(Black);
-        window.FillCircle(320, y, 20, Green);
-        window.Show();
-        Sleep(0.01);
+        window.clear(Black);
+        window.fill_circle(320, y, 20, Green);
+        window.show();
+        sleep(0.01);
     }
 }
 ```
@@ -2708,25 +2708,25 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     double x = 100;
     double speed = 3;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
         x = x + speed;
 
         if (x > 620 || x < 20)
             speed = -speed;
 
-        window.Clear(Black);
-        window.FillCircle(x, 240, 20, Cyan);
-        window.Show();
-        Sleep(0.01);
+        window.clear(Black);
+        window.fill_circle(x, 240, 20, Cyan);
+        window.show();
+        sleep(0.01);
     }
 }
 ```
@@ -2742,25 +2742,25 @@ void SmallMain()
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     double x1 = 50;
     double x2 = 200;
     double speed1 = 2;
     double speed2 = 4;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
         // Update both balls.
 
-        window.Clear(Black);
-        window.FillCircle(x1, 180, 15, Yellow);
-        window.FillCircle(x2, 300, 15, Cyan);
-        window.Show();
-        Sleep(0.01);
+        window.clear(Black);
+        window.fill_circle(x1, 180, 15, Yellow);
+        window.fill_circle(x2, 300, 15, Cyan);
+        window.show();
+        sleep(0.01);
     }
 }
 ```
@@ -2772,17 +2772,17 @@ x1, x2와 speed1, speed2를 각각 만들면 됩니다.
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     double x1 = 50;
     double x2 = 200;
     double speed1 = 2;
     double speed2 = 4;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
         x1 = x1 + speed1;
         x2 = x2 + speed2;
@@ -2790,11 +2790,11 @@ void SmallMain()
         if (x1 > 655) x1 = -15;
         if (x2 > 655) x2 = -15;
 
-        window.Clear(Black);
-        window.FillCircle(x1, 180, 15, Yellow);
-        window.FillCircle(x2, 300, 15, Cyan);
-        window.Show();
-        Sleep(0.01);
+        window.clear(Black);
+        window.fill_circle(x1, 180, 15, Yellow);
+        window.fill_circle(x2, 300, 15, Cyan);
+        window.show();
+        sleep(0.01);
     }
 }
 ```
@@ -2805,38 +2805,38 @@ void SmallMain()
 
 ## 이번에 배울 것
 
-**StopWatch**는 경과 시간을 재는 도구입니다. 객체를 만들 때부터 시간을 재고 Elapsed는 지난 초 수를 알려 줍니다.
+**StopWatch**는 경과 시간을 재는 도구입니다. 객체를 만들 때부터 시간을 재고 elapsed는 지난 초 수를 알려 줍니다.
 
 ## 실행해 보기
 
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     StopWatch watch;
 
-    Sleep(1.0);
-    Print("About one second: ", watch.Elapsed());
+    sleep(1.0);
+    print("About one second: ", watch.elapsed());
 
-    watch.Reset();
-    Sleep(0.5);
-    Print("About half a second: ", watch.Elapsed());
+    watch.reset();
+    sleep(0.5);
+    print("About half a second: ", watch.elapsed());
 }
 ```
 
-Sleep(1.0) 뒤에는 약 1초, Reset 후 Sleep(0.5) 뒤에는 약 0.5초가 나옵니다. 읽기만 한다고 시계가 0으로 돌아가지는 않습니다. Reset이 다시 재는 동작입니다.
+sleep(1.0) 뒤에는 약 1초, reset 후 sleep(0.5) 뒤에는 약 0.5초가 나옵니다. 읽기만 한다고 시계가 0으로 돌아가지는 않습니다. reset이 다시 재는 동작입니다.
 
 실행 환경 때문에 정확히 1.000이나 0.500이 아니어도 정상입니다.
 
 ## Exercise — 2초 재기
 
-StopWatch를 만들고 Sleep(2.0) 뒤 Elapsed 값을 출력하세요. 정확히 2.000...이 아니어도 정상입니다.
+StopWatch를 만들고 sleep(2.0) 뒤 elapsed 값을 출력하세요. 정확히 2.000...이 아니어도 정상입니다.
 
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     StopWatch watch;
 
@@ -2846,17 +2846,17 @@ void SmallMain()
 
 ### Hint
 
-StopWatch는 생성되는 순간 시작하므로 별도의 Start가 필요 없습니다.
+StopWatch는 생성되는 순간 시작하므로 별도의 start가 필요 없습니다.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     StopWatch watch;
 
-    Sleep(2.0);
-    Print("Elapsed: ", watch.Elapsed());
+    sleep(2.0);
+    print("Elapsed: ", watch.elapsed());
 }
 ```
 
@@ -2874,34 +2874,34 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     double x = 50;
     double speed = 200;
 
     StopWatch watch;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        double dt = watch.Elapsed();
-        watch.Reset();
+        double dt = watch.elapsed();
+        watch.reset();
 
         x = x + speed * dt;
 
         if (x > 620 || x < 20)
             speed = -speed;
 
-        window.Clear(Black);
-        window.FillCircle(x, 240, 20, Yellow);
-        window.Show();
+        window.clear(Black);
+        window.fill_circle(x, 240, 20, Yellow);
+        window.show();
     }
 }
 ```
 
-dt는 지난 반복부터 흐른 시간을 담는 변수입니다. Elapsed로 읽은 뒤 Reset하고 `speed * dt`를 위치에 더합니다.
+dt는 지난 반복부터 흐른 시간을 담는 변수입니다. elapsed로 읽은 뒤 reset하고 `speed * dt`를 위치에 더합니다.
 
 속도가 초당 200픽셀이면 0.01초에는 2픽셀, 0.02초에는 4픽셀 움직입니다. dt는 새 문법이 아닙니다. speed를 100으로 바꾸어 비교하세요.
 
@@ -2912,55 +2912,55 @@ dt는 지난 반복부터 흐른 시간을 담는 변수입니다. Elapsed로 �
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     double y = 100;
     double speed = 150;
     StopWatch watch;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
         // Measure dt and move using seconds.
 
-        window.Clear(Black);
-        window.FillCircle(320, y, 20, Green);
-        window.Show();
+        window.clear(Black);
+        window.fill_circle(320, y, 20, Green);
+        window.show();
     }
 }
 ```
 
 ### Hint
 
-loop마다 `double dt = watch.Elapsed(); watch.Reset();`을 하고 `y = y + speed * dt;`로 이동하세요.
+loop마다 `double dt = watch.elapsed(); watch.reset();`을 하고 `y = y + speed * dt;`로 이동하세요.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
     double y = 100;
     double speed = 150;
     StopWatch watch;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        double dt = watch.Elapsed();
-        watch.Reset();
+        double dt = watch.elapsed();
+        watch.reset();
 
         y = y + speed * dt;
 
         if (y > 460 || y < 20)
             speed = -speed;
 
-        window.Clear(Black);
-        window.FillCircle(320, y, 20, Green);
-        window.Show();
+        window.clear(Black);
+        window.fill_circle(320, y, 20, Green);
+        window.show();
     }
 }
 ```
@@ -2978,23 +2978,23 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    Print("Pop!");
-    PlaySound(Sound::Pop);
+    print("Pop!");
+    play_sound(Sound::Pop);
 
-    Sleep(0.5);
+    sleep(0.5);
 
-    Print("Coin!");
-    PlaySound(Sound::Coin);
+    print("Coin!");
+    play_sound(Sound::Coin);
 
-    Sleep(1.0);
+    sleep(1.0);
 }
 ```
 
-PlaySound는 재생을 시작하고 바로 돌아옵니다. Sound::Pop과 Sound::Coin은 준비된 효과음 이름입니다.
+play_sound는 재생을 시작하고 바로 돌아옵니다. Sound::Pop과 Sound::Coin은 준비된 효과음 이름입니다.
 
-예제에서는 프로그램이 바로 끝나지 않도록 Sleep으로 기다립니다. 두 효과음이 순서대로 시작되는지 들어 보세요.
+예제에서는 프로그램이 바로 끝나지 않도록 sleep으로 기다립니다. 두 효과음이 순서대로 시작되는지 들어 보세요.
 
 ## Exercise — 세 가지 효과음
 
@@ -3003,7 +3003,7 @@ Click, Coin, Win 효과음을 순서대로 들려주세요. 각 소리가 끝난
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     // Play Click, Coin, and Win in order.
 }
@@ -3011,16 +3011,16 @@ void SmallMain()
 
 ### Hint
 
-`PlaySoundAndWait`를 세 번 사용하세요.
+`play_sound_and_wait`를 세 번 사용하세요.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    PlaySoundAndWait(Sound::Click);
-    PlaySoundAndWait(Sound::Coin);
-    PlaySoundAndWait(Sound::Win);
+    play_sound_and_wait(Sound::Click);
+    play_sound_and_wait(Sound::Coin);
+    play_sound_and_wait(Sound::Win);
 }
 ```
 
@@ -3038,28 +3038,28 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    BeepAndWait(440, 0.25);
-    BeepAndWait(550, 0.25);
-    BeepAndWait(660, 0.4);
+    beep_and_wait(440, 0.25);
+    beep_and_wait(550, 0.25);
+    beep_and_wait(660, 0.4);
 
-    PlaySoundAndWait(Sound::Win);
+    play_sound_and_wait(Sound::Win);
 }
 ```
 
-BeepAndWait의 첫 값은 음의 높이를 정하는 주파수(Hz), 둘째 값은 초 단위 길이입니다. 440, 550, 660으로 높아지는 세 음 뒤에 효과음이 납니다.
+beep_and_wait의 첫 값은 음의 높이를 정하는 주파수(Hz), 둘째 값은 초 단위 길이입니다. 440, 550, 660으로 높아지는 세 음 뒤에 효과음이 납니다.
 
-게임 화면도 계속 움직여야 할 때는 기다리지 않는 PlaySound나 Beep이 편합니다.
+게임 화면도 계속 움직여야 할 때는 기다리지 않는 play_sound나 beep이 편합니다.
 
 ## Exercise — 세 음 만들기
 
-BeepAndWait를 사용해 서로 다른 주파수의 음 세 개를 차례대로 재생하세요. 주파수와 길이는 자유입니다.
+beep_and_wait를 사용해 서로 다른 주파수의 음 세 개를 차례대로 재생하세요. 주파수와 길이는 자유입니다.
 
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     // Make a three-note sound.
 }
@@ -3072,11 +3072,11 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    BeepAndWait(440, 0.2);
-    BeepAndWait(550, 0.2);
-    BeepAndWait(660, 0.3);
+    beep_and_wait(440, 0.2);
+    beep_and_wait(550, 0.2);
+    beep_and_wait(660, 0.3);
 }
 ```
 
@@ -3095,25 +3095,25 @@ void SmallMain()
 ```cpp
 int ticks = 0;
 
-void OnTimer()
+void on_timer()
 {
     ticks = ticks + 1;
-    Print("Tick ", ticks);
+    print("Tick ", ticks);
 }
 
-void SmallMain()
+void small_main()
 {
     Timer timer;
 
-    timer.Start(1.0, OnTimer);
-    Sleep(3.2);
-    timer.Stop();
+    timer.start(1.0, on_timer);
+    sleep(3.2);
+    timer.stop();
 }
 ```
 
-Start(1.0, OnTimer)에서 OnTimer 뒤에 ()가 없는 이유는 지금 실행하는 대신 실행할 함수를 지정하기 때문입니다.
+start(1.0, on_timer)에서 on_timer 뒤에 ()가 없는 이유는 지금 실행하는 대신 실행할 함수를 지정하기 때문입니다.
 
-모든 함수 밖의 ticks는 여러 함수가 사용하는 **전역 변수**입니다. 콜백마다 1을 더합니다. Sleep 중에도 타이머가 처리되고 Stop하면 멈춥니다. 시간 예약이므로 정확한 호출 횟수를 보장하지는 않습니다.
+모든 함수 밖의 ticks는 여러 함수가 사용하는 **전역 변수**입니다. 콜백마다 1을 더합니다. sleep 중에도 타이머가 처리되고 stop하면 멈춥니다. 시간 예약이므로 정확한 호출 횟수를 보장하지는 않습니다.
 
 ## Exercise — 0.5초마다 세기
 
@@ -3124,12 +3124,12 @@ Start(1.0, OnTimer)에서 OnTimer 뒤에 ()가 없는 이유는 지금 실행하
 ```cpp
 int count = 0;
 
-void OnTimer()
+void on_timer()
 {
     // Increase and print count.
 }
 
-void SmallMain()
+void small_main()
 {
     Timer timer;
 
@@ -3139,27 +3139,27 @@ void SmallMain()
 
 ### Hint
 
-`timer.Start(0.5, OnTimer)`를 사용하고 callback에서 count를 증가시키세요.
+`timer.start(0.5, on_timer)`를 사용하고 callback에서 count를 증가시키세요.
 
 **정답**
 
 ```cpp
 int count = 0;
 
-void OnTimer()
+void on_timer()
 {
     count = count + 1;
-    Print("Count: ", count);
+    print("Count: ", count);
 }
 
-void SmallMain()
+void small_main()
 {
     Timer timer;
-    timer.Start(0.5, OnTimer);
+    timer.start(0.5, on_timer);
 
-    Sleep(2.2);
+    sleep(2.2);
 
-    timer.Stop();
+    timer.stop();
 }
 ```
 
@@ -3179,64 +3179,64 @@ void SmallMain()
 ```cpp
 int seconds = 0;
 
-void OnSecond()
+void on_second()
 {
     seconds = seconds + 1;
 }
 
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(500, 250);
+    window.open(500, 250);
 
     Timer timer;
-    timer.Start(1.0, OnSecond);
+    timer.start(1.0, on_second);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        window.Clear(Black);
-        window.DrawText(30, 80, Format("Seconds: ", seconds), White, 28);
-        window.Show();
+        window.clear(Black);
+        window.draw_text(30, 80, format("Seconds: ", seconds), White, 28);
+        window.show();
     }
 
-    timer.Stop();
+    timer.stop();
 }
 ```
 
-OnSecond가 전역 seconds를 늘리고 DrawText가 현재 값을 표시합니다. **Format**은 글자와 값을 이어 붙인 String을 돌려줍니다. Print와 달리 직접 출력하지 않습니다.
+on_second가 전역 seconds를 늘리고 draw_text가 현재 값을 표시합니다. **format**은 글자와 값을 이어 붙인 String을 돌려줍니다. print와 달리 직접 출력하지 않습니다.
 
-Timer는 별도 계산 스레드가 아닙니다. Show나 Sleep이 이벤트를 처리할 때 콜백을 실행하므로 긴 계산은 호출을 늦출 수 있습니다. 정확한 시간 측정은 StopWatch로 하세요.
+Timer는 별도 계산 스레드가 아닙니다. show나 sleep이 이벤트를 처리할 때 콜백을 실행하므로 긴 계산은 호출을 늦출 수 있습니다. 정확한 시간 측정은 StopWatch로 하세요.
 
 ## Exercise — 창의 제목 바꾸기
 
-Timer callback이 1초마다 level을 1씩 증가시키게 하세요. Window loop에서는 현재 level을 `SetTitle("Level ", level)`로 제목에 표시하세요.
+Timer callback이 1초마다 level을 1씩 증가시키게 하세요. Window loop에서는 현재 level을 `set_title("Level ", level)`로 제목에 표시하세요.
 
 **연습 시작 코드**
 
 ```cpp
 int level = 1;
 
-void OnSecond()
+void on_second()
 {
     // Increase level.
 }
 
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(500, 300);
+    window.open(500, 300);
 
     Timer timer;
-    timer.Start(1.0, OnSecond);
+    timer.start(1.0, on_second);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
         // Show level in the title.
-        window.Clear(Black);
-        window.Show();
+        window.clear(Black);
+        window.show();
     }
 
-    timer.Stop();
+    timer.stop();
 }
 ```
 
@@ -3249,27 +3249,27 @@ callback에서는 전역 int level만 바꾸고, Window title은 main loop에서
 ```cpp
 int level = 1;
 
-void OnSecond()
+void on_second()
 {
     level = level + 1;
 }
 
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(500, 300);
+    window.open(500, 300);
 
     Timer timer;
-    timer.Start(1.0, OnSecond);
+    timer.start(1.0, on_second);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        window.SetTitle("Level ", level);
-        window.Clear(Black);
-        window.Show();
+        window.set_title("Level ", level);
+        window.clear(Black);
+        window.show();
     }
 
-    timer.Stop();
+    timer.stop();
 }
 ```
 
@@ -3286,71 +3286,71 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.SetTitle("Mini Pong");
-    window.Open(800, 500);
+    window.set_title("Mini Pong");
+    window.open(800, 500);
 
-    double paddleY = 210;
-    double ballX = 400;
-    double ballY = 250;
-    double ballVX = 260;
-    double ballVY = 180;
+    double paddle_y = 210;
+    double ball_x = 400;
+    double ball_y = 250;
+    double ball_vx = 260;
+    double ball_vy = 180;
 
     StopWatch watch;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        double dt = watch.Elapsed();
-        watch.Reset();
+        double dt = watch.elapsed();
+        watch.reset();
 
-        if (window.KeyDown(Key::Up))
-            paddleY = paddleY - 300 * dt;
-        if (window.KeyDown(Key::Down))
-            paddleY = paddleY + 300 * dt;
+        if (window.key_down(Key::Up))
+            paddle_y = paddle_y - 300 * dt;
+        if (window.key_down(Key::Down))
+            paddle_y = paddle_y + 300 * dt;
 
-        ballX = ballX + ballVX * dt;
-        ballY = ballY + ballVY * dt;
+        ball_x = ball_x + ball_vx * dt;
+        ball_y = ball_y + ball_vy * dt;
 
-        if (ballY < 10)
+        if (ball_y < 10)
         {
-            ballY = 10;
-            ballVY = -ballVY;
+            ball_y = 10;
+            ball_vy = -ball_vy;
         }
 
-        if (ballY > 490)
+        if (ball_y > 490)
         {
-            ballY = 490;
-            ballVY = -ballVY;
+            ball_y = 490;
+            ball_vy = -ball_vy;
         }
 
-        if (ballX < 50 && ballX > 30 &&
-            ballY > paddleY && ballY < paddleY + 80)
+        if (ball_x < 50 && ball_x > 30 &&
+            ball_y > paddle_y && ball_y < paddle_y + 80)
         {
-            ballX = 50;
-            ballVX = -ballVX;
-            PlaySound(Sound::Hit);
+            ball_x = 50;
+            ball_vx = -ball_vx;
+            play_sound(Sound::Hit);
         }
 
-        if (ballX > 790)
+        if (ball_x > 790)
         {
-            ballX = 790;
-            ballVX = -ballVX;
+            ball_x = 790;
+            ball_vx = -ball_vx;
         }
 
-        if (ballX < 0)
+        if (ball_x < 0)
         {
-            ballX = 400;
-            ballY = 250;
-            ballVX = 260;
-            PlaySound(Sound::Lose);
+            ball_x = 400;
+            ball_y = 250;
+            ball_vx = 260;
+            play_sound(Sound::Lose);
         }
 
-        window.Clear(Black);
-        window.FillRectangle(30, paddleY, 15, 80, White);
-        window.FillCircle(ballX, ballY, 10, Yellow);
-        window.Show();
+        window.clear(Black);
+        window.fill_rectangle(30, paddle_y, 15, 80, White);
+        window.fill_circle(ball_x, ball_y, 10, Yellow);
+        window.show();
     }
 }
 ```
@@ -3361,69 +3361,69 @@ void SmallMain()
 
 ## Exercise — paddle이 화면 밖으로 못 나가게
 
-시작 코드는 첫 Pong 예제에서 paddle 이동만 분리한 것입니다. paddleY가 0보다 작아지거나 420보다 커지지 않도록 제한하는 코드를 추가하세요. 위아래 방향키를 오래 눌러도 paddle 전체가 창 안에 남아 있어야 합니다. 확인한 제한 코드는 첫 Pong 예제에도 옮겨 사용할 수 있습니다.
+시작 코드는 첫 Pong 예제에서 paddle 이동만 분리한 것입니다. paddle_y가 0보다 작아지거나 420보다 커지지 않도록 제한하는 코드를 추가하세요. 위아래 방향키를 오래 눌러도 paddle 전체가 창 안에 남아 있어야 합니다. 확인한 제한 코드는 첫 Pong 예제에도 옮겨 사용할 수 있습니다.
 
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(800, 500);
+    window.open(800, 500);
 
-    double paddleY = 210;
+    double paddle_y = 210;
     StopWatch watch;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        double dt = watch.Elapsed();
-        watch.Reset();
+        double dt = watch.elapsed();
+        watch.reset();
 
-        if (window.KeyDown(Key::Up))
-            paddleY = paddleY - 300 * dt;
-        if (window.KeyDown(Key::Down))
-            paddleY = paddleY + 300 * dt;
+        if (window.key_down(Key::Up))
+            paddle_y = paddle_y - 300 * dt;
+        if (window.key_down(Key::Down))
+            paddle_y = paddle_y + 300 * dt;
 
-        // Keep paddleY between 0 and 420.
+        // Keep paddle_y between 0 and 420.
 
-        window.Clear(Black);
-        window.FillRectangle(30, paddleY, 15, 80, White);
-        window.Show();
+        window.clear(Black);
+        window.fill_rectangle(30, paddle_y, 15, 80, White);
+        window.show();
     }
 }
 ```
 
 ### Hint
 
-입력으로 paddleY를 바꾼 뒤 두 개의 if로 0과 420 범위에 맞추세요.
+입력으로 paddle_y를 바꾼 뒤 두 개의 if로 0과 420 범위에 맞추세요.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(800, 500);
+    window.open(800, 500);
 
-    double paddleY = 210;
+    double paddle_y = 210;
     StopWatch watch;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        double dt = watch.Elapsed();
-        watch.Reset();
+        double dt = watch.elapsed();
+        watch.reset();
 
-        if (window.KeyDown(Key::Up))
-            paddleY = paddleY - 300 * dt;
-        if (window.KeyDown(Key::Down))
-            paddleY = paddleY + 300 * dt;
+        if (window.key_down(Key::Up))
+            paddle_y = paddle_y - 300 * dt;
+        if (window.key_down(Key::Down))
+            paddle_y = paddle_y + 300 * dt;
 
-        if (paddleY < 0) paddleY = 0;
-        if (paddleY > 420) paddleY = 420;
+        if (paddle_y < 0) paddle_y = 0;
+        if (paddle_y > 420) paddle_y = 420;
 
-        window.Clear(Black);
-        window.FillRectangle(30, paddleY, 15, 80, White);
-        window.Show();
+        window.clear(Black);
+        window.fill_rectangle(30, paddle_y, 15, 80, White);
+        window.show();
     }
 }
 ```
@@ -3442,120 +3442,120 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.SetTitle("Catch the Ball");
-    window.Open(640, 480);
+    window.set_title("Catch the Ball");
+    window.open(640, 480);
 
-    double playerX = 320;
-    double ballX = 100;
-    double ballY = 80;
-    double ballVX = 180;
-    double ballVY = 140;
+    double player_x = 320;
+    double ball_x = 100;
+    double ball_y = 80;
+    double ball_vx = 180;
+    double ball_vy = 140;
     int score = 0;
 
     StopWatch watch;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        double dt = watch.Elapsed();
-        watch.Reset();
+        double dt = watch.elapsed();
+        watch.reset();
 
-        if (window.KeyDown(Key::Left)) playerX = playerX - 250 * dt;
-        if (window.KeyDown(Key::Right)) playerX = playerX + 250 * dt;
+        if (window.key_down(Key::Left)) player_x = player_x - 250 * dt;
+        if (window.key_down(Key::Right)) player_x = player_x + 250 * dt;
 
-        ballX = ballX + ballVX * dt;
-        ballY = ballY + ballVY * dt;
+        ball_x = ball_x + ball_vx * dt;
+        ball_y = ball_y + ball_vy * dt;
 
-        if (ballX < 15)
+        if (ball_x < 15)
         {
-            ballX = 15;
-            ballVX = -ballVX;
+            ball_x = 15;
+            ball_vx = -ball_vx;
         }
 
-        if (ballX > 625)
+        if (ball_x > 625)
         {
-            ballX = 625;
-            ballVX = -ballVX;
+            ball_x = 625;
+            ball_vx = -ball_vx;
         }
 
-        if (ballY < 15)
+        if (ball_y < 15)
         {
-            ballY = 15;
-            ballVY = -ballVY;
+            ball_y = 15;
+            ball_vy = -ball_vy;
         }
 
-        if (ballY > 430 && ballY < 460 &&
-            ballX > playerX - 60 && ballX < playerX + 60)
+        if (ball_y > 430 && ball_y < 460 &&
+            ball_x > player_x - 60 && ball_x < player_x + 60)
         {
-            ballY = 430;
-            ballVY = -ballVY;
+            ball_y = 430;
+            ball_vy = -ball_vy;
             score = score + 1;
-            PlaySound(Sound::Coin);
+            play_sound(Sound::Coin);
         }
 
-        if (ballY > 500)
+        if (ball_y > 500)
         {
-            ballX = 100;
-            ballY = 80;
+            ball_x = 100;
+            ball_y = 80;
         }
 
-        window.SetTitle("Score: ", score);
-        window.Clear(Black);
-        window.FillRectangle(playerX - 60, 450, 120, 12, White);
-        window.FillCircle(ballX, ballY, 15, Cyan);
-        window.Show();
+        window.set_title("Score: ", score);
+        window.clear(Black);
+        window.fill_rectangle(player_x - 60, 450, 120, 12, White);
+        window.fill_circle(ball_x, ball_y, 15, Cyan);
+        window.show();
     }
 }
 ```
 
-좌우 키로 막대를 움직이세요. 공이 막대의 범위에 닿으면 튕기고 score가 1 증가합니다. SetTitle은 현재 점수를 창 제목에 보여 줍니다.
+좌우 키로 막대를 움직이세요. 공이 막대의 범위에 닿으면 튕기고 score가 1 증가합니다. set_title은 현재 점수를 창 제목에 보여 줍니다.
 
 놓쳤을 때는 공만 시작 위치로 돌립니다. 적중과 실패를 각각 시험하세요. 문제가 있으면 위치 갱신·조건·점수 변경 중 어느 단계인지 나누어 확인합니다.
 
 ## Exercise — score를 제목에 표시
 
-시작 코드의 paddle을 좌우 방향키로 움직여 보세요. 공이 paddle에 맞을 때만 score를 1 증가시키고 `window.SetTitle("Score: ", score)`로 창 제목에 표시하세요. paddle을 옆으로 치워 공을 놓쳤을 때에는 점수가 늘어나면 안 됩니다. 충돌 검사는 시작 코드에 제공되어 있습니다.
+시작 코드의 paddle을 좌우 방향키로 움직여 보세요. 공이 paddle에 맞을 때만 score를 1 증가시키고 `window.set_title("Score: ", score)`로 창 제목에 표시하세요. paddle을 옆으로 치워 공을 놓쳤을 때에는 점수가 늘어나면 안 됩니다. 충돌 검사는 시작 코드에 제공되어 있습니다.
 
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
     int score = 0;
-    double paddleX = 320;
-    double ballX = 320;
-    double ballY = 100;
-    double ballVY = 180;
+    double paddle_x = 320;
+    double ball_x = 320;
+    double ball_y = 100;
+    double ball_vy = 180;
     StopWatch watch;
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        double dt = watch.Elapsed();
-        watch.Reset();
-        if (window.KeyDown(Key::Left)) { paddleX = paddleX - 250 * dt; }
-        if (window.KeyDown(Key::Right)) { paddleX = paddleX + 250 * dt; }
-        if (paddleX < 70) { paddleX = 70; }
-        if (paddleX > 570) { paddleX = 570; }
-        double previousY = ballY;
-        ballY = ballY + ballVY * dt;
-        if (ballVY > 0 && previousY <= 430 && ballY >= 430 &&
-            ballX >= paddleX - 70 && ballX <= paddleX + 70)
+        double dt = watch.elapsed();
+        watch.reset();
+        if (window.key_down(Key::Left)) { paddle_x = paddle_x - 250 * dt; }
+        if (window.key_down(Key::Right)) { paddle_x = paddle_x + 250 * dt; }
+        if (paddle_x < 70) { paddle_x = 70; }
+        if (paddle_x > 570) { paddle_x = 570; }
+        double previous_y = ball_y;
+        ball_y = ball_y + ball_vy * dt;
+        if (ball_vy > 0 && previous_y <= 430 && ball_y >= 430 &&
+            ball_x >= paddle_x - 70 && ball_x <= paddle_x + 70)
         {
-            ballY = 430;
-            ballVY = -ballVY;
+            ball_y = 430;
+            ball_vy = -ball_vy;
             // Increase score only on a paddle hit.
-            PlaySound(Sound::Hit);
+            play_sound(Sound::Hit);
         }
-        if (ballY < 20) { ballY = 20; ballVY = -ballVY; }
-        if (ballY > 500) { ballY = 100; ballVY = 180; }
+        if (ball_y < 20) { ball_y = 20; ball_vy = -ball_vy; }
+        if (ball_y > 500) { ball_y = 100; ball_vy = 180; }
         // Show score in the window title.
-        window.Clear(Black);
-        window.FillRectangle(paddleX - 70, 450, 140, 10, White);
-        window.FillCircle(ballX, ballY, 20, Yellow);
-        window.Show();
+        window.clear(Black);
+        window.fill_rectangle(paddle_x - 70, 450, 140, 10, White);
+        window.fill_circle(ball_x, ball_y, 20, Yellow);
+        window.show();
     }
 }
 ```
@@ -3567,41 +3567,41 @@ score는 loop 밖에서 0으로 만들고 충돌 if 안에서 증가시키세요
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
     int score = 0;
-    double paddleX = 320;
-    double ballX = 320;
-    double ballY = 100;
-    double ballVY = 180;
+    double paddle_x = 320;
+    double ball_x = 320;
+    double ball_y = 100;
+    double ball_vy = 180;
     StopWatch watch;
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        double dt = watch.Elapsed();
-        watch.Reset();
-        if (window.KeyDown(Key::Left)) { paddleX = paddleX - 250 * dt; }
-        if (window.KeyDown(Key::Right)) { paddleX = paddleX + 250 * dt; }
-        if (paddleX < 70) { paddleX = 70; }
-        if (paddleX > 570) { paddleX = 570; }
-        double previousY = ballY;
-        ballY = ballY + ballVY * dt;
-        if (ballVY > 0 && previousY <= 430 && ballY >= 430 &&
-            ballX >= paddleX - 70 && ballX <= paddleX + 70)
+        double dt = watch.elapsed();
+        watch.reset();
+        if (window.key_down(Key::Left)) { paddle_x = paddle_x - 250 * dt; }
+        if (window.key_down(Key::Right)) { paddle_x = paddle_x + 250 * dt; }
+        if (paddle_x < 70) { paddle_x = 70; }
+        if (paddle_x > 570) { paddle_x = 570; }
+        double previous_y = ball_y;
+        ball_y = ball_y + ball_vy * dt;
+        if (ball_vy > 0 && previous_y <= 430 && ball_y >= 430 &&
+            ball_x >= paddle_x - 70 && ball_x <= paddle_x + 70)
         {
-            ballY = 430;
-            ballVY = -ballVY;
+            ball_y = 430;
+            ball_vy = -ball_vy;
             score = score + 1;
-            PlaySound(Sound::Hit);
+            play_sound(Sound::Hit);
         }
-        if (ballY < 20) { ballY = 20; ballVY = -ballVY; }
-        if (ballY > 500) { ballY = 100; ballVY = 180; }
-        window.SetTitle("Score: ", score);
-        window.Clear(Black);
-        window.FillRectangle(paddleX - 70, 450, 140, 10, White);
-        window.FillCircle(ballX, ballY, 20, Yellow);
-        window.Show();
+        if (ball_y < 20) { ball_y = 20; ball_vy = -ball_vy; }
+        if (ball_y > 500) { ball_y = 100; ball_vy = 180; }
+        window.set_title("Score: ", score);
+        window.clear(Black);
+        window.fill_rectangle(paddle_x - 70, 450, 140, 10, White);
+        window.fill_circle(ball_x, ball_y, 20, Yellow);
+        window.show();
     }
 }
 ```
@@ -3619,19 +3619,19 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {3, 7, 2, 9, 4};
     int total = 0;
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
         total = total + numbers[i];
 
-    Print("Sum: ", total);
+    print("Sum: ", total);
 }
 ```
 
-total은 0 → 3 → 10 → 12 → 21 → 25로 바뀝니다. 예상 출력은 Sum: 25입니다.
+total은 0 → 3 → 10 → 12 → 21 → 25로 바뀝니다. 예상 출력은 sum: 25입니다.
 
 아직 더한 값이 없을 때의 합은 0이므로 시작값도 0입니다. 반복문 안에서 total을 매번 0으로 만들면 누적되지 않습니다.
 
@@ -3642,7 +3642,7 @@ Array의 합계를 구한 뒤 값의 개수로 나누어 평균을 출력하세�
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {10, 20, 30, 40};
     double total = 0;
@@ -3653,20 +3653,20 @@ void SmallMain()
 
 ### Hint
 
-`double total = 0;`으로 시작하고 마지막에 `total / numbers.Length()`를 계산하세요.
+`double total = 0;`으로 시작하고 마지막에 `total / numbers.length()`를 계산하세요.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {10, 20, 30, 40};
     double total = 0;
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
         total = total + numbers[i];
 
-    Print("Average: ", total / numbers.Length());
+    print("Average: ", total / numbers.length());
 }
 ```
 
@@ -3684,27 +3684,27 @@ void SmallMain()
 **예제**
 
 ```cpp
-int CountEven(Array<int> numbers)
+int count_even(Array<int> numbers)
 {
     int count = 0;
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
         if (numbers[i] % 2 == 0)
             count = count + 1;
 
     return count;
 }
 
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {3, 8, 4, 7, 10};
-    Print("Even: ", CountEven(numbers));
+    print("Even: ", count_even(numbers));
 }
 ```
 
 `numbers[i] % 2 == 0`은 2로 나눈 나머지가 0, 즉 짝수인지 묻습니다. 8, 4, 10이 해당해 Even: 3이 나옵니다. 0도 이 조건을 만족합니다.
 
-CountEven은 배열을 매개변수로 받습니다. 지금은 Array<int> 값을 복사해서 받으며, 복사를 피하는 방법은 뒤의 참조 수업에서 배웁니다.
+count_even은 배열을 매개변수로 받습니다. 지금은 Array<int> 값을 복사해서 받으며, 복사를 피하는 방법은 뒤의 참조 수업에서 배웁니다.
 
 ## Exercise — 양수 개수 세기
 
@@ -3713,14 +3713,14 @@ Array에서 0보다 큰 값이 몇 개인지 세어 출력하세요.
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {-2, 5, 0, 8, -1, 3};
     int count = 0;
 
     // Count positive values.
 
-    Print(count);
+    print(count);
 }
 ```
 
@@ -3731,16 +3731,16 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {-2, 5, 0, 8, -1, 3};
     int count = 0;
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
         if (numbers[i] > 0)
             count = count + 1;
 
-    Print(count);
+    print(count);
 }
 ```
 
@@ -3757,16 +3757,16 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {7, 2, 9, 4, 5};
     int largest = numbers[0];
 
-    for (int i = 1; i < numbers.Length(); i = i + 1)
+    for (int i = 1; i < numbers.length(); i = i + 1)
         if (numbers[i] > largest)
             largest = numbers[i];
 
-    Print("Largest: ", largest);
+    print("Largest: ", largest);
 }
 ```
 
@@ -3781,7 +3781,7 @@ Array에서 가장 작은 값을 찾아 출력하세요.
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {8, -3, 5, 2, -1};
 
@@ -3796,16 +3796,16 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {8, -3, 5, 2, -1};
     int smallest = numbers[0];
 
-    for (int i = 1; i < numbers.Length(); i = i + 1)
+    for (int i = 1; i < numbers.length(); i = i + 1)
         if (numbers[i] < smallest)
             smallest = numbers[i];
 
-    Print(smallest);
+    print(smallest);
 }
 ```
 
@@ -3823,21 +3823,21 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {7, 2, 9, 1, 5};
-    int smallestIndex = 0;
+    int smallest_index = 0;
 
-    for (int i = 1; i < numbers.Length(); i = i + 1)
-        if (numbers[i] < numbers[smallestIndex])
-            smallestIndex = i;
+    for (int i = 1; i < numbers.length(); i = i + 1)
+        if (numbers[i] < numbers[smallest_index])
+            smallest_index = i;
 
-    Print("Smallest: ", numbers[smallestIndex]);
-    Print("Index: ", smallestIndex);
+    print("Smallest: ", numbers[smallest_index]);
+    print("Index: ", smallest_index);
 }
 ```
 
-smallestIndex는 가장 작은 원소의 위치입니다. `numbers[smallestIndex]`로 그 값을 읽습니다. 예제의 최솟값은 1, 위치는 3입니다.
+smallest_index는 가장 작은 원소의 위치입니다. `numbers[smallest_index]`로 그 값을 읽습니다. 예제의 최솟값은 1, 위치는 3입니다.
 
 값과 위치를 혼동하지 않게 변수 이름에 Index를 붙였습니다. 같은 최솟값이 여러 개면 현재의 < 비교는 먼저 만난 위치를 남깁니다.
 
@@ -3848,7 +3848,7 @@ smallestIndex는 가장 작은 원소의 위치입니다. `numbers[smallestIndex
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {4, 11, 6, 20, 9};
 
@@ -3858,22 +3858,22 @@ void SmallMain()
 
 ### Hint
 
-largestIndex를 0으로 시작하고 `numbers[i] > numbers[largestIndex]`를 비교하세요.
+largest_index를 0으로 시작하고 `numbers[i] > numbers[largest_index]`를 비교하세요.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {4, 11, 6, 20, 9};
-    int largestIndex = 0;
+    int largest_index = 0;
 
-    for (int i = 1; i < numbers.Length(); i = i + 1)
-        if (numbers[i] > numbers[largestIndex])
-            largestIndex = i;
+    for (int i = 1; i < numbers.length(); i = i + 1)
+        if (numbers[i] > numbers[largest_index])
+            largest_index = i;
 
-    Print("Value: ", numbers[largestIndex]);
-    Print("Index: ", largestIndex);
+    print("Value: ", numbers[largest_index]);
+    print("Index: ", largest_index);
 }
 ```
 
@@ -3890,19 +3890,19 @@ void SmallMain()
 **예제**
 
 ```cpp
-int Find(Array<int> numbers, int value)
+int find(Array<int> numbers, int value)
 {
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
         if (numbers[i] == value)
             return i;
 
     return -1;
 }
 
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {7, 2, 9, 4, 5};
-    Print("Index: ", Find(numbers, 9));
+    print("Index: ", find(numbers, 9));
 }
 ```
 
@@ -3917,7 +3917,7 @@ void SmallMain()
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {3, 7, 2, 7, 5, 7};
     int value = 7;
@@ -3925,7 +3925,7 @@ void SmallMain()
 
     // Find the last position.
 
-    Print(index);
+    print(index);
 }
 ```
 
@@ -3936,17 +3936,17 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {3, 7, 2, 7, 5, 7};
     int value = 7;
     int index = -1;
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
         if (numbers[i] == value)
             index = i;
 
-    Print(index);
+    print(index);
 }
 ```
 
@@ -3964,13 +3964,13 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {7, 2, 9, 4, 5};
-    int value = InputInt("Find: ");
+    int value = input_int("Find: ");
     int index = -1;
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
         if (numbers[i] == value)
         {
             index = i;
@@ -3978,9 +3978,9 @@ void SmallMain()
         }
 
     if (index == -1)
-        Print("Not found");
+        print("Not found");
     else
-        Print("Found at ", index);
+        print("Found at ", index);
 }
 ```
 
@@ -3995,37 +3995,37 @@ String에서 문자 'a'가 처음 나타나는 위치를 linear search처럼 찾
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     String text = "Small C++";
     int index = -1;
 
     // Find the first 'a'.
 
-    Print(index);
+    print(index);
 }
 ```
 
 ### Hint
 
-String도 Length와 []를 사용할 수 있으므로 Array 검색과 거의 같습니다.
+String도 length와 []를 사용할 수 있으므로 Array 검색과 거의 같습니다.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     String text = "Small C++";
     int index = -1;
 
-    for (int i = 0; i < text.Length(); i = i + 1)
+    for (int i = 0; i < text.length(); i = i + 1)
         if (text[i] == 'a')
         {
             index = i;
             break;
         }
 
-    Print(index);
+    print(index);
 }
 ```
 
@@ -4042,15 +4042,15 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {7, 2, 9, 4, 5};
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
     {
         int smallest = i;
 
-        for (int j = i + 1; j < numbers.Length(); j = j + 1)
+        for (int j = i + 1; j < numbers.length(); j = j + 1)
             if (numbers[j] < numbers[smallest])
                 smallest = j;
 
@@ -4059,8 +4059,8 @@ void SmallMain()
         numbers[smallest] = temp;
     }
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
-        Print(numbers[i]);
+    for (int i = 0; i < numbers.length(); i = i + 1)
+        print(numbers[i]);
 }
 ```
 
@@ -4075,14 +4075,14 @@ void SmallMain()
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {10, 3, 8, 1, 6};
 
     // Selection Sort here.
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
-        Print(numbers[i]);
+    for (int i = 0; i < numbers.length(); i = i + 1)
+        print(numbers[i]);
 }
 ```
 
@@ -4093,14 +4093,14 @@ Lesson의 smallest index 패턴을 그대로 적용하세요.
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {10, 3, 8, 1, 6};
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
     {
         int smallest = i;
-        for (int j = i + 1; j < numbers.Length(); j = j + 1)
+        for (int j = i + 1; j < numbers.length(); j = j + 1)
             if (numbers[j] < numbers[smallest])
                 smallest = j;
 
@@ -4109,8 +4109,8 @@ void SmallMain()
         numbers[smallest] = temp;
     }
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
-        Print(numbers[i]);
+    for (int i = 0; i < numbers.length(); i = i + 1)
+        print(numbers[i]);
 }
 ```
 
@@ -4128,15 +4128,15 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {7, 2, 9, 4, 5};
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
     {
         int largest = i;
 
-        for (int j = i + 1; j < numbers.Length(); j = j + 1)
+        for (int j = i + 1; j < numbers.length(); j = j + 1)
             if (numbers[j] > numbers[largest])
                 largest = j;
 
@@ -4145,8 +4145,8 @@ void SmallMain()
         numbers[largest] = temp;
     }
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
-        Print(numbers[i]);
+    for (int i = 0; i < numbers.length(); i = i + 1)
+        print(numbers[i]);
 }
 ```
 
@@ -4161,14 +4161,14 @@ Selection Sort를 수정해 큰 값부터 작은 값 순서로 정렬하세요.
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {10, 3, 8, 1, 6};
 
     // Sort from largest to smallest.
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
-        Print(numbers[i]);
+    for (int i = 0; i < numbers.length(); i = i + 1)
+        print(numbers[i]);
 }
 ```
 
@@ -4179,14 +4179,14 @@ smallest 대신 largest를 찾고 비교 방향을 `>`로 바꾸세요.
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {10, 3, 8, 1, 6};
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
     {
         int largest = i;
-        for (int j = i + 1; j < numbers.Length(); j = j + 1)
+        for (int j = i + 1; j < numbers.length(); j = j + 1)
             if (numbers[j] > numbers[largest])
                 largest = j;
 
@@ -4195,8 +4195,8 @@ void SmallMain()
         numbers[largest] = temp;
     }
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
-        Print(numbers[i]);
+    for (int i = 0; i < numbers.length(); i = i + 1)
+        print(numbers[i]);
 }
 ```
 
@@ -4213,25 +4213,25 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(450, 450);
+    window.open(450, 450);
 
     Array<int> numbers = {7, 2, 9, 4, 5};
 
-    window.Clear(White);
+    window.clear(White);
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
     {
         double height = numbers[i] * 30;
-        window.FillRectangle(40 + i * 70, 420 - height, 50, height, Blue);
+        window.fill_rectangle(40 + i * 70, 420 - height, 50, height, Blue);
     }
 
-    window.Show();
+    window.show();
 
-    while (window.IsOpen())
-        window.Show();
+    while (window.is_open())
+        window.show();
 }
 ```
 
@@ -4246,30 +4246,30 @@ void SmallMain()
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(450, 450);
+    window.open(450, 450);
 
     Array<int> numbers = {7, 2, 9, 4, 5};
     int current = 2;
 
-    window.Clear(White);
+    window.clear(White);
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
     {
         double height = numbers[i] * 30;
         Color color = Blue;
 
         // Make current red.
 
-        window.FillRectangle(40 + i * 70, 420 - height, 50, height, color);
+        window.fill_rectangle(40 + i * 70, 420 - height, 50, height, color);
     }
 
-    window.Show();
+    window.show();
 
-    while (window.IsOpen())
-        window.Show();
+    while (window.is_open())
+        window.show();
 }
 ```
 
@@ -4280,17 +4280,17 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(450, 450);
+    window.open(450, 450);
 
     Array<int> numbers = {7, 2, 9, 4, 5};
     int current = 2;
 
-    window.Clear(White);
+    window.clear(White);
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
     {
         double height = numbers[i] * 30;
         Color color = Blue;
@@ -4298,13 +4298,13 @@ void SmallMain()
         if (i == current)
             color = Red;
 
-        window.FillRectangle(40 + i * 70, 420 - height, 50, height, color);
+        window.fill_rectangle(40 + i * 70, 420 - height, 50, height, color);
     }
 
-    window.Show();
+    window.show();
 
-    while (window.IsOpen())
-        window.Show();
+    while (window.is_open())
+        window.show();
 }
 ```
 
@@ -4322,18 +4322,18 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(450, 450);
+    window.open(450, 450);
 
     Array<int> numbers = {7, 2, 9, 4, 5};
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
     {
         int smallest = i;
 
-        for (int j = i + 1; j < numbers.Length(); j = j + 1)
+        for (int j = i + 1; j < numbers.length(); j = j + 1)
             if (numbers[j] < numbers[smallest])
                 smallest = j;
 
@@ -4341,24 +4341,24 @@ void SmallMain()
         numbers[i] = numbers[smallest];
         numbers[smallest] = temp;
 
-        window.Clear(White);
+        window.clear(White);
 
-        for (int j = 0; j < numbers.Length(); j = j + 1)
+        for (int j = 0; j < numbers.length(); j = j + 1)
         {
             double height = numbers[j] * 30;
             Color color = Blue;
             if (j == i)
                 color = Red;
 
-            window.FillRectangle(40 + j * 70, 420 - height, 50, height, color);
+            window.fill_rectangle(40 + j * 70, 420 - height, 50, height, color);
         }
 
-        window.Show();
-        Sleep(0.5);
+        window.show();
+        sleep(0.5);
     }
 
-    while (window.IsOpen())
-        window.Show();
+    while (window.is_open())
+        window.show();
 }
 ```
 
@@ -4373,14 +4373,14 @@ Selection Sort에서 실제로 swap을 수행한 횟수를 세고 마지막에 �
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {7, 2, 9, 4, 5};
     int swaps = 0;
 
     // Sort and count real swaps.
 
-    Print("Swaps: ", swaps);
+    print("Swaps: ", swaps);
 }
 ```
 
@@ -4391,16 +4391,16 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {7, 2, 9, 4, 5};
     int swaps = 0;
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
     {
         int smallest = i;
 
-        for (int j = i + 1; j < numbers.Length(); j = j + 1)
+        for (int j = i + 1; j < numbers.length(); j = j + 1)
             if (numbers[j] < numbers[smallest])
                 smallest = j;
 
@@ -4413,7 +4413,7 @@ void SmallMain()
         }
     }
 
-    Print("Swaps: ", swaps);
+    print("Swaps: ", swaps);
 }
 ```
 
@@ -4430,10 +4430,10 @@ void SmallMain()
 **예제**
 
 ```cpp
-int BinarySearch(Array<int> numbers, int value)
+int binary_search(Array<int> numbers, int value)
 {
     int left = 0;
-    int right = numbers.Length() - 1;
+    int right = numbers.length() - 1;
 
     while (left <= right)
     {
@@ -4451,10 +4451,10 @@ int BinarySearch(Array<int> numbers, int value)
     return -1;
 }
 
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {1, 3, 5, 7, 9, 11, 13};
-    Print(BinarySearch(numbers, 11));
+    print(binary_search(numbers, 11));
 }
 ```
 
@@ -4469,7 +4469,7 @@ left와 right는 남은 범위의 양 끝입니다. 가운데보다 찾는 값�
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {4, 8, 15, 16, 23, 42};
     int value = 23;
@@ -4477,7 +4477,7 @@ void SmallMain()
 
     // Binary Search here.
 
-    Print(index);
+    print(index);
 }
 ```
 
@@ -4488,13 +4488,13 @@ left, right, middle 세 변수를 사용하고 매번 범위를 절반으로 줄
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {4, 8, 15, 16, 23, 42};
     int value = 23;
     int index = -1;
     int left = 0;
-    int right = numbers.Length() - 1;
+    int right = numbers.length() - 1;
 
     while (left <= right)
     {
@@ -4512,7 +4512,7 @@ void SmallMain()
             left = middle + 1;
     }
 
-    Print(index);
+    print(index);
 }
 ```
 
@@ -4530,20 +4530,20 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {2, 5, 8, 12, 16, 23, 38, 56};
     int value = 23;
 
     int left = 0;
-    int right = numbers.Length() - 1;
+    int right = numbers.length() - 1;
     int comparisons = 0;
 
     while (left <= right)
     {
         int middle = (left + right) / 2;
         comparisons = comparisons + 1;
-        Print("Checking ", numbers[middle]);
+        print("Checking ", numbers[middle]);
 
         if (numbers[middle] == value)
             break;
@@ -4554,7 +4554,7 @@ void SmallMain()
             left = middle + 1;
     }
 
-    Print("Comparisons: ", comparisons);
+    print("Comparisons: ", comparisons);
 }
 ```
 
@@ -4569,7 +4569,7 @@ Binary Search가 값을 찾을 때 몇 번 비교했는지 count를 추가해 �
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {1, 3, 5, 7, 9, 11, 13, 15, 17};
     int value = 17;
@@ -4577,7 +4577,7 @@ void SmallMain()
 
     // Binary Search and count comparisons.
 
-    Print("Comparisons: ", comparisons);
+    print("Comparisons: ", comparisons);
 }
 ```
 
@@ -4588,13 +4588,13 @@ while을 한 번 돌 때마다 comparisons를 1 증가시키세요.
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {1, 3, 5, 7, 9, 11, 13, 15, 17};
     int value = 17;
     int comparisons = 0;
     int left = 0;
-    int right = numbers.Length() - 1;
+    int right = numbers.length() - 1;
 
     while (left <= right)
     {
@@ -4610,7 +4610,7 @@ void SmallMain()
             left = middle + 1;
     }
 
-    Print("Comparisons: ", comparisons);
+    print("Comparisons: ", comparisons);
 }
 ```
 
@@ -4627,15 +4627,15 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> sizes = {10, 100, 1000};
 
-    for (int i = 0; i < sizes.Length(); i = i + 1)
+    for (int i = 0; i < sizes.length(); i = i + 1)
     {
         int n = sizes[i];
         int linear = n;
-        Print("n = ", n, ", linear worst case = ", linear);
+        print("n = ", n, ", linear worst case = ", linear);
     }
 }
 ```
@@ -4651,14 +4651,14 @@ void SmallMain()
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers(20);
     int comparisons = 0;
 
     // Search for 99 and count comparisons.
 
-    Print(comparisons);
+    print(comparisons);
 }
 ```
 
@@ -4669,19 +4669,19 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers(20);
     int comparisons = 0;
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
     {
         comparisons = comparisons + 1;
         if (numbers[i] == 99)
             break;
     }
 
-    Print(comparisons);
+    print(comparisons);
 }
 ```
 
@@ -4699,19 +4699,19 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int n = 1024;
     int steps = 0;
 
     while (n > 0)
     {
-        Print(n);
+        print(n);
         n = n / 2;
         steps = steps + 1;
     }
 
-    Print("Steps: ", steps);
+    print("Steps: ", steps);
 }
 ```
 
@@ -4726,14 +4726,14 @@ n=1000을 시작으로 n이 0이 될 때까지 2로 나누며 몇 단계가 필�
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int n = 1000;
     int steps = 0;
 
     // Keep dividing by 2.
 
-    Print(steps);
+    print(steps);
 }
 ```
 
@@ -4744,7 +4744,7 @@ while 안에서 `n = n / 2`와 count 증가를 함께 하세요.
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int n = 1000;
     int steps = 0;
@@ -4755,7 +4755,7 @@ void SmallMain()
         steps = steps + 1;
     }
 
-    Print(steps);
+    print(steps);
 }
 ```
 
@@ -4772,7 +4772,7 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {8, 3, 12, 5, 10};
 
@@ -4786,7 +4786,7 @@ void SmallMain()
         second = temp;
     }
 
-    for (int i = 2; i < numbers.Length(); i = i + 1)
+    for (int i = 2; i < numbers.length(); i = i + 1)
     {
         if (numbers[i] > largest)
         {
@@ -4799,7 +4799,7 @@ void SmallMain()
         }
     }
 
-    Print("Second largest: ", second);
+    print("Second largest: ", second);
 }
 ```
 
@@ -4814,7 +4814,7 @@ void SmallMain()
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {8, 3, 12, 5, 10};
 
@@ -4829,7 +4829,7 @@ smallest와 second를 기억하고, 새 값이 smallest보다 작을 때 두 값
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {8, 3, 12, 5, 10};
 
@@ -4843,7 +4843,7 @@ void SmallMain()
         second = temp;
     }
 
-    for (int i = 2; i < numbers.Length(); i = i + 1)
+    for (int i = 2; i < numbers.length(); i = i + 1)
     {
         if (numbers[i] < smallest)
         {
@@ -4856,7 +4856,7 @@ void SmallMain()
         }
     }
 
-    Print(second);
+    print(second);
 }
 ```
 
@@ -4874,23 +4874,23 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {4, 9, 2, 9, 7};
 
     int largest = numbers[0];
-    int countLargest = 0;
+    int count_largest = 0;
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
         if (numbers[i] > largest)
             largest = numbers[i];
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
         if (numbers[i] == largest)
-            countLargest = countLargest + 1;
+            count_largest = count_largest + 1;
 
-    Print("Largest: ", largest);
-    Print("How many: ", countLargest);
+    print("Largest: ", largest);
+    print("How many: ", count_largest);
 }
 ```
 
@@ -4905,7 +4905,7 @@ Array의 가장 큰 값을 먼저 찾고, 그 값이 몇 번 나타나는지 두
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {5, 9, 2, 9, 9, 4};
 
@@ -4920,23 +4920,23 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {5, 9, 2, 9, 9, 4};
     int largest = numbers[0];
 
-    for (int i = 1; i < numbers.Length(); i = i + 1)
+    for (int i = 1; i < numbers.length(); i = i + 1)
         if (numbers[i] > largest)
             largest = numbers[i];
 
     int count = 0;
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
         if (numbers[i] == largest)
             count = count + 1;
 
-    Print("Largest: ", largest);
-    Print("Count: ", count);
+    print("Largest: ", largest);
+    print("Count: ", count);
 }
 ```
 
@@ -4953,22 +4953,22 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     File file;
 
-    file.Open("score.txt", FileMode::Write);
-    file.Print("Alex");
-    file.Print(1200);
-    file.Close();
+    file.open("score.txt", FileMode::Write);
+    file.print("Alex");
+    file.print(1200);
+    file.close();
 
-    Print("Saved score.txt");
+    print("Saved score.txt");
 }
 ```
 
 소스를 저장한 뒤 실행하세요. score.txt에 Alex와 1200을 한 줄씩 기록합니다. FileMode::Write는 새로 쓰는 모드라서 기존 내용을 지웁니다. 직접 만든 연습 파일을 쓰세요.
 
-Open → 쓰기 → Close 순서입니다. 상대 경로의 파일은 보통 저장한 소스 폴더에 생깁니다. 메모장으로 열어 두 줄을 확인하세요.
+open → 쓰기 → close 순서입니다. 상대 경로의 파일은 보통 저장한 소스 폴더에 생깁니다. 메모장으로 열어 두 줄을 확인하세요.
 
 ## Exercise — 이름과 나이 저장
 
@@ -4977,7 +4977,7 @@ Open → 쓰기 → Close 순서입니다. 상대 경로의 파일은 보통 저
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     File file;
 
@@ -4987,21 +4987,21 @@ void SmallMain()
 
 ### Hint
 
-Write mode로 열고 `file.Print`를 두 번 사용하세요.
+write mode로 열고 `file.print`를 두 번 사용하세요.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     File file;
 
-    file.Open("profile.txt", FileMode::Write);
-    file.Print("Alex");
-    file.Print(12);
-    file.Close();
+    file.open("profile.txt", FileMode::Write);
+    file.print("Alex");
+    file.print(12);
+    file.close();
 
-    Print("Saved");
+    print("Saved");
 }
 ```
 
@@ -5019,24 +5019,24 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     File file;
 
-    file.Open("score.txt");
+    file.open("score.txt");
 
-    String name = file.Input();
-    int score = file.InputInt();
+    String name = file.input();
+    int score = file.input_int();
 
-    file.Close();
+    file.close();
 
-    Print(name, "'s score: ", score);
+    print(name, "'s score: ", score);
 }
 ```
 
 먼저 앞 수업 예제로 score.txt를 만드세요. 이번 소스도 같은 폴더에 저장해야 같은 파일을 읽습니다.
 
-Open의 기본 모드는 읽기입니다. Input은 첫 줄을 문자열로, InputInt는 둘째 줄을 정수로 읽습니다. Alex's score: 1200이 나오는지 보세요. 오류가 나면 파일 위치와 줄 내용을 확인하세요.
+open의 기본 모드는 읽기입니다. input은 첫 줄을 문자열로, input_int는 둘째 줄을 정수로 읽습니다. Alex's score: 1200이 나오는지 보세요. 오류가 나면 파일 위치와 줄 내용을 확인하세요.
 
 ## Exercise — high score 저장하고 읽기
 
@@ -5045,7 +5045,7 @@ Open의 기본 모드는 읽기입니다. Input은 첫 줄을 문자열로, Inpu
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     File file;
 
@@ -5055,24 +5055,24 @@ void SmallMain()
 
 ### Hint
 
-Write/Close 후 다시 Open하고 `InputInt()`를 사용하세요.
+write/close 후 다시 open하고 `input_int()`를 사용하세요.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     File file;
 
-    file.Open("highscore.txt", FileMode::Write);
-    file.Print(950);
-    file.Close();
+    file.open("highscore.txt", FileMode::Write);
+    file.print(950);
+    file.close();
 
-    file.Open("highscore.txt");
-    int score = file.InputInt();
-    file.Close();
+    file.open("highscore.txt");
+    int score = file.input_int();
+    file.close();
 
-    Print("High score: ", score);
+    print("High score: ", score);
 }
 ```
 
@@ -5089,17 +5089,17 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     File file;
 
-    file.Open("save.dat", FileMode::WriteBinary);
-    file.WriteInt(3);
-    file.WriteInt(1250);
-    file.WriteReal(42.5);
-    file.Close();
+    file.open("save.dat", FileMode::WriteBinary);
+    file.write_int(3);
+    file.write_int(1250);
+    file.write_real(42.5);
+    file.close();
 
-    Print("Binary save written");
+    print("Binary save written");
 }
 ```
 
@@ -5109,16 +5109,16 @@ WriteBinary로 열고 정수 두 개, 실수 한 개를 순서대로 씁니다. 
 
 ## Exercise — 게임 상태 저장
 
-`game.dat`에 level=5, score=2300, playTime=18.75를 binary로 저장하세요.
+`game.dat`에 level=5, score=2300, play_time=18.75를 binary로 저장하세요.
 
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int level = 5;
     int score = 2300;
-    double playTime = 18.75;
+    double play_time = 18.75;
 
     File file;
 
@@ -5128,25 +5128,25 @@ void SmallMain()
 
 ### Hint
 
-WriteBinary mode에서 WriteInt 두 번, WriteReal 한 번을 사용하세요.
+WriteBinary mode에서 write_int 두 번, write_real 한 번을 사용하세요.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int level = 5;
     int score = 2300;
-    double playTime = 18.75;
+    double play_time = 18.75;
 
     File file;
-    file.Open("game.dat", FileMode::WriteBinary);
-    file.WriteInt(level);
-    file.WriteInt(score);
-    file.WriteReal(playTime);
-    file.Close();
+    file.open("game.dat", FileMode::WriteBinary);
+    file.write_int(level);
+    file.write_int(score);
+    file.write_real(play_time);
+    file.close();
 
-    Print("Saved");
+    print("Saved");
 }
 ```
 
@@ -5164,25 +5164,25 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     File file;
 
-    file.Open("save.dat", FileMode::ReadBinary);
+    file.open("save.dat", FileMode::ReadBinary);
 
-    int level = file.ReadInt();
-    int score = file.ReadInt();
-    double playTime = file.ReadReal();
+    int level = file.read_int();
+    int score = file.read_int();
+    double play_time = file.read_real();
 
-    file.Close();
+    file.close();
 
-    Print("Level: ", level);
-    Print("Score: ", score);
-    Print("Play time: ", playTime);
+    print("Level: ", level);
+    print("Score: ", score);
+    print("Play time: ", play_time);
 }
 ```
 
-앞 수업으로 save.dat를 만든 뒤 같은 소스 폴더에서 실행하세요. ReadInt, ReadInt, ReadReal로 읽어 3, 1250, 42.5를 복원합니다.
+앞 수업으로 save.dat를 만든 뒤 같은 소스 폴더에서 실행하세요. read_int, read_int, read_real로 읽어 3, 1250, 42.5를 복원합니다.
 
 바이너리가 언제나 더 좋은 것은 아닙니다. 사람이 확인하거나 오래 교환할 데이터에는 형식과 호환성을 따로 설계해야 합니다.
 
@@ -5193,7 +5193,7 @@ void SmallMain()
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     File file;
 
@@ -5203,27 +5203,27 @@ void SmallMain()
 
 ### Hint
 
-쓰기와 읽기 사이에 Close하고, 읽을 때 같은 타입과 순서를 사용하세요.
+쓰기와 읽기 사이에 close하고, 읽을 때 같은 타입과 순서를 사용하세요.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     File file;
 
-    file.Open("state.dat", FileMode::WriteBinary);
-    file.WriteInt(7);
-    file.WriteReal(3.5);
-    file.Close();
+    file.open("state.dat", FileMode::WriteBinary);
+    file.write_int(7);
+    file.write_real(3.5);
+    file.close();
 
-    file.Open("state.dat", FileMode::ReadBinary);
-    int number = file.ReadInt();
-    double value = file.ReadReal();
-    file.Close();
+    file.open("state.dat", FileMode::ReadBinary);
+    int number = file.read_int();
+    double value = file.read_real();
+    file.close();
 
-    Print(number);
-    Print(value);
+    print(number);
+    print(value);
 }
 ```
 
@@ -5246,14 +5246,14 @@ struct Player
     int score;
 };
 
-void SmallMain()
+void small_main()
 {
     Player player;
 
     player.name = "Alex";
     player.score = 1200;
 
-    Print(player.name, ": ", player.score);
+    print(player.name, ": ", player.score);
 }
 ```
 
@@ -5275,13 +5275,13 @@ struct Point
     double y;
 };
 
-void SmallMain()
+void small_main()
 {
     Point point;
     point.x = 3.5;
     point.y = 7.0;
 
-    Print(point.x, ", ", point.y);
+    print(point.x, ", ", point.y);
 }
 ```
 
@@ -5298,13 +5298,13 @@ struct Point
     double y;
 };
 
-void SmallMain()
+void small_main()
 {
     Point point;
     point.x = 3.5;
     point.y = 7.0;
 
-    Print(point.x, ", ", point.y);
+    print(point.x, ", ", point.y);
 }
 ```
 
@@ -5328,7 +5328,7 @@ struct Player
     int score;
 };
 
-void SmallMain()
+void small_main()
 {
     Array<Player> players = {
         {"Alex", 800},
@@ -5338,11 +5338,11 @@ void SmallMain()
 
     int best = 0;
 
-    for (int i = 1; i < players.Length(); i = i + 1)
+    for (int i = 1; i < players.length(); i = i + 1)
         if (players[i].score > players[best].score)
             best = i;
 
-    Print("Winner: ", players[best].name);
+    print("Winner: ", players[best].name);
 }
 ```
 
@@ -5363,7 +5363,7 @@ struct Player
     int score;
 };
 
-void SmallMain()
+void small_main()
 {
     Array<Player> players = {
         {"A", 10},
@@ -5388,7 +5388,7 @@ struct Player
     int score;
 };
 
-void SmallMain()
+void small_main()
 {
     Array<Player> players = {
         {"A", 10},
@@ -5398,11 +5398,11 @@ void SmallMain()
 
     int best = 0;
 
-    for (int i = 1; i < players.Length(); i = i + 1)
+    for (int i = 1; i < players.length(); i = i + 1)
         if (players[i].score > players[best].score)
             best = i;
 
-    Print(players[best].name);
+    print(players[best].name);
 }
 ```
 
@@ -5422,12 +5422,12 @@ void SmallMain()
 class Counter
 {
 public:
-    void AddOne()
+    void add_one()
     {
         value = value + 1;
     }
 
-    int Value()
+    int value()
     {
         return value;
     }
@@ -5436,24 +5436,24 @@ private:
     int value = 0;
 };
 
-void SmallMain()
+void small_main()
 {
     Counter counter;
 
-    counter.AddOne();
-    counter.AddOne();
+    counter.add_one();
+    counter.add_one();
 
-    Print(counter.Value());
+    print(counter.value());
 }
 ```
 
-Counter 객체는 자신이 센 값 value를 가집니다. AddOne을 두 번 호출하고 Value를 읽으면 2입니다.
+Counter 객체는 자신이 센 값 value를 가집니다. add_one을 두 번 호출하고 value를 읽으면 2입니다.
 
 public은 사용하는 쪽에 공개한 부분, private은 바깥에서 직접 접근하지 못하게 한 부분입니다. String이나 Window도 데이터와 관련 기능을 가진 객체로 사용해 왔습니다. 이번에는 생성자나 상속까지 배우지 않습니다.
 
-## Exercise — Counter에 Reset 추가
+## Exercise — Counter에 reset 추가
 
-Counter class에 값을 0으로 만드는 public `Reset()`을 추가하고 동작을 확인하세요.
+Counter class에 값을 0으로 만드는 public `reset()`을 추가하고 동작을 확인하세요.
 
 **연습 시작 코드**
 
@@ -5461,17 +5461,17 @@ Counter class에 값을 0으로 만드는 public `Reset()`을 추가하고 동�
 class Counter
 {
 public:
-    void AddOne()
+    void add_one()
     {
         value = value + 1;
     }
 
-    void Reset()
+    void reset()
     {
         // Reset value.
     }
 
-    int Value()
+    int value()
     {
         return value;
     }
@@ -5480,19 +5480,19 @@ private:
     int value = 0;
 };
 
-void SmallMain()
+void small_main()
 {
     Counter counter;
-    counter.AddOne();
-    counter.AddOne();
-    counter.Reset();
-    Print(counter.Value());
+    counter.add_one();
+    counter.add_one();
+    counter.reset();
+    print(counter.value());
 }
 ```
 
 ### Hint
 
-Reset 안에서 private value에 0을 대입하세요.
+reset 안에서 private value에 0을 대입하세요.
 
 **정답**
 
@@ -5500,17 +5500,17 @@ Reset 안에서 private value에 0을 대입하세요.
 class Counter
 {
 public:
-    void AddOne()
+    void add_one()
     {
         value = value + 1;
     }
 
-    void Reset()
+    void reset()
     {
         value = 0;
     }
 
-    int Value()
+    int value()
     {
         return value;
     }
@@ -5519,13 +5519,13 @@ private:
     int value = 0;
 };
 
-void SmallMain()
+void small_main()
 {
     Counter counter;
-    counter.AddOne();
-    counter.AddOne();
-    counter.Reset();
-    Print(counter.Value());
+    counter.add_one();
+    counter.add_one();
+    counter.reset();
+    print(counter.value());
 }
 ```
 
@@ -5543,46 +5543,46 @@ void SmallMain()
 **예제**
 
 ```cpp
-void AddOne(int x)
+void add_one(int x)
 {
     x = x + 1;
-    Print("Inside: ", x);
+    print("Inside: ", x);
 }
 
-void SmallMain()
+void small_main()
 {
     int n = 10;
 
-    AddOne(n);
+    add_one(n);
 
-    Print("Outside: ", n);
+    print("Outside: ", n);
 }
 ```
 
-먼저 예제를 실행하면 Inside: 11, Outside: 10입니다. `AddOne(int x)`를 `AddOne(int& x)`로 바꾸어 다시 실행하세요. 이번에는 둘 다 11입니다.
+먼저 예제를 실행하면 Inside: 11, Outside: 10입니다. `add_one(int x)`를 `add_one(int& x)`로 바꾸어 다시 실행하세요. 이번에는 둘 다 11입니다.
 
 처음에는 x가 복사본이었고, &를 붙인 뒤에는 n의 다른 이름이기 때문입니다. 원본을 바꾸겠다는 의도가 있을 때 사용합니다.
 
-## Exercise — Swap 만들기
+## Exercise — swap 만들기
 
-두 int의 원래 값을 서로 바꾸는 `Swap(int& a, int& b)` 함수를 만드세요.
+두 int의 원래 값을 서로 바꾸는 `swap(int& a, int& b)` 함수를 만드세요.
 
 **연습 시작 코드**
 
 ```cpp
-void Swap(int& a, int& b)
+void swap(int& a, int& b)
 {
     // Swap the original values.
 }
 
-void SmallMain()
+void small_main()
 {
     int x = 3;
     int y = 7;
 
-    Swap(x, y);
+    swap(x, y);
 
-    Print(x, ", ", y);
+    print(x, ", ", y);
 }
 ```
 
@@ -5593,21 +5593,21 @@ temp에 a를 잠깐 저장한 뒤 a=b, b=temp 순서로 바꾸세요.
 **정답**
 
 ```cpp
-void Swap(int& a, int& b)
+void swap(int& a, int& b)
 {
     int temp = a;
     a = b;
     b = temp;
 }
 
-void SmallMain()
+void small_main()
 {
     int x = 3;
     int y = 7;
 
-    Swap(x, y);
+    swap(x, y);
 
-    Print(x, ", ", y);
+    print(x, ", ", y);
 }
 ```
 
@@ -5625,50 +5625,50 @@ void SmallMain()
 **예제**
 
 ```cpp
-int Sum(const Array<int>& numbers)
+int sum(const Array<int>& numbers)
 {
     int total = 0;
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
         total = total + numbers[i];
 
     return total;
 }
 
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {3, 7, 2, 9, 4};
 
-    Print("Sum: ", Sum(numbers));
+    print("Sum: ", sum(numbers));
 }
 ```
 
-`const Array<int>& numbers`의 &는 원본 참조, const는 읽기 전용입니다. 출력은 Sum: 25입니다.
+`const Array<int>& numbers`의 &는 원본 참조, const는 읽기 전용입니다. 출력은 sum: 25입니다.
 
 배열 전체를 복사할 필요 없이 합계를 구합니다. 값을 바꾸려 하면 컴파일 오류입니다. 앞에서 쓴 Array<int> 매개변수도 올바르지만 배열이 크면 복사 비용이 커질 수 있습니다.
 
-## Exercise — FindLargest 개선하기
+## Exercise — find_largest 개선하기
 
-앞에서 배운 `FindLargest(Array<int> numbers)`를 `const Array<int>&`를 사용하도록 바꾸세요. 함수는 Array를 수정하지 않습니다.
+앞에서 배운 `find_largest(Array<int> numbers)`를 `const Array<int>&`를 사용하도록 바꾸세요. 함수는 Array를 수정하지 않습니다.
 
 **연습 시작 코드**
 
 ```cpp
-int FindLargest(Array<int> numbers)
+int find_largest(Array<int> numbers)
 {
     int largest = numbers[0];
 
-    for (int i = 1; i < numbers.Length(); i = i + 1)
+    for (int i = 1; i < numbers.length(); i = i + 1)
         if (numbers[i] > largest)
             largest = numbers[i];
 
     return largest;
 }
 
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {4, 12, 3, 9};
-    Print(FindLargest(numbers));
+    print(find_largest(numbers));
 }
 ```
 
@@ -5679,21 +5679,21 @@ parameter만 `const Array<int>& numbers`로 바꾸고 나머지 알고리즘은 
 **정답**
 
 ```cpp
-int FindLargest(const Array<int>& numbers)
+int find_largest(const Array<int>& numbers)
 {
     int largest = numbers[0];
 
-    for (int i = 1; i < numbers.Length(); i = i + 1)
+    for (int i = 1; i < numbers.length(); i = i + 1)
         if (numbers[i] > largest)
             largest = numbers[i];
 
     return largest;
 }
 
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {4, 12, 3, 9};
-    Print(FindLargest(numbers));
+    print(find_largest(numbers));
 }
 ```
 
@@ -5710,15 +5710,15 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {8, 3, 12, 5};
 
     int smallest = std::min(8, 3);
     int largest = std::max(8, 12);
 
-    Print("Min: ", smallest);
-    Print("Max: ", largest);
+    print("Min: ", smallest);
+    print("Max: ", largest);
 }
 ```
 
@@ -5733,7 +5733,7 @@ std::는 표준 라이브러리에 속한 이름이라는 표시입니다. 지�
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     // Print the smaller and larger values using std::min and std::max.
 }
@@ -5741,15 +5741,15 @@ void SmallMain()
 
 ### Hint
 
-`Print(std::min(17, 42));`처럼 표준 함수를 Print 안에서도 바로 사용할 수 있습니다.
+`print(std::min(17, 42));`처럼 표준 함수를 print 안에서도 바로 사용할 수 있습니다.
 
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    Print(std::min(17, 42));
-    Print(std::max(17, 42));
+    print(std::min(17, 42));
+    print(std::max(17, 42));
 }
 ```
 
@@ -5767,13 +5767,13 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     int a = -12;
     int b = 7;
 
-    Print("Absolute: ", std::abs(a));
-    Print("Smaller: ", std::min(a, b));
+    print("Absolute: ", std::abs(a));
+    print("Smaller: ", std::min(a, b));
 }
 ```
 
@@ -5788,7 +5788,7 @@ void SmallMain()
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     // Use a Standard Library function.
 }
@@ -5801,9 +5801,9 @@ void SmallMain()
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    Print(std::abs(-25));
+    print(std::abs(-25));
 }
 ```
 
@@ -5820,19 +5820,19 @@ void SmallMain()
 **예제**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     std::string text = "Hello";
     std::vector<int> numbers = {3, 7, 2, 9};
 
-    Print(text);
-    Print("Characters: ", text.size());
-    Print("Numbers: ", numbers.size());
-    Print("First number: ", numbers[0]);
+    print(text);
+    print("Characters: ", text.size());
+    print("Numbers: ", numbers.size());
+    print("First number: ", numbers[0]);
 }
 ```
 
-길이를 묻는 이름이 Length() 대신 size()입니다. 예제는 Hello, Characters: 5, Numbers: 4, First number: 3을 출력합니다.
+길이를 묻는 이름이 length() 대신 size()입니다. 예제는 Hello, Characters: 5, Numbers: 4, First number: 3을 출력합니다.
 
 대괄호의 위치는 여전히 0부터입니다. 표준 컨테이너의 []는 Small처럼 범위 오류를 알려 준다고 기대하면 안 됩니다.
 
@@ -5843,7 +5843,7 @@ void SmallMain()
 **연습 시작 코드**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     std::vector<int> numbers = {5, 10};
 
@@ -5858,13 +5858,13 @@ range-based for를 쓰면 `for (int value : numbers)`로 모든 값을 볼 수 �
 **정답**
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     std::vector<int> numbers = {5, 10};
     numbers.push_back(15);
 
     for (int value : numbers)
-        Print(value);
+        print(value);
 }
 ```
 
@@ -5882,7 +5882,7 @@ std::vector는 원소를 뒤에 추가할 수 있습니다. **범위 기반 for*
 **예제**
 
 ```cpp
-int Sum(const std::vector<int>& numbers)
+int sum(const std::vector<int>& numbers)
 {
     int total = 0;
 
@@ -5892,36 +5892,36 @@ int Sum(const std::vector<int>& numbers)
     return total;
 }
 
-void SmallMain()
+void small_main()
 {
     std::vector<int> numbers = {10, 20, 30};
     numbers.push_back(40);
 
-    Print("Sum: ", Sum(numbers));
+    print("Sum: ", sum(numbers));
 }
 ```
 
-push_back(40)은 뒤에 40을 붙입니다. `for (int value : numbers)`는 각 원소 값을 value로 받아 합산합니다. 결과는 Sum: 100입니다.
+push_back(40)은 뒤에 40을 붙입니다. `for (int value : numbers)`는 각 원소 값을 value로 받아 합산합니다. 결과는 sum: 100입니다.
 
 이 형태의 value는 복사한 정수이므로 value를 바꿔도 배열 원소가 바뀌지 않습니다. size()의 타입은 int와 다를 수 있어 큰 크기를 다룰 때는 타입도 확인해야 합니다.
 
 ## Exercise — std::string 함수
 
-`const std::string&`을 받아 길이를 돌려주는 `TextLength` 함수를 만들고 "Small"의 길이를 출력하세요.
+`const std::string&`을 받아 길이를 돌려주는 `text_length` 함수를 만들고 "Small"의 길이를 출력하세요.
 
 **연습 시작 코드**
 
 ```cpp
-int TextLength(const std::string& text)
+int text_length(const std::string& text)
 {
     // Return the length.
     return 0;
 }
 
-void SmallMain()
+void small_main()
 {
     std::string text = "Small";
-    Print(TextLength(text));
+    print(text_length(text));
 }
 ```
 
@@ -5932,15 +5932,15 @@ void SmallMain()
 **정답**
 
 ```cpp
-int TextLength(const std::string& text)
+int text_length(const std::string& text)
 {
     return static_cast<int>(text.size());
 }
 
-void SmallMain()
+void small_main()
 {
     std::string text = "Small";
-    Print(TextLength(text));
+    print(text_length(text));
 }
 ```
 
@@ -5960,7 +5960,7 @@ void SmallMain()
 #include <iostream>
 #include <string>
 
-void SmallMain()
+void small_main()
 {
     std::string name;
 
@@ -5973,18 +5973,18 @@ void SmallMain()
 
 iostream은 표준 입출력, string은 std::string을 위해 포함합니다. std::cout << 값은 출력, std::getline(std::cin, name)은 한 줄 입력입니다. Alex를 넣으면 Hello, Alex가 나옵니다.
 
-이번에는 SmallMain을 유지하며 입출력 도구만 바꿉니다.
+이번에는 small_main을 유지하며 입출력 도구만 바꿉니다.
 
 ## Exercise — std::cout 사용하기
 
-`#include <iostream>`을 적고 `std::cout`으로 `Hello C++`과 줄바꿈을 출력하세요. `SmallMain()`은 아직 그대로 사용합니다.
+`#include <iostream>`을 적고 `std::cout`으로 `Hello C++`과 줄바꿈을 출력하세요. `small_main()`은 아직 그대로 사용합니다.
 
 **연습 시작 코드**
 
 ```cpp
 #include <iostream>
 
-void SmallMain()
+void small_main()
 {
     // Print Hello C++ with std::cout.
 }
@@ -5999,7 +5999,7 @@ void SmallMain()
 ```cpp
 #include <iostream>
 
-void SmallMain()
+void small_main()
 {
     std::cout << "Hello C++" << "\n";
 }
@@ -6022,19 +6022,19 @@ void SmallMain()
 #include <iostream>
 #include <string>
 
-void SmallMain()
+void small_main()
 {
-    Small::String smallText = "Small namespace";
-    Small::Print(smallText);
+    Small::String small_text = "Small namespace";
+    Small::print(small_text);
 
-    std::string standardText = "Standard namespace";
-    std::cout << standardText << "\n";
+    std::string standard_text = "Standard namespace";
+    std::cout << standard_text << "\n";
 }
 ```
 
-Small::Print와 std::cout은 서로 다른 도구입니다. 예제는 Small namespace와 Standard namespace를 차례로 출력합니다.
+Small::print와 std::cout은 서로 다른 도구입니다. 예제는 Small namespace와 Standard namespace를 차례로 출력합니다.
 
-이름 공간은 객체가 아닙니다. window.Show()의 점과 Small::Print의 ::를 구분하세요.
+이름 공간은 객체가 아닙니다. window.show()의 점과 Small::print의 ::를 구분하세요.
 
 ## Exercise — 표준 입출력으로 이름 읽기
 
@@ -6046,7 +6046,7 @@ Small::Print와 std::cout은 서로 다른 도구입니다. 예제는 Small name
 #include <iostream>
 #include <string>
 
-void SmallMain()
+void small_main()
 {
     std::string name;
 
@@ -6064,7 +6064,7 @@ void SmallMain()
 #include <iostream>
 #include <string>
 
-void SmallMain()
+void small_main()
 {
     std::string name;
 
@@ -6080,7 +6080,7 @@ void SmallMain()
 
 ## 이번에 배울 것
 
-**main**은 C++ 프로그램의 시작 함수입니다. 지금까지는 Small이 준비한 main이 SmallMain을 호출했습니다. 이제 준비와 종료까지 직접 적습니다.
+**main**은 C++ 프로그램의 시작 함수입니다. 지금까지는 Small이 준비한 main이 small_main을 호출했습니다. 이제 준비와 종료까지 직접 적습니다.
 
 ## 실행해 보기
 
@@ -6091,22 +6091,22 @@ void SmallMain()
 
 int main()
 {
-    Small::InitializeSmall();
+    Small::initialize_small();
 
-    Small::Print("Hello from main!");
+    Small::print("Hello from main!");
 
-    Small::ShutdownSmall();
+    Small::shutdown_small();
     return 0;
 }
 ```
 
 이 IDE에서 직접 main을 쓰면 자동 헤더·이름 공간 지원도 끝납니다. 그래서 small.h를 포함하고 Small::를 씁니다.
 
-InitializeSmall → 내 작업 → ShutdownSmall 순서입니다. return 0은 정상 종료를 나타냅니다. Hello from main!이 출력되는지 확인하세요.
+initialize_small → 내 작업 → shutdown_small 순서입니다. return 0은 정상 종료를 나타냅니다. Hello from main!이 출력되는지 확인하세요.
 
 ## Exercise — main으로 옮기기
 
-`SmallMain` Hello 프로그램을 진짜 `main()`으로 바꾸세요. `#include <small.h>`를 직접 적고 `Small::InitializeSmall()`, `Small::Print`, `Small::ShutdownSmall()`을 사용하세요.
+`small_main` Hello 프로그램을 진짜 `main()`으로 바꾸세요. `#include <small.h>`를 직접 적고 `Small::initialize_small()`, `Small::print`, `Small::shutdown_small()`을 사용하세요.
 
 **연습 시작 코드**
 
@@ -6121,7 +6121,7 @@ int main()
 
 ### Hint
 
-함수 이름을 main으로 바꾸는 것만이 아니라 return type을 `int`로 하고 끝나기 전에 `Small::ShutdownSmall();`을 호출한 뒤 `return 0;`을 적어 보세요.
+함수 이름을 main으로 바꾸는 것만이 아니라 return type을 `int`로 하고 끝나기 전에 `Small::shutdown_small();`을 호출한 뒤 `return 0;`을 적어 보세요.
 
 **정답**
 
@@ -6130,11 +6130,11 @@ int main()
 
 int main()
 {
-    Small::InitializeSmall();
+    Small::initialize_small();
 
-    Small::Print("Hello from main!");
+    Small::print("Hello from main!");
 
-    Small::ShutdownSmall();
+    Small::shutdown_small();
     return 0;
 }
 ```
@@ -6157,32 +6157,32 @@ int main()
 
 int main(int argc, char* argv[])
 {
-    Small::InitializeSmall(argc, argv);
+    Small::initialize_small(argc, argv);
 
     {
         Small::Window window;
-        window.SetTitle("Real main()");
-        window.Open(500, 300);
+        window.set_title("Real main()");
+        window.open(500, 300);
 
-        while (window.IsOpen())
+        while (window.is_open())
         {
-            window.Clear(Small::Black);
-            window.DrawText(30, 80, "This is ordinary C++ main()");
-            window.Show();
+            window.clear(Small::Black);
+            window.draw_text(30, 80, "This is ordinary C++ main()");
+            window.show();
         }
     } // Destroy Window before shutting down the runtime.
-    Small::ShutdownSmall();
+    Small::shutdown_small();
     return 0;
 }
 ```
 
-안쪽 중괄호 범위가 끝나면 Window 객체가 정리됩니다. 그 뒤 ShutdownSmall을 호출합니다. 창을 닫는 것과 객체 수명이 끝나는 것은 다릅니다.
+안쪽 중괄호 범위가 끝나면 Window 객체가 정리됩니다. 그 뒤 shutdown_small을 호출합니다. 창을 닫는 것과 객체 수명이 끝나는 것은 다릅니다.
 
 argc와 argv는 명령줄로 전달된 정보를 받는 형태입니다. 이번은 선택 심화입니다. 포인터 표기를 지금 모두 외울 필요는 없습니다.
 
 ## Exercise — argc와 argv 넘기기
 
-`#include <small.h>`와 `int main(int argc, char* argv[])`를 작성하고 argc, argv를 `Small::InitializeSmall`에 전달한 뒤 argc를 출력하고 프로그램을 끝내기 전에 `Small::ShutdownSmall()`을 호출하세요.
+`#include <small.h>`와 `int main(int argc, char* argv[])`를 작성하고 argc, argv를 `Small::initialize_small`에 전달한 뒤 argc를 출력하고 프로그램을 끝내기 전에 `Small::shutdown_small()`을 호출하세요.
 
 **연습 시작 코드**
 
@@ -6200,7 +6200,7 @@ int main(int argc, char* argv[])
 
 ### Hint
 
-`Small::InitializeSmall(argc, argv);` 다음에 `Small::Print("argc: ", argc);`를 사용하고 `return 0;` 전에 `Small::ShutdownSmall();`을 호출하세요.
+`Small::initialize_small(argc, argv);` 다음에 `Small::print("argc: ", argc);`를 사용하고 `return 0;` 전에 `Small::shutdown_small();`을 호출하세요.
 
 **정답**
 
@@ -6209,11 +6209,11 @@ int main(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-    Small::InitializeSmall(argc, argv);
+    Small::initialize_small(argc, argv);
 
-    Small::Print("argc: ", argc);
+    Small::print("argc: ", argc);
 
-    Small::ShutdownSmall();
+    Small::shutdown_small();
     return 0;
 }
 ```
@@ -6247,9 +6247,9 @@ int main()
 }
 ```
 
-SmallMain 대신 main, String 대신 std::string, Input 대신 getline, Print 대신 cout을 씁니다. Alex를 입력하면 Hello, Alex가 나옵니다.
+small_main 대신 main, String 대신 std::string, input 대신 getline, print 대신 cout을 씁니다. Alex를 입력하면 Hello, Alex가 나옵니다.
 
-Small 기능을 쓰지 않으므로 small.h나 InitializeSmall, ShutdownSmall도 필요 없습니다.
+Small 기능을 쓰지 않으므로 small.h나 initialize_small, shutdown_small도 필요 없습니다.
 
 ## Exercise — Small 없는 합계
 
@@ -6313,7 +6313,7 @@ int main()
 #include <iostream>
 #include <vector>
 
-int Sum(const std::vector<int>& numbers)
+int sum(const std::vector<int>& numbers)
 {
     int total = 0;
 
@@ -6327,19 +6327,19 @@ int main()
 {
     std::vector<int> numbers = {3, 7, 2, 9, 4};
 
-    std::cout << "Sum: " << Sum(numbers) << "\n";
+    std::cout << "Sum: " << sum(numbers) << "\n";
 
     return 0;
 }
 ```
 
-vector의 값을 범위 기반 for로 더하고, 함수가 돌려준 값을 cout으로 출력합니다. 결과는 Sum: 25입니다.
+vector의 값을 범위 기반 for로 더하고, 함수가 돌려준 값을 cout으로 출력합니다. 결과는 sum: 25입니다.
 
 지금까지의 변수·조건·반복·함수는 모두 일반 C++에서도 사용됩니다. 이후에는 만들고 싶은 것에 필요한 도구를 조금씩 더 배우면 됩니다.
 
 ## Exercise — 첫 standard C++ 함수
 
-`const std::string&`을 받아 `Hello, 이름!`을 std::cout으로 출력하는 `Greet` 함수를 만들고 main에서 호출하세요.
+`const std::string&`을 받아 `Hello, 이름!`을 std::cout으로 출력하는 `greet` 함수를 만들고 main에서 호출하세요.
 
 **연습 시작 코드**
 
@@ -6347,13 +6347,13 @@ vector의 값을 범위 기반 for로 더하고, 함수가 돌려준 값을 cout
 #include <iostream>
 #include <string>
 
-// Write Greet here.
+// Write greet here.
 
 int main()
 {
     std::string name = "Alex";
 
-    // Call Greet.
+    // Call greet.
 
     return 0;
 }
@@ -6369,7 +6369,7 @@ int main()
 #include <iostream>
 #include <string>
 
-void Greet(const std::string& name)
+void greet(const std::string& name)
 {
     std::cout << "Hello, " << name << "!\n";
 }
@@ -6378,7 +6378,7 @@ int main()
 {
     std::string name = "Alex";
 
-    Greet(name);
+    greet(name);
 
     return 0;
 }

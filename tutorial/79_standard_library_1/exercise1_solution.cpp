@@ -1,5 +1,5 @@
-void SmallMain()
+void small_main()
 {
-    Print(std::min(17, 42));
-    Print(std::max(17, 42));
+    print(std::min(17, 42));
+    print(std::max(17, 42));
 }

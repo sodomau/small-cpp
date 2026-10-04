@@ -32,7 +32,7 @@ license your program. Compatible Qt DLLs can be replaced beside the executable.
 
 Publish requires a prepared **Windows portable installation** with the matching
 DLLs, plugins, import libraries and license notices. An incomplete development
-build reports which file is missing. It uses the same compiler, SmallMain/manual
+build reports which file is missing. It uses the same compiler, small_main/manual
 main selection and installed extension detection as Run. Export uses `-O2`.
 
 Single-file mode handles one source file and explicitly selected files with
@@ -47,7 +47,7 @@ need a writable location.
 
 Prepare the DLL/plugin deployment, `LICENSE` and `licenses/` beside
 `small_qt_test.exe` using the matching portable package, then run `small_qt`.
-Publish integration tests execute SmallMain, ordinary main and Image/window
+Publish integration tests execute small_main, ordinary main and Image/window
 programs with only Windows System32 on PATH and no Qt plugin overrides. They
 also check collisions, invalid source, cancellation, Unicode/space paths and
 preservation of existing destinations. Those integration cases explicitly skip

@@ -8,7 +8,7 @@ related-example: reference/console
 
 ## 이번에 배울 것
 
-InputInt는 입력한 내용을 **정수**로 읽어 돌려주는 함수입니다. Input이 돌려주는 문자열과 구분해서 사용합니다.
+input_int는 입력한 내용을 **정수**로 읽어 돌려주는 함수입니다. input이 돌려주는 문자열과 구분해서 사용합니다.
 
 ## 실행해 보기
 

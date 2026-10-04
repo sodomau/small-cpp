@@ -16,7 +16,7 @@ related-example: reference/console
 
 ## 실행할 프로그램 보내기
 
-콘솔 창이 바로 닫히지 않도록 `main.cpp`에서 `Print(score);` 다음에 `Input();`을 넣고 저장하세요.
+콘솔 창이 바로 닫히지 않도록 `main.cpp`에서 `print(score);` 다음에 `input();`을 넣고 저장하세요.
 
 **File → Publish Project…**를 선택하고 새 배포 폴더를 지정하세요. 프로젝트에 포함된 소스 파일을 모두 컴파일해 하나의 exe를 만듭니다. 선택된 탭이 score.h여도 같은 프로그램이 만들어집니다.
 

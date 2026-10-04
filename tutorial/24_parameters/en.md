@@ -2,7 +2,7 @@
 title: Passing values to a function
 part: basics
 part-title: Small Steps I — Creating with Text and Numbers
-goal: Pass 7 and 10 to ShowDouble and print the results in order.
+goal: Pass 7 and 10 to show_double and print the results in order.
 related-example: reference/console
 ---
 
@@ -25,7 +25,7 @@ Expected output:
 
 ## Exercise
 
-Pass 7 and 10 to ShowDouble and print the results in order.
+Pass 7 and 10 to show_double and print the results in order.
 
 @exercise exercise_starter.cpp
 

@@ -2,50 +2,50 @@
 
 ## Console
 
-`Print`, `Write`, `Format`, `Input`, `InputInt`, `InputReal`
+`print`, `write`, `format`, `input`, `input_int`, `input_real`
 
 ## Data
 
-`String`: `Length`, `Substring`, `[]`, comparisons, concatenation
+`String`: `length`, `substring`, `[]`, comparisons, concatenation
 
-`Array<T>`: `Length`, `[]`
+`Array<T>`: `length`, `[]`
 
 ## Files
 
-`FileMode`: `Read`, `Write`, `Append`, `ReadBinary`, `WriteBinary`,
+`FileMode`: `Read`, `write`, `Append`, `ReadBinary`, `WriteBinary`,
 `AppendBinary`
 
-`File`: `Open`, `Close`, `IsOpen`, `End`, text input/output, `ReadInt`,
-`ReadReal`, `WriteInt`, `WriteReal`
+`File`: `open`, `close`, `is_open`, `end`, text input/output, `read_int`,
+`read_real`, `write_int`, `write_real`
 
 ## Graphics
 
-`Color`, `RGB`, built-in colors
+`Color`, `rgb`, built-in colors
 
-`Window`: `Open`, `SetTitle`, `Close`, `IsOpen`, `Width`, `Height`,
-`Clear`, `SetPixel`, line/rectangle/circle/text drawing, `Show`
+`Window`: `open`, `set_title`, `close`, `is_open`, `width`, `height`,
+`clear`, `set_pixel`, line/rectangle/circle/text drawing, `show`
 
 ## Input
 
-Keyboard: `KeyDown`, `KeyPressed`, `KeyReleased`
+Keyboard: `key_down`, `key_pressed`, `key_released`
 
-Mouse: `MouseX`, `MouseY`, `MouseDown`, `MousePressed`, `MouseReleased`
+Mouse: `mouse_x`, `mouse_y`, `mouse_down`, `mouse_pressed`, `mouse_released`
 
 ## Time / Random / Sound
 
-`StopWatch`, `Sleep`, `Timer`
+`StopWatch`, `sleep`, `Timer`
 
-`RandomInt`, `RandomReal`
+`random_int`, `random_real`
 
-`PlaySound`, `PlaySoundAndWait`, `Beep`, `BeepAndWait`
+`play_sound`, `play_sound_and_wait`, `beep`, `beep_and_wait`
 
 ## Runtime
 
-`InitializeSmall`, `ShutdownSmall`, beginner-facing `SmallMain`
+`initialize_small`, `shutdown_small`, beginner-facing `small_main`
 
 ## Image Extension
 
 Include `<small/image.h>`.
 
-`Image`, `Width`, `Height`, `Pixel`, `Alpha`, `SetPixel`, `LoadImage`,
-`SaveImage`, `DrawImage`
+`Image`, `width`, `height`, `pixel`, `alpha`, `set_pixel`, `load_image`,
+`save_image`, `draw_image`

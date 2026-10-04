@@ -1,14 +1,14 @@
 #include <small/image.h>
 
-void SmallMain()
+void small_main()
 {
     Image image(200, 200, Black);
 
-    for (int y = 0; y < image.Height(); y++)
-        for (int x = 0; x < image.Width(); x++)
+    for (int y = 0; y < image.height(); y++)
+        for (int x = 0; x < image.width(); x++)
             if ((x / 20 + y / 20) % 2 == 0)
-                image.SetPixel(x, y, White);
+                image.set_pixel(x, y, White);
 
-    SaveImage(image, "checker.png");
-    Print("Saved checker.png");
+    save_image(image, "checker.png");
+    print("Saved checker.png");
 }

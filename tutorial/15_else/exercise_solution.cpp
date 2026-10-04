@@ -1,12 +1,12 @@
-void SmallMain()
+void small_main()
 {
     int password = 1111;
     if (password == 1234)
     {
-        Print("Open");
+        print("Open");
     }
     else
     {
-        Print("Locked");
+        print("Locked");
     }
 }

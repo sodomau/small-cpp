@@ -14,7 +14,7 @@ To restore binary data, read it using **the same types in the same order as when
 
 @code example2.cpp
 
-Create save.dat with the previous lesson, then run from the same source folder. ReadInt, ReadInt, and ReadReal restore 3, 1250, and 42.5.
+Create save.dat with the previous lesson, then run from the same source folder. read_int, read_int, and read_real restore 3, 1250, and 42.5.
 
 Binary is not always better. Data meant for human inspection or long-term exchange needs a separately designed format and compatibility rules.
 

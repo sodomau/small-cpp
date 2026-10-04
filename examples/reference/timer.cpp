@@ -1,20 +1,20 @@
 int ticks = 0;
 
-void OnTimer()
+void on_timer()
 {
     ticks = ticks + 1;
-    Print("Tick ", ticks);
+    print("Tick ", ticks);
 }
 
-void SmallMain()
+void small_main()
 {
     Timer timer;
 
-    timer.Start(1.0, OnTimer);
-    Print("Running: ", timer.IsRunning());
+    timer.start(1.0, on_timer);
+    print("Running: ", timer.is_running());
 
-    Sleep(3.2);
+    sleep(3.2);
 
-    timer.Stop();
-    Print("Running: ", timer.IsRunning());
+    timer.stop();
+    print("Running: ", timer.is_running());
 }

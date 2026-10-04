@@ -4,14 +4,14 @@ root=Path(__file__).resolve().parents[1]
 h=(root/"extensions/image/include/small/image.h").read_text(encoding="utf-8")
 impl=(root/"extensions/image/src/image.cpp").read_text(encoding="utf-8")
 api=(root/"ide/ApiReference.cpp").read_text(encoding="utf-8")
-for old in ["    Image();", "    explicit Image(const String& filename);", "void Load(", "void Save(", "IsEmpty"]:
+for old in ["    Image();", "    explicit Image(const String& file_name);", "void Load(", "void Save(", "IsEmpty"]:
     assert old not in h, old
 for required in ["Image(int width, int height, Color fill = Black);",
-                 "Image LoadImage(const String& filename);",
-                 "void SaveImage(const Image& image, const String& filename);",
-                 "void DrawImage("]:
+                 "Image load_image(const String& file_name);",
+                 "void save_image(const Image& image, const String& file_name);",
+                 "void draw_image("]:
     assert required in h, required
-assert '"LoadImage"' in api and '"SaveImage"' in api
+assert '"load_image"' in api and '"save_image"' in api
 for old in ['"Image from file"','"Image.Load"','"Image.Save"','"Image.IsEmpty"']:
     assert old not in api, old
 for p in (root/"extensions/image").rglob("*.cpp"):

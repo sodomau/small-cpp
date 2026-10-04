@@ -14,13 +14,13 @@ related-example: reference/timer
 
 @code example2.cpp
 
-OnSecond가 전역 seconds를 늘리고 DrawText가 현재 값을 표시합니다. **Format**은 글자와 값을 이어 붙인 String을 돌려줍니다. Print와 달리 직접 출력하지 않습니다.
+on_second가 전역 seconds를 늘리고 draw_text가 현재 값을 표시합니다. `format`은 글자와 값을 이어 붙인 String을 돌려줍니다. print와 달리 직접 출력하지 않습니다.
 
-Timer는 별도 계산 스레드가 아닙니다. Show나 Sleep이 이벤트를 처리할 때 콜백을 실행하므로 긴 계산은 호출을 늦출 수 있습니다. 정확한 시간 측정은 StopWatch로 하세요.
+Timer는 별도 계산 스레드가 아닙니다. show나 sleep이 이벤트를 처리할 때 콜백을 실행하므로 긴 계산은 호출을 늦출 수 있습니다. 정확한 시간 측정은 StopWatch로 하세요.
 
 ## Exercise — 창의 제목 바꾸기
 
-Timer callback이 1초마다 level을 1씩 증가시키게 하세요. Window loop에서는 현재 level을 `SetTitle("Level ", level)`로 제목에 표시하세요.
+Timer callback이 1초마다 level을 1씩 증가시키게 하세요. Window loop에서는 현재 level을 `set_title("Level ", level)`로 제목에 표시하세요.
 
 @exercise exercise2_starter.cpp
 

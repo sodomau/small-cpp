@@ -1,17 +1,17 @@
 class Counter
 {
 public:
-    void AddOne()
+    void add_one()
     {
         value = value + 1;
     }
 
-    void Reset()
+    void reset()
     {
         value = 0;
     }
 
-    int Value()
+    int get_value()
     {
         return value;
     }
@@ -20,11 +20,11 @@ private:
     int value = 0;
 };
 
-void SmallMain()
+void small_main()
 {
     Counter counter;
-    counter.AddOne();
-    counter.AddOne();
-    counter.Reset();
-    Print(counter.Value());
+    counter.add_one();
+    counter.add_one();
+    counter.reset();
+    print(counter.get_value());
 }

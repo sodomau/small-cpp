@@ -1,6 +1,6 @@
 #include "score.h"
 
-int AddPoints(int score, int points)
+int add_points(int score, int points)
 {
     return score + points;
 }

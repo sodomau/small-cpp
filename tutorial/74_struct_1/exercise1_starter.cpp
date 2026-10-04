@@ -5,11 +5,11 @@ struct Point
     double y;
 };
 
-void SmallMain()
+void small_main()
 {
     Point point;
     point.x = 3.5;
     point.y = 7.0;
 
-    Print(point.x, ", ", point.y);
+    print(point.x, ", ", point.y);
 }

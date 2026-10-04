@@ -27,7 +27,7 @@ void Highlighter::rebuild(bool dark)
         dark ? QColor("#93b8ff") : QColor("#234b91"), true);
     add(R"(\b(String|Array|File|FileMode|Window|Color|StopWatch|Timer|Key|MouseButton|Sound)\b)",
         dark ? QColor("#d6a4ef") : QColor("#83409a"), true);
-    add(R"(\b(SmallMain|Format|Print|Write|Input|InputInt|InputReal|RGB|PlaySound|PlaySoundAndWait|Beep|BeepAndWait|Sleep)\b)",
+    add(R"(\b(small_main|initialize_small|shutdown_small|format|print|write|input|input_int|input_real|rgb|random_int|random_real|play_sound|play_sound_and_wait|beep|beep_and_wait|sleep|load_image|save_image|draw_image)\b)",
         dark ? QColor("#69d1d4") : QColor("#006c78"));
     add(R"(\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?[fFlLuU]*\b)",
         dark ? QColor("#edb77f") : QColor("#975100"));

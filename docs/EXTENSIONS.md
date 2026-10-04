@@ -35,15 +35,15 @@ Intrinsic operations are members; relationships are free functions:
 
 ```cpp
 Image image("cat.png");
-DrawImage(window, image, 100, 100);
+draw_image(window, image, 100, 100);
 ```
 
 Core never depends on Image.
 
 ## Image completeness
 
-Image supports in-memory creation, loading, saving, dimensions, RGB pixel access, alpha access, pixel editing, alpha-aware drawing, and scaled drawing.
+Image supports in-memory creation, loading, saving, dimensions, rgb pixel access, alpha access, pixel editing, alpha-aware drawing, and scaled drawing.
 
-`DrawImage` uses a generic Core-internal RGBA blit bridge. The bridge accepts raw raster data and knows nothing about `Image`, preserving the dependency direction while avoiding per-pixel `Window::SetPixel()` calls.
+`draw_image` uses a generic Core-internal RGBA blit bridge. The bridge accepts raw raster data and knows nothing about `Image`, preserving the dependency direction while avoiding per-pixel `Window::set_pixel()` calls.
 
 The extension owns three examples and three tutorial lessons under its own folder. Installed extension content is discovered by the existing Examples and Tutorial browsers.

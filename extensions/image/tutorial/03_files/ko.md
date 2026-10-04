@@ -4,16 +4,16 @@ goal: 이미지 파일을 저장하고 다시 불러옵니다.
 ---
 
 ## 파일로 이어지는 Image
-`Save()`는 Image를 파일로 저장하고, filename을 받는 constructor나 `Load()`는 파일을 읽습니다. PNG, JPEG 등 실제 지원 형식은 Qt image plugin이 제공하는 형식을 따릅니다.
+`save_image(image, file_name)`은 Image를 파일로 저장하고, `load_image(file_name)`은 파일에서 Image를 읽습니다. PNG, JPEG 등 실제 지원 형식은 설치된 Qt image plugin에 따라 달라집니다.
 
 ## 먼저 실행해 보세요
 
 @code example1.cpp
 
 ## 파일 이름이 format을 결정합니다
-`SaveImage(image, "picture.png")`처럼 확장자를 쓰면 저장 형식을 정할 수 있습니다. 파일을 열 수 없거나 저장할 수 없으면 Small은 runtime error로 알려줍니다.
+`save_image(image, "picture.png")`처럼 확장자를 쓰면 저장 형식을 정할 수 있습니다. 파일을 열 수 없거나 저장할 수 없으면 Small은 runtime error로 알려줍니다.
 
-불러온 이미지의 alpha 정보는 DrawImage에서 그대로 합성됩니다.
+불러온 이미지의 alpha 정보는 draw_image에서 그대로 합성됩니다.
 
 ## 한 단계 더
 
@@ -30,7 +30,7 @@ create/load → inspect/edit pixels → draw → save가 모두 가능합니다.
 
 ### Hint
 
-`Image loaded = LoadImage("cyan.png");`를 사용할 수 있습니다.
+`Image loaded = load_image("cyan.png");`를 사용할 수 있습니다.
 
 @solution exercise1_solution.cpp
 

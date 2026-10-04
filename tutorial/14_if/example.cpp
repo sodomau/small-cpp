@@ -1,9 +1,9 @@
-void SmallMain()
+void small_main()
 {
     int score = 80;
     if (score >= 60)
     {
-        Print("Pass");
+        print("Pass");
     }
-    Print("Done");
+    print("Done");
 }

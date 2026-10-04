@@ -20,7 +20,7 @@ push_back(40)은 뒤에 40을 붙입니다. `for (int value : numbers)`는 각 �
 
 ## Exercise — std::string 함수
 
-`const std::string&`을 받아 길이를 돌려주는 `TextLength` 함수를 만들고 "Small"의 길이를 출력하세요.
+`const std::string&`을 받아 길이를 돌려주는 `text_length` 함수를 만들고 "Small"의 길이를 출력하세요.
 
 @exercise exercise2_starter.cpp
 

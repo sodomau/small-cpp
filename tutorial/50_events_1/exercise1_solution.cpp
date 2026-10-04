@@ -1,17 +1,17 @@
 int count = 0;
 
-void OnTimer()
+void on_timer()
 {
     count = count + 1;
-    Print("Count: ", count);
+    print("Count: ", count);
 }
 
-void SmallMain()
+void small_main()
 {
     Timer timer;
-    timer.Start(0.5, OnTimer);
+    timer.start(0.5, on_timer);
 
-    Sleep(2.2);
+    sleep(2.2);
 
-    timer.Stop();
+    timer.stop();
 }

@@ -1,10 +1,10 @@
-void ShowDouble(int number)
+void show_double(int number)
 {
-    Print(number * 2);
+    print(number * 2);
 }
 
-void SmallMain()
+void small_main()
 {
-    ShowDouble(7);
-    ShowDouble(10);
+    show_double(7);
+    show_double(10);
 }

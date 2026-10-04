@@ -8,7 +8,7 @@ related-example: reference/console
 
 ## What you will learn
 
-InputReal reads a number with a fractional part as a double. Connecting **input → calculation → output** makes a calculator.
+input_real reads a number with a fractional part as a double. Connecting **input → calculation → output** makes a calculator.
 
 ## Try it
 

@@ -129,6 +129,6 @@ QStringList DefinedEntryPoints(const QString& source)
     const auto tokens = Lex(source);
     QStringList result;
     if (HasTopLevelMainDefinition(tokens)) result << "main";
-    if (HasTopLevelMainDefinition(tokens, "SmallMain")) result << "SmallMain";
+    if (HasTopLevelMainDefinition(tokens, "small_main")) result << "small_main";
     return result;
 }

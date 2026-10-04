@@ -40,9 +40,9 @@ The native Qt IDE in [Light](docs/images/ide-light.png) and
 ## Your first program
 
 ```cpp
-void SmallMain()
+void small_main()
 {
-    Print("Hello, Small C++!");
+    print("Hello, Small C++!");
 }
 ```
 
@@ -52,17 +52,17 @@ entry point and build setup so you can start with the program itself.
 Try a window next:
 
 ```cpp
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        window.Clear(Black);
-        window.FillCircle(320, 240, 60, Yellow);
-        window.Show();
-        Sleep(0.01);
+        window.clear(Black);
+        window.fill_circle(320, 240, 60, Yellow);
+        window.show();
+        sleep(0.01);
     }
 }
 ```
@@ -82,6 +82,10 @@ Try the [current Windows portable preview](https://github.com/sodomau/small-cpp/
 download **SmallCpp-v0.76.11-Windows-x64.zip**, extract the entire archive,
 and launch `SmallCppIDE.exe`. The compiler and debugger are included.
 See [portable first use](docs/PORTABLE_START.md) for instructions.
+
+The v0.76.11 download uses the earlier PascalCase API. The snake_case examples
+in this source tree require a build from this tree. See
+[naming conventions and migration](docs/NAMING_CONVENTIONS.md).
 
 The documented development setup is **Windows with a matching Qt MinGW
 64-bit kit**. The current workflow uses Qt 6.11.2, MinGW 13.1.0, CMake, and
@@ -107,6 +111,7 @@ learners. Before publishing a binary release, complete the
 | Korean curriculum | [97-lesson contents](https://sodomau.github.io/small-cpp/lessons/ko/index.html) |
 | Teaching | [Teacher notes](docs/tutorial-small-steps/TEACHER.md) |
 | Programming model | [Small C++ guide](docs/SMALL_CPP_GUIDE.md) |
+| API naming | [Naming conventions](docs/NAMING_CONVENTIONS.md) |
 | Design principles | [Philosophy](docs/PHILOSOPHY.md) |
 | Extensions and lessons | [Authoring guide](docs/EXTENSIONS_AND_TUTORIALS.md) |
 

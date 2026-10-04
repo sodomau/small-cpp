@@ -8,7 +8,7 @@ related-example: reference/console
 
 ## 이번에 배울 것
 
-InputReal은 소수 부분이 있는 수를 double 값으로 읽습니다. **입력 → 계산 → 출력**을 연결하면 계산기가 됩니다.
+input_real은 소수 부분이 있는 수를 double 값으로 읽습니다. **입력 → 계산 → 출력**을 연결하면 계산기가 됩니다.
 
 ## 실행해 보기
 

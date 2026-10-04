@@ -20,13 +20,13 @@ WriteBinary로 열고 정수 두 개, 실수 한 개를 순서대로 씁니다. 
 
 ## Exercise — 게임 상태 저장
 
-`game.dat`에 level=5, score=2300, playTime=18.75를 binary로 저장하세요.
+`game.dat`에 level=5, score=2300, play_time=18.75를 binary로 저장하세요.
 
 @exercise exercise1_starter.cpp
 
 ### Hint
 
-WriteBinary mode에서 WriteInt 두 번, WriteReal 한 번을 사용하세요.
+WriteBinary mode에서 write_int 두 번, write_real 한 번을 사용하세요.
 
 @solution exercise1_solution.cpp
 

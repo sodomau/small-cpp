@@ -1,12 +1,12 @@
-void SmallMain()
+void small_main()
 {
     Array<int> numbers = {7, 2, 9, 4, 5};
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
+    for (int i = 0; i < numbers.length(); i = i + 1)
     {
         int smallest = i;
 
-        for (int j = i + 1; j < numbers.Length(); j = j + 1)
+        for (int j = i + 1; j < numbers.length(); j = j + 1)
             if (numbers[j] < numbers[smallest])
                 smallest = j;
 
@@ -15,6 +15,6 @@ void SmallMain()
         numbers[smallest] = temp;
     }
 
-    for (int i = 0; i < numbers.Length(); i = i + 1)
-        Print(numbers[i]);
+    for (int i = 0; i < numbers.length(); i = i + 1)
+        print(numbers[i]);
 }

@@ -11,13 +11,13 @@ A class contains only operations intrinsic to that abstraction. `Window` owns wi
 When an operation connects independent abstractions, it lives outside both classes.
 
 ```cpp
-DrawImage(window, image, x, y);
+draw_image(window, image, x, y);
 ```
 
 not:
 
 ```cpp
-window.DrawImage(image, x, y);
+window.draw_image(image, x, y);
 image.Draw(window, x, y);
 ```
 

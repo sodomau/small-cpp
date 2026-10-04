@@ -14,7 +14,7 @@ related-example: reference/console
 
 @code example.cpp
 
-GoalScore에 나중에 다른 값을 넣으면 컴파일 오류입니다.
+goal_score에 나중에 다른 값을 넣으면 컴파일 오류입니다.
 
 이 과정에서는 이름을 영문자로 시작하고 영문자·숫자·밑줄로 만드세요. 공백은 넣지 않습니다. score와 Score는 다르고 int, if 같은 C++ 예약어는 이름으로 사용할 수 없습니다.
 

@@ -14,13 +14,13 @@ A **reference** is another name for an existing object. An int& parameter refers
 
 @code example1.cpp
 
-First run the example: it prints Inside: 11 and Outside: 10. Change `AddOne(int x)` to `AddOne(int& x)` and run again. Now both are 11.
+First run the example: it prints Inside: 11 and Outside: 10. Change `add_one(int x)` to `add_one(int& x)` and run again. Now both are 11.
 
 Initially x was a copy; after adding &, it is another name for n. Use this when you intend to change the original.
 
 ## Exercise
 
-Create `Swap(int& a, int& b)` to exchange the original values of two ints.
+Create `swap(int& a, int& b)` to exchange the original values of two ints.
 
 @exercise exercise1_starter.cpp
 

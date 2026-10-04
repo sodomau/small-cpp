@@ -13,7 +13,7 @@ Image belongs to an extension, rather than Core. Write `#include <small/image.h>
 
 ## Image and Window are different things
 
-`Image` owns image data and provides operations intrinsic to an image, such as `Width()`, `Height()`, and `Pixel()`. `DrawImage(window, image, ...)` is a free function because it connects Image and Window.
+`Image` owns image data and provides operations intrinsic to an image, such as `width()`, `height()`, and `pixel()`. `draw_image(window, image, ...)` is a free function because it connects Image and Window.
 
 Omitting a size draws at the original size. Supplying width and height smoothly scales it to that size.
 
@@ -33,7 +33,7 @@ Create a 120 × 80 Green image. Draw it at its original size and twice that size
 
 ### Hint
 
-Use both the four-argument and six-argument forms of `DrawImage`.
+Use both the four-argument and six-argument forms of `draw_image`.
 
 @solution exercise1_solution.cpp
 
@@ -45,6 +45,6 @@ Create a 64 × 48 image and print its Width and Height.
 
 ### Hint
 
-Use `Print(image.Width(), " x ", image.Height());`.
+Use `print(image.width(), " x ", image.height());`.
 
 @solution exercise2_solution.cpp

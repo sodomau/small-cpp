@@ -1,3 +1,3 @@
 #pragma once
 
-void SayHello();
+void say_hello();

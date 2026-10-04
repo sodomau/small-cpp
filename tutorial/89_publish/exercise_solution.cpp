@@ -1,5 +1,5 @@
-void SmallMain()
+void small_main()
 {
-    Print("I made this program for you!");
-    Input("Press Enter to close.");
+    print("I made this program for you!");
+    input("Press Enter to close.");
 }

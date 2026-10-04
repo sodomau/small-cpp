@@ -14,7 +14,7 @@ related-example: reference/console
 
 @code example.cpp
 
-**Write**는 출력 뒤 줄을 바꾸지 않습니다. **Print()**는 내용 없이 줄만 바꿉니다. 따라서 별 세 개를 붙여 쓴 뒤 줄을 바꾸는 일을 두 번 합니다.
+`write`는 출력 뒤 줄을 바꾸지 않습니다. **print()**는 내용 없이 줄만 바꿉니다. 따라서 별 세 개를 붙여 쓴 뒤 줄을 바꾸는 일을 두 번 합니다.
 
 예상 출력:
 

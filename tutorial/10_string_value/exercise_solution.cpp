@@ -1,5 +1,5 @@
-void SmallMain()
+void small_main()
 {
     String food = "Pizza";
-    Print("Food: ", food);
+    print("Food: ", food);
 }

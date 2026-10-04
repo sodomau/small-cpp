@@ -34,7 +34,7 @@ explanation, two exercises, and an optional related Reference example.
 
 **Try This Code**, exercise **Try**, and **Try Solution** each create a new,
 editable, unsaved tab. They never overwrite an existing tab and never execute
-code automatically. The source is complete, including `void SmallMain()`.
+code automatically. The source is complete, including `void small_main()`.
 Press the IDE's Run/F5 to compile it. Console input happens in the separate
 program console, not Diagnostics.
 

@@ -101,8 +101,8 @@ private slots:
                 ++count;
                 QVERIFY(!exercise.hint.isEmpty());
                 QVERIFY(!exercise.prompt.isEmpty());
-                QVERIFY(exercise.starter.contains("SmallMain") || exercise.starter.contains("main("));
-                QVERIFY(exercise.solution.contains("SmallMain") || exercise.solution.contains("main("));
+                QVERIFY(exercise.starter.contains("small_main") || exercise.starter.contains("main("));
+                QVERIFY(exercise.solution.contains("small_main") || exercise.solution.contains("main("));
             }
         }
         QCOMPARE(count, 103);

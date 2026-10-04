@@ -1,9 +1,9 @@
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.SetTitle("Alex");
-    window.Open(500, 300);
+    window.set_title("Alex");
+    window.open(500, 300);
 
-    while (window.IsOpen())
-        window.Show();
+    while (window.is_open())
+        window.show();
 }

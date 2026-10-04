@@ -3,8 +3,8 @@
 ## Programming model
 
 Small C++ is ordinary C++ compiled against the Small runtime. Beginners
-use `SmallMain()` while the hidden entry point performs
-`InitializeSmall() → SmallMain() → ShutdownSmall()`.
+use `small_main()` while the hidden entry point performs
+`initialize_small() → small_main() → shutdown_small()`.
 
 ## Learning path
 
@@ -35,11 +35,11 @@ gradual reveal of C++, not a language switch.
 The Window API deliberately keeps the program's main flow visible:
 
 ``` cpp
-while (window.IsOpen())
+while (window.is_open())
 {
     // input
     // update
     // draw
-    window.Show();
+    window.show();
 }
 ```

@@ -1,16 +1,16 @@
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.Open(640, 480);
+    window.open(640, 480);
 
-    Color orange = RGB(255, 140, 0);
+    Color orange = rgb(255, 140, 0);
 
-    window.Clear(White);
-    window.FillRectangle(60, 80, 180, 120, orange);
-    window.DrawRectangle(60, 80, 180, 120, Black);
-    window.DrawText(80, 110, "Small C++", Blue, 24);
-    window.Show();
+    window.clear(White);
+    window.fill_rectangle(60, 80, 180, 120, orange);
+    window.draw_rectangle(60, 80, 180, 120, Black);
+    window.draw_text(80, 110, "Small C++", Blue, 24);
+    window.show();
 
-    while (window.IsOpen())
-        window.Show();
+    while (window.is_open())
+        window.show();
 }

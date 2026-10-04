@@ -1,16 +1,16 @@
-void SmallMain()
+void small_main()
 {
     int number = -2;
     if (number > 0)
     {
-        Print("Positive");
+        print("Positive");
     }
     else if (number < 0)
     {
-        Print("Negative");
+        print("Negative");
     }
     else
     {
-        Print("Zero");
+        print("Zero");
     }
 }

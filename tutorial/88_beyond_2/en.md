@@ -20,7 +20,7 @@ Variables, conditions, loops, and functions learned so far all work in ordinary 
 
 ## Exercise
 
-Create `Greet` taking a `const std::string&`, printing `Hello, name!` with std::cout, and call it from main.
+Create `greet` taking a `const std::string&`, printing `Hello, name!` with std::cout, and call it from main.
 
 @exercise exercise2_starter.cpp
 

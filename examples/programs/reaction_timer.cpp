@@ -1,27 +1,27 @@
-bool ready = false;
+bool is_ready = false;
 
-void OnReady()
+void on_ready()
 {
-    ready = true;
+    is_ready = true;
 }
 
-void SmallMain()
+void small_main()
 {
-    Print("Press ENTER, then wait for the beep.");
-    Input();
+    print("Press ENTER, then wait for the beep.");
+    input();
 
-    // Change ready later without blocking the program.
+    // Change is_ready later without blocking the program.
     Timer timer;
-    timer.Start(2.0, OnReady);
+    timer.start(2.0, on_ready);
 
-    while (!ready)
-        Sleep(0.01);
+    while (!is_ready)
+        sleep(0.01);
 
-    timer.Stop();
-    PlaySound(Sound::Coin);
+    timer.stop();
+    play_sound(Sound::Coin);
 
     StopWatch watch;
-    Input("Press ENTER as fast as you can! ");
+    input("Press ENTER as fast as you can! ");
 
-    Print("Reaction time: ", watch.Elapsed(), " seconds");
+    print("Reaction time: ", watch.elapsed(), " seconds");
 }

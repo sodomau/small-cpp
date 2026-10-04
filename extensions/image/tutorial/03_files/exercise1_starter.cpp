@@ -1,5 +1,5 @@
 #include <small/image.h>
-void SmallMain()
+void small_main()
 {
     Image image(50, 50, Cyan);
     // Save and load.

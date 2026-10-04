@@ -14,7 +14,7 @@ Remembering an **index** instead of a value lets you know both what the smallest
 
 @code example2.cpp
 
-smallestIndex is the position of the smallest element. Read its value with `numbers[smallestIndex]`. In this example, the smallest value is 1 at position 3.
+smallest_index is the position of the smallest element. Read its value with `numbers[smallest_index]`. In this example, the smallest value is 1 at position 3.
 
 Index in the variable name helps distinguish a position from a value. If the minimum occurs several times, the current < comparison keeps its first occurrence.
 
@@ -26,6 +26,6 @@ Find the index of the largest value, and print both the value and its index.
 
 ### Hint
 
-Start largestIndex at 0 and compare `numbers[i] > numbers[largestIndex]`.
+Start largest_index at 0 and compare `numbers[i] > numbers[largest_index]`.
 
 @solution exercise2_solution.cpp

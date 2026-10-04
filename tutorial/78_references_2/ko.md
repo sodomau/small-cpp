@@ -18,9 +18,9 @@ related-example: reference/array
 
 배열 전체를 복사할 필요 없이 합계를 구합니다. 값을 바꾸려 하면 컴파일 오류입니다. 앞에서 쓴 Array<int> 매개변수도 올바르지만 배열이 크면 복사 비용이 커질 수 있습니다.
 
-## Exercise — FindLargest 개선하기
+## Exercise — find_largest 개선하기
 
-앞에서 배운 `FindLargest(Array<int> numbers)`를 `const Array<int>&`를 사용하도록 바꾸세요. 함수는 Array를 수정하지 않습니다.
+앞에서 배운 `find_largest(Array<int> numbers)`를 `const Array<int>&`를 사용하도록 바꾸세요. 함수는 Array를 수정하지 않습니다.
 
 @exercise exercise2_starter.cpp
 

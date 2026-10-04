@@ -1,8 +1,8 @@
-void SmallMain()
+void small_main()
 {
     int a = -12;
     int b = 7;
 
-    Print("Absolute: ", std::abs(a));
-    Print("Smaller: ", std::min(a, b));
+    print("Absolute: ", std::abs(a));
+    print("Smaller: ", std::min(a, b));
 }

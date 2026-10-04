@@ -20,7 +20,7 @@ vector의 값을 범위 기반 for로 더하고, 함수가 돌려준 값을 cout
 
 ## Exercise — 첫 standard C++ 함수
 
-`const std::string&`을 받아 `Hello, 이름!`을 std::cout으로 출력하는 `Greet` 함수를 만들고 main에서 호출하세요.
+`const std::string&`을 받아 `Hello, 이름!`을 std::cout으로 출력하는 `greet` 함수를 만들고 main에서 호출하세요.
 
 @exercise exercise2_starter.cpp
 

@@ -1,8 +1,8 @@
-void SmallMain()
+void small_main()
 {
     Array<int> scores = {80, 95, 70};
-    for (int i = 0; i < scores.Length(); i = i + 1)
+    for (int i = 0; i < scores.length(); i = i + 1)
     {
-        Print(scores[i] * 2);
+        print(scores[i] * 2);
     }
 }

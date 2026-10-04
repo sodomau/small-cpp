@@ -26,6 +26,6 @@ Use a linear search to find and print the first position of the character 'a' in
 
 ### Hint
 
-String also supports Length and [], so this is almost the same as searching an Array.
+String also supports `length` and [], so this is almost the same as searching an Array.
 
 @solution exercise2_solution.cpp

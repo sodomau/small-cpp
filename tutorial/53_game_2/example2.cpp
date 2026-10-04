@@ -1,66 +1,66 @@
-void SmallMain()
+void small_main()
 {
     Window window;
-    window.SetTitle("Catch the Ball");
-    window.Open(640, 480);
+    window.set_title("Catch the Ball");
+    window.open(640, 480);
 
-    double playerX = 320;
-    double ballX = 100;
-    double ballY = 80;
-    double ballVX = 180;
-    double ballVY = 140;
+    double player_x = 320;
+    double ball_x = 100;
+    double ball_y = 80;
+    double ball_vx = 180;
+    double ball_vy = 140;
     int score = 0;
 
     StopWatch watch;
 
-    while (window.IsOpen())
+    while (window.is_open())
     {
-        double dt = watch.Elapsed();
-        watch.Reset();
+        double dt = watch.elapsed();
+        watch.reset();
 
-        if (window.KeyDown(Key::Left)) playerX = playerX - 250 * dt;
-        if (window.KeyDown(Key::Right)) playerX = playerX + 250 * dt;
+        if (window.key_down(Key::Left)) player_x = player_x - 250 * dt;
+        if (window.key_down(Key::Right)) player_x = player_x + 250 * dt;
 
-        ballX = ballX + ballVX * dt;
-        ballY = ballY + ballVY * dt;
+        ball_x = ball_x + ball_vx * dt;
+        ball_y = ball_y + ball_vy * dt;
 
-        if (ballX < 15)
+        if (ball_x < 15)
         {
-            ballX = 15;
-            ballVX = -ballVX;
+            ball_x = 15;
+            ball_vx = -ball_vx;
         }
 
-        if (ballX > 625)
+        if (ball_x > 625)
         {
-            ballX = 625;
-            ballVX = -ballVX;
+            ball_x = 625;
+            ball_vx = -ball_vx;
         }
 
-        if (ballY < 15)
+        if (ball_y < 15)
         {
-            ballY = 15;
-            ballVY = -ballVY;
+            ball_y = 15;
+            ball_vy = -ball_vy;
         }
 
-        if (ballY > 430 && ballY < 460 &&
-            ballX > playerX - 60 && ballX < playerX + 60)
+        if (ball_y > 430 && ball_y < 460 &&
+            ball_x > player_x - 60 && ball_x < player_x + 60)
         {
-            ballY = 430;
-            ballVY = -ballVY;
+            ball_y = 430;
+            ball_vy = -ball_vy;
             score = score + 1;
-            PlaySound(Sound::Coin);
+            play_sound(Sound::Coin);
         }
 
-        if (ballY > 500)
+        if (ball_y > 500)
         {
-            ballX = 100;
-            ballY = 80;
+            ball_x = 100;
+            ball_y = 80;
         }
 
-        window.SetTitle("Score: ", score);
-        window.Clear(Black);
-        window.FillRectangle(playerX - 60, 450, 120, 12, White);
-        window.FillCircle(ballX, ballY, 15, Cyan);
-        window.Show();
+        window.set_title("Score: ", score);
+        window.clear(Black);
+        window.fill_rectangle(player_x - 60, 450, 120, 12, White);
+        window.fill_circle(ball_x, ball_y, 15, Cyan);
+        window.show();
     }
 }

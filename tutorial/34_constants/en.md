@@ -14,7 +14,7 @@ related-example: reference/console
 
 @code example.cpp
 
-Assigning a different value to GoalScore later causes a compilation error.
+Assigning a different value to goal_score later causes a compilation error.
 
 In this course, start names with an English letter and use letters, digits, and underscores. Do not include spaces. score and Score are different names. C++ keywords such as int and if cannot be names.
 

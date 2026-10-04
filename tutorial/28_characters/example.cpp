@@ -1,7 +1,7 @@
-void SmallMain()
+void small_main()
 {
     char grade = 'A';
-    Print(grade);
+    print(grade);
     String word = "Small";
-    Print(word[0]);
+    print(word[0]);
 }

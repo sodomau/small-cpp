@@ -1,9 +1,9 @@
-void SmallMain()
+void small_main()
 {
-    bool ready = false;
-    if (ready)
+    bool is_ready = false;
+    if (is_ready)
     {
-        Print("Start");
+        print("Start");
     }
-    Print(ready);
+    print(is_ready);
 }

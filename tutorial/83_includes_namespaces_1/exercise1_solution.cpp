@@ -1,6 +1,6 @@
 #include <iostream>
 
-void SmallMain()
+void small_main()
 {
     std::cout << "Hello C++" << "\n";
 }

@@ -63,7 +63,7 @@ class ProjectTests : public QObject
     static void fixture(const QString& folder)
     {
         write(QDir(folder).filePath("main.cpp"),
-              "#include \"logic/value.h\"\nvoid SmallMain() { File f; f.Open(\"result.txt\", FileMode::Write); f.Print(Value()); }\n");
+              "#include \"logic/value.h\"\nvoid small_main() { File f; f.open(\"result.txt\", FileMode::Write); f.print(Value()); }\n");
         write(QDir(folder).filePath("logic/value.h"), "#pragma once\nint Value();\n");
         write(QDir(folder).filePath("logic/value.cpp"), "#include \"value.h\"\nint Value()\n{\n    int value = 42;\n    return value;\n}\n");
         write(QDir(folder).filePath("data/message.txt"), "nested resource\n");
@@ -134,7 +134,7 @@ private slots:
     void projectUiAndClosePreserveOutsideFile()
     {
         QTemporaryDir directory; fixture(directory.filePath("MyGame"));
-        write(directory.filePath("outside.cpp"), "void SmallMain() {}\n");
+        write(directory.filePath("outside.cpp"), "void small_main() {}\n");
         MainWindow window; QVERIFY(window.openProject(directory.filePath("MyGame")));
         QCOMPARE(action(window, "actionRun")->text(), QString("Run Project"));
         QVERIFY(window.windowTitle().contains("MyGame"));
@@ -259,7 +259,7 @@ private slots:
         QTemporaryDir directory; fixture(directory.filePath("My Project"));
         const QString root = directory.filePath("My Project");
         const QString outside = directory.filePath("outside file.cpp");
-        write(outside, "void SmallMain() {}\n");
+        write(outside, "void small_main() {}\n");
         FileLocationWindow window; QVERIFY(window.openProject(root));
         window.show();
         auto* tree = window.findChild<QTreeWidget*>("projectFiles"); tree->expandAll();
@@ -529,7 +529,7 @@ private slots:
     void startFunctionsAndDiagnosticFile()
     {
         QTemporaryDir directory; fixture(directory.path());
-        write(directory.filePath("practice.cpp"), "void SmallMain() {}\n");
+        write(directory.filePath("practice.cpp"), "void small_main() {}\n");
         BuildController build; QSignalSpy failed(&build, &BuildController::buildError);
         build.startProject(load(directory.path())); QCOMPARE(failed.size(), 1);
         QVERIFY(failed.first().first().toString().contains("practice.cpp")); QVERIFY(failed.first().first().toString().contains("Exclude"));
@@ -544,7 +544,7 @@ private slots:
         if (!QFileInfo::exists(QCoreApplication::applicationDirPath() + "/licenses/SOURCE_ACCESS.md"))
             QSKIP("Prepare the matching Windows portable runtime and notices for Publish tests.");
         QTemporaryDir directory; fixture(directory.filePath("MyGame"));
-        write(directory.filePath("MyGame/main.cpp"), "#include \"logic/value.h\"\nvoid SmallMain() { File f; f.Open(\"data/message.txt\"); String text=f.Input(); f.Close(); f.Open(\"result.txt\",FileMode::Write); f.Print(text); f.Print(Value()); }\n");
+        write(directory.filePath("MyGame/main.cpp"), "#include \"logic/value.h\"\nvoid small_main() { File f; f.open(\"data/message.txt\"); String text=f.input(); f.close(); f.open(\"result.txt\",FileMode::Write); f.print(text); f.print(Value()); }\n");
         BuildController build; QSignalSpy published(&build, &BuildController::published); QSignalSpy failed(&build, &BuildController::buildError);
         const QString destination = directory.filePath("MyGame/shared");
         build.startProject(load(directory.filePath("MyGame")), false, destination);
@@ -582,7 +582,7 @@ private slots:
         QVERIFY(compile.waitForFinished(15000)); QCOMPARE(compile.exitCode(), 0);
         compile.start(QDir(QFileInfo(compiler).absolutePath()).filePath("ar.exe"), {"rcs", directory.filePath("vendor/libanswer.a"), directory.filePath("vendor/answer.o")});
         QVERIFY(compile.waitForFinished(15000)); QCOMPARE(compile.exitCode(), 0);
-        write(directory.filePath("project/main.cpp"), "#include <answer.h>\nvoid SmallMain() { File f; f.Open(\"result.txt\",FileMode::Write); f.Print(Answer()+BONUS); }\n");
+        write(directory.filePath("project/main.cpp"), "#include <answer.h>\nvoid small_main() { File f; f.open(\"result.txt\",FileMode::Write); f.print(Answer()+BONUS); }\n");
         write(directory.filePath("project/small.project"), "{\"include_paths\":[\"../vendor\"],\"library_paths\":[\"../vendor\"],\"libraries\":[\"answer\"],\"compiler_options\":[\"-DBONUS=5\"],\"linker_options\":[\"-Wl,--as-needed\"]}");
         auto project=load(directory.filePath("project")); BuildController build; QSignalSpy failed(&build, &BuildController::buildError); QSignalSpy finished(&build, &BuildController::finished);
         build.startProject(project);
@@ -612,10 +612,10 @@ private slots:
         QFontDatabase::addApplicationFont(qEnvironmentVariable("SystemRoot")+"/Fonts/segoeui.ttf");
         QFontDatabase::addApplicationFont(qEnvironmentVariable("SystemRoot")+"/Fonts/segoeuib.ttf");
           QVERIFY(QDir().mkpath(output)); QTemporaryDir directory; fixture(directory.filePath("MyGame"));
-          write(directory.filePath("MyGame/practice.cpp"), "void SmallMain() {}\n");
+          write(directory.filePath("MyGame/practice.cpp"), "void small_main() {}\n");
           QString error; auto project = load(directory.filePath("MyGame"));
           QVERIFY(project.setExcluded("practice.cpp", true, &error));
-        write(directory.filePath("outside.cpp"), "// A separate program, outside MyGame.\nvoid SmallMain()\n{\n    Print(\"Hello!\");\n}\n");
+        write(directory.filePath("outside.cpp"), "// A separate program, outside MyGame.\nvoid small_main()\n{\n    print(\"Hello!\");\n}\n");
         for(bool dark:{false,true}) {
             MainWindow window;
             window.findChild<QAction*>(dark ? "actionThemeDark" : "actionThemeLight")->trigger();

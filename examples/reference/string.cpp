@@ -1,25 +1,25 @@
-void SmallMain()
+void small_main()
 {
     String a = "Hello";
     String b = "World";
 
-    Print("Length: ", a.Length());
-    Print("First character: ", a[0]);
+    print("Length: ", a.length());
+    print("First character: ", a[0]);
 
     a[0] = 'Y';
-    Print(a);
+    print(a);
 
-    Print(a.Substring(1));
-    Print(a.Substring(1, 3));
+    print(a.substring(1));
+    print(a.substring(1, 3));
 
     String c = a + " " + b;
     c += "!";
-    Print(c);
+    print(c);
 
-    Print(a == b);
-    Print(a != b);
-    Print(a < b);
-    Print(a <= b);
-    Print(a > b);
-    Print(a >= b);
+    print(a == b);
+    print(a != b);
+    print(a < b);
+    print(a <= b);
+    print(a > b);
+    print(a >= b);
 }

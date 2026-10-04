@@ -10,7 +10,7 @@ related-example: reference/console
 
 @code example.cpp
 
-Choose **Try This Code**, save it as **MyGreeting.cpp**, and press **Run**. The last Input waits for Enter so you can read the message. A published console program closes when it finishes; the IDE's automatic exit pause is not included.
+Choose **Try This Code**, save it as **MyGreeting.cpp**, and press **Run**. The last `input` waits for Enter so you can read the message. A published console program closes when it finishes; the IDE's automatic exit pause is not included.
 
 ## Make the Windows folder
 
@@ -32,6 +32,6 @@ Change the greeting to a message for your friend. Save the program as MyGreeting
 
 ### Hint
 
-Change the text inside Print's quotes. Keep Input at the end. Each Publish needs a new destination folder; existing folders are not overwritten.
+Change the text inside `print`'s quotes. Keep `input` at the end. Each Publish needs a new destination folder; existing folders are not overwritten.
 
 @solution exercise_solution.cpp

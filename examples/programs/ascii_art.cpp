@@ -1,6 +1,6 @@
-void SmallMain()
+void small_main()
 {
-    int size = InputInt("Size: ");
+    int size = input_int("Size: ");
 
     // Draw one row at a time.
     for (int y = 0; y < size; y++)
@@ -8,10 +8,10 @@ void SmallMain()
         for (int x = 0; x < size; x++)
         {
             if (x == y || x == size - y - 1)
-                Write("X");
+                write("X");
             else
-                Write(".");
+                write(".");
         }
-        Print();
+        print();
     }
 }

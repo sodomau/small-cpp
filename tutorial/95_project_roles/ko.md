@@ -14,14 +14,14 @@ related-example: reference/console
 ```cpp
 #pragma once
 
-int AddPoints(int score, int points);
+int add_points(int score, int points);
 ```
 
 ### score.cpp
 ```cpp
 #include "score.h"
 
-int AddPoints(int score, int points)
+int add_points(int score, int points)
 {
     return score + points;
 }
@@ -31,12 +31,12 @@ int AddPoints(int score, int points)
 ```cpp
 #include "score.h"
 
-void SmallMain()
+void small_main()
 {
     int score = 0;
-    score = AddPoints(score, 10);
-    score = AddPoints(score, 20);
-    Print(score);
+    score = add_points(score, 10);
+    score = add_points(score, 20);
+    print(score);
 }
 ```
 

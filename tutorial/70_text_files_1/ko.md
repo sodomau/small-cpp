@@ -26,7 +26,7 @@ Open → 쓰기 → Close 순서입니다. 상대 경로의 파일은 보통 저
 
 ### Hint
 
-Write mode로 열고 `file.Print`를 두 번 사용하세요.
+Write mode로 열고 `file.print`를 두 번 사용하세요.
 
 @solution exercise1_solution.cpp
 

@@ -14,7 +14,7 @@ related-example: reference/array
 
 @code example2.cpp
 
-smallestIndex는 가장 작은 원소의 위치입니다. `numbers[smallestIndex]`로 그 값을 읽습니다. 예제의 최솟값은 1, 위치는 3입니다.
+smallest_index는 가장 작은 원소의 위치입니다. `numbers[smallest_index]`로 그 값을 읽습니다. 예제의 최솟값은 1, 위치는 3입니다.
 
 값과 위치를 혼동하지 않게 변수 이름에 Index를 붙였습니다. 같은 최솟값이 여러 개면 현재의 < 비교는 먼저 만난 위치를 남깁니다.
 
@@ -26,6 +26,6 @@ smallestIndex는 가장 작은 원소의 위치입니다. `numbers[smallestIndex
 
 ### Hint
 
-largestIndex를 0으로 시작하고 `numbers[i] > numbers[largestIndex]`를 비교하세요.
+largest_index를 0으로 시작하고 `numbers[i] > numbers[largest_index]`를 비교하세요.
 
 @solution exercise2_solution.cpp

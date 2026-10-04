@@ -14,9 +14,9 @@ related-example: reference/timer
 
 @code example1.cpp
 
-Start(1.0, OnTimer)에서 OnTimer 뒤에 ()가 없는 이유는 지금 실행하는 대신 실행할 함수를 지정하기 때문입니다.
+start(1.0, on_timer)에서 on_timer 뒤에 ()가 없는 이유는 지금 실행하는 대신 실행할 함수를 지정하기 때문입니다.
 
-모든 함수 밖의 ticks는 여러 함수가 사용하는 **전역 변수**입니다. 콜백마다 1을 더합니다. Sleep 중에도 타이머가 처리되고 Stop하면 멈춥니다. 시간 예약이므로 정확한 호출 횟수를 보장하지는 않습니다.
+모든 함수 밖의 ticks는 여러 함수가 사용하는 **전역 변수**입니다. 콜백마다 1을 더합니다. sleep 중에도 타이머가 처리되고 stop하면 멈춥니다. 시간 예약이므로 정확한 호출 횟수를 보장하지는 않습니다.
 
 ## Exercise — 0.5초마다 세기
 
@@ -26,7 +26,7 @@ Start(1.0, OnTimer)에서 OnTimer 뒤에 ()가 없는 이유는 지금 실행하
 
 ### Hint
 
-`timer.Start(0.5, OnTimer)`를 사용하고 callback에서 count를 증가시키세요.
+`timer.start(0.5, on_timer)`를 사용하고 callback에서 count를 증가시키세요.
 
 @solution exercise1_solution.cpp
 

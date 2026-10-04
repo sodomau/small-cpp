@@ -14,7 +14,7 @@ related-example: reference/mouse
 
 @code example1.cpp
 
-MouseX와 MouseY가 돌려준 위치를 원의 중심으로 사용합니다. 매번 배경을 지우고 새 위치에 그리므로 원 하나가 마우스를 따라갑니다. 창 안에서 마우스를 움직여 보세요.
+mouse_x와 mouse_y가 돌려준 위치를 원의 중심으로 사용합니다. 매번 배경을 지우고 새 위치에 그리므로 원 하나가 마우스를 따라갑니다. 창 안에서 마우스를 움직여 보세요.
 
 ## Exercise — 클릭 위치 표시
 
@@ -24,7 +24,7 @@ MouseX와 MouseY가 돌려준 위치를 원의 중심으로 사용합니다. 매
 
 ### Hint
 
-`MouseDown(MouseButton::Left)`로 두 경우를 나누세요.
+`mouse_down(MouseButton::Left)`로 두 경우를 나누세요.
 
 @solution exercise1_solution.cpp
 

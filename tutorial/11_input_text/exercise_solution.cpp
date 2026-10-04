@@ -1,5 +1,5 @@
-void SmallMain()
+void small_main()
 {
-    String name = Input();
-    Print("Nice to meet you, ", name);
+    String name = input();
+    print("Nice to meet you, ", name);
 }

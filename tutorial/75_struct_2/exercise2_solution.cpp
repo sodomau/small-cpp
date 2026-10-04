@@ -4,7 +4,7 @@ struct Player
     int score;
 };
 
-void SmallMain()
+void small_main()
 {
     Array<Player> players = {
         {"A", 10},
@@ -14,9 +14,9 @@ void SmallMain()
 
     int best = 0;
 
-    for (int i = 1; i < players.Length(); i = i + 1)
+    for (int i = 1; i < players.length(); i = i + 1)
         if (players[i].score > players[best].score)
             best = i;
 
-    Print(players[best].name);
+    print(players[best].name);
 }
