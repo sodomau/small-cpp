@@ -14,7 +14,7 @@ Using only the standard tools you have learned lets you do the same work without
 
 @code example1.cpp
 
-Use main instead of small_main, std::string instead of String, getline instead of Input, and cout instead of Print. Entering Alex produces Hello, Alex.
+Use main instead of small_main, std::string instead of String, getline instead of `input`, and cout instead of `print`. Entering Alex produces Hello, Alex.
 
 Because no Small features are used, small.h, initialize_small, and shutdown_small are unnecessary too.
 

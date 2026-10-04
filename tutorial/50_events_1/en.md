@@ -16,11 +16,11 @@ An **event** is something a program responds to. A **callback** is a function en
 
 on_timer has no () in start(1.0, on_timer) because you are specifying the function to call later, rather than calling it now.
 
-ticks, outside all functions, is a **global variable** shared by several functions. Each callback adds 1. Timer events are processed during Sleep too; Stop stops the timer. Scheduling does not guarantee an exact number of calls.
+ticks, outside all functions, is a **global variable** shared by several functions. Each callback adds 1. Timer events are processed during `sleep` too; `stop` stops the timer. Scheduling does not guarantee an exact number of calls.
 
 ## Exercise
 
-Make a callback run every 0.5 seconds, increasing count by 1 and printing it. Stop the Timer after about 2.2 seconds.
+Make a callback run every 0.5 seconds, increasing count by 1 and printing it. Call `stop` on the Timer after about 2.2 seconds.
 
 @exercise exercise1_starter.cpp
 

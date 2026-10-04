@@ -14,9 +14,9 @@ A callback can change a value while the window loop reads that value and draws i
 
 @code example2.cpp
 
-on_second increases the global seconds, and draw_text displays its current value. `format` returns a String joining text and values. Unlike Print, it does not produce output itself.
+on_second increases the global seconds, and draw_text displays its current value. `format` returns a String joining text and values. Unlike `print`, it does not produce output itself.
 
-Timer is not a separate computation thread. Callbacks run when Show or Sleep processes events, so a long calculation may delay them. Use StopWatch for accurate elapsed-time measurement.
+Timer is not a separate computation thread. Callbacks run when `show` or `sleep` processes events, so a long calculation may delay them. Use StopWatch for accurate elapsed-time measurement.
 
 ## Exercise
 

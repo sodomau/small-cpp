@@ -16,7 +16,7 @@ related-example: reference/sound
 
 play_sound starts playback and returns immediately. Sound::Pop and Sound::Coin name built-in sound effects.
 
-The example uses Sleep to keep the program from ending immediately. Listen for the two effects starting in sequence.
+The example uses `sleep` to keep the program from ending immediately. Listen for the two effects starting in sequence.
 
 ## Exercise
 

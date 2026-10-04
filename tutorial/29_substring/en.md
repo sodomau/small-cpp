@@ -8,7 +8,7 @@ related-example: reference/console
 
 ## What you will learn
 
-A **substring** is a consecutive part of a string. Pass Substring a starting position and the length to take.
+A **substring** is a consecutive part of a string. Pass `substring` a starting position and the length to take.
 
 ## Try it
 

@@ -16,7 +16,7 @@ related-example: reference/window
 
 `open(640, 480)` opens a window 640 pixels wide and 480 pixels high. A **pixel** is a small dot making up the screen. `set_title` sets the title.
 
-Repeat Show while is_open is true. Show displays the screen and handles input such as closing the window. This call is needed for the window to respond. The loop ends when you press its close button.
+Repeat `show` while is_open is true. `show` displays the screen and handles input such as closing the window. This call is needed for the window to respond. The loop ends when you press its close button.
 
 Later drawing examples reuse this window-opening structure.
 

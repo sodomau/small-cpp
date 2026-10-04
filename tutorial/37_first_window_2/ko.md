@@ -16,7 +16,7 @@ related-example: reference/window
 
 `window.width()`와 `window.height()`는 창의 가로·세로 크기를 돌려줍니다. 콘솔에 `Size: 400 x 300`이 나오는지 보세요.
 
-객체 만들기와 실제 창 열기는 별개입니다. set_title은 Open 전에 해도 됩니다. 프로그램에서 직접 닫으려면 close를 호출합니다.
+객체 만들기와 실제 창 열기는 별개입니다. set_title은 open 전에 해도 됩니다. 프로그램에서 직접 닫으려면 close를 호출합니다.
 
 ## Exercise — 크기 확인하기
 
