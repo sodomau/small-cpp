@@ -396,8 +396,13 @@ void MainWindow::openProjectDialog()
 }
 void MainWindow::newProject()
 {
-    const QString parent = QFileDialog::getExistingDirectory(this, "Choose Where to Create Your Project", initialDirectory(currentDocument()));
-    if (parent.isEmpty()) return;
+    QFileDialog location(this, "Choose Where to Create Your Project", creationDirectory("Projects"));
+    location.setObjectName("newProjectDirectoryDialog");
+    location.setFileMode(QFileDialog::Directory);
+    location.setOption(QFileDialog::ShowDirsOnly);
+    if (qEnvironmentVariableIsSet("SMALL_TEST_DIALOGS")) location.setOption(QFileDialog::DontUseNativeDialog);
+    if (location.exec() != QDialog::Accepted || location.selectedFiles().isEmpty()) return;
+    const QString parent = location.selectedFiles().first();
     bool accepted = false;
     const QString name = QInputDialog::getText(this, "New Project", "Project name", QLineEdit::Normal, "MyProject", &accepted).trimmed();
     if (!accepted || name.isEmpty()) return;

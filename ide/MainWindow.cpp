@@ -621,6 +621,28 @@ QString MainWindow::initialDirectory(const EditorDocument* document) const
     return QDir(path).exists() ? path : QDir::homePath();
 }
 
+QString MainWindow::documentsDirectory() const
+{
+    // UI tests already isolate their settings; keep their file dialogs there too.
+    const auto settings = SmallSettings();
+    if (qEnvironmentVariableIsSet("SMALL_TEST_DIALOGS") && settings.format() == QSettings::IniFormat)
+        return QDir(QFileInfo(settings.fileName()).absolutePath()).filePath("Documents");
+    return QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+}
+
+QString MainWindow::creationDirectory(const QString& category)
+{
+    const QString documents = documentsDirectory();
+    if (!documents.isEmpty()) {
+        const QString path = QDir(documents).filePath("SmallCpp/" + category);
+        if (QDir().mkpath(path)) return path;
+        QMessageBox::warning(this, "Could not create folder",
+            "Could not create the default folder:\n" + path +
+            "\n\nChoose another location to save your work.");
+    }
+    return QDir(documents).exists() && !documents.isEmpty() ? documents : QDir::homePath();
+}
+
 EditorDocument* MainWindow::findOpenDocument(const QString& path, const EditorDocument* except) const
 {
     for (int index = 0; index < tabs_->count(); ++index)
@@ -642,6 +664,19 @@ bool MainWindow::saveTo(EditorDocument* document, const QString& path)
             "This file is already open in another tab:\n" + destination +
             "\n\nSwitch to that tab, or choose another filename. No file was changed.");
         return false;
+    }
+    const QString parent = QFileInfo(destination).absolutePath();
+    if (!QDir(parent).exists()) {
+        const QString documents = documentsDirectory();
+        const QString relative = QDir(QDir(documents).filePath("SmallCpp")).relativeFilePath(destination);
+        if (!documents.isEmpty() && (relative.startsWith("Programs/", Qt::CaseInsensitive)
+            || relative.startsWith("Projects/", Qt::CaseInsensitive))) {
+            if (!QDir().mkpath(parent)) {
+                QMessageBox::critical(this, "Could not save", "Could not create the folder:\n" + parent
+                    + "\n\nUse Save As to choose another location.");
+                return false;
+            }
+        }
     }
     QSaveFile file(destination);
     const QByteArray bytes = document->toPlainText().toUtf8();
@@ -680,7 +715,9 @@ bool MainWindow::saveFileAs(EditorDocument* document)
     if (!document) return false;
     // Remember the document, not the current tab index, across a modal dialog.
     QPointer<EditorDocument> target(document);
-    QFileDialog dialog(this, "Save C++ program", initialDirectory(document),
+    const QString directory = !document->isExample() && !document->filePath().isEmpty()
+        ? QFileInfo(document->filePath()).absolutePath() : creationDirectory("Programs");
+    QFileDialog dialog(this, "Save C++ program", directory,
                        "C++ source (*.cpp);;All files (*)");
     dialog.setObjectName("saveFileDialog");
     dialog.setAcceptMode(QFileDialog::AcceptSave);

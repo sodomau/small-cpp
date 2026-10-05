@@ -83,6 +83,103 @@ private:
     }
 
 private slots:
+    void savedProgramRecreatesRemovedDefaultDirectory()
+    {
+        const QString documents = QDir(QFileInfo(SmallSettings().fileName()).absolutePath()).filePath("Documents");
+        const QString programs = QDir(documents).filePath("SmallCpp/Programs");
+        const QString path = QDir(programs).filePath("saved.cpp");
+        QVERIFY(QDir().mkpath(programs));
+        writeFile(path, "void small_main() {}\n");
+        MainWindow window;
+        QVERIFY(window.openDocument(path));
+        QVERIFY(QFile::remove(path));
+        QVERIFY(QDir().rmdir(programs));
+        action(window, "actionSave")->trigger();
+        QCOMPARE(readFile(path), QByteArray("void small_main() {}\n"));
+        QVERIFY(QFile::remove(path));
+        QVERIFY(QDir().rmdir(programs));
+    }
+
+    void unavailableDefaultFolderOffersAnotherLocation()
+    {
+        const QString documents = QDir(QFileInfo(SmallSettings().fileName()).absolutePath()).filePath("Documents");
+        const QString root = QDir(documents).filePath("SmallCpp");
+        QVERIFY(QDir().mkpath(root));
+        const QString blocker = QDir(root).filePath("Programs");
+        writeFile(blocker, "keep this file");
+        MainWindow window;
+        OpenNewProgram(window);
+        bool warned = false;
+        QString shown;
+        QTimer response;
+        connect(&response, &QTimer::timeout, &window, [&] {
+            if (auto* box = qobject_cast<QMessageBox*>(QApplication::activeModalWidget())) {
+                warned = box->text().contains("Choose another location"); box->accept();
+            } else if (auto* dialog = qobject_cast<QFileDialog*>(QApplication::activeModalWidget())) {
+                shown = dialog->directory().absolutePath(); response.stop(); dialog->reject();
+            }
+        });
+        response.start(5);
+        action(window, "actionSave")->trigger();
+        QVERIFY(warned);
+        QCOMPARE(QDir::cleanPath(shown), QDir::cleanPath(documents));
+        QCOMPARE(readFile(blocker), QByteArray("keep this file"));
+        QVERIFY(QFile::remove(blocker));
+    }
+
+    void newProgramSaveLocationIsStableAndRecreated()
+    {
+        QTemporaryDir other;
+        const QString documents = QDir(QFileInfo(SmallSettings().fileName()).absolutePath()).filePath("Documents");
+        const QString programs = QDir(documents).filePath("SmallCpp/Programs");
+        QVERIFY(!QFileInfo::exists(programs));
+        MainWindow window;
+        OpenNewProgram(window);
+        QVERIFY(!QFileInfo::exists(programs));
+        SmallSettings().setValue("files/lastDirectory", other.path());
+        for (int attempt = 0; attempt < 2; ++attempt) {
+            QString shown;
+            QTimer response;
+            connect(&response, &QTimer::timeout, &window, [&] {
+                if (auto* dialog = qobject_cast<QFileDialog*>(QApplication::activeModalWidget())) {
+                    shown = dialog->directory().absolutePath(); response.stop(); dialog->reject();
+                }
+            });
+            response.start(5);
+            action(window, "actionSave")->trigger();
+            QCOMPARE(QDir::cleanPath(shown), QDir::cleanPath(programs));
+            QVERIFY(QDir(programs).exists());
+            QVERIFY(QDir().rmdir(programs));
+        }
+        QCOMPARE(SmallSettings().value("files/lastDirectory").toString(), other.path());
+    }
+
+    void newProjectLocationDoesNotFollowOpenFileLocation()
+    {
+        QTemporaryDir other;
+        const QString source = other.filePath("existing.cpp");
+        writeFile(source, "void small_main() {}\n");
+        const QString documents = QDir(QFileInfo(SmallSettings().fileName()).absolutePath()).filePath("Documents");
+        const QString projects = QDir(documents).filePath("SmallCpp/Projects");
+        MainWindow window;
+        QVERIFY(window.openDocument(source));
+        QVERIFY(!QFileInfo::exists(projects));
+        for (int attempt = 0; attempt < 2; ++attempt) {
+            QString shown;
+            QTimer response;
+            connect(&response, &QTimer::timeout, &window, [&] {
+                if (auto* dialog = qobject_cast<QFileDialog*>(QApplication::activeModalWidget())) {
+                    shown = dialog->directory().absolutePath(); response.stop(); dialog->reject();
+                }
+            });
+            response.start(5);
+            action(window, "actionNewProject")->trigger();
+            QCOMPARE(QDir::cleanPath(shown), QDir::cleanPath(projects));
+            QVERIFY(QDir().rmdir(projects));
+        }
+        QCOMPARE(SmallSettings().value("files/lastDirectory").toString(), other.path());
+    }
+
     void homepagePreview()
     {
         const QString output = qEnvironmentVariable("SMALL_HOMEPAGE_PREVIEW_DIR");

@@ -142,6 +142,8 @@ private:
     void updateTitle();
     void updateTabTitle(EditorDocument* document);
     QString initialDirectory(const EditorDocument* document) const;
+    QString documentsDirectory() const;
+    QString creationDirectory(const QString& category);
     bool maybeSave(EditorDocument* document);
     bool maybeSaveAll();
     bool saveFile(EditorDocument* document);
