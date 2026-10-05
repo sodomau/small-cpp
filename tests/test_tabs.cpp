@@ -2,6 +2,9 @@
 #include "WindowTestSupport.h"
 #include "EditorDocument.h"
 #include "BuildController.h"
+#include "Highlighter.h"
+#include <QTextBlock>
+#include <QTextLayout>
 
 #include <QAbstractButton>
 #include <QAction>
@@ -83,6 +86,41 @@ private:
     }
 
 private slots:
+    void highlightingDistinguishesCppSyntaxAndProtectsComments()
+    {
+        QTextDocument document;
+        Highlighter highlighter(&document);
+        document.setPlainText("#define modifies\nPtr<T> make_object(Args args) { return std::make_shared<T>(); }\n"
+                              "print(\"return make_object()\"); // Window print()\n"
+                              "/* make_object()\nWindow */ auto value = 0xFF;\n"
+                              "auto count = 1'000; print(count); auto letter = u'a';\n");
+        auto colorAt = [&](int line, const QString& token) {
+            const auto block = document.findBlockByNumber(line);
+            const int offset = block.text().indexOf(token);
+            for (const auto& range : block.layout()->formats())
+                if (range.start <= offset && offset < range.start + range.length)
+                    return range.format.foreground().color();
+            return QColor();
+        };
+        for (bool dark : {false, true}) {
+            highlighter.setDark(dark);
+            QVERIFY(colorAt(0, "#define").isValid());
+            QVERIFY(colorAt(1, "Ptr").isValid());
+            QCOMPARE(colorAt(1, "make_object"), colorAt(1, "make_shared"));
+            QVERIFY(colorAt(1, "return") != colorAt(1, "make_object"));
+            QVERIFY(colorAt(1, "Ptr") != colorAt(1, "make_object"));
+            QCOMPARE(colorAt(2, "return"), colorAt(2, "make_object"));
+            QVERIFY(colorAt(2, "return") != colorAt(1, "return"));
+            QCOMPARE(colorAt(2, "Window"), colorAt(3, "make_object"));
+            QCOMPARE(colorAt(3, "make_object"), colorAt(4, "Window"));
+            QVERIFY(colorAt(4, "auto") != colorAt(4, "Window"));
+            QVERIFY(colorAt(4, "0xFF").isValid());
+            QCOMPARE(colorAt(5, "1'000"), colorAt(4, "0xFF"));
+            QCOMPARE(colorAt(5, "print"), colorAt(1, "make_object"));
+            QCOMPARE(colorAt(5, "'a'"), colorAt(2, "return"));
+        }
+    }
+
     void savedProgramRecreatesRemovedDefaultDirectory()
     {
         const QString documents = QDir(QFileInfo(SmallSettings().fileName()).absolutePath()).filePath("Documents");

@@ -23,14 +23,22 @@ void Highlighter::rebuild(bool dark)
         if (bold) format.setFontWeight(QFont::Bold);
         rules_.append({QRegularExpression(regex), format});
     };
-    add(R"(\b(alignas|alignof|auto|bool|break|case|catch|char|class|const|constexpr|continue|default|delete|do|double|else|enum|explicit|extern|false|float|for|friend|if|inline|int|long|namespace|new|noexcept|nullptr|operator|private|protected|public|return|short|signed|sizeof|static|struct|switch|template|this|throw|true|try|typedef|typename|union|unsigned|using|virtual|void|volatile|while)\b)",
+    // Syntax cues, not semantic type analysis: capitalized names and names
+    // followed by an argument list (optionally with template arguments).
+    add(R"(\b[A-Z][A-Za-z0-9_]*\b)",
+        dark ? QColor("#d6a4ef") : QColor("#83409a"));
+    add(R"(\b[A-Za-z_][A-Za-z0-9_]*(?=\s*(?:<[^<>;{}]*>)?\s*\())",
+        dark ? QColor("#69d1d4") : QColor("#006c78"));
+    add(R"(\b(alignas|alignof|auto|bool|break|case|catch|char|char8_t|char16_t|char32_t|class|const|consteval|constexpr|constinit|continue|co_await|co_return|co_yield|decltype|default|delete|do|double|else|enum|explicit|extern|false|float|for|friend|if|inline|int|long|mutable|namespace|new|noexcept|nullptr|operator|private|protected|public|requires|return|short|signed|sizeof|static|static_assert|struct|switch|template|this|thread_local|throw|true|try|typedef|typename|union|unsigned|using|virtual|void|volatile|wchar_t|while|concept)\b)",
         dark ? QColor("#93b8ff") : QColor("#234b91"), true);
     add(R"(\b(String|Array|File|FileMode|Window|Color|StopWatch|Timer|Key|MouseButton|Sound)\b)",
         dark ? QColor("#d6a4ef") : QColor("#83409a"), true);
     add(R"(\b(small_main|initialize_small|shutdown_small|format|print|write|input|input_int|input_real|rgb|random_int|random_real|play_sound|play_sound_and_wait|beep|beep_and_wait|sleep|load_image|save_image|draw_image)\b)",
         dark ? QColor("#69d1d4") : QColor("#006c78"));
-    add(R"(\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?[fFlLuU]*\b)",
+    add(R"(\b(?:0[xX][0-9a-fA-F']+(?:\.[0-9a-fA-F']*)?(?:[pP][+-]?\d+)?|0[bB][01']+|\d[\d']*(?:\.[\d']*)?(?:[eE][+-]?\d+)?)[fFlLuU]*\b)",
         dark ? QColor("#edb77f") : QColor("#975100"));
+    add(R"(^\s*#\s*[A-Za-z_][A-Za-z0-9_]*)",
+        dark ? QColor("#edb77f") : QColor("#975100"), true);
     string_.setForeground(dark ? QColor("#ace09b") : QColor("#27722f"));
     comment_.setForeground(dark ? QColor("#939baa") : QColor("#777f89"));
 }
@@ -41,11 +49,15 @@ void Highlighter::highlightBlock(const QString& text)
         auto matches = rule.expression.globalMatch(text);
         while (matches.hasNext()) { auto match = matches.next(); setFormat((int)match.capturedStart(), (int)match.capturedLength(), rule.format); }
     }
+    static const QRegularExpression numberBeforeSeparator(
+        R"(\b(?:0[xX][0-9a-fA-F']+|0[bB][01']+|\d[\d']*)$)");
     bool inComment = previousBlockState() == 1; setCurrentBlockState(0); int i = 0;
     while (i < text.size()) {
         if (inComment) { int end=(int)text.indexOf("*/",i); if(end<0){setFormat(i,(int)text.size()-i,comment_);setCurrentBlockState(1);return;} setFormat(i,end+2-i,comment_);i=end+2;inComment=false; }
         else if(text.mid(i,2)=="//"){setFormat(i,(int)text.size()-i,comment_);return;}
         else if(text.mid(i,2)=="/*"){int start=i,end=(int)text.indexOf("*/",i+2);if(end<0){setFormat(start,(int)text.size()-start,comment_);setCurrentBlockState(1);return;}setFormat(start,end+2-start,comment_);i=end+2;}
+        else if (text[i] == '\'' && i + 1 < text.size() && text[i + 1].isLetterOrNumber()
+                 && numberBeforeSeparator.match(text.left(i)).hasMatch()) { ++i; }
         else if(text[i]=='"'||text[i]=='\''){QChar quote=text[i];int start=i++;while(i<text.size()){if(text[i]=='\\'){i=qMin(i+2,(int)text.size());continue;}if(text[i++]==quote)break;}setFormat(start,i-start,string_);}
         else ++i;
     }
