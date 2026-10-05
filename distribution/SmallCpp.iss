@@ -51,4 +51,3 @@ Filename: "{app}\SmallCppIDE.exe"; Description: "Launch Small C++"; Flags: nowai
 
 ; Deliberately no student-work/settings cleanup or wildcard UninstallDelete rules.
 ; Inno removes its installed files and shortcuts; student-created files remain.
-
