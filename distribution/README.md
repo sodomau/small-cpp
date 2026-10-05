@@ -5,6 +5,9 @@ C++.
 
 ## Start
 
+With the Installer, open Small C++ from the Start menu. With the portable ZIP,
+extract the entire archive and open `SmallCppIDE.exe`.
+
 Run `SmallCppIDE.exe`, then open **Learn → Tutorial...**. The included core tutorial contains 97 lessons in Korean and English. Choose **Settings → Tutorial Language
 → English** to switch languages. Settings lists the
 languages supplied by the installed content pack.
@@ -19,6 +22,7 @@ See the `docs` folder:
 -   `DESIGN.md`
 -   `TUTORIAL_ENGLISH.md`
 -   `NAMING_CONVENTIONS.md` — API naming and migration from older programs
+-   `WINDOWS_INSTALLATION.md` — installing, updating, uninstalling, and save locations
 
 No separate compiler or Qt installation is required for the portable
 package.

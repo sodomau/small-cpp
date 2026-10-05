@@ -1,6 +1,6 @@
 # Small C++ for Windows
 
-1. Extract the entire ZIP into a folder you can write to, such as Documents/SmallCpp.
+1. Extract the entire ZIP into a folder you can write to, separate from your saved programs.
 2. Open `SmallCppIDE.exe` inside that folder. Do not run it from inside the ZIP.
 3. Enter this program and press **Run** (F5):
 
@@ -11,7 +11,7 @@ void small_main()
 }
 ```
 
-Use **Learn → Tutorial...** for the 88 Korean/English lessons and **Learn → Examples...**
+Use **Learn → Tutorial...** for the 97 core Korean/English lessons and **Learn → Examples...**
 for runnable examples. **Settings → Theme** offers Light, Dark and custom `.qss` files.
 The compiler and debugger are included; no separate Qt or compiler installation is needed.
 

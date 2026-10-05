@@ -3,6 +3,11 @@
 A packaged Small C++ release requires no separate Qt, MinGW, GDB, or IDE
 installation.
 
+Use the Windows Installer for Start menu shortcuts and uninstall support, or
+extract the portable ZIP and launch `SmallCppIDE.exe`. See
+[Windows installation](WINDOWS_INSTALLATION.md) for both options and default
+program/project folders.
+
 ## First program
 
 The IDE starts with a **Welcome** tab. Choose **Try This Example** to open the

@@ -90,7 +90,7 @@ Copy-Item $extensions (Join-Path $OutputDir "extensions") -Recurse -Force
 Copy-Item $tutorial (Join-Path $OutputDir "tutorial") -Recurse -Force
 
 # Keep learner documentation explicit; do not ship internal validation reports.
-$publicDocs = @('GETTING_STARTED.md', 'SMALL_CPP_GUIDE.md', 'API.md', 'DESIGN.md', 'TUTORIAL_ENGLISH.md', 'PROJECT_MODE.md', 'PUBLISH.md', 'NAMING_CONVENTIONS.md')
+$publicDocs = @('GETTING_STARTED.md', 'SMALL_CPP_GUIDE.md', 'API.md', 'DESIGN.md', 'TUTORIAL_ENGLISH.md', 'PROJECT_MODE.md', 'PUBLISH.md', 'NAMING_CONVENTIONS.md', 'WINDOWS_INSTALLATION.md')
 $docsOut = Join-Path $OutputDir 'docs'
 New-Item -ItemType Directory -Path $docsOut | Out-Null
 foreach ($doc in $publicDocs) {
