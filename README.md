@@ -78,10 +78,12 @@ void small_main()
 
 ## Get started
 
-Try the [current Windows portable preview](https://github.com/sodomau/small-cpp/releases/tag/v0.76.12):
-download **SmallCpp-v0.76.12-Windows-x64.zip**, extract the entire archive,
-and launch `SmallCppIDE.exe`. The compiler and debugger are included.
-See [portable first use](docs/PORTABLE_START.md) for instructions.
+Try the [current Windows preview](https://github.com/sodomau/small-cpp/releases/tag/v0.76.13):
+use **SmallCpp-v0.76.13-Windows-x64-Setup.exe** for installation and Start menu
+shortcuts, or extract **SmallCpp-v0.76.13-Windows-x64.zip** and launch
+`SmallCppIDE.exe` for portable use. Both include the compiler and debugger.
+See [Windows installation](docs/WINDOWS_INSTALLATION.md) for saving, updating,
+and uninstalling.
 
 The preview and current tutorials use the snake_case API. Older programs need
 their PascalCase function names updated. See
