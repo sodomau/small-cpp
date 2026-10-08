@@ -89,6 +89,52 @@ private:
     }
 
 private slots:
+    void saveShortcutWritesFocusedEditor()
+    {
+        QTemporaryDir folder;
+        const QString path = folder.filePath("saved.cpp");
+        writeFile(path, "void small_main() {}\n");
+        MainWindow window;
+        QVERIFY(window.openDocument(path));
+        window.show();
+        window.activateWindow();
+        auto* editor = current(window);
+        editor->appendPlainText("// saved by shortcut");
+        editor->setFocus();
+        QTest::qWait(50);
+        QTest::keyClick(QApplication::focusWidget(), Qt::Key_S, Qt::ControlModifier);
+        QTRY_VERIFY_WITH_TIMEOUT(readFile(path).contains("// saved by shortcut"), 1000);
+        QVERIFY(!editor->document()->isModified());
+        auto saveWithDialog = [&](const QString& destination, Qt::KeyboardModifiers modifiers) {
+            bool shown = false;
+            QTimer response;
+            connect(&response, &QTimer::timeout, &window, [&] {
+                if (auto* dialog = qobject_cast<QFileDialog*>(QApplication::activeModalWidget())) {
+                    shown = true;
+                    response.stop();
+                    dialog->selectFile(destination);
+                    QMetaObject::invokeMethod(dialog, "accept", Qt::DirectConnection);
+                }
+            });
+            response.start(5);
+            window.activateWindow();
+            current(window)->setFocus();
+            QTRY_VERIFY(QApplication::focusWidget());
+            QTest::keyClick(QApplication::focusWidget(), Qt::Key_S, modifiers);
+            QVERIFY(shown);
+            QCOMPARE(current(window)->filePath(), destination);
+            QVERIFY(!current(window)->document()->isModified());
+        };
+        const QString copyPath = folder.filePath("copy.cpp");
+        saveWithDialog(copyPath, Qt::ControlModifier | Qt::ShiftModifier);
+        QCOMPARE(readFile(copyPath), readFile(path));
+        action(window, "actionNew")->trigger();
+        current(window)->setPlainText("void small_main() { print(123); }\n");
+        const QString newPath = folder.filePath("new.cpp");
+        saveWithDialog(newPath, Qt::ControlModifier);
+        QCOMPARE(readFile(newPath), QByteArray("void small_main() { print(123); }\n"));
+    }
+
     void learnerCompletionUsesApiKeywordsAndDocumentNames()
     {
         EditorDocument editor("int student_score;\n// imaginary_comment\n"
