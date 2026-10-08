@@ -32,9 +32,33 @@ configure from `ide/`.
 
 ## Windows build
 
-Use a matching Qt MinGW 64-bit kit, not MSVC. This machine has Qt 6.11.2 and
-MinGW 13.1.0. In Qt Creator, open `ide/CMakeLists.txt`, select that kit, and keep
-the build directory under `build/`. Enable `SMALL_BUILD_TESTS` for regression tests.
+The IDE editing tabs now require **KF6TextEditor** and **Qt 6.9 or newer**.
+KDE Frameworks and Qt must use the same MinGW kit. A plain Qt installation
+does not supply this additional dependency. Tutorial/Welcome code previews
+still use the existing Qt preview widget; learner runtime archives do not
+link KTextEditor or KDE Frameworks.
+
+The integration was tested in an isolated KDE Craft prefix under
+`build/kt-craft` (Qt 6.11.1, MinGW 14.2, KTextEditor 6.30).
+For that setup, use the prefix as `CMAKE_PREFIX_PATH`, its
+`mingw64/bin/g++.exe` as `CMAKE_CXX_COMPILER`, and its `bin` and
+`mingw64/bin` directories on PATH. Set `QT_PLUGIN_PATH` to its `plugins`
+directory. Keep this kit separate from the Qt 6.11.2/MinGW 13.1 kit below;
+those Qt-only commands require matching KDE development packages before
+they can build the updated IDE.
+
+The existing release packaging and notice scripts target the published
+Qt-only distribution. A KDE-based public release additionally requires an
+inventory of KDE DLL/plugin dependencies and corresponding notices/sources;
+the integration preview is not a new published release.
+
+Use a matching Qt MinGW 64-bit kit with KDE Frameworks, not MSVC. In Qt Creator,
+open `ide/CMakeLists.txt`, select that complete kit, and keep the build directory
+under `build/`. Enable `SMALL_BUILD_TESTS` for regression tests.
+
+The following commands preserve the Qt-only configuration used for published
+v0.76.13 (Qt 6.11.2, MinGW 13.1). For this integration branch, substitute the
+KDE-equipped Qt prefix/compiler/bin/plugin paths described above.
 
 Equivalent PowerShell commands from the repository root:
 

@@ -23,6 +23,7 @@ redistributing the affected material.
 | Component | How it is used | License review for distribution |
 | --- | --- | --- |
 | Qt Core, Gui, Widgets, Multimedia | IDE and learner runtime dependencies | Verify the licenses of the exact kit, modules, plugins, and third-party components shipped. Qt offers LGPL/GPL and commercial licensing options; not every component has the same terms. |
+| KTextEditor, KDE Frameworks, Qt Qml/TextToSpeech/PrintSupport and their dependencies | Native editing tabs in the IDE; not linked into the learner runtime | Inventory the exact DLLs and plugins, preserve each component's license and attribution, and provide applicable corresponding source and build information. The existing Qt-only release notice collector is not sufficient for a KDE-based release. |
 | FFmpeg and other Qt plugin dependencies | May be deployed by Qt Multimedia and deployment tools | Inspect the actual package; include notices, license texts, and corresponding source access as required for the exact binaries. |
 | MinGW-w64 toolchain, GCC, runtime libraries, binutils, GDB, and other bundled tools | The portable packaging script copies the entire selected toolchain | Inventory the whole copied tree. Each component retains its own terms. GCC runtime exceptions do not waive the conditions for redistributing compiler/debugger binaries. |
 
