@@ -13,8 +13,8 @@ function setLanguage(language) {
     : 'lessons/ko/index.html';
   document.title = language === 'en' ? 'Small C++ — Start small. Go further.' : 'Small C++ — 작은 시작. 큰 가능성.';
   document.querySelector('#ide-screenshot').alt = language === 'en'
-    ? 'Small C++ desktop IDE with a drawing program, Run and Debug controls, and diagnostics'
-    : '그림 프로그램, 실행과 디버그 도구, 진단 창을 보여 주는 Small C++ IDE';
+    ? 'Small C++ desktop IDE with learner code completion, Run and Debug controls, and diagnostics'
+    : '학생용 자동완성, 실행과 디버그 도구, 진단 창을 보여 주는 Small C++ IDE';
 }
 languageButton.addEventListener('click', () => {
   setLanguage(document.documentElement.lang === 'en' ? 'ko' : 'en');
