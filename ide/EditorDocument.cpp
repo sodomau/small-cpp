@@ -92,7 +92,7 @@ void EditorDocument::insertPlainText(const QString& text)
 
 void EditorDocument::setFont(const QFont& font)
 {
-    QWidget::setFont(font);
+    // The code font belongs to the renderer, not status controls and menus.
     view_->setConfigValue("font", font);
 }
 

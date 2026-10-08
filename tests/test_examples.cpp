@@ -467,7 +467,7 @@ private slots:
         QCOMPARE(browser->findChild<CodeEditor*>("examplePreview")->font().pointSize(), 18);
         QVERIFY(window.openExample("reference/array"));
         action(window, "actionTryExample")->trigger();
-        QCOMPARE(current(window)->font().pointSize(), 18);
+        QCOMPARE(current(window)->editorView()->configValue("font").value<QFont>().pointSize(), 18);
     }
 
     void readOnlyExampleRunsWithoutTurningIntoAFile()

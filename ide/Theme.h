@@ -23,6 +23,10 @@ QToolButton, QPushButton { background: palette(button); color: palette(button-te
 QToolButton:hover, QPushButton:hover { background: palette(alternate-base); border-color: palette(highlight); }
 QToolButton:pressed, QPushButton:pressed { background: palette(highlight); color: palette(highlighted-text); }
 QToolButton:disabled, QPushButton:disabled { color: palette(mid); background: palette(window); border-color: palette(window); }
+/* KTextEditor calculates these buttons from font metrics, without QSS padding. */
+KateStatusBar QPushButton { padding: 0; margin: 0; border: none; border-radius: 0; background: palette(window); }
+KateStatusBar QPushButton:hover { background: palette(alternate-base); }
+QAbstractItemView { background: palette(base); alternate-background-color: palette(alternate-base); color: palette(text); selection-background-color: palette(highlight); selection-color: palette(highlighted-text); }
 QToolButton#runButton { background: #2563eb; color: white; border-color: #2563eb; font-weight: bold; padding: 6px 20px; }
 QToolButton#runButton:hover { background: #1d4ed8; }
 QToolButton#runButton:disabled { background: palette(button); color: palette(mid); border-color: palette(mid); }

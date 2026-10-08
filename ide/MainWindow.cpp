@@ -513,7 +513,8 @@ EditorDocument* MainWindow::addDocument(const QString& text, const QString& path
             : QString("Untitled-%1.cpp").arg(nextUntitledNumber_);
         ++nextUntitledNumber_;
     }
-    auto* document = new EditorDocument(text, path, untitledName);
+    // Completion widgets choose their host window while the view is created.
+    auto* document = new EditorDocument(text, path, untitledName, tabs_);
     if (example) document->markAsExample(example->id, example->title, example->sourceName);
     connect(document, &EditorDocument::modificationChanged, this,
         [this, document](bool) { updateTabTitle(document); updateTitle(); });

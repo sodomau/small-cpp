@@ -8,6 +8,7 @@
 #include <QTextLayout>
 
 #include <QAbstractButton>
+#include <QAbstractItemView>
 #include <QAction>
 #include <QApplication>
 #include <QFile>
@@ -87,6 +88,54 @@ private:
     }
 
 private slots:
+    void nativeEditorPopupHostAndStatusLayout()
+    {
+        MainWindow window;
+        action(window, "actionNew")->trigger();
+        window.show();
+        QTest::qWait(50);
+        auto* editor = current(window);
+        QVERIFY(editor);
+        editor->setPlainText("int student_number;\nvoid small_main()\n{\n    stud\n}\n");
+        editor->document()->setModified(false);
+        QWidget* completion = nullptr;
+        for (auto* widget : window.findChildren<QWidget*>()) {
+            if (QString::fromLatin1(widget->metaObject()->className()) == "KateCompletionWidget") {
+                QCOMPARE(widget->parentWidget(), &window);
+                completion = widget;
+            }
+        }
+        QVERIFY(completion);
+        for (bool dark : {false, true}) {
+            action(window, dark ? "actionThemeDark" : "actionThemeLight")->trigger();
+            editor->setFocus();
+            editor->editorView()->setCursorPosition({3, 8});
+            editor->editorView()->startCompletion({3, 4, 3, 8});
+            QTest::qWait(20);
+            QTRY_VERIFY(completion->isVisible());
+            QVERIFY(window.rect().contains(completion->geometry()));
+            bool foundStatus = false;
+            QWidget* status = nullptr;
+            for (auto* widget : editor->findChildren<QWidget*>())
+                if (QString::fromLatin1(widget->metaObject()->className()) == "KateStatusBar") status = widget;
+            QVERIFY(status);
+            for (auto* button : status->findChildren<QPushButton*>()) {
+                if (!button->isVisible() || button->text().isEmpty()) continue;
+                foundStatus = true;
+                QVERIFY(button->contentsRect().height() >= button->fontMetrics().lineSpacing());
+                QCOMPARE(button->palette().color(QPalette::ButtonText), window.palette().color(QPalette::WindowText));
+            }
+            QVERIFY(foundStatus);
+            for (auto* list : window.findChildren<QAbstractItemView*>()) {
+                QCOMPARE(list->palette().color(QPalette::Base), QColor(dark ? "#1e1f22" : "#ffffff"));
+                QCOMPARE(list->palette().color(QPalette::Text), QColor(dark ? "#e6e6e6" : "#202124"));
+            }
+            const QString capture = qEnvironmentVariable("SMALL_UI_CAPTURE");
+            if (!capture.isEmpty())
+                QVERIFY(window.grab().save(capture + (dark ? "-dark.png" : "-light.png")));
+        }
+    }
+
     void nativeEditorIndentationMarksAndThemes()
     {
         EditorDocument editor("void small_main()\n{", {}, "Untitled.cpp");
@@ -727,8 +776,8 @@ private slots:
         MainWindow window;
         OpenNewProgram(window);
         auto* first = current(window);
-        QCOMPARE(first->font().pointSize(), 14);
-        QCOMPARE(first->font().family(), QString("Consolas"));
+        QCOMPARE(first->editorView()->configValue("font").value<QFont>().pointSize(), 14);
+        QCOMPARE(first->editorView()->configValue("font").value<QFont>().family(), QString("Consolas"));
         action(window, "actionNew")->trigger();
         auto* second = current(window);
         action(window, "actionThemeDark")->trigger();
