@@ -37,7 +37,10 @@ mode.
 `tools/package_release.ps1` deploys Qt runtime files and plugins, copies Qt
 linker libraries and the MinGW toolchain, and requires a reviewed notice
 directory. `tools/prepare_release_notices.py` collects source license texts,
-toolchain notices and Qt SBOMs. Source archives must be published alongside
+toolchain notices and Qt SBOMs for the historical Qt-only kit.
+`tools/prepare_editor_notices.py` collects the KDE-based release's exact Craft
+sources, component notices and matching compiler build records.
+Source archives must be published alongside
 the binary package; the assembler does not replace inventory review.
 See [Windows distribution preparation](docs/BINARY_DISTRIBUTION.md).
 

@@ -78,9 +78,9 @@ void small_main()
 
 ## Get started
 
-Try the [current Windows preview](https://github.com/sodomau/small-cpp/releases/tag/v0.76.13):
-use **SmallCpp-v0.76.13-Windows-x64-Setup.exe** for installation and Start menu
-shortcuts, or extract **SmallCpp-v0.76.13-Windows-x64.zip** and launch
+Try the [current Windows preview](https://github.com/sodomau/small-cpp/releases/tag/v0.76.14):
+use **SmallCpp-v0.76.14-Windows-x64-Setup.exe** for installation and Start menu
+shortcuts, or extract **SmallCpp-v0.76.14-Windows-x64.zip** and launch
 `SmallCppIDE.exe` for portable use. Both include the compiler and debugger.
 See [Windows installation](docs/WINDOWS_INSTALLATION.md) for saving, updating,
 and uninstalling.
@@ -90,8 +90,9 @@ their PascalCase function names updated. See
 [naming conventions and migration](docs/NAMING_CONVENTIONS.md).
 
 The documented development setup is **Windows with a matching Qt MinGW
-64-bit kit**. The current workflow uses Qt 6.11.2, MinGW 13.1.0, CMake, and
-Ninja. See [the build instructions](docs/DEVELOPMENT.md#windows-build) for the
+64-bit kit with KDE Frameworks**. The current workflow uses Qt 6.11.1,
+KTextEditor 6.30.0, MinGW 14.2.0, CMake, and Ninja.
+See [the build instructions](docs/DEVELOPMENT.md#windows-build) for the
 complete setup, build, and test commands. Configure from `ide/` and keep
 build output under `build/`.
 
