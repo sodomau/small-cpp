@@ -8,6 +8,63 @@
 #include <QPlainTextEdit>
 
 #include <QFileInfo>
+#include "ApiReference.h"
+#include <KTextEditor/CodeCompletionModel>
+#include <QRegularExpression>
+
+namespace {
+// Vocabulary completion, deliberately independent of Qt's C++ syntax word lists.
+// This is not a C++ type analyser: names written in this document are also offered.
+class LearnerCompletion final : public KTextEditor::CodeCompletionModel
+{
+public:
+    explicit LearnerCompletion(QObject* parent) : CodeCompletionModel(parent) {}
+    void completionInvoked(KTextEditor::View* view, const KTextEditor::Range& range,
+                           InvocationType) override
+    {
+        const QString prefix = view->document()->text(range);
+        QSet<QString> words;
+        const QString keywords = QStringLiteral(
+            "alignas alignof auto bool break case catch char char8_t char16_t char32_t class "
+            "const consteval constexpr constinit continue co_await co_return co_yield decltype "
+            "default delete do double else enum explicit extern false float for friend if inline "
+            "int long mutable namespace new noexcept nullptr operator private protected public "
+            "requires return short signed sizeof static static_assert struct switch template this "
+            "thread_local throw true try typedef typename union unsigned using virtual void "
+            "volatile wchar_t while concept small_main initialize_small shutdown_small");
+        for (const auto& word : keywords.split(' ')) words.insert(word);
+        static const QRegularExpression identifier(R"([A-Za-z_][A-Za-z0-9_]*)");
+        for (const auto& entry : ApiReference::core()) {
+            auto names = identifier.globalMatch(entry.name);
+            while (names.hasNext()) words.insert(names.next().captured());
+        }
+        // Ignore comments and quoted text when harvesting the learner's names.
+        static const QRegularExpression tokens(
+            R"re(//[^\n]*|/\*[\s\S]*?\*/|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|([A-Za-z_][A-Za-z0-9_]*))re");
+        auto matches = tokens.globalMatch(view->document()->text());
+        while (matches.hasNext()) {
+            const QString name = matches.next().captured(1);
+            if (!name.isEmpty()) words.insert(name);
+        }
+        beginResetModel();
+        candidates_.clear();
+        for (const auto& word : words)
+            if (word.startsWith(prefix) && word != prefix) candidates_.append(word);
+        candidates_.sort();
+        setRowCount(candidates_.size());
+        endResetModel();
+    }
+    QVariant data(const QModelIndex& index, int role) const override
+    {
+        if (role == Qt::DisplayRole && index.column() == Name
+            && index.row() >= 0 && index.row() < candidates_.size())
+            return candidates_[index.row()];
+        return {};
+    }
+private:
+    QStringList candidates_;
+};
+}
 
 EditorDocument::EditorDocument(const QString& text, const QString& path,
                                const QString& untitledName, QWidget* parent)
@@ -56,6 +113,11 @@ EditorDocument::EditorDocument(const QString& text, const QString& path,
             else document_->addMark(mark.line, KTextEditor::Document::BreakpointActive);
         });
     setPlainText(text);
+    // Selecting C++ highlighting installs the built-in keyword/word models.
+    // Replace them only after the document mode has been initialized.
+    const auto defaults = view_->codeCompletionModels();
+    for (auto* model : defaults) view_->unregisterCompletionModel(model);
+    view_->registerCompletionModel(new LearnerCompletion(document_));
     document()->setModified(false);
 }
 

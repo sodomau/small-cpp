@@ -9,6 +9,7 @@
 
 #include <QAbstractButton>
 #include <QAbstractItemView>
+#include <KTextEditor/CodeCompletionModel>
 #include <QAction>
 #include <QApplication>
 #include <QFile>
@@ -88,6 +89,35 @@ private:
     }
 
 private slots:
+    void learnerCompletionUsesApiKeywordsAndDocumentNames()
+    {
+        EditorDocument editor("int student_score;\n// imaginary_comment\n"
+                              "const char* text = \"imaginary_string\";\ninpu", {}, "Untitled.cpp");
+        const auto models = editor.editorView()->codeCompletionModels();
+        QCOMPARE(models.size(), 1);
+        auto* model = models.front();
+        auto candidates = [&](const QString& prefix) {
+            editor.document()->replaceText({3, 0, 3, editor.document()->line(3).size()}, prefix);
+            model->completionInvoked(editor.editorView(), {3, 0, 3, prefix.size()},
+                                     KTextEditor::CodeCompletionModel::ManualInvocation);
+            QStringList names;
+            for (int row = 0; row < model->rowCount(); ++row)
+                names.append(model->index(row, KTextEditor::CodeCompletionModel::Name).data().toString());
+            return names;
+        };
+        QCOMPARE(candidates("inpu"), QStringList({"input", "input_int", "input_real"}));
+        QVERIFY(candidates("ret").contains("return"));
+        QVERIFY(candidates("stud").contains("student_score"));
+        QVERIFY(candidates("imaginary").isEmpty());
+        QVERIFY(candidates("QAbstract").isEmpty());
+        const auto names = candidates("inpu");
+        model->executeCompletionItem(editor.editorView(), {3, 0, 3, 4},
+            model->index(names.indexOf("input_int"), KTextEditor::CodeCompletionModel::Name));
+        QCOMPARE(editor.document()->line(3), QString("input_int"));
+        editor.undo();
+        QCOMPARE(editor.document()->line(3), QString("inpu"));
+    }
+
     void nativeEditorPopupHostAndStatusLayout()
     {
         MainWindow window;
