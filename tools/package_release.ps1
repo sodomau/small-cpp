@@ -121,6 +121,13 @@ if ($LASTEXITCODE -ne 0) {
 
 Remove-Item (Join-Path $OutputDir "SmallDeployProbe.exe") -Force
 
+# windeployqt handles Qt, but not the editor's KDE/non-Qt DLL imports.
+$dependencyCollector = Join-Path $repoRoot 'tools\deploy_editor_dependencies.py'
+$pythonCommand = Get-Command python -ErrorAction SilentlyContinue
+if (!$pythonCommand) { throw 'Python is required to collect editor dependencies.' }
+& $pythonCommand.Source $dependencyCollector --package $OutputDir --prefix (Split-Path $qtBin -Parent) --objdump (Join-Path $compilerBin 'objdump.exe')
+if ($LASTEXITCODE -ne 0) { throw 'Editor dependency collection failed.' }
+
 foreach ($requiredRuntime in @(
     (Join-Path $OutputDir "Qt6Multimedia.dll"),
     (Join-Path $OutputDir "platforms\\qwindows.dll")

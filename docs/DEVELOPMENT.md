@@ -47,10 +47,13 @@ directory. Keep this kit separate from the Qt 6.11.2/MinGW 13.1 kit below;
 those Qt-only commands require matching KDE development packages before
 they can build the updated IDE.
 
-The existing release packaging and notice scripts target the published
-Qt-only distribution. A KDE-based public release additionally requires an
-inventory of KDE DLL/plugin dependencies and corresponding notices/sources;
-the integration preview is not a new published release.
+The v0.76.14 package uses `tools/deploy_editor_dependencies.py` after
+`windeployqt` to collect the editor's non-Qt DLL imports. Keep Qt and the
+compiler from the same Craft kit. `tools/prepare_editor_notices.py` collects
+the exact upstream sources, component notices and compiler build records;
+publish that source bundle alongside the installer and portable ZIP.
+Run and Publish must also be tested with the finished package and a PATH
+that does not include the development kit.
 
 Use a matching Qt MinGW 64-bit kit with KDE Frameworks, not MSVC. In Qt Creator,
 open `ide/CMakeLists.txt`, select that complete kit, and keep the build directory
