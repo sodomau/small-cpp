@@ -78,9 +78,9 @@ void small_main()
 
 ## Get started
 
-Try the [current Windows preview](https://github.com/sodomau/small-cpp/releases/tag/v0.76.14):
-use **SmallCpp-v0.76.14-Windows-x64-Setup.exe** for installation and Start menu
-shortcuts, or extract **SmallCpp-v0.76.14-Windows-x64.zip** and launch
+Try the [current Windows preview](https://github.com/sodomau/small-cpp/releases/tag/v0.76.15):
+use **SmallCpp-v0.76.15-Windows-x64-Setup.exe** for installation and Start menu
+shortcuts, or extract **SmallCpp-v0.76.15-Windows-x64.zip** and launch
 `SmallCppIDE.exe` for portable use. Both include the compiler and debugger.
 See [Windows installation](docs/WINDOWS_INSTALLATION.md) for saving, updating,
 and uninstalling.
