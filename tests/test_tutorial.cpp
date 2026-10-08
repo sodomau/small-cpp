@@ -3,6 +3,7 @@
 #include "LearnWindowTestHelpers.h"
 #include "BuildController.h"
 #include "EditorDocument.h"
+#include "CodeEditor.h"
 #include "ExampleCatalog.h"
 #include "TutorialCatalog.h"
 #include "TutorialBrowser.h"

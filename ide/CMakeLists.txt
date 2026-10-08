@@ -10,7 +10,8 @@ if(WIN32 AND NOT MINGW)
     message(FATAL_ERROR "Small C++ v0.7 needs a Qt MinGW 64-bit kit on Windows, not an MSVC kit.")
 endif()
 
-find_package(Qt6 6.2 REQUIRED COMPONENTS Widgets Multimedia)
+find_package(Qt6 6.9 REQUIRED COMPONENTS Widgets Multimedia)
+find_package(KF6TextEditor REQUIRED)
 set(SMALL_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/..")
 set(SMALL_BIN "${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIG>")
 set(SMALL_SDK "${SMALL_BIN}/runtime")
@@ -141,7 +142,7 @@ set(SMALL_IDE_SOURCES
 
 add_library(small_ide_components STATIC ${SMALL_IDE_SOURCES})
 set_target_properties(small_ide_components PROPERTIES AUTORCC ON)
-target_link_libraries(small_ide_components PUBLIC Qt6::Widgets)
+target_link_libraries(small_ide_components PUBLIC Qt6::Widgets KF6::TextEditor)
 if(WIN32)
     target_link_libraries(small_ide_components PRIVATE shell32 ole32)
 endif()

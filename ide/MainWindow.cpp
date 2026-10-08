@@ -3,6 +3,7 @@
 #include "PublishDialog.h"
 #include "DebugController.h"
 #include "EditorDocument.h"
+#include "CodeEditor.h"
 #include "ExamplesBrowser.h"
 #include "ApiBrowser.h"
 #include "TutorialBrowser.h"
@@ -514,14 +515,13 @@ EditorDocument* MainWindow::addDocument(const QString& text, const QString& path
     }
     auto* document = new EditorDocument(text, path, untitledName);
     if (example) document->markAsExample(example->id, example->title, example->sourceName);
-    applyAppearance(document);
-    connect(document->document(), &QTextDocument::modificationChanged, this,
+    connect(document, &EditorDocument::modificationChanged, this,
         [this, document](bool) { updateTabTitle(document); updateTitle(); });
-    connect(document, &QPlainTextEdit::textChanged, this, [this, document] {
+    connect(document, &EditorDocument::textChanged, this, [this, document] {
         document->clearError();
         if (runDocument_ == document && !friendlyDiagnostics_.isEmpty()) renderDiagnostics();
     });
-    connect(document, &CodeEditor::breakpointsChanged, this, [this, document] {
+    connect(document, &EditorDocument::breakpointsChanged, this, [this, document] {
         if (debug_->isBusy() && projectRun_ && project_.contains(document->filePath())) {
             const auto now = document->breakpoints();
             auto& previous = projectDebugBreakpoints_[document->filePath()];
@@ -539,6 +539,7 @@ EditorDocument* MainWindow::addDocument(const QString& text, const QString& path
         debugBreakpoints_ = now;
     });
     tabs_->addTab(document, document->displayName());
+    applyAppearance(document);
     addTabCloseButton(tabs_, document);
     updateTabTitle(document);
     tabs_->setCurrentWidget(document);
@@ -1018,6 +1019,7 @@ void MainWindow::refreshStyleSheets()
     applyStyleSheetTo(examplesBrowser_.data());
     applyStyleSheetTo(tutorialBrowser_.data());
     applyStyleSheetTo(apiBrowser_.data());
+    for (int index = 0; tabs_ && index < tabs_->count(); ++index) applyAppearance(documentAt(index));
 }
 
 void MainWindow::applyAppearance(EditorDocument* document)
@@ -1025,12 +1027,10 @@ void MainWindow::applyAppearance(EditorDocument* document)
     if (!document) return;
     const bool modified = document->document()->isModified();
     document->setFont(editorFont_);
-    document->setTabStopDistance(document->fontMetrics().horizontalAdvance(' ') * 4);
     document->setPalette(editorPalette(document->palette(), darkTheme_));
     document->setDarkTheme(darkTheme_);
-    document->highlighter()->setDark(darkTheme_);
     document->document()->setModified(modified);
-    document->viewport()->update();
+    document->editorView()->update();
 }
 
 void MainWindow::applyTheme(bool dark)

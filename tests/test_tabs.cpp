@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "WindowTestSupport.h"
 #include "EditorDocument.h"
+#include "CodeEditor.h"
 #include "BuildController.h"
 #include "Highlighter.h"
 #include <QTextBlock>
@@ -66,9 +67,9 @@ private:
     }
     static bool hasError(EditorDocument* document)
     {
-        // CodeEditor has one selection for the current line and an extra one
-        // for the error. We test visible behavior, not private data members.
-        return document->extraSelections().size() > 1;
+        for (auto* mark : document->document()->marks())
+            if (mark->type & KTextEditor::Document::Error) return true;
+        return false;
     }
     static void closeWith(MainWindow& window, QMessageBox::StandardButton choice)
     {
@@ -86,6 +87,37 @@ private:
     }
 
 private slots:
+    void nativeEditorIndentationMarksAndThemes()
+    {
+        EditorDocument editor("void small_main()\n{", {}, "Untitled.cpp");
+        editor.show();
+        editor.setFocus();
+        QTest::qWait(50);
+        editor.editorView()->setCursorPosition({1, 1});
+        QTest::keyClick(QApplication::focusWidget(), Qt::Key_Return);
+        QCOMPARE(editor.editorView()->cursorPosition(), KTextEditor::Cursor(2, 4));
+        QVERIFY(editor.document()->isModified());
+        editor.undo();
+        QCOMPARE(editor.toPlainText(), QString("void small_main()\n{"));
+        editor.document()->addMark(0, KTextEditor::Document::BreakpointActive);
+        QCOMPARE(editor.breakpoints(), QSet<int>{1});
+        editor.markErrorLine(2);
+        QVERIFY(editor.document()->mark(1) & KTextEditor::Document::Error);
+        editor.setDebugLine(1);
+        QVERIFY(editor.document()->mark(0) & KTextEditor::Document::Execution);
+        editor.clearDebugLine();
+        QCOMPARE(editor.breakpoints(), QSet<int>{1});
+        QVERIFY(!(editor.document()->mark(0) & KTextEditor::Document::Execution));
+        editor.clearError();
+        QVERIFY(!(editor.document()->mark(1) & KTextEditor::Document::Error));
+        editor.document()->setModified(false);
+        editor.setDarkTheme(true);
+        QCOMPARE(editor.editorView()->configValue("theme").toString(), QString("Breeze Dark"));
+        editor.setDarkTheme(false);
+        QCOMPARE(editor.editorView()->configValue("theme").toString(), QString("Breeze Light"));
+        QVERIFY(!editor.document()->isModified());
+    }
+
     void highlightingDistinguishesCppSyntaxAndProtectsComments()
     {
         QTextDocument document;
@@ -468,9 +500,9 @@ private slots:
         window.activateWindow();
         second->setFocus();
         QTest::qWait(50);
-        QTest::keyClick(second, Qt::Key_Tab, Qt::ControlModifier);
+        QTest::keyClick(second->editorView(), Qt::Key_Tab, Qt::ControlModifier);
         QTRY_COMPARE(current(window), first);
-        QTest::keyClick(first, Qt::Key_Tab, Qt::ControlModifier | Qt::ShiftModifier);
+        QTest::keyClick(first->editorView(), Qt::Key_Tab, Qt::ControlModifier | Qt::ShiftModifier);
         QTRY_COMPARE(current(window), second);
         QCOMPARE(first->toPlainText(), firstText);
         QCOMPARE(second->toPlainText(), secondText);

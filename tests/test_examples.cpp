@@ -3,6 +3,7 @@
 #include "LearnWindowTestHelpers.h"
 #include "BuildController.h"
 #include "EditorDocument.h"
+#include "CodeEditor.h"
 #include "ExampleCatalog.h"
 #include "ExamplesBrowser.h"
 
@@ -228,10 +229,14 @@ private slots:
         const QString original = example->toPlainText();
         QVERIFY(example->isReadOnly());
         QVERIFY(example->filePath().isEmpty());
-        QTest::keyClicks(example, "oops");
-        QTest::keyClick(example, Qt::Key_Tab);
-        QTest::keyClick(example, Qt::Key_Return);
-        QTest::keyClick(example, Qt::Key_Backspace);
+        example->setFocus();
+        QTest::qWait(50);
+        auto* input = QApplication::focusWidget();
+        QVERIFY(input);
+        QTest::keyClicks(input, "oops");
+        QTest::keyClick(input, Qt::Key_Tab);
+        QTest::keyClick(input, Qt::Key_Return);
+        QTest::keyClick(input, Qt::Key_Backspace);
         QApplication::clipboard()->setText("replacement");
         example->selectAll();
         example->paste();

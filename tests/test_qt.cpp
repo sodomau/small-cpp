@@ -5,7 +5,7 @@
 #include "ProgramPackage.h"
 #include "PublishDialog.h"
 #include "DebugController.h"
-#include "CodeEditor.h"
+#include "EditorDocument.h"
 #include "Diagnostics.h"
 #include "EntryPoint.h"
 #include "SmallSettings.h"
@@ -80,7 +80,7 @@ private slots:
     {
         MainWindow window;
         OpenNewProgram(window);
-        auto* editor = window.findChild<CodeEditor*>("codeEditor");
+        auto* editor = window.findChild<EditorDocument*>("codeEditor");
         QVERIFY(editor);
         QCOMPARE(window.findChild<QAction*>("actionSave")->shortcut(), QKeySequence(QKeySequence::Save));
         QCOMPARE(window.findChild<QAction*>("actionOpen")->shortcut(), QKeySequence(QKeySequence::Open));
@@ -95,7 +95,7 @@ private slots:
         MainWindow window;
         OpenNewProgram(window);
         window.show();
-        auto* editor = window.findChild<CodeEditor*>("codeEditor");
+        auto* editor = window.findChild<EditorDocument*>("codeEditor");
         editor->appendPlainText("// unsaved");
         QTimer choose;
         choose.setInterval(5);
@@ -121,7 +121,7 @@ private slots:
         MainWindow window;
         OpenNewProgram(window);
         window.show();
-        window.findChild<CodeEditor*>("codeEditor")->appendPlainText("// unsaved");
+        window.findChild<EditorDocument*>("codeEditor")->appendPlainText("// unsaved");
         QTimer choose;
         choose.setInterval(5);
         connect(&choose, &QTimer::timeout, &window, [&] {
@@ -141,7 +141,7 @@ private slots:
         MainWindow window;
         OpenNewProgram(window);
         window.show();
-        auto* editor = window.findChild<CodeEditor*>("codeEditor");
+        auto* editor = window.findChild<EditorDocument*>("codeEditor");
         editor->appendPlainText("// unsaved");
         bool sawSaveDialog = false;
         QTimer choose;
@@ -172,7 +172,7 @@ private slots:
         MainWindow window;
         OpenNewProgram(window);
         window.show();
-        auto* editor = window.findChild<CodeEditor*>("codeEditor");
+        auto* editor = window.findChild<EditorDocument*>("codeEditor");
         editor->appendPlainText("// first save");
         bool defaultNameCorrect = false;
         QTimer choose;
