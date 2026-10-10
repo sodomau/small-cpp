@@ -4,6 +4,7 @@
 #include "CodeEditor.h"
 #include "BuildController.h"
 #include "Highlighter.h"
+#include "Toolchain.h"
 #include <QTextBlock>
 #include <QTextLayout>
 
@@ -89,6 +90,54 @@ private:
     }
 
 private slots:
+    void terminalUsesProjectOrCurrentFileDirectory()
+    {
+        struct TerminalWindow : MainWindow {
+            QString opened;
+            bool showMsys2Terminal(const QString& directory) override { opened = directory; return true; }
+        };
+        QTemporaryDir folder;
+        const QString project = folder.filePath(QString::fromUtf8("프로젝트 folder"));
+        QVERIFY(QDir().mkpath(project));
+        writeFile(QDir(project).filePath("main.cpp"), "void small_main() {}\n");
+        const QString outside = folder.filePath("outside.cpp");
+        writeFile(outside, "void small_main() {}\n");
+        TerminalWindow window;
+        auto* terminal = action(window, "actionMsys2Terminal");
+        QVERIFY(terminal);
+        QCOMPARE(terminal->isEnabled(), QFileInfo(Toolchain::terminal()).isFile());
+        terminal->setEnabled(true); // The recording window does not launch a real terminal.
+        terminal->trigger();
+        QVERIFY(window.opened.endsWith("/Documents/SmallCpp/Programs"));
+        QVERIFY(QDir(window.opened).exists());
+        QVERIFY(window.openProject(project));
+        QVERIFY(window.openDocument(outside));
+        terminal->trigger();
+        QCOMPARE(QDir(window.opened).canonicalPath(), QDir(project).canonicalPath());
+        QVERIFY(window.closeProject());
+        terminal->trigger();
+        QCOMPARE(QDir(window.opened).canonicalPath(), QDir(folder.path()).canonicalPath());
+    }
+    void relocatedMsys2ShellUsesBundledTools()
+    {
+        const QString bash = QDir(Toolchain::root()).filePath("env/usr/bin/bash.exe");
+        if (!QFileInfo::exists(bash)) QSKIP("Run against the prepared MSYS2 package.");
+        QTemporaryDir folder;
+        const QString work = folder.filePath(QString::fromUtf8("작업 folder"));
+        QVERIFY(QDir().mkpath(work));
+        QProcess shell;
+        shell.setWorkingDirectory(work);
+        shell.setProcessEnvironment(Toolchain::terminalEnvironment());
+        shell.start(bash, {"--login", "-c",
+            "printf 'SYSTEM=%s\\nROOT=%s\\nWORK=%s\\n' \"$MSYSTEM\" \"$(cygpath -m /)\" \"$(cygpath -m \"$PWD\")\"; command -v g++; command -v pacman"});
+        QVERIFY(shell.waitForFinished(180000));
+        QCOMPARE(shell.exitCode(), 0);
+        const auto output = QString::fromUtf8(shell.readAllStandardOutput());
+        QVERIFY2(output.contains("SYSTEM=UCRT64"), qPrintable(output));
+        QVERIFY2(output.contains("ROOT=" + QDir::fromNativeSeparators(Toolchain::root()) + "/env"), qPrintable(output));
+        QVERIFY2(output.contains("WORK=" + QDir::fromNativeSeparators(work)), qPrintable(output));
+        QVERIFY2(output.contains("/ucrt64/bin/g++") && output.contains("/usr/bin/pacman"), qPrintable(output));
+    }
     void saveShortcutWritesFocusedEditor()
     {
         QTemporaryDir folder;

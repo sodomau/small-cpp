@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QProcessEnvironment>
+#include <QProcess>
 
 namespace Toolchain {
 inline QString root() { return QCoreApplication::applicationDirPath(); }
@@ -31,5 +32,23 @@ inline QProcessEnvironment environment()
     env.insert("QT_QPA_PLATFORM_PLUGIN_PATH", QDir(root()).filePath("platforms"));
     env.insert("LC_ALL", "C");
     return env;
+}
+inline QString terminal() { return QDir(root()).filePath("env/usr/bin/mintty.exe"); }
+inline QProcessEnvironment terminalEnvironment()
+{
+    auto env = QProcessEnvironment::systemEnvironment();
+    env.insert("MSYSTEM", "UCRT64");
+    env.insert("CHERE_INVOKING", "1");
+    env.insert("MSYS2_PATH_TYPE", "minimal");
+    return env;
+}
+inline bool startTerminal(const QString& directory)
+{
+    QProcess process;
+    process.setProgram(terminal());
+    process.setArguments({"--title", "Small C++ - MSYS2 UCRT64", "/usr/bin/bash", "--login"});
+    process.setProcessEnvironment(terminalEnvironment());
+    process.setWorkingDirectory(directory);
+    return process.startDetached();
 }
 }

@@ -11,6 +11,7 @@
 #include "Highlighter.h"
 #include "RuntimeDiagnostics.h"
 #include "Theme.h"
+#include "Toolchain.h"
 
 #include <QAction>
 #include <QAbstractButton>
@@ -253,6 +254,20 @@ void MainWindow::createUi()
     connect(tutorialAction, &QAction::triggered, this, &MainWindow::browseTutorial);
     auto* examplesAction = learnMenu->addAction("Examples...");
     auto* settingsMenu = menuBar()->addMenu("&Settings");
+    auto* toolsMenu = menuBar()->addMenu("&Tools");
+    toolsMenu->setObjectName("menuTools");
+    auto* terminalAction = toolsMenu->addAction("MSYS2 Terminal");
+    terminalAction->setObjectName("actionMsys2Terminal");
+    terminalAction->setEnabled(QFileInfo(Toolchain::terminal()).isFile());
+    terminalAction->setToolTip("Open the UCRT64 shell for this project. Install libraries and tools with pacman.");
+    connect(terminalAction, &QAction::triggered, this, [this] {
+        const auto* document = currentDocument();
+        const QString directory = !project_.root.isEmpty() ? project_.root
+            : document && !document->filePath().isEmpty() ? QFileInfo(document->filePath()).absolutePath()
+            : creationDirectory("Programs");
+        if (!showMsys2Terminal(directory))
+            QMessageBox::warning(this, "Could not open terminal", "The bundled MSYS2 terminal could not be started.");
+    });
     auto* helpMenu = menuBar()->addMenu("&Help");
     auto* welcomeAction = helpMenu->addAction("Welcome");
     welcomeAction->setObjectName("actionWelcome");
@@ -610,6 +625,11 @@ void MainWindow::switchTab(int offset)
     if (count < 2) return;
     tabs_->setCurrentIndex((tabs_->currentIndex() + offset + count) % count);
     if (auto* document = currentDocument()) document->setFocus();
+}
+
+bool MainWindow::showMsys2Terminal(const QString& directory)
+{
+    return Toolchain::startTerminal(directory);
 }
 
 QString MainWindow::initialDirectory(const EditorDocument* document) const
