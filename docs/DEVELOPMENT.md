@@ -61,6 +61,14 @@ Its Qt plugin directory is `ucrt64/share/qt6/plugins`. Keep output under `build/
 Pass `-Msys2Dir <environment>` to `tools/package_release.ps1` along with the
 matching build and reviewed notices. The packager preserves pacman's databases
 but excludes personal homes, generated keys, temporary files, caches and logs.
+The distributed environment uses the minimal profile: `base`, `msys2-runtime`,
+UCRT64 GCC and GDB, plus their installed dependency closure. Only those packages'
+files and local database entries are copied. Python remains because GDB requires
+it. CMake, Ninja and Qt/KDE development packages are not included in `env/`;
+the IDE's deployed Qt/KDE DLLs, resources and learner Qt import libraries remain
+outside that environment. Install optional development packages with pacman.
+Do not prune individual package-owned test/documentation files behind pacman's
+back; further reductions require a deliberate extraction policy or package change.
 The first login initializes the copied environment's home/keyring as needed.
 `env/smallcpp-environment.json` records the package versions at packaging time.
 Public releases need notices and corresponding sources for this new package
