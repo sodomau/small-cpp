@@ -10,6 +10,11 @@
 #include "EntryPoint.h"
 #include "SmallSettings.h"
 #include "small.h"
+#include "small_internal.h"
+
+#include <QElapsedTimer>
+#include <QAudioDevice>
+#include <QMediaDevices>
 
 #include <QAbstractButton>
 #include <QAction>
@@ -54,6 +59,47 @@ private slots:
         QApplication::setQuitOnLastWindowClosed(false);
         qputenv("SMALL_TEST_DIALOGS", "1");
         qputenv("SMALL_TEST_NO_CONSOLE_PAUSE", "1");
+    }
+
+    void asynchronousSoundDoesNotBlockGameFrames()
+    {
+        struct AudioCleanup { ~AudioCleanup() { small_detail::ShutdownAudio(); } } cleanup;
+        small_detail::ShutdownAudio(); // Exercise the first-call path as well.
+        QElapsedTimer elapsed;
+        elapsed.start();
+        play_sound(Sound::Lose);
+        QVERIFY2(elapsed.elapsed() < 100, "Cold sound setup blocked the application thread");
+        elapsed.restart();
+        for (int i = 0; i < 5; ++i) play_sound(Sound::Click);
+        beep(440, 2.0);
+        QVERIFY2(elapsed.elapsed() < 100, "Repeated sound calls blocked the application thread");
+        int frames = 0;
+        QTimer frameTimer;
+        connect(&frameTimer, &QTimer::timeout, this, [&] { ++frames; });
+        frameTimer.start(10);
+        QTest::qWait(100);
+        QVERIFY(frames >= 3);
+        // Shutdown while several queued/playing sounds still exist.
+        small_detail::ShutdownAudio();
+        elapsed.restart();
+        play_sound(Sound::Click); // The worker can be recreated after shutdown.
+        QVERIFY(elapsed.elapsed() < 100);
+        QVERIFY_EXCEPTION_THROWN(beep(-1, 1), std::invalid_argument);
+    }
+
+    void waitingSoundWaitsAndKeepsWindowsResponsive()
+    {
+        struct AudioCleanup { ~AudioCleanup() { small_detail::ShutdownAudio(); } } cleanup;
+        if (QMediaDevices::defaultAudioOutput().isNull()) QSKIP("No audio output device");
+        int frames = 0;
+        QTimer frameTimer;
+        connect(&frameTimer, &QTimer::timeout, this, [&] { ++frames; });
+        frameTimer.start(10);
+        QElapsedTimer elapsed;
+        elapsed.start();
+        beep_and_wait(440, 0.4);
+        QVERIFY2(elapsed.elapsed() >= 350, "Waiting sound returned before playback completed");
+        QVERIFY(frames >= 3);
     }
 
     void settingsUseIsolatedConfiguredBackend()

@@ -11,6 +11,8 @@
 #include <QTimer>
 
 #include <algorithm>
+#include <atomic>
+#include <exception>
 #include <cmath>
 #include <cstdint>
 #include <cstring>
@@ -109,8 +111,15 @@ QByteArray MakePcm(Tone tone, const QAudioFormat& format)
     return bytes;
 }
 
+struct Completion
+{
+    std::atomic<bool> done{false};
+    std::exception_ptr error;
+};
+
 struct Player
 {
+    std::shared_ptr<Completion> completion;
     QByteArray data;
     QBuffer buffer;
     std::unique_ptr<QAudioSink> sink;
@@ -122,7 +131,7 @@ struct Player
         buffer.open(QIODevice::ReadOnly);
         sink->start(&buffer);
     }
-    ~Player() { stop(); }
+    ~Player() { stop(); if (completion) completion->done.store(true, std::memory_order_release); }
     void stop()
     {
         if (sink)
@@ -164,9 +173,74 @@ struct SoundSystem
     }
 };
 
-std::unique_ptr<SoundSystem>& System()
+// Every audio QObject, including its timer and buffers, lives on this thread.
+// Device discovery, PCM generation, sink start/stop must never stall a game frame.
+class AudioThread
 {
-    static std::unique_ptr<SoundSystem> system;
+    QThread thread;
+    QObject dispatcher;
+    std::unique_ptr<SoundSystem> state;
+public:
+    AudioThread()
+    {
+        dispatcher.moveToThread(&thread);
+        thread.start();
+    }
+    ~AudioThread()
+    {
+        QMetaObject::invokeMethod(&dispatcher, [this] {
+            if (state) state->Shutdown();
+            state.reset();
+            dispatcher.moveToThread(QCoreApplication::instance()->thread());
+        }, Qt::BlockingQueuedConnection);
+        thread.quit();
+        thread.wait();
+    }
+    void Submit(Tone tone, const std::shared_ptr<Completion>& completion, bool wait)
+    {
+        QMetaObject::invokeMethod(&dispatcher, [this, tone, completion, wait] {
+            try
+            {
+                if (!state) state = std::make_unique<SoundSystem>();
+                const QAudioDevice device = QMediaDevices::defaultAudioOutput();
+                if (device.isNull())
+                {
+                    if (!state->warnedAboutDevice)
+                    {
+                        std::cerr << "Sound unavailable: no audio output device.\n";
+                        state->warnedAboutDevice = true;
+                    }
+                    completion->done.store(true, std::memory_order_release);
+                    return;
+                }
+                QAudioFormat format;
+                format.setSampleRate(44100);
+                format.setChannelCount(1);
+                format.setSampleFormat(QAudioFormat::Int16);
+                if (!device.isFormatSupported(format)) format = device.preferredFormat();
+                if (!format.isValid()) throw std::runtime_error("The audio device has no usable format.");
+                auto player = std::make_shared<Player>(tone, device, format);
+                player->completion = completion;
+                state->players.push_back(std::move(player));
+            }
+            catch (...)
+            {
+                completion->error = std::current_exception();
+                if (!wait)
+                {
+                    try { std::rethrow_exception(completion->error); }
+                    catch (const std::exception& error) { std::cerr << "Sound unavailable: " << error.what() << '\n'; }
+                    catch (...) { std::cerr << "Sound unavailable: unknown audio error.\n"; }
+                }
+                completion->done.store(true, std::memory_order_release);
+            }
+        }, Qt::QueuedConnection);
+    }
+};
+
+std::unique_ptr<AudioThread>& System()
+{
+    static std::unique_ptr<AudioThread> system;
     return system;
 }
 
@@ -176,37 +250,17 @@ void Play(Tone tone, bool wait)
     auto* app = QCoreApplication::instance();
     if (!app || app->thread() != QThread::currentThread())
         throw std::runtime_error("Sound must be played from the Small C++ application thread.");
-    if (!System()) System() = std::make_unique<SoundSystem>();
-    const QAudioDevice device = QMediaDevices::defaultAudioOutput();
-    if (device.isNull())
+    if (!System()) System() = std::make_unique<AudioThread>();
+    auto completion = std::make_shared<Completion>();
+    System()->Submit(tone, completion, wait);
+    if (!wait) return;
+    while (!completion->done.load(std::memory_order_acquire))
     {
-        if (!System()->warnedAboutDevice)
-        {
-            std::cerr << "Sound unavailable: no audio output device.\n";
-            System()->warnedAboutDevice = true;
-        }
-        return;
-    }
-
-    QAudioFormat format;
-    format.setSampleRate(44100);
-    format.setChannelCount(1);
-    format.setSampleFormat(QAudioFormat::Int16);
-    if (!device.isFormatSupported(format)) format = device.preferredFormat();
-    if (!format.isValid()) throw std::runtime_error("The audio device has no usable format.");
-
-    auto player = std::make_shared<Player>(tone, device, format);
-    if (!wait)
-    {
-        System()->players.push_back(player);
-        return;
-    }
-    while (!player->Finished())
-    {
-        // Keep windows responsive, but do not advance the user's Main().
+        // Keep windows responsive without advancing the learner's code.
         QCoreApplication::processEvents();
         QThread::msleep(1);
     }
+    if (completion->error) std::rethrow_exception(completion->error);
 }
 }
 
@@ -215,7 +269,6 @@ namespace small_detail
 void ShutdownAudio()
 {
     if (!System()) return;
-    System()->Shutdown();
     System().reset();
 }
 }
