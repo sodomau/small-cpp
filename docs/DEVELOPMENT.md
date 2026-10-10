@@ -32,6 +32,45 @@ configure from `ide/`.
 
 ## Windows build
 
+On the MSYS2 integration branch, the learner toolchain is packaged as
+`env/ucrt64/bin/g++.exe` and `gdb.exe`, with MSYS tools in `env/usr/bin`.
+Unpackaged development builds fall back to the compiler recorded by CMake.
+Run and Debug use the same child-process environment; the project's source
+discovery, entry-point selection and IDE-only pause object are unchanged.
+
+Use a coherent UCRT64 kit for the IDE, Qt, KDE and learner runtime. In particular,
+the tested Craft GCC 14 DLLs cannot simply be replaced with MSYS2 GCC 16 DLLs:
+the older Qt Multimedia/ICU binaries require emulated-TLS symbols absent from
+the newer C++ runtime. The MSYS2 build uses GCC 16.2, Qt 6.11.2 and KTextEditor
+6.30 from the same package environment instead.
+
+Install the following into an isolated MSYS2 UCRT64 environment, using its
+terminal and normal full-system update procedure:
+
+```sh
+pacman -S --needed mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-gdb \
+  mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-ninja \
+  mingw-w64-ucrt-x86_64-python mingw-w64-ucrt-x86_64-qt6-base \
+  mingw-w64-ucrt-x86_64-qt6-multimedia mingw-w64-ucrt-x86_64-qt6-multimedia-wmf \
+  mingw-w64-ucrt-x86_64-ktexteditor
+```
+
+Set `CMAKE_PREFIX_PATH` to that environment's `ucrt64`, `CMAKE_CXX_COMPILER`
+to its `ucrt64/bin/g++.exe`, and put `ucrt64/bin` and `usr/bin` on PATH.
+Its Qt plugin directory is `ucrt64/share/qt6/plugins`. Keep output under `build/`.
+Pass `-Msys2Dir <environment>` to `tools/package_release.ps1` along with the
+matching build and reviewed notices. The packager preserves pacman's databases
+but excludes personal homes, generated keys, temporary files, caches and logs.
+The first login initializes the copied environment's home/keyring as needed.
+`env/smallcpp-environment.json` records the package versions at packaging time.
+Public releases need notices and corresponding sources for this new package
+set; the historical Craft source bundle does not cover it.
+
+See the official [environment](https://www.msys2.org/docs/environments/) and
+[update](https://www.msys2.org/docs/updating/) documentation. Package updates
+must be tested against the complete Qt/KDE/runtime kit before publishing a
+Small distribution.
+
 The IDE editing tabs now require **KF6TextEditor** and **Qt 6.9 or newer**.
 KDE Frameworks and Qt must use the same MinGW kit. A plain Qt installation
 does not supply this additional dependency. Tutorial/Welcome code previews
