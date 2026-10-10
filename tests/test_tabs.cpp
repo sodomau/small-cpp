@@ -122,6 +122,9 @@ private slots:
     {
         const QString bash = QDir(Toolchain::root()).filePath("env/usr/bin/bash.exe");
         if (!QFileInfo::exists(bash)) QSKIP("Run against the prepared MSYS2 package.");
+        for (const char* relative : {"env/tmp", "env/dev/shm", "env/dev/mqueue",
+                                     "env/var/cache/man", "env/var/log/old"})
+            QVERIFY2(QDir(QDir(Toolchain::root()).filePath(relative)).exists(), relative);
         QTemporaryDir folder;
         const QString work = folder.filePath(QString::fromUtf8("작업 folder"));
         QVERIFY(QDir().mkpath(work));
@@ -133,6 +136,11 @@ private slots:
         QVERIFY(shell.waitForFinished(180000));
         QCOMPARE(shell.exitCode(), 0);
         const auto output = QString::fromUtf8(shell.readAllStandardOutput());
+        const auto messages = output + QString::fromUtf8(shell.readAllStandardError());
+        for (const char* warning : {"could not find /tmp", "Read-only file system",
+                                   "Creating /dev/shm directory failed",
+                                   "Creating /dev/mqueue directory failed"})
+            QVERIFY2(!messages.contains(warning), qPrintable(messages));
         QVERIFY2(output.contains("SYSTEM=UCRT64"), qPrintable(output));
         QVERIFY2(output.contains("ROOT=" + QDir::fromNativeSeparators(Toolchain::root()) + "/env"), qPrintable(output));
         QVERIFY2(output.contains("WORK=" + QDir::fromNativeSeparators(work)), qPrintable(output));

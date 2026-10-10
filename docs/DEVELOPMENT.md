@@ -71,6 +71,11 @@ Do not prune individual package-owned test/documentation files behind pacman's
 back; further reductions require a deliberate extraction policy or package change.
 The first login initializes the copied environment's home/keyring as needed.
 `env/smallcpp-environment.json` records the package versions at packaging time.
+Create portable ZIPs with `tools/package_zip.py --package <portable-folder>
+--output build/<assets>/<name>.zip`. It preserves empty directories as well as
+files. File-only ZIP creation loses MSYS2's `tmp`, `dev`, and cache/log directories
+and can break the first login. Validate an actual fresh ZIP extraction, not just
+the pre-archive folder, with the relocated shell and student-program tests.
 Public releases need notices and corresponding sources for this new package
 set; the historical Craft source bundle does not cover it.
 

@@ -3,13 +3,34 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
-from copy_msys2_environment import copy_environment
+from copy_msys2_environment import copy_environment, RUNTIME_DIRECTORIES
+from package_zip import package_zip
 
 
 class EnvironmentPackagingTests(unittest.TestCase):
+    def test_zip_extract_preserves_empty_first_login_directories(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / 'build') as folder:
+            package = Path(folder) / 'portable'
+            for relative in RUNTIME_DIRECTORIES:
+                (package / 'env' / relative).mkdir(parents=True, exist_ok=True)
+            (package / 'SmallCppIDE.exe').write_bytes(b'fixture')
+            output = Path(folder) / 'portable.zip'
+            package_zip(package, output)
+            extracted = Path(folder) / 'extracted'
+            with zipfile.ZipFile(output) as archive:
+                archive.extractall(extracted)
+            for relative in RUNTIME_DIRECTORIES:
+                self.assertTrue((extracted / 'env' / relative).is_dir(), relative)
+            self.assertEqual((extracted / 'SmallCppIDE.exe').read_bytes(), b'fixture')
+            with self.assertRaises(ValueError):
+                package_zip(package, output)
+            with self.assertRaises(ValueError):
+                package_zip(package, package / 'recursive.zip')
+
     def test_minimal_profile_keeps_dependencies_and_matching_database(self):
         with tempfile.TemporaryDirectory(dir=ROOT / 'build') as folder:
             source = Path(folder) / 'source'

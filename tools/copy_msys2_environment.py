@@ -9,6 +9,9 @@ import shutil
 
 MINIMAL_PACKAGES = ('base', 'msys2-runtime',
                     'mingw-w64-ucrt-x86_64-gcc', 'mingw-w64-ucrt-x86_64-gdb')
+RUNTIME_DIRECTORIES = ('home', 'tmp', 'dev', 'dev/shm', 'dev/mqueue',
+                       'var/cache/pacman/pkg', 'var/cache/man',
+                       'var/log', 'var/log/old', 'var/tmp')
 
 
 def package_fields(path):
@@ -101,7 +104,7 @@ def copy_environment(source, destination, minimal=False):
         if not path.is_relative_to(destination):
             raise ValueError(f'Invalid package directory: {relative}')
         path.mkdir(parents=True, exist_ok=True)
-    for folder in ('home', 'tmp', 'dev', 'var/cache/pacman/pkg', 'var/log', 'var/tmp'):
+    for folder in RUNTIME_DIRECTORIES:
         (destination / folder).mkdir(parents=True, exist_ok=True)
     packages = sorted(p.name for p in (destination / 'var/lib/pacman/local').iterdir()
                       if p.is_dir())
