@@ -10,6 +10,49 @@ from copy_msys2_environment import copy_environment
 
 
 class EnvironmentPackagingTests(unittest.TestCase):
+    def test_minimal_profile_keeps_dependencies_and_matching_database(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / 'build') as folder:
+            source = Path(folder) / 'source'
+            entries = {
+                'base': (['shell>=1'], ['msys2_shell.cmd', 'var/cache/man/', 'var/log/old/']),
+                'msys2-runtime': ([], ['usr/bin/msys-2.0.dll']),
+                'bash': (['msys2-runtime'], ['usr/bin/bash.exe', 'usr/bin/pacman.exe']),
+                'mingw-w64-ucrt-x86_64-gcc': (['shared-lib'], ['ucrt64/bin/g++.exe']),
+                'mingw-w64-ucrt-x86_64-gdb': (['shared-lib'], ['ucrt64/bin/gdb.exe']),
+                'shared-lib': ([], ['ucrt64/bin/shared.dll']),
+                'qt-devel': (['shared-lib'], ['ucrt64/bin/Qt6Core.dll', 'ucrt64/include/qt.h']),
+            }
+            for name, (dependencies, files) in entries.items():
+                database = source / 'var/lib/pacman/local' / (name + '-1')
+                database.mkdir(parents=True)
+                desc = '%NAME%\n' + name + '\n\n%DEPENDS%\n' + '\n'.join(dependencies)
+                if name == 'bash':
+                    desc += '\n\n%PROVIDES%\nshell=1\n'
+                (database / 'desc').write_text(desc, encoding='utf-8')
+                (database / 'files').write_text('%FILES%\n' + '\n'.join(files), encoding='utf-8')
+                for file in files:
+                    path = source / file
+                    if file.endswith('/'):
+                        path.mkdir(parents=True, exist_ok=True)
+                        continue
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text(file, encoding='utf-8')
+            destination = Path(folder) / 'minimal'
+            copy_environment(source, destination, minimal=True)
+            self.assertTrue((destination / 'ucrt64/bin/shared.dll').is_file())
+            self.assertFalse((destination / 'ucrt64/bin/Qt6Core.dll').exists())
+            self.assertFalse((destination / 'ucrt64/include/qt.h').exists())
+            self.assertTrue((destination / 'var/lib/pacman/local/bash-1/desc').is_file())
+            self.assertFalse((destination / 'var/lib/pacman/local/qt-devel-1').exists())
+            self.assertTrue((destination / 'var/cache/man').is_dir())
+            self.assertTrue((destination / 'var/log/old').is_dir())
+            # Resolve failures before creating a partial environment.
+            (source / 'var/lib/pacman/local/base-1/desc').write_text(
+                '%NAME%\nbase\n\n%DEPENDS%\nmissing-package\n', encoding='utf-8')
+            with self.assertRaisesRegex(ValueError, 'Missing installed dependency'):
+                copy_environment(source, Path(folder) / 'broken', minimal=True)
+            self.assertFalse((Path(folder) / 'broken').exists())
+
     def test_package_database_survives_but_personal_data_does_not(self):
         (ROOT / 'build').mkdir(exist_ok=True)
         with tempfile.TemporaryDirectory(dir=ROOT / 'build') as folder:

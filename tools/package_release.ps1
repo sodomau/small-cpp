@@ -167,7 +167,7 @@ foreach ($key in @("qt_widgets", "qt_gui", "qt_multimedia", "qt_core")) {
 
 # Keep the package manager and its databases with the UCRT64 toolchain.
 $environmentOut = Join-Path $OutputDir "env"
-& $pythonCommand.Source (Join-Path $repoRoot 'tools/copy_msys2_environment.py') --source $Msys2Dir --destination $environmentOut
+& $pythonCommand.Source (Join-Path $repoRoot 'tools/copy_msys2_environment.py') --source $Msys2Dir --destination $environmentOut --minimal
 if ($LASTEXITCODE -ne 0) { throw 'MSYS2 environment copy failed.' }
 # The compiler's newer runtime must accompany student executables, including
 # Publish output. Qt/KDE must come from a matching UCRT64 build kit.
