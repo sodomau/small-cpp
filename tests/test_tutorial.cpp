@@ -533,6 +533,29 @@ private slots:
         QCOMPARE(browser->findChild<CodeEditor*>("tutorialExample1")->font().pointSize(), 18);
     }
 
+    void firstLessonUsesThemeBeforeAndAfterShowing()
+    {
+        MainWindow window;
+        auto* browser = browse(window);
+        for (bool dark : {false, true, false}) {
+            action(window, dark ? "actionThemeDark" : "actionThemeLight")->trigger();
+            QPalette colors = browser->palette();
+            colors.setColor(QPalette::Window, QColor(dark ? "#1e1f22" : "#ffffff"));
+            colors.setColor(QPalette::Text, QColor(dark ? "#eeeeee" : "#222222"));
+            browser->setAppearance(QFont("Consolas", 14), colors, dark);
+            browser->show();
+            QCoreApplication::processEvents();
+            auto* page = browser->findChild<QWidget*>("tutorialPage");
+            QVERIFY(page);
+            QCOMPARE(page->palette().color(QPalette::Window),
+                     colors.color(QPalette::Window));
+            auto* title = browser->findChild<QLabel*>("tutorialTitle");
+            QVERIFY(title);
+            QCOMPARE(title->palette().color(QPalette::WindowText),
+                     colors.color(QPalette::Text));
+        }
+    }
+
     void relatedExampleOpensReadOnlyWithoutClosingTutorial()
     {
         MainWindow window;

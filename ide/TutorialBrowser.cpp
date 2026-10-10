@@ -516,7 +516,21 @@ void TutorialBrowser::setAppearance(const QFont& codeFont, const QPalette& palet
     setPalette(dialogPalette);
     tree_->setPalette(dialogPalette);
     scroll_->setPalette(dialogPalette);
-    if (scroll_->widget()) scroll_->widget()->setPalette(dialogPalette);
+    // Polish existing children before setting their palette: their first show
+    // must not restore the platform theme over the supplied IDE theme.
+    if (auto* page = scroll_->widget()) {
+        page->setStyleSheet(QString(
+            "QWidget#tutorialPage { background-color: %1; color: %2; }"
+            "QLabel, QGroupBox { color: %2; }")
+            .arg(dialogPalette.color(QPalette::Window).name(),
+                 dialogPalette.color(QPalette::WindowText).name()));
+        page->ensurePolished();
+        page->setPalette(dialogPalette);
+        for (auto* child : page->findChildren<QWidget*>()) {
+            child->ensurePolished();
+            child->setPalette(dialogPalette);
+        }
+    }
     for (const auto& preview : previews_) stylePreview(preview.editor);
     updateReadLabels();
 }
