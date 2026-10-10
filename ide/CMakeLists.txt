@@ -124,6 +124,7 @@ set(SMALL_IDE_SOURCES
     TutorialCatalog.h TutorialCatalog.cpp
     TutorialBrowser.h TutorialBrowser.cpp
     
+    Toolchain.h
     BuildController.h BuildController.cpp
     ProgramPackage.h ProgramPackage.cpp
     ProjectFolder.h ProjectFolder.cpp
@@ -155,7 +156,7 @@ file(GENERATE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/generated/image-extension-$<CO
 "{\n  \"id\": \"image\",\n  \"name\": \"Image\",\n  \"header\": \"small/image.h\",\n  \"library\": \"$<TARGET_FILE_NAME:small_image>\",\n  \"include\": \"include\",\n  \"lib\": \"lib\",\n  \"tutorial\": \"tutorial\",\n  \"examples\": \"examples\"\n}\n")
 
 file(GENERATE OUTPUT "${SMALL_BIN}/packaging-info.txt"
-CONTENT "compiler=${CMAKE_CXX_COMPILER}\nqt_bin=$<TARGET_FILE_DIR:Qt6::Core>\nqt_widgets=$<TARGET_LINKER_FILE:Qt6::Widgets>\nqt_gui=$<TARGET_LINKER_FILE:Qt6::Gui>\nqt_multimedia=$<TARGET_LINKER_FILE:Qt6::Multimedia>\nqt_core=$<TARGET_LINKER_FILE:Qt6::Core>\n")
+CONTENT "compiler=${CMAKE_CXX_COMPILER}\ncompiler_version=${CMAKE_CXX_COMPILER_VERSION}\nqt_bin=$<TARGET_FILE_DIR:Qt6::Core>\nqt_widgets=$<TARGET_LINKER_FILE:Qt6::Widgets>\nqt_gui=$<TARGET_LINKER_FILE:Qt6::Gui>\nqt_multimedia=$<TARGET_LINKER_FILE:Qt6::Multimedia>\nqt_core=$<TARGET_LINKER_FILE:Qt6::Core>\n")
 
 qt_add_executable(SmallCppIDE
     main.cpp
@@ -258,6 +259,8 @@ if(SMALL_BUILD_TESTS)
 
     find_package(Python3 QUIET COMPONENTS Interpreter)
     if(Python3_Interpreter_FOUND)
+        add_test(NAME small_msys2_packaging COMMAND "${Python3_EXECUTABLE}"
+            "${SMALL_ROOT}/tests/test_msys2_packaging.py")
         add_test(NAME small_ide_console_pause
             COMMAND "${Python3_EXECUTABLE}" "${SMALL_ROOT}/tests/test_ide_pause.py"
                     "${CMAKE_CXX_COMPILER}" "$<TARGET_OBJECTS:small_ide_pause>")

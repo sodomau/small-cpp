@@ -16,7 +16,7 @@ if ($output.Equals($package, [System.StringComparison]::OrdinalIgnoreCase) -or
     $output.StartsWith($package + [System.IO.Path]::DirectorySeparatorChar, [System.StringComparison]::OrdinalIgnoreCase)) {
     throw 'Installer output must not be inside the package.'
 }
-foreach ($relative in @('SmallCppIDE.exe', 'runtime\small.h', 'compiler\bin\g++.exe',
+foreach ($relative in @('SmallCppIDE.exe', 'runtime\small.h', 'env\ucrt64\bin\g++.exe', 'env\ucrt64\bin\gdb.exe', 'env\usr\bin\pacman.exe',
     'platforms\qwindows.dll', 'tutorial\01_hello\example.cpp', 'licenses\THIRD_PARTY.txt', 'licenses\SOURCE_ACCESS.md')) {
     if (!(Test-Path -LiteralPath (Join-Path $package $relative))) { throw "Incomplete portable package: $relative" }
 }

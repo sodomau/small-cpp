@@ -1,5 +1,6 @@
 #include "DebugController.h"
 #include "SmallBuildConfig.h"
+#include "Toolchain.h"
 #include "EntryPoint.h"
 #include "BuildController.h"
 #include <QCoreApplication>
@@ -42,12 +43,7 @@ DebugController::DebugController(QObject* p):QObject(p)
 }
 DebugController::~DebugController(){ if(build_.state()!=QProcess::NotRunning)build_.kill(); if(gdb_.state()!=QProcess::NotRunning)gdb_.kill(); }
 void DebugController::setStage(Stage s){bool b=isBusy();stage_=s;if(b!=isBusy())emit busyChanged(isBusy());}
-QString DebugController::compiler() const{
-#ifdef Q_OS_WIN
- QString b=QDir(QCoreApplication::applicationDirPath()).filePath("compiler/bin/g++.exe"); if(QFileInfo::exists(b))return QDir::cleanPath(b);
-#endif
- return QString::fromUtf8(SmallBuildConfig::Compiler);
-}
+QString DebugController::compiler() const { return Toolchain::compiler(); }
 QString DebugController::gdbPath() const { QString p=QDir(QFileInfo(compiler()).absolutePath()).filePath(
 #ifdef Q_OS_WIN
 "gdb.exe"
@@ -55,7 +51,14 @@ QString DebugController::gdbPath() const { QString p=QDir(QFileInfo(compiler()).
 "gdb"
 #endif
 ); return p; }
-void DebugController::configureEnvironment(QProcess& p){auto e=QProcessEnvironment::systemEnvironment();QString sep(QDir::listSeparator());QString path=QFileInfo(compiler()).absolutePath()+sep+QCoreApplication::applicationDirPath();QString recordedQtBin=QString::fromUtf8(SmallBuildConfig::QtBin);if(QFileInfo::exists(recordedQtBin))path+=sep+recordedQtBin;e.insert("PATH",path+sep+e.value("PATH"));e.insert("QT_PLUGIN_PATH",QCoreApplication::applicationDirPath());e.insert("QT_QPA_PLATFORM_PLUGIN_PATH",QDir(QCoreApplication::applicationDirPath()).filePath("platforms"));e.insert("LC_ALL","C");if(projectActive_)e.insert("PATH",project_.libraryPaths.join(QDir::listSeparator())+sep+e.value("PATH"));p.setProcessEnvironment(e);}
+void DebugController::configureEnvironment(QProcess& process)
+{
+    auto env = Toolchain::environment();
+    if (projectActive_)
+        env.insert("PATH", project_.libraryPaths.join(QDir::listSeparator()) + QDir::listSeparator() + env.value("PATH"));
+    process.setProcessEnvironment(env);
+}
+
 void DebugController::start(const QString&s,const QString&orig,const QString&name,const QSet<int>&bps){if(isBusy())return;projectActive_=false;breakpoints_=bps;gdbBreakpointIds_.clear();breakpointRequestLines_.clear();breakpointRequestEnabled_.clear();sourceSnapshot_=s;sdkDirectory_=QDir(QCoreApplication::applicationDirPath()).filePath("runtime");extensionsDirectory_=QDir(QCoreApplication::applicationDirPath()).filePath("extensions");runtimePath_=QDir(sdkDirectory_).filePath(QString::fromUtf8(SmallBuildConfig::RuntimeFile));entryPath_=QDir(sdkDirectory_).filePath(QString::fromUtf8(SmallBuildConfig::EntryFile));idePausePath_=QDir(sdkDirectory_).filePath(QString::fromUtf8(SmallBuildConfig::IdePauseFile));usesOwnMain_=DetectEntryPoint(s)==SmallEntryPoint::Main;extensions_=ExtensionRegistry::detect(s,ExtensionRegistry::discover(extensionsDirectory_));directory_=std::make_unique<QTemporaryDir>(QDir::tempPath()+"/SmallCpp-debug-XXXXXX");if(!directory_->isValid()){emit buildError("Cannot create debug folder.",s,{});return;}QString n=orig.isEmpty()?QFileInfo(name).fileName():QFileInfo(orig).fileName();if(!n.endsWith(".cpp",Qt::CaseInsensitive))n+=".cpp";sourcePath_=directory_->filePath(n);objectPath_=directory_->filePath("program.o");executablePath_=directory_->filePath(
 #ifdef Q_OS_WIN
 "program.exe"

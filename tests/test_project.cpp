@@ -5,6 +5,7 @@
 #include "EditorDocument.h"
 #include "SmallSettings.h"
 #include "SmallBuildConfig.h"
+#include "Toolchain.h"
 #include <QAction>
 #include <QApplication>
 #include <QDir>
@@ -513,12 +514,7 @@ private slots:
         QTRY_VERIFY_WITH_TIMEOUT(!built.isEmpty() || !failed.isEmpty(), 30000);
         QVERIFY2(failed.isEmpty(), qPrintable(failed.isEmpty() ? QString() : failed.first().first().toString()));
         QProcess program;
-        auto environment = QProcessEnvironment::systemEnvironment();
-        const QString separator(QDir::listSeparator());
-        environment.insert("PATH", QFileInfo(QString::fromUtf8(SmallBuildConfig::Compiler)).absolutePath()
-                           + separator + QCoreApplication::applicationDirPath()
-                           + separator + QString::fromUtf8(SmallBuildConfig::QtBin)
-                           + separator + environment.value("PATH"));
+        auto environment = Toolchain::environment();
         program.setProcessEnvironment(environment);
         program.setWorkingDirectory(projectPath);
         program.start(built.first().first().toString(), QStringList{});
@@ -576,8 +572,9 @@ private slots:
         QTemporaryDir directory;
         write(directory.filePath("vendor/answer.h"), "int Answer();\n");
         write(directory.filePath("vendor/answer.cpp"), "int Answer() { return 55; }\n");
-        const QString compiler = QString::fromUtf8(SmallBuildConfig::Compiler);
+        const QString compiler = Toolchain::compiler();
         QProcess compile;
+        compile.setProcessEnvironment(Toolchain::environment());
         compile.start(compiler, {"-c", directory.filePath("vendor/answer.cpp"), "-o", directory.filePath("vendor/answer.o")});
         QVERIFY(compile.waitForFinished(15000)); QCOMPARE(compile.exitCode(), 0);
         compile.start(QDir(QFileInfo(compiler).absolutePath()).filePath("ar.exe"), {"rcs", directory.filePath("vendor/libanswer.a"), directory.filePath("vendor/answer.o")});

@@ -1,7 +1,8 @@
 param(
     [string]$BuildDir = "",
     [string]$OutputDir = "",
-    [string]$NoticesDir = ""
+    [string]$NoticesDir = "",
+    [string]$Msys2Dir = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -70,9 +71,21 @@ if (!(Test-Path $compiler)) {
     throw "Recorded compiler does not exist: $compiler"
 }
 
+if ([string]::IsNullOrWhiteSpace($Msys2Dir)) {
+    throw "Pass -Msys2Dir with an initialized MSYS2/UCRT64 environment."
+}
+$Msys2Dir = (Resolve-Path -LiteralPath $Msys2Dir).Path
+$environmentCompiler = Join-Path $Msys2Dir 'ucrt64/bin/g++.exe'
+if (!(Test-Path -LiteralPath $environmentCompiler)) { throw 'Missing UCRT64 compiler.' }
+$builtVersion = $kv['compiler_version']
+$environmentVersion = & $environmentCompiler -dumpfullversion
+if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($builtVersion) -or $builtVersion -ne $environmentVersion) {
+    throw 'Build the IDE/runtime with the same UCRT64 compiler version as the packaged environment.'
+}
+
 $compilerBin = Split-Path $compiler -Parent
-$toolchainRoot = Split-Path $compilerBin -Parent
 $deploy = Join-Path $qtBin "windeployqt.exe"
+$env:PATH = "$compilerBin;$qtBin;" + $env:PATH
 
 if (!(Test-Path $deploy)) {
     throw "windeployqt.exe was not found: $deploy"
@@ -152,40 +165,16 @@ foreach ($key in @("qt_widgets", "qt_gui", "qt_multimedia", "qt_core")) {
     Copy-Item $library (Join-Path $portableQtLib (Split-Path $library -Leaf)) -Force
 }
 
-# MinGW contains a very deep header tree. PowerShell Copy-Item can fail on it;
-# robocopy is substantially more robust for Windows toolchain directory trees.
-$compilerOut = Join-Path $OutputDir "compiler"
-New-Item -ItemType Directory -Path $compilerOut | Out-Null
-
-Write-Host ""
-Write-Host "Copying MinGW toolchain..."
-& robocopy $toolchainRoot $compilerOut /E /COPY:DAT /DCOPY:DAT /R:2 /W:1 /NFL /NDL /NP
-
-# Robocopy uses 0-7 for successful outcomes (including copied/skipped files).
-$robocopyExit = $LASTEXITCODE
-if ($robocopyExit -ge 8) {
-    throw "robocopy failed while copying MinGW (exit code $robocopyExit)"
-}
-
-$bundled = Join-Path $compilerOut "bin\g++.exe"
-if (!(Test-Path $bundled)) {
-    throw "Bundled compiler validation failed: $bundled"
-}
-
-# Some Qt MinGW distributions keep GCC runtime DLLs under opt\bin while
-# cc1plus.exe/gdb.exe are launched with compiler\bin on PATH. Copy the small
-# runtime DLL set beside the tools so the portable compiler/debugger works on
-# machines without a Qt installation.
-$optBin = Join-Path $compilerOut "opt\bin"
-$compilerBinOut = Join-Path $compilerOut "bin"
+# Keep the package manager and its databases with the UCRT64 toolchain.
+$environmentOut = Join-Path $OutputDir "env"
+& $pythonCommand.Source (Join-Path $repoRoot 'tools/copy_msys2_environment.py') --source $Msys2Dir --destination $environmentOut
+if ($LASTEXITCODE -ne 0) { throw 'MSYS2 environment copy failed.' }
+# The compiler's newer runtime must accompany student executables, including
+# Publish output. Qt/KDE must come from a matching UCRT64 build kit.
 foreach ($dll in @("libwinpthread-1.dll", "libgcc_s_seh-1.dll", "libstdc++-6.dll")) {
-    $candidate = Join-Path $optBin $dll
-    if (Test-Path $candidate) { Copy-Item $candidate (Join-Path $compilerBinOut $dll) -Force }
-}
-
-$gdbBundled = Join-Path $compilerBinOut "gdb.exe"
-if (!(Test-Path $gdbBundled)) {
-    throw "Bundled debugger validation failed: $gdbBundled"
+    $candidate = Join-Path $environmentOut ("ucrt64/bin/" + $dll)
+    if (!(Test-Path $candidate)) { throw "Missing UCRT64 runtime: $candidate" }
+    Copy-Item -LiteralPath $candidate -Destination (Join-Path $OutputDir $dll) -Force
 }
 
 Write-Host ""

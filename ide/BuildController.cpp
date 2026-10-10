@@ -1,5 +1,6 @@
 #include "BuildController.h"
 #include "SmallBuildConfig.h"
+#include "Toolchain.h"
 #include "EntryPoint.h"
 
 #include <QCoreApplication>
@@ -58,13 +59,7 @@ BuildController::~BuildController()
 
 QString BuildController::compiler() const
 {
-#ifdef Q_OS_WIN
-    const QString bundled = QDir(QCoreApplication::applicationDirPath())
-                                .filePath("compiler/bin/g++.exe");
-    if (QFileInfo::exists(bundled))
-        return QDir::cleanPath(bundled);
-#endif
-    return QString::fromUtf8(SmallBuildConfig::Compiler);
+    return Toolchain::compiler();
 }
 
 void BuildController::setStage(Stage stage)
@@ -76,27 +71,7 @@ void BuildController::setStage(Stage stage)
 
 void BuildController::configureEnvironment(QProcess& process)
 {
-    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    const QString compilerBin = QFileInfo(compiler()).absolutePath();
-    const QString recordedQtBin = QString::fromUtf8(SmallBuildConfig::QtBin);
-    const QString appBin = QCoreApplication::applicationDirPath();
-    const QString separator(QDir::listSeparator());
-    QString path = compilerBin + separator + appBin;
-    // Development builds may use the Qt kit directly. Portable builds already
-    // have the Qt runtime DLLs beside SmallCppIDE.exe and must not depend on
-    // the build machine's C:/Qt path.
-    if (QFileInfo::exists(recordedQtBin))
-        path += separator + recordedQtBin;
-    env.insert("PATH", path + separator + env.value("PATH"));
-    // Portable windeployqt layout: platforms/, multimedia/, ... are
-    // directly beside SmallCppIDE.exe.
-    const QString portablePluginRoot = appBin;
-    env.insert("QT_PLUGIN_PATH", portablePluginRoot);
-    env.insert("QT_QPA_PLATFORM_PLUGIN_PATH",
-               QDir(portablePluginRoot).filePath("platforms"));
-    // Deterministic GCC diagnostic wording. UTF-8 source/output are explicit.
-    env.insert("LC_ALL", "C");
-    process.setProcessEnvironment(env);
+    process.setProcessEnvironment(Toolchain::environment());
 }
 
 void BuildController::start(const QString& source, const QString& originalFilePath,
