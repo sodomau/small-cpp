@@ -450,6 +450,7 @@ private slots:
             MainWindow window;
             action(window, dark ? "actionThemeDark" : "actionThemeLight")->trigger();
             QVERIFY(window.openDocument(source));
+            current(window)->editorView()->setCursorPosition({0, 0});
             window.resize(1200, 850);
             window.show();
             QTest::qWait(50);

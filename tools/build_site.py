@@ -97,7 +97,7 @@ def page(title, language, content, switch_link):
     return f'''<!doctype html>
 <html lang="{language}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{escape(title)} — Small C++</title><link rel="icon" href="../../assets/smallcpp_128.png">
-<link rel="stylesheet" href="../../style.css?v=0.76.15"></head><body>
+<link rel="stylesheet" href="../../style.css?v=0.76.16"></head><body>
 <header class="navigation wrap"><a class="brand" href="../../index.html">Small C++<span class="brand-dot">.</span></a>
 <nav aria-label="Navigation"><a href="../../index.html">{home}</a><a href="index.html">{lessons}</a></nav>
 <a class="language" href="{switch_link}">{switch}</a></header>
