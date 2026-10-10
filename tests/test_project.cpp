@@ -603,6 +603,58 @@ private slots:
         QVERIFY(program.waitForFinished(15000)); QCOMPARE(program.exitCode(), 0);
         QCOMPARE(read(directory.filePath("published/result.txt")).trimmed(), QByteArray("60"));
     }
+    void msys2FmtLibrary_data()
+    {
+        QTest::addColumn<QString>("mode");
+        QTest::newRow("header-only") << QString("header");
+        QTest::newRow("static-library") << QString("static");
+        QTest::newRow("dynamic-library") << QString("dynamic");
+    }
+    void msys2FmtLibrary()
+    {
+        QFETCH(QString, mode);
+        const QDir prefix(QDir(QFileInfo(Toolchain::compiler()).absolutePath()).filePath(".."));
+        if (!QFileInfo(prefix.filePath("include/fmt/format.h")).isFile())
+            QSKIP("Install the optional MSYS2 fmt package to run this experiment.");
+        QTemporaryDir directory;
+        const QString projectPath = directory.filePath("FmtExample");
+        const QString source = (mode == "header" ? "#define FMT_HEADER_ONLY\n" : "") + QString(
+            "#include <fmt/format.h>\nvoid small_main() { File f; f.open(\"result.txt\", FileMode::Write); f.print(fmt::format(\"Hello, {}!\", 42).c_str()); }\n");
+        write(QDir(projectPath).filePath("main.cpp"), source.toUtf8());
+        if (mode != "header") {
+            const QString library = prefix.filePath(mode == "static" ? "lib/libfmt.a" : "lib/libfmt.dll.a");
+            write(QDir(projectPath).filePath("small.project"),
+                QJsonDocument(QJsonObject{{"libraries", QJsonArray{library}}}).toJson());
+        }
+        if (mode == "dynamic") {
+            const QStringList dlls = QDir(prefix.filePath("bin")).entryList({"libfmt-*.dll"}, QDir::Files);
+            QCOMPARE(dlls.size(), 1);
+            QVERIFY(QFile::copy(prefix.filePath("bin/" + dlls.first()), QDir(projectPath).filePath(dlls.first())));
+        }
+        BuildController build;
+        QSignalSpy failed(&build, &BuildController::buildError), finished(&build, &BuildController::finished);
+        build.startProject(load(projectPath));
+        QTRY_VERIFY_WITH_TIMEOUT(!finished.isEmpty() || !failed.isEmpty(), 30000);
+        QVERIFY2(failed.isEmpty(), qPrintable(failed.isEmpty() ? QString() : failed.first().first().toString()));
+        QCOMPARE(read(QDir(projectPath).filePath("result.txt")).trimmed(), QByteArray("Hello, 42!"));
+        if (!QFileInfo(Toolchain::root() + "/licenses/SOURCE_ACCESS.md").isFile())
+            QSKIP("Run passed; use the prepared package for Publish.");
+        QVERIFY(QFile::remove(QDir(projectPath).filePath("result.txt")));
+        QSignalSpy published(&build, &BuildController::published);
+        const QString destination = directory.filePath("published");
+        build.startProject(load(projectPath), false, destination);
+        QTRY_VERIFY_WITH_TIMEOUT(!published.isEmpty() || !failed.isEmpty(), 30000);
+        QVERIFY2(failed.isEmpty(), qPrintable(failed.isEmpty() ? QString() : failed.first().first().toString()));
+        QProcess program;
+        auto env = QProcessEnvironment::systemEnvironment();
+        env.insert("PATH", qEnvironmentVariable("SystemRoot") + "/System32");
+        env.remove("QT_PLUGIN_PATH"); env.remove("QT_QPA_PLATFORM_PLUGIN_PATH");
+        env.remove("SMALL_TEST_NO_CONSOLE_PAUSE");
+        program.setProcessEnvironment(env); program.setWorkingDirectory(destination);
+        program.start(destination + "/FmtExample.exe", {});
+        QVERIFY(program.waitForFinished(15000)); QCOMPARE(program.exitCode(), 0);
+        QCOMPARE(read(destination + "/result.txt").trimmed(), QByteArray("Hello, 42!"));
+    }
     void projectPreview()
     {
         const QString output=qEnvironmentVariable("SMALL_PROJECT_PREVIEW_DIR"); if(output.isEmpty()) return;
