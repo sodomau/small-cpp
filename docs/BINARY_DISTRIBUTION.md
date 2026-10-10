@@ -6,6 +6,19 @@ the individual checks on a machine without developer tools.
 
 ## Build and notices
 
+For v0.76.16 and later, use the coherent MSYS2 UCRT64 kit and minimal environment
+described in [DEVELOPMENT.md](DEVELOPMENT.md). Prepare notices with
+`tools/prepare_msys2_notices.py --environment <source-env> --package <prepared-package>
+--sources build/<sources> --notices build/<notices> --version <version>`.
+This collects exact MSYS2 source-only packages with PKGBUILD recipes and patches
+for both the learner environment and deployed IDE libraries. Pass that notice
+directory and `-Msys2Dir <source-env>` to the release packager. Use
+`tools/package_zip.py` to preserve empty runtime directories in the portable ZIP,
+and publish the source ZIP and checksums alongside the installer and portable ZIP.
+
+The instructions below retain the original Qt-only release's preparation details;
+its compiler sources and notices do not cover the MSYS2 distribution.
+
 Build Release with the matching Qt MinGW kit, as described in DEVELOPMENT.md.
 Set `Python3_EXECUTABLE` explicitly when Python is not on PATH so the full test
 suite is registered. Copy/deploy the test DLLs and plugins as in that document.

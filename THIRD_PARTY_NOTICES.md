@@ -25,7 +25,7 @@ redistributing the affected material.
 | Qt Core, Gui, Widgets, Multimedia | IDE and learner runtime dependencies | Verify the licenses of the exact kit, modules, plugins, and third-party components shipped. Qt offers LGPL/GPL and commercial licensing options; not every component has the same terms. |
 | KTextEditor, KDE Frameworks, Qt Qml/TextToSpeech/PrintSupport and their dependencies | Native editing tabs in the IDE; not linked into the learner runtime | Inventory the exact DLLs and plugins, preserve each component's license and attribution, and provide applicable corresponding source and build information. The existing Qt-only release notice collector is not sufficient for a KDE-based release. |
 | FFmpeg and other Qt plugin dependencies | May be deployed by Qt Multimedia and deployment tools | Inspect the actual package; include notices, license texts, and corresponding source access as required for the exact binaries. |
-| MinGW-w64 toolchain, GCC, runtime libraries, binutils, GDB, and other bundled tools | The portable packaging script copies the entire selected toolchain | Inventory the whole copied tree. Each component retains its own terms. GCC runtime exceptions do not waive the conditions for redistributing compiler/debugger binaries. |
+| MSYS2, MinGW-w64, GCC, runtime libraries, binutils, GDB, and other bundled tools | A minimal UCRT64 environment with the dependency closure of base, GCC and GDB | Inventory the copied packages and deployed IDE dependencies. Each component retains its own terms. GCC runtime exceptions do not waive the conditions for redistributing compiler/debugger binaries. |
 
 The `.a` suffix alone does not establish static linking: MinGW Qt kits also
 use `.a` import libraries for DLLs. Check actual dependencies when preparing
@@ -40,6 +40,10 @@ directory. `tools/prepare_release_notices.py` collects source license texts,
 toolchain notices and Qt SBOMs for the historical Qt-only kit.
 `tools/prepare_editor_notices.py` collects the KDE-based release's exact Craft
 sources, component notices and matching compiler build records.
+For the MSYS2 distribution, `tools/prepare_msys2_notices.py` collects the exact
+source-only packages (including build recipes and patches), installed license
+texts, package versions and archive checksums for the learner environment and
+the deployed Qt/KDE dependencies. Historical Craft notices do not cover this kit.
 Source archives must be published alongside
 the binary package; the assembler does not replace inventory review.
 See [Windows distribution preparation](docs/BINARY_DISTRIBUTION.md).

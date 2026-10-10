@@ -76,8 +76,11 @@ Create portable ZIPs with `tools/package_zip.py --package <portable-folder>
 files. File-only ZIP creation loses MSYS2's `tmp`, `dev`, and cache/log directories
 and can break the first login. Validate an actual fresh ZIP extraction, not just
 the pre-archive folder, with the relocated shell and student-program tests.
-Public releases need notices and corresponding sources for this new package
-set; the historical Craft source bundle does not cover it.
+Use `tools/prepare_msys2_notices.py` with the source environment and a prepared
+package to collect exact source packages and notices. It covers both the minimal
+environment and package owners of the deployed Qt/KDE files. Publish its source
+directory as the release's ThirdPartySources ZIP. The historical Craft source
+bundle does not cover this kit.
 
 See the official [environment](https://www.msys2.org/docs/environments/) and
 [update](https://www.msys2.org/docs/updating/) documentation. Package updates

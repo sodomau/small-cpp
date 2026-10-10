@@ -1,17 +1,76 @@
 """Check that environment packaging preserves pacman without copying user data."""
 from pathlib import Path
+import io
+import json
 import sys
+import tarfile
 import tempfile
 import unittest
 import zipfile
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 from copy_msys2_environment import copy_environment, RUNTIME_DIRECTORIES
 from package_zip import package_zip
+from prepare_msys2_notices import collect_source_notices, prepare
 
 
 class EnvironmentPackagingTests(unittest.TestCase):
+    def test_upstream_license_texts_are_preserved_without_extracting_source_paths(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / 'build') as folder:
+            root = Path(folder)
+            content = io.BytesIO()
+            with tarfile.open(fileobj=content, mode='w:gz') as archive:
+                for name, text in [('project/COPYING', b'license text'),
+                                   ('project/LICENSES/MIT.txt', b'copyright text'),
+                                   ('project/code.cpp', b'code')]:
+                    info = tarfile.TarInfo(name)
+                    info.size = len(text)
+                    archive.addfile(info, io.BytesIO(text))
+            with patch('prepare_msys2_notices.subprocess.run') as tar:
+                tar.return_value.stdout = content.getvalue()
+                count = collect_source_notices(root, root / 'source.src.tar.zst',
+                    'package/upstream.tar.gz\n', root / 'notices')
+            self.assertEqual(count, 2)
+            files = list((root / 'notices/source-notices').iterdir())
+            self.assertEqual({p.read_bytes() for p in files}, {b'license text', b'copyright text'})
+            self.assertFalse((root / 'notices/project').exists())
+
+    def test_sources_cover_deployed_editor_beyond_minimal_environment(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / 'build') as folder:
+            root = Path(folder)
+            environment, package = root / 'environment', root / 'package'
+            entries = {
+                'base': [], 'msys2-runtime': [],
+                'mingw-w64-ucrt-x86_64-gcc': [],
+                'mingw-w64-ucrt-x86_64-gdb': [],
+                'editor': ['ucrt64/bin/editor.dll', 'ucrt64/share/licenses/editor/LICENSE'],
+                'unused': ['ucrt64/bin/unused.dll'],
+            }
+            for name, files in entries.items():
+                database = environment / 'var/lib/pacman/local' / name
+                database.mkdir(parents=True)
+                (database / 'desc').write_text(
+                    f'%NAME%\n{name}\n\n%VERSION%\n1:2.3-4\n\n%LICENSE%\nMIT\n', encoding='utf-8')
+                (database / 'files').write_text('%FILES%\n' + '\n'.join(files), encoding='utf-8')
+                for relative in files:
+                    path = environment / relative
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_bytes(b'fixture')
+            package.mkdir()
+            (package / 'editor.dll').write_bytes(b'fixture')
+            with patch('prepare_msys2_notices.urllib.request.urlopen',
+                       side_effect=lambda *args, **kwargs: io.BytesIO(b'source fixture')), \
+                 patch('prepare_msys2_notices.subprocess.run') as tar:
+                tar.return_value.stdout = 'editor/PKGBUILD\n'
+                prepare(environment, package, root / 'sources', root / 'notices', '0.76.16')
+            manifest = json.loads((root / 'notices/packages.json').read_text())
+            self.assertIn('editor', [entry['name'] for entry in manifest])
+            self.assertNotIn('unused', [entry['name'] for entry in manifest])
+            self.assertTrue((root / 'sources/editor-2.3-4.src.tar.zst').is_file())
+            self.assertEqual((root / 'notices/package-notices/ucrt64/share/licenses/editor/LICENSE').read_bytes(), b'fixture')
+
     def test_zip_extract_preserves_empty_first_login_directories(self):
         with tempfile.TemporaryDirectory(dir=ROOT / 'build') as folder:
             package = Path(folder) / 'portable'
