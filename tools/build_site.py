@@ -115,12 +115,13 @@ def page(title, language, content, switch_link):
 
 def build():
     OUTPUT.mkdir(parents=True, exist_ok=True)
-    for name in ('index.html', 'style.css', 'app.js'):
+    for name in ('index.html', 'features.html', 'style.css', 'app.js'):
         shutil.copy2(ROOT / 'site' / name, OUTPUT / name)
     assets = OUTPUT / 'assets'
     assets.mkdir(exist_ok=True)
     for source in (ROOT / 'ide/assets/smallcpp_128.png', ROOT / 'docs/images/ide-dark.png', ROOT / 'docs/images/ide-light.png'):
         shutil.copy2(source, assets / source.name)
+    shutil.copytree(ROOT / 'site/assets/features', assets / 'features', dirs_exist_ok=True)
     lessons = [(folder.name, folder) for folder in sorted((ROOT / 'tutorial').iterdir(), key=lambda p: int(p.name.split('_')[0]) if p.is_dir() else 0) if folder.is_dir()]
     core_count = len(lessons)
     lessons += [('image-' + folder.name, folder) for folder in sorted((ROOT / 'extensions/image/tutorial').iterdir()) if folder.is_dir()]
