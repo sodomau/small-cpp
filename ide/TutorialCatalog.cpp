@@ -169,7 +169,7 @@ struct FolderIdentity
 
 FolderIdentity ParseLessonFolder(const QString& folder)
 {
-    static const QRegularExpression pattern("^(\\d{2})_([a-z][a-z0-9_]*)$");
+    static const QRegularExpression pattern("^(\\d{2,})_([a-z][a-z0-9_]*)$");
     const auto match = pattern.match(folder);
     Require(match.hasMatch(), "Tutorial lesson folder must be NN_id: " + folder);
     FolderIdentity result;

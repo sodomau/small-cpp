@@ -114,7 +114,7 @@ def build():
     assets.mkdir(exist_ok=True)
     for source in (ROOT / 'ide/assets/smallcpp_128.png', ROOT / 'docs/images/ide-dark.png', ROOT / 'docs/images/ide-light.png'):
         shutil.copy2(source, assets / source.name)
-    lessons = [(folder.name, folder) for folder in sorted((ROOT / 'tutorial').iterdir()) if folder.is_dir()]
+    lessons = [(folder.name, folder) for folder in sorted((ROOT / 'tutorial').iterdir(), key=lambda p: int(p.name.split('_')[0]) if p.is_dir() else 0) if folder.is_dir()]
     core_count = len(lessons)
     lessons += [('image-' + folder.name, folder) for folder in sorted((ROOT / 'extensions/image/tutorial').iterdir()) if folder.is_dir()]
     image_count = len(lessons) - core_count
