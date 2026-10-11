@@ -15,10 +15,10 @@ manual=(root/"tests/test_manual_main.cpp").read_text(encoding="utf-8")
 for required in ['#include <small.h>','Small::initialize_small','Small::print']:
     if required not in manual:
         raise SystemExit("Manual-main regression test is incomplete: "+required)
-for p in (root/"tutorial/35_smallmain").glob("*.cpp"):
+for p in (root/"tutorial/33_smallmain_1").glob("*.cpp"):
     if '#include <small.h>' not in p.read_text(encoding="utf-8"):
-        raise SystemExit("Lesson 35 main source lacks explicit <small.h>: "+p.name)
-for p in (root/"tutorial/36_beyond").glob("*.cpp"):
+        raise SystemExit("Entry-point lesson source lacks explicit <small.h>: "+p.name)
+for p in (root/"tutorial/34_beyond_1").glob("*.cpp"):
     if 'small.h' in p.read_text(encoding="utf-8").lower():
-        raise SystemExit("Lesson 36 must be Small-free: "+p.name)
+        raise SystemExit("Beyond-Small lesson must be Small-free: "+p.name)
 print("Graduation include/namespace policy check passed.")

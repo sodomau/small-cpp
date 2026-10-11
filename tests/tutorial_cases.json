@@ -11,7 +11,7 @@
       "stderr": ""
     },
     {
-      "source": "02_lines/example.cpp",
+      "source": "01_hello/lines_example.cpp",
       "name": "default",
       "stdin": "",
       "stdout": "Hello!\nSmall C++\n",
@@ -19,7 +19,7 @@
       "stderr": ""
     },
     {
-      "source": "03_calculate/example.cpp",
+      "source": "02_calculate/example.cpp",
       "name": "default",
       "stdin": "",
       "stdout": "8\n7\n3 + 5\n",
@@ -27,7 +27,7 @@
       "stderr": ""
     },
     {
-      "source": "11_input_text/example.cpp",
+      "source": "05_input_text/example.cpp",
       "name": "default",
       "stdin": "Ada\n",
       "stdout": "Hello, Ada\n",
@@ -35,7 +35,7 @@
       "stderr": ""
     },
     {
-      "source": "12_input_int/example.cpp",
+      "source": "05_input_text/input_int_example.cpp",
       "name": "default",
       "stdin": "17\n",
       "stdout": "18\n",
@@ -43,7 +43,7 @@
       "stderr": ""
     },
     {
-      "source": "13_input_real/example.cpp",
+      "source": "05_input_text/input_real_example.cpp",
       "name": "default",
       "stdin": "1.25\n2.5\n",
       "stdout": "3.75\n",

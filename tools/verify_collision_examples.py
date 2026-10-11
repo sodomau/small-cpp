@@ -2,8 +2,7 @@
 from pathlib import Path
 root=Path(__file__).resolve().parents[1]
 files=[root/"examples/programs/pong.cpp",
-       *sorted((root/"tutorial/52_game_1").glob("*.cpp")),
-       *sorted((root/"tutorial/53_game_2").glob("*.cpp"))]
+       *sorted((root/"tutorial/17_game_1").glob("*.cpp"))]
 assert len(files) == 7, "Both current game lessons must supply example/starter/solution"
 bad=["if (ballY < 10 || ballY > 490)",
      "if (ballX > 790)\\n            ballVX",

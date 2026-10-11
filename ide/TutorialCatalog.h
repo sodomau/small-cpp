@@ -4,6 +4,7 @@
 #include <QStringList>
 #include <QVector>
 #include <QPair>
+#include <QHash>
 
 struct TutorialBlock
 {
@@ -65,5 +66,6 @@ private:
     QVector<TutorialLesson> lessons_;
     QString error_;
     QString language_;
+    QHash<QString, QString> aliases_;
     void load();
 };

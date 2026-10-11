@@ -81,8 +81,8 @@ private slots:
         TutorialCatalog catalog;
         QVERIFY2(catalog.isValid(), qPrintable(catalog.errorString()));
         QCOMPARE(catalog.parts().size(), 10);
-        QCOMPARE(catalog.lessons().size(), 103);
-        QCOMPARE(catalog.availableIds().size(), 103);
+        QCOMPARE(catalog.lessons().size(), 42);
+        QCOMPARE(catalog.availableIds().size(), 42);
         QVERIFY(catalog.find("text_files_1"));
         QVERIFY(catalog.find("binary_files_2"));
         QVERIFY(catalog.find("publish"));
@@ -228,7 +228,7 @@ private slots:
         QVERIFY(browser->selectLesson("hello"));
         bool hasEnglishTitle = false;
         for (auto* label : browser->findChildren<QLabel*>())
-            hasEnglishTitle |= label->text().contains("Showing text on the screen");
+            hasEnglishTitle |= label->text().contains("Print to the Screen");
         QVERIFY(hasEnglishTitle);
         TutorialCatalog korean("ko");
         QString sharedCode;
@@ -276,12 +276,12 @@ private slots:
                 browser.setAppearance(QFont("Consolas", 14), colors, dark);
                 const auto snippets = browser.findChildren<CodeEditor*>("tutorialSnippet");
                 const auto copies = browser.findChildren<QPushButton*>("copyTutorialSnippet");
-                QCOMPARE(snippets.size(), 3); QCOMPARE(copies.size(), 3);
+                QCOMPARE(snippets.size(), 5); QCOMPARE(copies.size(), 5);
                 QSignalSpy tried(&browser, &TutorialBrowser::tryRequested);
                 const QString sample = QFINDTESTDATA("../examples/projects/Greeting");
                 const QStringList names{"greeting.h", "greeting.cpp", "main.cpp"};
-                for (int i = 0; i < snippets.size(); ++i) {
-                    QFile file(QDir(sample).filePath(names[i])); QVERIFY(file.open(QIODevice::ReadOnly));
+                for (int i = 2; i < snippets.size(); ++i) {
+                    QFile file(QDir(sample).filePath(names[i - 2])); QVERIFY(file.open(QIODevice::ReadOnly));
                     QCOMPARE(snippets[i]->toPlainText(), QString::fromUtf8(file.readAll()).trimmed());
                     QVERIFY(snippets[i]->isReadOnly());
                     QCOMPARE(snippets[i]->font().pointSize(), 14);
@@ -305,7 +305,7 @@ private slots:
                 }
             }
             QVERIFY(browser.selectLesson("split_files"));
-            QCOMPARE(browser.findChildren<CodeEditor*>("tutorialSnippet").size(), 2);
+            QCOMPARE(browser.findChildren<CodeEditor*>("tutorialSnippet").size(), 5);
             QVERIFY(browser.selectLesson("project_roles"));
             QCOMPARE(browser.findChildren<CodeEditor*>("tutorialSnippet").size(), 3);
         }
@@ -468,7 +468,7 @@ private slots:
         QVERIFY(browser.selectLesson("hello"));
         button(browser, "tutorialNext")->click();
         QVERIFY(browser.isRead("hello"));
-        QCOMPARE(browser.selectedId(), QString("lines"));
+        QCOMPARE(browser.selectedId(), QString("calculate"));
         QVERIFY(!browser.isRead("variables"));
         button(browser, "tutorialPrevious")->click();
         QCOMPARE(browser.selectedId(), QString("hello"));
@@ -485,7 +485,7 @@ private slots:
         }
         TutorialBrowser second(catalog);
         QVERIFY(second.isRead("hello"));
-        QCOMPARE(second.selectedId(), QString("lines"));
+        QCOMPARE(second.selectedId(), QString("calculate"));
         QVERIFY(!second.isRead("variables"));
     }
 
@@ -505,14 +505,49 @@ private slots:
     void unknownStoredIdsAreIgnored()
     {
         auto settings = SmallSettings();
-        settings.setValue("tutorial/curriculumV2/lastLesson", "missing");
-        settings.setValue("tutorial/curriculumV2/readLessons", QStringList{"missing", "hello", "binary_files_1"});
+        settings.setValue("tutorial/curriculumV3/lastLesson", "missing");
+        settings.setValue("tutorial/curriculumV3/readLessons", QStringList{"missing", "hello", "binary_files_1"});
         TutorialCatalog catalog;
         TutorialBrowser browser(catalog);
         QCOMPARE(browser.selectedId(), QString("hello"));
         QVERIFY(browser.isRead("hello"));
         QVERIFY(!browser.isRead("missing"));
         QVERIFY(browser.isRead("binary_files_1"));
+    }
+
+    void previousProgressMigratesByWholeTopic()
+    {
+        auto settings = SmallSettings();
+        settings.setValue("tutorial/curriculumV2/readLessons", QStringList{"hello", "lines", "escape", "variables"});
+        settings.setValue("tutorial/curriculumV2/lastLesson", "input_int");
+        TutorialCatalog catalog;
+        TutorialBrowser browser(catalog);
+        QCOMPARE(browser.selectedId(), QString("input_text"));
+        QVERIFY(browser.isRead("hello"));
+        QVERIFY(!browser.isRead("variables"));
+        QCOMPARE(catalog.find("lines")->id, QString("hello"));
+        QCOMPARE(catalog.find("extension_image_pixels")->id, QString("extension_image_create"));
+    }
+
+    void additionalExercisesAreOptionalAndCollapsed()
+    {
+        TutorialCatalog catalog;
+        TutorialBrowser browser(catalog);
+        QVERIFY(browser.selectLesson("hello"));
+        auto* extra = browser.findChild<QWidget*>("tutorialExtraExercises");
+        QVERIFY(extra && extra->isHidden());
+        button(browser, "tutorialMoreExercises")->click();
+        QVERIFY(!extra->isHidden());
+        button(browser, "tutorialMoreExercises")->click();
+        QVERIFY(extra->isHidden());
+        QVERIFY(!browser.findChild<QLabel*>("tutorialTitle")->text().startsWith("1."));
+        const QString preview = qEnvironmentVariable("SMALL_TUTORIAL_TOPICS_PREVIEW");
+        if (!preview.isEmpty()) {
+            browser.resize(1120, 820);
+            browser.show();
+            QTest::qWait(50);
+            QVERIFY(browser.grab().save(preview));
+        }
     }
 
     void fontAndThemeReachVisibleAndHiddenCodeWithoutResettingHint()

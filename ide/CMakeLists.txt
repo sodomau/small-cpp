@@ -81,10 +81,12 @@ add_custom_target(small_sdk ALL
     COMMAND "${CMAKE_COMMAND}" -E copy_directory
             "${SMALL_ROOT}/extensions/image/examples"
             "${SMALL_BIN}/extensions/image/examples"
+    COMMAND "${CMAKE_COMMAND}" -E rm -rf "${SMALL_BIN}/extensions/image/tutorial"
     COMMAND "${CMAKE_COMMAND}" -E copy_directory
             "${SMALL_ROOT}/extensions/image/tutorial"
             "${SMALL_BIN}/extensions/image/tutorial"
     DEPENDS small_runtime small_entry small_ide_pause small_image
+    COMMAND "${CMAKE_COMMAND}" -E rm -rf "${SMALL_BIN}/tutorial"
     COMMAND "${CMAKE_COMMAND}" -E copy_directory
             "${SMALL_ROOT}/tutorial" "${SMALL_BIN}/tutorial"
     COMMENT "Preparing the precompiled Small C++ runtime and tutorial content"

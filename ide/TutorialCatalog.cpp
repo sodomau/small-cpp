@@ -222,7 +222,8 @@ QVector<QPair<QString, QString>> TutorialCatalog::languages()
 
 const TutorialLesson* TutorialCatalog::find(const QString& id) const
 {
-    for (const auto& lesson : lessons_) if (lesson.id == id) return &lesson;
+    const QString canonical = aliases_.value(id, id);
+    for (const auto& lesson : lessons_) if (lesson.id == canonical) return &lesson;
     return nullptr;
 }
 
@@ -244,6 +245,12 @@ void TutorialCatalog::load()
 
         QDir root(TutorialRoot());
         Require(root.exists(), "Tutorial folder is missing: " + root.path());
+        QFile aliases(root.filePath("aliases.json"));
+        if (aliases.open(QIODevice::ReadOnly)) {
+            const auto object = QJsonDocument::fromJson(aliases.readAll()).object();
+            for (auto it = object.begin(); it != object.end(); ++it)
+                aliases_.insert(it.key(), it.value().toString());
+        }
 
         const QStringList folders = root.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name);
         for (const QString& folder : folders)

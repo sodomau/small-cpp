@@ -19,6 +19,9 @@
 #include <QScrollArea>
 #include <QScrollBar>
 #include <QSettings>
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include "SmallSettings.h"
 #include <QSizePolicy>
 #include <QSplitter>
@@ -31,8 +34,8 @@
 
 namespace
 {
-const char* ReadKey = "tutorial/curriculumV2/readLessons";
-const char* LastKey = "tutorial/curriculumV2/lastLesson";
+const char* ReadKey = "tutorial/curriculumV3/readLessons";
+const char* LastKey = "tutorial/curriculumV3/lastLesson";
 
 class LessonScreenshot final : public QLabel
 {
@@ -106,8 +109,7 @@ TutorialBrowser::TutorialBrowser(const TutorialCatalog& catalog, QWidget* parent
     auto* layout = new QVBoxLayout(this);
     layout->setContentsMargins(16, 16, 16, 12);
     layout->setSpacing(12);
-    auto* introduction = new QLabel(QString("%1 lessons are available. Start with any lesson you like.")
-        .arg(catalog_.availableIds().size()), this);
+    auto* introduction = new QLabel("Choose a topic. Try it at your own pace, and explore more when you are ready.", this);
     introduction->setObjectName("tutorialIntro");
     introduction->setWordWrap(true);
     layout->addWidget(introduction);
@@ -151,7 +153,22 @@ TutorialBrowser::TutorialBrowser(const TutorialCatalog& catalog, QWidget* parent
     connect(next_, &QPushButton::clicked, this, &TutorialBrowser::nextLesson);
     connect(closeButton, &QPushButton::clicked, this, &QDialog::reject);
 
-    const QStringList stored = SmallSettings().value(ReadKey).toStringList();
+    auto settings = SmallSettings();
+    if (!settings.contains(ReadKey)) {
+        const auto previous = settings.value("tutorial/curriculumV2/readLessons").toStringList();
+        QFile aliases(QDir(QCoreApplication::applicationDirPath()).filePath("tutorial/aliases.json"));
+        QStringList migrated;
+        if (aliases.open(QIODevice::ReadOnly)) {
+            const auto object = QJsonDocument::fromJson(aliases.readAll()).object();
+            QMap<QString, QStringList> groups;
+            for (auto it = object.begin(); it != object.end(); ++it) groups[it.value().toString()] << it.key();
+            for (auto it = groups.begin(); it != groups.end(); ++it)
+                if (std::all_of(it.value().begin(), it.value().end(), [&](const QString& id) { return previous.contains(id); })) migrated << it.key();
+        }
+        settings.setValue(ReadKey, migrated);
+        if (!settings.contains(LastKey)) settings.setValue(LastKey, settings.value("tutorial/curriculumV2/lastLesson"));
+    }
+    const QStringList stored = settings.value(ReadKey).toStringList();
     for (const QString& id : stored)
         if (const auto* lesson = catalog_.find(id); lesson && lesson->available)
             readLessons_.insert(id);
@@ -203,9 +220,10 @@ QString TutorialBrowser::selectedId() const
 
 bool TutorialBrowser::selectLesson(const QString& id)
 {
-    if (!catalog_.find(id)) return false;
+    const auto* lesson = catalog_.find(id);
+    if (!lesson) return false;
     for (QTreeWidgetItemIterator it(tree_); *it; ++it)
-        if ((*it)->data(0, Qt::UserRole).toString() == id)
+        if ((*it)->data(0, Qt::UserRole).toString() == lesson->id)
         {
             if ((*it)->parent()) (*it)->parent()->setExpanded(true);
             tree_->setCurrentItem(*it);
@@ -344,7 +362,7 @@ void TutorialBrowser::showSelection()
     }
     else
     {
-        title->setText(QString("%1. %2").arg(lesson->number).arg(lesson->title));
+        title->setText(lesson->title);
         if (lesson->available) showLesson(*lesson, page, layout);
         else
         {
@@ -401,6 +419,20 @@ void TutorialBrowser::showLesson(const TutorialLesson& lesson, QWidget* page, QV
 
 void TutorialBrowser::showExercises(const TutorialLesson& lesson, QWidget* page, QVBoxLayout* layout)
 {
+    if (lesson.exercises.size() > 1) {
+        // Additional practice stays available without making the topic look mandatory.
+        auto* more = Button("Try More (Optional)", "tutorialMoreExercises", page);
+        more->setCheckable(true);
+        auto* extra = new QWidget(page);
+        extra->setObjectName("tutorialExtraExercises");
+        extra->hide();
+        auto* extraLayout = new QVBoxLayout(extra);
+        extraLayout->setContentsMargins(0, 0, 0, 0);
+        connect(more, &QPushButton::toggled, extra, &QWidget::setVisible);
+        // First exercise is inserted before this disclosure below.
+        layout->addWidget(more);
+        layout->addWidget(extra);
+    }
     for (int index = 0; index < lesson.exercises.size(); ++index)
     {
         const auto& exercise = lesson.exercises[index];
@@ -453,7 +485,12 @@ void TutorialBrowser::showExercises(const TutorialLesson& lesson, QWidget* page,
             solution->setVisible(visible);
             solutionButton->setText(visible ? "Hide Solution" : "Show Solution");
         });
-        layout->addWidget(group);
+        if (index == 0 && lesson.exercises.size() > 1)
+            layout->insertWidget(layout->indexOf(page->findChild<QPushButton*>("tutorialMoreExercises")), group);
+        else if (index > 0)
+            page->findChild<QWidget*>("tutorialExtraExercises")->layout()->addWidget(group);
+        else
+            layout->addWidget(group);
     }
 }
 
@@ -464,7 +501,7 @@ void TutorialBrowser::updateReadLabels()
         const QString id = (*it)->data(0, Qt::UserRole).toString();
         const auto* lesson = catalog_.find(id);
         if (!lesson) continue;
-        QString label = QString("%1. %2").arg(lesson->number).arg(lesson->title);
+        QString label = lesson->title;
         if (readLessons_.contains(id)) label.prepend("✓ ");
         if (!lesson->available) label += " (not available yet)";
         (*it)->setText(0, label);
