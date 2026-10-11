@@ -6,6 +6,7 @@ class QTreeWidget;
 class QLineEdit;
 class QPushButton;
 class QLabel;
+class QProgressBar;
 class LibrariesDialog : public QDialog
 {
 public:
@@ -20,6 +21,7 @@ private:
     QLineEdit* search_;
     QPushButton* update_;
     QLabel* hint_;
+    QProgressBar* progress_;
     QProcess process_;
     QByteArray bytes_;
     int step_ = 0;

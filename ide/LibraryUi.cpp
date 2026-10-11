@@ -6,6 +6,7 @@
 #include "LibraryResolver.h"
 #include "FileBuildOptions.h"
 #include <QDialog>
+#include <QDialogButtonBox>
 #include <QDir>
 #include <QFileInfo>
 #include <QInputDialog>
@@ -31,6 +32,9 @@ void MainWindow::configureLibraries()
             if (!libraryConsole_) {
                 auto* dialog = new QDialog(this); dialog->setWindowTitle("Library Console"); dialog->resize(800, 440);
                 auto* layout = new QVBoxLayout(dialog); auto* console = new QPlainTextEdit; console->setReadOnly(true); console->setObjectName("libraryConsole"); layout->addWidget(console);
+                auto* buttons = new QDialogButtonBox(QDialogButtonBox::Close);
+                layout->addWidget(buttons);
+                connect(buttons, &QDialogButtonBox::rejected, dialog, &QDialog::close);
                 dialog->setAttribute(Qt::WA_DeleteOnClose); libraryConsole_ = console; dialog->show();
             }
             libraryConsole_->moveCursor(QTextCursor::End); libraryConsole_->insertPlainText(text);

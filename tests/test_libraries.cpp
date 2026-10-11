@@ -88,6 +88,30 @@ private slots:
         QTRY_VERIFY_WITH_TIMEOUT(!failed.isEmpty(), 10000);
         QVERIFY(!build.isBusy());
     }
+    void dialogSorting()
+    {
+        LibrariesDialog dialog({"fmt"});
+        auto* list = dialog.findChild<QTreeWidget*>("libraryList");
+        list->sortItems(0, Qt::DescendingOrder);
+        QCOMPARE(list->topLevelItem(0)->text(1), QString("fmt"));
+        list->sortItems(0, Qt::AscendingOrder);
+        QCOMPARE(list->topLevelItem(list->topLevelItemCount() - 1)->text(1), QString("fmt"));
+        for (int column = 1; column < 4; ++column) {
+            for (auto order : {Qt::AscendingOrder, Qt::DescendingOrder}) {
+                list->sortItems(column, order);
+                for (int i = 1; i < list->topLevelItemCount(); ++i) {
+                    const auto previous = list->topLevelItem(i - 1)->text(column);
+                    const auto current = list->topLevelItem(i)->text(column);
+                    const int comparison = QString::localeAwareCompare(previous, current);
+                    QVERIFY(order == Qt::AscendingOrder ? comparison <= 0 : comparison >= 0);
+                }
+            }
+        }
+        list->sortItems(0, Qt::DescendingOrder);
+        dialog.findChild<QLineEdit*>("librarySearch")->setText("fmt");
+        QCOMPARE(list->topLevelItem(0)->text(1), QString("fmt"));
+        QCOMPARE(dialog.libraries(), QStringList{"fmt"});
+    }
     void mainWindowEditsMetadataWithUndo()
     {
         MainWindow window;
