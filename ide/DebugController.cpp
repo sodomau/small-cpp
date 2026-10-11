@@ -12,8 +12,11 @@
 #include <QSaveFile>
 #include <QTimer>
 
-DebugController::DebugController(QObject* p):QObject(p)
+DebugController::DebugController(QObject* p):QObject(p), libraries_(this)
 {
+    connect(&libraries_, &LibraryResolver::failed, this, [this](const QString& error) { setStage(Stage::Idle); emit buildError(error, sourceSnapshot_, sourcePath_); });
+    connect(&libraries_, &LibraryResolver::cancelled, this, [this] { if (stage_ == Stage::Stopping) { setStage(Stage::Idle); emit finished(); } });
+    connect(&libraries_, &LibraryResolver::ready, this, [this](const QStringList& cflags, const QStringList& libs) { if (!isBusy() || stage_ == Stage::Stopping) return; libraryCflags_ = cflags; libraryLinkFlags_ = libs; compile(); });
     projectBuild_ = new BuildController(this);
     connect(projectBuild_, &BuildController::phaseChanged, this, &DebugController::phaseChanged);
     connect(projectBuild_, &BuildController::buildError, this, [this](const QString& raw, const QString& source, const QString& file) {
@@ -54,8 +57,8 @@ QString DebugController::gdbPath() const { QString p=QDir(QFileInfo(compiler()).
 void DebugController::configureEnvironment(QProcess& process)
 {
     auto env = Toolchain::environment();
-    if (projectActive_)
-        env.insert("PATH", project_.libraryPaths.join(QDir::listSeparator()) + QDir::listSeparator() + env.value("PATH"));
+    const auto paths = projectActive_ ? project_.libraryPaths : fileOptions_.libraryPaths;
+    if (!paths.isEmpty()) env.insert("PATH", paths.join(QDir::listSeparator()) + QDir::listSeparator() + env.value("PATH"));
     process.setProcessEnvironment(env);
 }
 
@@ -65,9 +68,9 @@ void DebugController::start(const QString&s,const QString&orig,const QString&nam
 #else
 "program"
 #endif
-);originalDirectory_=orig.isEmpty()?directory_->path():QFileInfo(orig).absolutePath();QSaveFile f(sourcePath_);auto bytes=s.toUtf8();if(!f.open(QIODevice::WriteOnly)||f.write(bytes)!=bytes.size()||!f.commit()){emit buildError("Cannot write temporary debug source.",s,sourcePath_);return;}compile();}
-void DebugController::compile(){setStage(Stage::Compiling);emit phaseChanged("Compiling for debugging...");buildOutput_.clear();QStringList a={"-std=c++20","-O0","-g","-fno-omit-frame-pointer","-fdiagnostics-color=never","-I",sdkDirectory_,"-iquote",originalDirectory_,"-c",sourcePath_,"-o",objectPath_};if(!usesOwnMain_){a.prepend(QDir(sdkDirectory_).filePath("small.h"));a.prepend("-include");a.prepend("-DSMALL_BEGINNER_MODE");}for(auto&e:extensions_)a<<"-I"<<e.includeDirectory;configureEnvironment(build_);build_.setWorkingDirectory(directory_->path());build_.start(compiler(),a);}
-void DebugController::link(){setStage(Stage::Linking);emit phaseChanged("Linking debugger program...");buildOutput_.clear();QStringList a={objectPath_};if(!usesOwnMain_)a<<entryPath_;a<<idePausePath_;for(auto&e:extensions_)a<<e.libraryPath;a<<runtimePath_;QString portableQtLib=QDir(QCoreApplication::applicationDirPath()).filePath("qt/lib");for(const char*l:SmallBuildConfig::QtLibraries){QString recorded=QString::fromUtf8(l);QString bundled=QDir(portableQtLib).filePath(QFileInfo(recorded).fileName());a<<(QFileInfo::exists(bundled)?bundled:recorded);}a<<"-o"<<executablePath_;build_.start(compiler(),a);}
+);originalDirectory_=orig.isEmpty()?directory_->path():QFileInfo(orig).absolutePath();QSaveFile f(sourcePath_);auto bytes=s.toUtf8();if(!f.open(QIODevice::WriteOnly)||f.write(bytes)!=bytes.size()||!f.commit()){emit buildError("Cannot write temporary debug source.",s,sourcePath_);return;}QString error;if(!FileBuildOptions::parse(s,originalDirectory_,&fileOptions_,&error)){emit buildError(error,s,sourcePath_);return;}libraryCflags_.clear();libraryLinkFlags_.clear();setStage(Stage::Compiling);libraries_.resolve(fileOptions_.libraries);}
+void DebugController::compile(){setStage(Stage::Compiling);emit phaseChanged("Compiling for debugging...");buildOutput_.clear();QStringList a={"-std=c++20","-O0","-g","-fno-omit-frame-pointer","-fdiagnostics-color=never","-I",sdkDirectory_,"-iquote",originalDirectory_,"-c",sourcePath_,"-o",objectPath_};if(!usesOwnMain_){a.prepend(QDir(sdkDirectory_).filePath("small.h"));a.prepend("-include");a.prepend("-DSMALL_BEGINNER_MODE");}for(auto&e:extensions_)a<<"-I"<<e.includeDirectory;a<<libraryCflags_;for(const auto&path:fileOptions_.includePaths)a<<"-I"<<path;a<<fileOptions_.compilerOptions;configureEnvironment(build_);build_.setWorkingDirectory(directory_->path());build_.start(compiler(),a);}
+void DebugController::link(){setStage(Stage::Linking);emit phaseChanged("Linking debugger program...");buildOutput_.clear();QStringList a={objectPath_};if(!usesOwnMain_)a<<entryPath_;a<<idePausePath_;for(auto&e:extensions_)a<<e.libraryPath;a<<runtimePath_;a<<libraryLinkFlags_;for(const auto&path:fileOptions_.libraryPaths)a<<"-L"<<path;a<<fileOptions_.linkerOptions;QString portableQtLib=QDir(QCoreApplication::applicationDirPath()).filePath("qt/lib");for(const char*l:SmallBuildConfig::QtLibraries){QString recorded=QString::fromUtf8(l);QString bundled=QDir(portableQtLib).filePath(QFileInfo(recorded).fileName());a<<(QFileInfo::exists(bundled)?bundled:recorded);}a<<"-o"<<executablePath_;build_.start(compiler(),a);}
 void DebugController::startGdb()
 {
     if(!QFileInfo::exists(gdbPath())){
@@ -277,4 +280,4 @@ void DebugController::continueRun(){if(isStopped()){setStage(Stage::Running);sen
 void DebugController::stepOver(){if(isStopped()){setStage(Stage::Running);sendMi("-exec-next",Pending::Next);}}
 void DebugController::stepInto(){if(isStopped()){setStage(Stage::Running);sendMi("-exec-step",Pending::FilterStep);}}
 void DebugController::stepOut(){if(isStopped()){setStage(Stage::Running);sendMi("-exec-finish",Pending::Finish);}}
-void DebugController::stop(){if(!isBusy())return;setStage(Stage::Stopping);if(projectBuild_->isBusy()){projectBuild_->stop();return;}if(build_.state()!=QProcess::NotRunning)build_.kill();if(gdb_.state()!=QProcess::NotRunning){gdb_.write("-gdb-exit\n");QTimer::singleShot(300,&gdb_,[this]{if(gdb_.state()!=QProcess::NotRunning)gdb_.kill();});}else{setStage(Stage::Idle);emit finished();}}
+void DebugController::stop(){libraries_.cancel();if(!isBusy())return;setStage(Stage::Stopping);if(libraries_.isRunning())return;if(projectBuild_->isBusy()){projectBuild_->stop();return;}if(build_.state()!=QProcess::NotRunning)build_.kill();if(gdb_.state()!=QProcess::NotRunning){gdb_.write("-gdb-exit\n");QTimer::singleShot(300,&gdb_,[this]{if(gdb_.state()!=QProcess::NotRunning)gdb_.kill();});}else{setStage(Stage::Idle);emit finished();}}

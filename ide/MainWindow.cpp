@@ -156,6 +156,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
         "#tryExampleButton { font-size: 11pt; font-weight: bold; padding: 5px 14px; }"
     );
     createUi();
+    configureLibraries();
     loadAppearance();
     showWelcome();
     resize(1000, 750);
@@ -256,6 +257,9 @@ void MainWindow::createUi()
     auto* settingsMenu = menuBar()->addMenu("&Settings");
     auto* toolsMenu = menuBar()->addMenu("&Tools");
     toolsMenu->setObjectName("menuTools");
+    auto* librariesAction = toolsMenu->addAction("Libraries...");
+    librariesAction->setObjectName("actionLibraries");
+    connect(librariesAction, &QAction::triggered, this, &MainWindow::editLibraries);
     auto* terminalAction = toolsMenu->addAction("MSYS2 Terminal");
     terminalAction->setObjectName("actionMsys2Terminal");
     terminalAction->setEnabled(QFileInfo(Toolchain::terminal()).isFile());

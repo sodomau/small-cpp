@@ -124,8 +124,13 @@ set(SMALL_IDE_SOURCES
     TutorialCatalog.h TutorialCatalog.cpp
     TutorialBrowser.h TutorialBrowser.cpp
     
+    FileBuildOptions.h FileBuildOptions.cpp
+    LibraryResolver.h LibraryResolver.cpp Libraries.qrc
+    LibrariesDialog.h LibrariesDialog.cpp
+    LibraryUi.cpp
     Toolchain.h
     BuildController.h BuildController.cpp
+    PeDependencies.h PeDependencies.cpp
     ProgramPackage.h ProgramPackage.cpp
     ProjectFolder.h ProjectFolder.cpp
     ProjectBuild.cpp
@@ -218,6 +223,12 @@ if(SMALL_BUILD_TESTS)
     add_test(NAME small_standard_main COMMAND small_standard_main_test)
 
     qt_add_executable(small_qt_test "${SMALL_ROOT}/tests/test_qt.cpp")
+    qt_add_executable(small_libraries_test "${SMALL_ROOT}/tests/test_libraries.cpp")
+    target_link_libraries(small_libraries_test PRIVATE small_ide_components Qt6::Test Qt6::Widgets)
+    set_target_properties(small_libraries_test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${SMALL_BIN}")
+    add_dependencies(small_libraries_test small_sdk)
+    add_test(NAME small_libraries COMMAND small_libraries_test)
+    set_tests_properties(small_libraries PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;SMALL_TEST_NO_CONSOLE_PAUSE=1" TIMEOUT 300)
     qt_add_executable(small_project_test "${SMALL_ROOT}/tests/test_project.cpp")
     target_link_libraries(small_project_test PRIVATE small_ide_components Qt6::Test Qt6::Widgets)
     set_target_properties(small_project_test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${SMALL_BIN}")

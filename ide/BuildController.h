@@ -9,13 +9,15 @@
 #include "ProgramPackage.h"
 #include "ProjectFolder.h"
 #include <QMap>
+#include "FileBuildOptions.h"
+#include "LibraryResolver.h"
 
 // Owns compile -> link -> run. No blocking process waits on the GUI thread.
 class BuildController : public QObject
 {
     Q_OBJECT
 public:
-    enum class Stage { Idle, Compiling, Linking, Packaging, Starting, Running, Stopping };
+    enum class Stage { Idle, Resolving, Compiling, Linking, Packaging, Starting, Running, Stopping };
     explicit BuildController(QObject* parent = nullptr);
     ~BuildController() override;
 
@@ -25,6 +27,7 @@ public:
     void start(const QString& source, const QString& originalFilePath,
                const QString& unsavedName = "Untitled.cpp");
     void stop();
+    LibraryResolver* libraryResolver() { return &libraries_; }
     void publish(const QString& source, const QString& originalFilePath,
                  const QString& destination, const QStringList& resources = {},
                  const QString& unsavedName = "Program.cpp");
@@ -47,6 +50,10 @@ signals:
     void projectBuilt(const QString& executable);
 
 private:
+    LibraryResolver libraries_;
+    FileBuildOptions fileOptions_;
+    QStringList libraryCflags_, libraryLinkFlags_;
+    void resolveLibraries(const QStringList& modules);
     QProcess build_;
     QProcess program_;
     Stage stage_ = Stage::Idle;

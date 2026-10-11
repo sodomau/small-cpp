@@ -8,6 +8,8 @@
 #include "ExtensionRegistry.h"
 #include "ProjectFolder.h"
 #include <QMap>
+#include "FileBuildOptions.h"
+#include "LibraryResolver.h"
 class BuildController;
 
 struct DebugVariable { QString name, value; };
@@ -41,6 +43,9 @@ signals:
     void variablesChanged(const QList<DebugVariable>& locals, const QList<DebugVariable>& globals);
     void finished();
 private:
+    LibraryResolver libraries_;
+    FileBuildOptions fileOptions_;
+    QStringList libraryCflags_, libraryLinkFlags_;
     QProcess build_, gdb_;
     Stage stage_=Stage::Idle;
     std::unique_ptr<QTemporaryDir> directory_;

@@ -97,6 +97,9 @@ private:
     bool refreshingProject_ = false;
     bool projectRun_ = false;
     QMap<QString, QSet<int>> projectDebugBreakpoints_;
+    QPointer<QPlainTextEdit> libraryConsole_;
+    void configureLibraries();
+    void editLibraries();
     void createProjectUi();
     void refreshProject();
     void openProjectDialog();
