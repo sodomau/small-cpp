@@ -99,6 +99,7 @@ New-Item -ItemType Directory -Path $OutputDir | Out-Null
 # Copy only Small-owned build artifacts.
 Copy-Item $exe (Join-Path $OutputDir "SmallCppIDE.exe") -Force
 Copy-Item $runtime (Join-Path $OutputDir "runtime") -Recurse -Force
+Copy-Item (Join-Path $repoRoot "ide/msys2_pkgconfig_map.json") (Join-Path $OutputDir "msys2_pkgconfig_map.json")
 Copy-Item $extensions (Join-Path $OutputDir "extensions") -Recurse -Force
 Copy-Item $tutorial (Join-Path $OutputDir "tutorial") -Recurse -Force
 

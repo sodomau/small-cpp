@@ -8,7 +8,8 @@ import shutil
 
 
 MINIMAL_PACKAGES = ('base', 'msys2-runtime',
-                    'mingw-w64-ucrt-x86_64-gcc', 'mingw-w64-ucrt-x86_64-gdb')
+                    'mingw-w64-ucrt-x86_64-gcc', 'mingw-w64-ucrt-x86_64-gdb',
+                    'mingw-w64-ucrt-x86_64-pkgconf')
 RUNTIME_DIRECTORIES = ('home', 'tmp', 'dev', 'dev/shm', 'dev/mqueue',
                        'var/cache/pacman/pkg', 'var/cache/man',
                        'var/log', 'var/log/old', 'var/tmp')
