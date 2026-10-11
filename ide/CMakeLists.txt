@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(SmallCppIDE VERSION 0.76.16 LANGUAGES CXX)
+project(SmallCppIDE VERSION 0.76.17 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -81,10 +81,12 @@ add_custom_target(small_sdk ALL
     COMMAND "${CMAKE_COMMAND}" -E copy_directory
             "${SMALL_ROOT}/extensions/image/examples"
             "${SMALL_BIN}/extensions/image/examples"
+    COMMAND "${CMAKE_COMMAND}" -E rm -rf "${SMALL_BIN}/extensions/image/tutorial"
     COMMAND "${CMAKE_COMMAND}" -E copy_directory
             "${SMALL_ROOT}/extensions/image/tutorial"
             "${SMALL_BIN}/extensions/image/tutorial"
     DEPENDS small_runtime small_entry small_ide_pause small_image
+    COMMAND "${CMAKE_COMMAND}" -E rm -rf "${SMALL_BIN}/tutorial"
     COMMAND "${CMAKE_COMMAND}" -E copy_directory
             "${SMALL_ROOT}/tutorial" "${SMALL_BIN}/tutorial"
     COMMENT "Preparing the precompiled Small C++ runtime and tutorial content"
@@ -124,8 +126,13 @@ set(SMALL_IDE_SOURCES
     TutorialCatalog.h TutorialCatalog.cpp
     TutorialBrowser.h TutorialBrowser.cpp
     
+    FileBuildOptions.h FileBuildOptions.cpp
+    LibraryResolver.h LibraryResolver.cpp Libraries.qrc
+    LibrariesDialog.h LibrariesDialog.cpp
+    LibraryUi.cpp
     Toolchain.h
     BuildController.h BuildController.cpp
+    PeDependencies.h PeDependencies.cpp
     ProgramPackage.h ProgramPackage.cpp
     ProjectFolder.h ProjectFolder.cpp
     ProjectBuild.cpp
@@ -218,6 +225,12 @@ if(SMALL_BUILD_TESTS)
     add_test(NAME small_standard_main COMMAND small_standard_main_test)
 
     qt_add_executable(small_qt_test "${SMALL_ROOT}/tests/test_qt.cpp")
+    qt_add_executable(small_libraries_test "${SMALL_ROOT}/tests/test_libraries.cpp")
+    target_link_libraries(small_libraries_test PRIVATE small_ide_components Qt6::Test Qt6::Widgets)
+    set_target_properties(small_libraries_test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${SMALL_BIN}")
+    add_dependencies(small_libraries_test small_sdk)
+    add_test(NAME small_libraries COMMAND small_libraries_test)
+    set_tests_properties(small_libraries PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen;SMALL_TEST_NO_CONSOLE_PAUSE=1" TIMEOUT 300)
     qt_add_executable(small_project_test "${SMALL_ROOT}/tests/test_project.cpp")
     target_link_libraries(small_project_test PRIVATE small_ide_components Qt6::Test Qt6::Widgets)
     set_target_properties(small_project_test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${SMALL_BIN}")

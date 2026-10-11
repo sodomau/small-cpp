@@ -2,7 +2,7 @@
 from pathlib import Path
 
 root = Path(__file__).resolve().parents[1]
-for sample, lesson in [('Greeting', '94_project_headers'), ('ScoreCard', '95_project_roles')]:
+for sample, lesson in [('Greeting', '37_project_headers'), ('ScoreCard', '36_project_folder')]:
     folder = root / 'examples/projects' / sample
     sources = list(folder.glob('*.cpp'))
     assert len(sources) == 2 and len(list(folder.glob('*.h'))) == 1

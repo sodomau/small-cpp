@@ -11,7 +11,7 @@ def require(condition, message):
 def validate_pack(base, languages, default, example_ids=None, core=True):
     lessons, sources, ids, numbers = [], set(), set(), set()
     for folder in sorted(p for p in Path(base).iterdir() if p.is_dir()):
-        match = re.fullmatch(r'(\d{2})_([a-z][a-z0-9_]*)', folder.name)
+        match = re.fullmatch(r'(\d{2,})_([a-z][a-z0-9_]*)', folder.name)
         require(match is not None, f'Invalid lesson folder: {folder}')
         number, lesson_id = int(match[1]), match[2]
         require(number > 0 and number not in numbers and lesson_id not in ids,

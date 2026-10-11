@@ -80,7 +80,8 @@ void BuildController::startProject(const ProjectFolder& project, bool debugBuild
     if (!QFileInfo::exists(compiler()) || !QFileInfo::exists(runtimePath_) || !QFileInfo::exists(entryPath_) || !QFileInfo::exists(idePausePath_)) {
         fail("The compiler or prebuilt Small runtime is missing. Use a prepared Small C++ installation."); return;
     }
-    // Resolve explicit external libraries once, so Publish can preserve them for relinking.
+    QStringList modules;
+    // Preserve explicit library paths from existing projects; bare names are pkg-config modules.
     for (const auto& library : project_.libraries) {
         QString resolved;
         if (library.contains('/') || library.contains('\\') || library.endsWith(".a") || library.endsWith(".lib"))
@@ -90,6 +91,7 @@ void BuildController::startProject(const ProjectFolder& project, bool debugBuild
                 for (const auto& filename : {"lib" + library + ".a", "lib" + library + ".dll.a", library + ".lib"})
                     if (resolved.isEmpty() && QFileInfo(QDir(directory).filePath(filename)).isFile()) resolved = QDir(directory).filePath(filename);
         }
+        if (resolved.isEmpty() && !library.contains('/') && !library.contains('\\') && !library.endsWith(".a") && !library.endsWith(".lib")) { modules << library; continue; }
         if (resolved.isEmpty() || !QFileInfo(resolved).isFile()) { fail("External library not found: " + library + "\nAdd its folder to library_paths or provide the library file path."); return; }
         projectLibraries_ << resolved;
     }
@@ -105,5 +107,5 @@ void BuildController::startProject(const ProjectFolder& project, bool debugBuild
         projectObjects_ << directory_->filePath(QString("program%1.o").arg(index));
     configureEnvironment(build_);
     build_.setWorkingDirectory(project_.root);
-    compile();
+    resolveLibraries(modules);
 }

@@ -2,6 +2,12 @@
 #include "SmallBuildConfig.h"
 #include "Toolchain.h"
 #include "EntryPoint.h"
+#include "PeDependencies.h"
+#include <QDirIterator>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QUrl>
 
 #include <QCoreApplication>
 #include <QDir>
@@ -20,8 +26,15 @@
 #include <windows.h>
 #endif
 
-BuildController::BuildController(QObject* parent) : QObject(parent)
+BuildController::BuildController(QObject* parent) : QObject(parent), libraries_(this)
 {
+    connect(&libraries_, &LibraryResolver::output, this, &BuildController::textOutput);
+    connect(&libraries_, &LibraryResolver::failed, this, [this](const QString& message) { if (stage_ == Stage::Resolving) fail(message); });
+    connect(&libraries_, &LibraryResolver::cancelled, this, [this] { if (cancelled_) finishStopped(); });
+    connect(&libraries_, &LibraryResolver::ready, this, [this](const QStringList& cflags, const QStringList& libs) {
+        if (stage_ != Stage::Resolving || cancelled_) return;
+        libraryCflags_ = cflags; libraryLinkFlags_ = libs; compile();
+    });
     build_.setProcessChannelMode(QProcess::MergedChannels);
     connect(&build_, &QProcess::readyReadStandardOutput, this, &BuildController::collectBuildOutput);
     connect(&build_, &QProcess::finished, this, &BuildController::onBuildFinished);
@@ -169,7 +182,17 @@ void BuildController::startBuild(const QString& source, const QString& originalF
     }
     configureEnvironment(build_);
     build_.setWorkingDirectory(directory_->path());
-    compile();
+    QString error;
+    if (!FileBuildOptions::parse(source, originalDirectory_, &fileOptions_, &error)) { fail(error); return; }
+    resolveLibraries(fileOptions_.libraries);
+}
+
+void BuildController::resolveLibraries(const QStringList& modules)
+{
+    libraryCflags_.clear(); libraryLinkFlags_.clear();
+    setStage(Stage::Resolving);
+    emit phaseChanged("Checking libraries...");
+    libraries_.resolve(modules);
 }
 
 void BuildController::compile()
@@ -197,6 +220,11 @@ void BuildController::compile()
         if (debugBuild_) args << "-fno-omit-frame-pointer";
     }
 
+    args << libraryCflags_;
+    if (!projectActive_) {
+        for (const auto& path : fileOptions_.includePaths) args << "-I" << path;
+        args << fileOptions_.compilerOptions;
+    }
     // small_main is the beginner-facing path: the IDE supplies the Small
     // header and namespace shortcut. A real main() is ordinary C++ source,
     // so Small must be included and qualified explicitly by the learner.
@@ -251,6 +279,11 @@ void BuildController::link()
         for (const auto& path : project_.libraryPaths) args << "-L" << path;
         args << project_.linkerOptions;
     }
+    args << libraryLinkFlags_;
+    if (!projectActive_) {
+        for (const auto& path : fileOptions_.libraryPaths) args << "-L" << path;
+        args << fileOptions_.linkerOptions;
+    }
     const QString portableQtLib =
         QDir(QCoreApplication::applicationDirPath()).filePath("qt/lib");
     for (const char* library : SmallBuildConfig::QtLibraries)
@@ -272,7 +305,8 @@ void BuildController::launch()
 
     configureEnvironment(program_);
     QProcessEnvironment env = program_.processEnvironment();
-    if (projectActive_) env.insert("PATH", project_.libraryPaths.join(QDir::listSeparator()) + QDir::listSeparator() + env.value("PATH"));
+    const auto paths = projectActive_ ? project_.libraryPaths : fileOptions_.libraryPaths;
+    if (!paths.isEmpty()) env.insert("PATH", paths.join(QDir::listSeparator()) + QDir::listSeparator() + env.value("PATH"));
     env.insert("SMALL_RUNTIME_ERROR_FILE", runtimeErrorPath_);
     program_.setProcessEnvironment(env);
     program_.setWorkingDirectory(originalDirectory_);
@@ -368,8 +402,10 @@ void BuildController::stop()
 {
     if (!isBusy()) return;
     cancelled_ = true;
+    libraries_.cancel();
     setStage(Stage::Stopping);
     emit phaseChanged("Stopping...");
+    if (libraries_.isRunning()) { emit phaseChanged("Finishing library operation before stopping..."); return; }
     if (build_.state() != QProcess::NotRunning) build_.kill();
     if (program_.state() != QProcess::NotRunning) program_.kill();
     if (build_.state() == QProcess::NotRunning && program_.state() == QProcess::NotRunning)
@@ -392,6 +428,41 @@ void BuildController::package()
     if (stage_ != Stage::Packaging) return;
     QString error;
     if (!planPackage(&error)) { fail(error); return; }
+    QStringList search = projectActive_ ? project_.libraryPaths : fileOptions_.libraryPaths;
+    search.prepend(QFileInfo(compiler()).absolutePath());
+    search << QCoreApplication::applicationDirPath() << originalDirectory_;
+    if (!PeDependencies::collect(executablePath_, search, &packageFiles_, &error)) { fail(error); return; }
+    if (!libraryLinkFlags_.isEmpty()) {
+        // Keep installed library notices with the exported program, independent of the IDE's release snapshot.
+        const QString prefix = QDir(QFileInfo(compiler()).absolutePath()).absoluteFilePath("../share/licenses");
+        QDirIterator notices(prefix, QDir::Files, QDirIterator::Subdirectories);
+        while (notices.hasNext()) {
+            const QString path = notices.next();
+            packageFiles_.append({path, "licenses/msys2-installed/" + QDir(prefix).relativeFilePath(path)});
+        }
+    }
+
+    if (!libraryLinkFlags_.isEmpty()) {
+        QJsonArray installed;
+        const QDir database(QDir(QFileInfo(compiler()).absolutePath()).absoluteFilePath("../../var/lib/pacman/local"));
+        for (const auto& folder : database.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+            QFile description(database.filePath(folder + "/desc"));
+            if (!description.open(QIODevice::ReadOnly)) continue;
+            const QString text = QString::fromUtf8(description.readAll());
+            auto field = [&](const QString& key) {
+                const auto match = QRegularExpression("(?:^|\\n)%" + key + "%\\n([^\\n]+)").match(text);
+                return match.captured(1);
+            };
+            const QString name = field("NAME"), version = field("VERSION").section(':', -1), base = field("BASE").isEmpty() ? name : field("BASE");
+            if (!name.startsWith("mingw-w64-ucrt-x86_64-")) continue;
+            installed.append(QJsonObject{{"name", name}, {"version", field("VERSION")}, {"license", field("LICENSE")},
+                {"source", "https://repo.msys2.org/mingw/sources/" + QString::fromLatin1(QUrl::toPercentEncoding(base + "-" + version + ".src.tar.zst"))}});
+        }
+        const QString inventory = directory_->filePath("installed-libraries.json");
+        QSaveFile record(inventory); const auto bytes = QJsonDocument(installed).toJson();
+        if (!record.open(QIODevice::WriteOnly) || record.write(bytes) != bytes.size() || !record.commit()) { fail("Cannot write library source inventory."); return; }
+        packageFiles_.append({inventory, "licenses/installed-libraries.json"});
+    }
     packageFiles_.prepend({executablePath_, publishExecutableName_});
     packageDirectory_ = std::make_unique<QTemporaryDir>(
         QFileInfo(publishDestination_).absolutePath() + "/.SmallCpp-publish-XXXXXX");
@@ -424,6 +495,8 @@ void BuildController::copyPackageFile()
                "The author controls the license of their program.\r\n"
                "LICENSE covers Small-owned components, not the author's program.\r\n"
                "See licenses/ for external licenses and matching source access.\r\n"
+               "Review additional libraries redistribution terms before sharing.\r\n"
+               "Dynamically loaded plugins/data must be added as resources separately.\r\n"
                "Qt DLLs can be replaced by compatible builds.\r\n")) {
         fail("Cannot write the package instructions."); return;
     }

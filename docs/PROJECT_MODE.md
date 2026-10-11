@@ -67,8 +67,8 @@ preserved. Student source files, headers and relinking materials are not exporte
 Share the entire exported folder. See [Publish](PUBLISH.md) for runtime files
 and licenses. Export folders marked by Small C++ are excluded from later builds.
 
-Third-party runtime DLLs must be supplied as project resources, along with any
-required notices. The IDE does not discover their dependencies automatically.
+Publish collects linked DLL dependencies recursively. Dynamically loaded plugins
+and data still need to be supplied as resources. See [Libraries](LIBRARIES.md).
 
 ## Optional settings
 
@@ -90,8 +90,8 @@ This is a JSON file for exclusions and advanced compiler settings:
 
 Remove options you do not need. Paths are relative to the project folder unless
 absolute. Exclusions name exact files or folders, including all descendants;
-they are not wildcard patterns. A library can be a name resolved in
-`library_paths`, or a path to an archive. Prefer relative paths when moving a
+they are not wildcard patterns. A library is normally a pkg-config module name;
+legacy names resolved in `library_paths` and explicit archive paths also work. Prefer relative paths when moving a
 project between computers. Output filenames and compile-only options remain
 controlled by the IDE.
 

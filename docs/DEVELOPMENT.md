@@ -62,7 +62,7 @@ Pass `-Msys2Dir <environment>` to `tools/package_release.ps1` along with the
 matching build and reviewed notices. The packager preserves pacman's databases
 but excludes personal homes, generated keys, temporary files, caches and logs.
 The distributed environment uses the minimal profile: `base`, `msys2-runtime`,
-UCRT64 GCC and GDB, plus their installed dependency closure. Only those packages'
+UCRT64 GCC, GDB and pkgconf, plus their installed dependency closure. Only those packages'
 files and local database entries are copied. Python remains because GDB requires
 it. CMake, Ninja and Qt/KDE development packages are not included in `env/`;
 the IDE's deployed Qt/KDE DLLs, resources and learner Qt import libraries remain
@@ -207,3 +207,12 @@ For all 264 tutorial builds and six representative real-runtime output checks:
 Get-ChildItem -LiteralPath build/local-debug/bin/Debug -Filter '*.dll' | Copy-Item -Destination build/local-debug/bin/Debug/tutorial
 python -X utf8 tools/verify_tutorial.py --build-dir build/local-debug --cmake C:/Qt/Tools/CMake/bin/cmake.exe --report build/local-debug/tutorial-validation.json
 ```
+
+## Library integration checks
+
+See `LIBRARIES.md` for learner settings and catalog maintenance. The
+`small_libraries` test covers metadata parsing, catalog/provider mapping, flag
+quoting and library selection. In an isolated prepared package, set
+`SMALL_TEST_INSTALL_LIBRARY=1` and `SMALL_TEST_NO_CONSOLE_PAUSE=1` to enable the
+real fmt installation, Run/Debug and Publish test. It changes only that package
+environment and verifies the exported program using a Windows-only PATH.

@@ -2,6 +2,7 @@
 from html import escape
 from pathlib import Path
 import re
+import json
 import shutil
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -35,6 +36,7 @@ def inline(text):
 def render_lesson(text, folder, language):
     lines = text.splitlines()
     rendered = []
+    more_open = False
     position = 0
     labels = {'en': {'code': 'Example', 'exercise': 'Exercise starter', 'solution': 'show solution'},
               'ko': {'code': '예제', 'exercise': '연습 문제 코드', 'solution': '풀이 보기'}}[language]
@@ -62,6 +64,9 @@ def render_lesson(text, folder, language):
                 rendered.append(f'<details><summary>{labels[kind]}</summary>{block}</details>')
             else:
                 rendered.append(f'<div class="code-label">{labels[kind]} · {escape(filename)}</div>{block}')
+        elif line in ('## Try More (Optional)', '## 더 해 보기 (선택)'):
+            rendered.append('<details class="extra-practice"><summary>' + inline(line[3:]) + '</summary>')
+            more_open = True
         elif match := re.match(r'^(#{1,6}) (.+)$', line):
             level = max(2, len(match[1]))
             rendered.append(f'<h{level}>{inline(match[2])}</h{level}>')
@@ -89,6 +94,8 @@ def render_lesson(text, folder, language):
             rendered.append('<p>' + inline(' '.join(paragraph)) + '</p>')
             continue
         position += 1
+    if more_open:
+        rendered.append('</details>')
     return '\n'.join(rendered)
 
 
@@ -114,7 +121,7 @@ def build():
     assets.mkdir(exist_ok=True)
     for source in (ROOT / 'ide/assets/smallcpp_128.png', ROOT / 'docs/images/ide-dark.png', ROOT / 'docs/images/ide-light.png'):
         shutil.copy2(source, assets / source.name)
-    lessons = [(folder.name, folder) for folder in sorted((ROOT / 'tutorial').iterdir()) if folder.is_dir()]
+    lessons = [(folder.name, folder) for folder in sorted((ROOT / 'tutorial').iterdir(), key=lambda p: int(p.name.split('_')[0]) if p.is_dir() else 0) if folder.is_dir()]
     core_count = len(lessons)
     lessons += [('image-' + folder.name, folder) for folder in sorted((ROOT / 'extensions/image/tutorial').iterdir()) if folder.is_dir()]
     image_count = len(lessons) - core_count
@@ -172,6 +179,15 @@ def build():
                         f'<span class="lesson-section-count">{first:02}–{last:02} · {count_label}</span></summary>'
                         f'<ol class="lesson-index" start="{first}">' + ''.join(section['items']) + '</ol></details>')
         (destination / 'index.html').write_text(page(title, language, content, f'../{other}/index.html'), encoding='utf-8', newline='\n')
+        for previous, current in json.loads((ROOT / 'tutorial/redirects.json').read_text(encoding='utf-8')).items():
+            if previous == current:
+                continue
+            target = escape(current + '.html', quote=True)
+            (destination / (previous + '.html')).write_text(
+                f'<!doctype html><html lang="{language}"><meta charset="utf-8">'
+                f'<meta http-equiv="refresh" content="0;url={target}"><link rel="canonical" href="{target}">'
+                f'<title>Lesson moved</title><a href="{target}">Open the updated topic</a></html>',
+                encoding='utf-8', newline='\n')
     return OUTPUT
 
 

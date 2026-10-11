@@ -2,7 +2,7 @@
 from pathlib import Path
 import json
 root=Path(__file__).resolve().parents[1]
-lesson=(root/"tutorial/02_lines/ko.md").read_text(encoding="utf-8")
+lesson=(root/"tutorial/01_hello/ko.md").read_text(encoding="utf-8")
 assert "주석" in lesson and "`//`" in lesson
 reference=(root/"examples/reference/comments.cpp").read_text(encoding="utf-8")
 assert "//" in reference and "/*" in reference and "*/" in reference

@@ -45,6 +45,7 @@ class EnvironmentPackagingTests(unittest.TestCase):
                 'base': [], 'msys2-runtime': [],
                 'mingw-w64-ucrt-x86_64-gcc': [],
                 'mingw-w64-ucrt-x86_64-gdb': [],
+                'mingw-w64-ucrt-x86_64-pkgconf': [],
                 'editor': ['ucrt64/bin/editor.dll', 'ucrt64/share/licenses/editor/LICENSE'],
                 'unused': ['ucrt64/bin/unused.dll'],
             }
@@ -99,6 +100,7 @@ class EnvironmentPackagingTests(unittest.TestCase):
                 'bash': (['msys2-runtime'], ['usr/bin/bash.exe', 'usr/bin/pacman.exe']),
                 'mingw-w64-ucrt-x86_64-gcc': (['shared-lib'], ['ucrt64/bin/g++.exe']),
                 'mingw-w64-ucrt-x86_64-gdb': (['shared-lib'], ['ucrt64/bin/gdb.exe']),
+                'mingw-w64-ucrt-x86_64-pkgconf': ([], ['ucrt64/bin/pkg-config.exe']),
                 'shared-lib': ([], ['ucrt64/bin/shared.dll']),
                 'qt-devel': (['shared-lib'], ['ucrt64/bin/Qt6Core.dll', 'ucrt64/include/qt.h']),
             }

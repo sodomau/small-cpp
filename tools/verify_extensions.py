@@ -30,7 +30,7 @@ assert (base/"tutorial/01_create/ko.md").exists()
 examples=json.loads((base/"examples/catalog.json").read_text(encoding="utf-8"))
 tutorial, sources=validate_pack(base/"tutorial", ["ko", "en"], "ko", core=False)
 assert len(examples["examples"]) >= 3
-assert len(tutorial) >= 3
+assert len(tutorial) == 2
 internal=(root/"runtime/small_internal.h").read_text(encoding="utf-8")
 runtime=(root/"runtime/small_runtime.cpp").read_text(encoding="utf-8")
 imagecpp=(base/"src/image.cpp").read_text(encoding="utf-8")
