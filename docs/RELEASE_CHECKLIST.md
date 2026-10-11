@@ -27,7 +27,7 @@
 ## Tutorial
 
 -   [ ] Expected core + extension lessons appear.
--   [ ] All 88 Korean core lessons and three Image extension lessons load.
+-   [ ] All 40 core topics and two Image extension topics in Korean and English load.
 -   [ ] Available language selection and missing-translation fallback work.
 -   [ ] Try This Code, exercises, and solutions work.
 -   [ ] Relative images render.
@@ -36,10 +36,10 @@
 
 ## Runtime
 
--   [ ] `SmallMain()` exits normally.
+-   [ ] `small_main()` exits normally.
 -   [ ] Sound cleanup does not crash.
--   [ ] Manual `main()` examples use InitializeSmall/ShutdownSmall.
--   [ ] IDE Run/Debug console pause works for SmallMain and manual main programs.
+-   [ ] Manual `main()` examples use initialize_small/shutdown_small.
+-   [ ] IDE Run/Debug console pause works for small_main and manual main programs.
 -   [ ] Runtime-only programs terminate without IDE pause support.
 
 These are manual release checks, not completed validation claims. See
