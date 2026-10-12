@@ -100,13 +100,13 @@ def render_lesson(text, folder, language):
 
 
 def page(title, language, content, switch_link):
-    home, lessons, switch = ('Home', 'Lessons', '한국어') if language == 'en' else ('홈', '레슨', 'English')
+    home, features, lessons, switch = ('Home', 'Features', 'Tutorials', '한국어') if language == 'en' else ('홈', '기능 소개', '튜토리얼', 'English')
     return f'''<!doctype html>
 <html lang="{language}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{escape(title)} — Small C++</title><link rel="icon" href="../../assets/smallcpp_128.png">
 <link rel="stylesheet" href="../../style.css?v=0.76.16"></head><body>
-<header class="navigation wrap"><a class="brand" href="../../index.html">Small C++<span class="brand-dot">.</span></a>
-<nav aria-label="Navigation"><a href="../../index.html">{home}</a><a href="index.html">{lessons}</a></nav>
+<header class="navigation wrap"><a class="brand" href="../../index.html?lang={language}">Small C++<span class="brand-dot">.</span></a>
+<nav aria-label="Main navigation"><a href="../../index.html?lang={language}">{home}</a><a href="../../features.html?lang={language}">{features}</a><a href="index.html" aria-current="page">{lessons}</a><a href="https://github.com/sodomau/small-cpp">GitHub ↗</a></nav>
 <a class="language" href="{switch_link}">{switch}</a></header>
 <main class="reader wrap">{content}</main>
 <footer class="wrap"><span>Small C++</span><a href="https://github.com/sodomau/small-cpp/blob/main/LICENSE">Licensed under MIT</a></footer>
