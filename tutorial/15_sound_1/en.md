@@ -61,3 +61,19 @@ Use beep_and_wait to play three tones of different frequencies in sequence. Choo
 For example, play 440, 550, and 660 Hz for about 0.2 seconds each.
 
 @solution sound_2_exercise2_solution.cpp
+
+## Your own WAV sounds
+
+You can also pass a file path: `play_sound("sound.wav");`. Use a 16-bit PCM WAV file (mono or stereo). Put it in the program folder; add it with Publish → Add Files when sharing. The first call loads in the background and later calls reuse the cached sound. For timing-sensitive effects, optionally call `preload_sound("sound.wav");` before gameplay. This waits for loading without playing. `play_sound_and_wait("sound.wav");` waits for playback.
+
+```cpp
+void small_main()
+{
+    preload_sound("sound.wav"); // Optional
+    play_sound("sound.wav");
+    print("The program keeps running.");
+    sleep(1);
+    play_sound_and_wait("sound.wav");
+}
+```
+A ready-to-run project with an original sound.wav is included in `examples/projects/WavSound`. Open that folder as a project.

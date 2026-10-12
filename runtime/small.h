@@ -507,6 +507,11 @@ private:
     void CheckOpen() const;
 };
 
+// WAV files: 16-bit PCM, mono or stereo. Paths use the current working folder.
+// preload_sound waits for loading; play_sound loads asynchronously on first use.
+void preload_sound(const String& file_name);
+void play_sound(const String& file_name);
+void play_sound_and_wait(const String& file_name);
 void play_sound(Sound sound);
 void play_sound_and_wait(Sound sound);
 void beep(double frequency, double seconds);

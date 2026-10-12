@@ -116,10 +116,12 @@ QVector<ApiEntry> ApiReference::core()
         "true or false","if (window.mouse_pressed(MouseButton::Left)) print(\"Click\");");
     add("Mouse","Window.mouse_released","Window.mouse_released(button)","Check whether a mouse button was just released.",{P("button","MouseButton","Left, Right, or Middle.")},
         "true or false","if (window.mouse_released(MouseButton::Left)) print(\"Released\");");
-    add("Sound","play_sound","play_sound(sound)","Play a built-in sound without waiting.",{P("sound","Sound","Click, Pop, Jump, Hit, Coin, Shoot, Explosion, Win, or Lose.")},
+    add("Sound","play_sound","play_sound(sound)","Play a built-in sound or 16-bit PCM WAV file without waiting.",{P("sound","Sound or String","Built-in preset or a 16-bit PCM WAV file path.")},
         "nothing","play_sound(Sound::Coin);");
-    add("Sound","play_sound_and_wait","play_sound_and_wait(sound)","Play a built-in sound and wait.",{P("sound","Sound","Built-in sound.")},
+    add("Sound","play_sound_and_wait","play_sound_and_wait(sound)","Play a built-in sound or 16-bit PCM WAV file and wait.",{P("sound","Sound or String","Built-in preset or a 16-bit PCM WAV file path.")},
         "nothing","play_sound_and_wait(Sound::Win);");
+    add("Sound","preload_sound","preload_sound(file_name)","Load and cache a 16-bit PCM WAV file without playing it.",{P("file_name","String","Path relative to the program working folder.")},
+        "nothing","preload_sound(\"sound.wav\");");
     add("Sound","beep","beep(frequency, seconds)","Play a tone without waiting.",{P("frequency","number","Hz."),P("seconds","real number","Duration.")},
         "nothing","beep(440, 0.2);");
     add("Sound","beep_and_wait","beep_and_wait(frequency, seconds)","Play a tone and wait.",{P("frequency","number","Hz."),P("seconds","real number","Duration.")},

@@ -13,6 +13,7 @@
 #include "small_internal.h"
 
 #include <QElapsedTimer>
+#include <QDataStream>
 #include <QAudioDevice>
 #include <QMediaDevices>
 
@@ -59,6 +60,39 @@ private slots:
         QApplication::setQuitOnLastWindowClosed(false);
         qputenv("SMALL_TEST_DIALOGS", "1");
         qputenv("SMALL_TEST_NO_CONSOLE_PAUSE", "1");
+    }
+
+    void wavLoadingAndCache()
+    {
+        struct Cleanup { ~Cleanup() { small_detail::ShutdownAudio(); } } cleanup;
+        small_detail::ShutdownAudio();
+        QTemporaryDir folder;
+        const QString path = folder.filePath("effect.wav");
+        QByteArray wav;
+        QDataStream stream(&wav, QIODevice::WriteOnly);
+        stream.setByteOrder(QDataStream::LittleEndian);
+        stream.writeRawData("RIFF", 4); stream << quint32(36 + 35280);
+        stream.writeRawData("WAVEfmt ", 8); stream << quint32(16) << quint16(1)
+            << quint16(1) << quint32(44100) << quint32(88200) << quint16(2) << quint16(16);
+        stream.writeRawData("data", 4); stream << quint32(35280);
+        wav.append(QByteArray(35280, '\0'));
+        QFile file(path);
+        QVERIFY(file.open(QIODevice::WriteOnly)); QCOMPARE(file.write(wav), wav.size()); file.close();
+        const String name(path.toUtf8().constData());
+        QElapsedTimer elapsed; elapsed.start(); play_sound(name);
+        QVERIFY(elapsed.elapsed() < 100);
+        preload_sound(name);
+        QVERIFY(file.remove());
+        preload_sound(name); // Cached samples survive deletion of the original.
+        if (!QMediaDevices::defaultAudioOutput().isNull()) {
+            elapsed.restart(); play_sound_and_wait(name);
+            QVERIFY(elapsed.elapsed() >= 350);
+        }
+        QVERIFY_EXCEPTION_THROWN(preload_sound(String(folder.filePath("missing.wav").toUtf8().constData())), std::runtime_error);
+        QVERIFY(file.open(QIODevice::WriteOnly)); file.write("invalid WAV"); file.close();
+        small_detail::ShutdownAudio();
+        QVERIFY_EXCEPTION_THROWN(preload_sound(name), std::runtime_error);
+        QVERIFY_EXCEPTION_THROWN(play_sound(""), std::invalid_argument);
     }
 
     void asynchronousSoundDoesNotBlockGameFrames()

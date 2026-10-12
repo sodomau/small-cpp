@@ -5,6 +5,10 @@
 #include <QAudioFormat>
 #include <QAudioSink>
 #include <QBuffer>
+#include <QFile>
+#include <QFileInfo>
+#include <QHash>
+#include <QtEndian>
 #include <QCoreApplication>
 #include <QMediaDevices>
 #include <QThread>
@@ -111,6 +115,52 @@ QByteArray MakePcm(Tone tone, const QAudioFormat& format)
     return bytes;
 }
 
+struct Wave
+{
+    QByteArray data;
+    QAudioFormat format;
+};
+
+Wave LoadWave(const QString& path)
+{
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly))
+        throw std::runtime_error("Could not open sound file: " + path.toStdString());
+    const QByteArray bytes = file.readAll();
+    auto bad = [&]() { return std::runtime_error("Sound file must be a valid 16-bit PCM WAV: " + path.toStdString()); };
+    if (bytes.size() < 12 || bytes.first(4) != "RIFF" || bytes.mid(8, 4) != "WAVE") throw bad();
+    auto u16 = [&](qsizetype at) { return qFromLittleEndian<quint16>(bytes.constData() + at); };
+    auto u32 = [&](qsizetype at) { return qFromLittleEndian<quint32>(bytes.constData() + at); };
+    const quint64 end = quint64(u32(4)) + 8;
+    if (end > quint64(bytes.size()) || end < 12) throw bad();
+    Wave wave;
+    bool foundFormat = false, foundData = false;
+    for (quint64 offset = 12; offset + 8 <= end; ) {
+        const qsizetype at = qsizetype(offset);
+        const quint32 size = u32(at + 4);
+        const quint64 next = offset + 8 + size;
+        if (next > end) throw bad();
+        if (bytes.mid(at, 4) == "fmt ") {
+            if (size < 16 || u16(at + 8) != 1 || u16(at + 22) != 16) throw bad();
+            const int channels = u16(at + 10);
+            const quint32 rate = u32(at + 12);
+            if ((channels != 1 && channels != 2) || rate < 8000 || rate > 192000
+                || u16(at + 20) != channels * 2 || u32(at + 16) != rate * channels * 2) throw bad();
+            wave.format.setSampleRate(int(rate));
+            wave.format.setChannelCount(channels);
+            wave.format.setSampleFormat(QAudioFormat::Int16);
+            foundFormat = true;
+        } else if (bytes.mid(at, 4) == "data") {
+            wave.data = bytes.mid(at + 8, size);
+            foundData = true;
+        }
+        offset = next + (size & 1);
+    }
+    if (!foundFormat || !foundData || wave.data.isEmpty()
+        || wave.data.size() % wave.format.bytesPerFrame() != 0) throw bad();
+    return wave;
+}
+
 struct Completion
 {
     std::atomic<bool> done{false};
@@ -127,6 +177,13 @@ struct Player
     Player(Tone tone, const QAudioDevice& device, const QAudioFormat& format)
         : data(MakePcm(tone, format)), buffer(&data),
           sink(std::make_unique<QAudioSink>(device, format))
+    {
+        buffer.open(QIODevice::ReadOnly);
+        sink->start(&buffer);
+    }
+    Player(const Wave& wave, const QAudioDevice& device)
+        : data(wave.data), buffer(&data),
+          sink(std::make_unique<QAudioSink>(device, wave.format))
     {
         buffer.open(QIODevice::ReadOnly);
         sink->start(&buffer);
@@ -180,6 +237,7 @@ class AudioThread
     QThread thread;
     QObject dispatcher;
     std::unique_ptr<SoundSystem> state;
+    QHash<QString, Wave> files;
 public:
     AudioThread()
     {
@@ -195,6 +253,35 @@ public:
         }, Qt::BlockingQueuedConnection);
         thread.quit();
         thread.wait();
+    }
+    void SubmitFile(const QString& path, const std::shared_ptr<Completion>& completion,
+                    bool wait, bool preload)
+    {
+        QMetaObject::invokeMethod(&dispatcher, [this, path, completion, wait, preload] {
+            try {
+                if (!files.contains(path)) files.insert(path, LoadWave(path));
+                if (preload) {
+                    completion->done.store(true, std::memory_order_release);
+                    return;
+                }
+                if (!state) state = std::make_unique<SoundSystem>();
+                const auto device = QMediaDevices::defaultAudioOutput();
+                if (device.isNull()) throw std::runtime_error("No audio output device.");
+                const auto& wave = files[path];
+                if (!device.isFormatSupported(wave.format))
+                    throw std::runtime_error("The audio device cannot play this WAV format.");
+                auto player = std::make_shared<Player>(wave, device);
+                player->completion = completion;
+                state->players.push_back(std::move(player));
+            } catch (...) {
+                completion->error = std::current_exception();
+                if (!wait) {
+                    try { std::rethrow_exception(completion->error); }
+                    catch (const std::exception& error) { std::cerr << "Sound unavailable: " << error.what() << '\n'; }
+                }
+                completion->done.store(true, std::memory_order_release);
+            }
+        }, Qt::QueuedConnection);
     }
     void Submit(Tone tone, const std::shared_ptr<Completion>& completion, bool wait)
     {
@@ -262,6 +349,25 @@ void Play(Tone tone, bool wait)
     }
     if (completion->error) std::rethrow_exception(completion->error);
 }
+void PlayFile(const String& path, bool wait, bool preload)
+{
+    auto* app = QCoreApplication::instance();
+    if (!app || app->thread() != QThread::currentThread())
+        throw std::runtime_error("Sound must be played from the Small C++ application thread.");
+    if (path.length() == 0) throw std::invalid_argument("Sound file path must not be empty.");
+    // Resolve before queueing: later changes to the working folder cannot change this request.
+    const QString absolute = QFileInfo(QString::fromUtf8(path.c_str())).absoluteFilePath();
+    if (!System()) System() = std::make_unique<AudioThread>();
+    auto completion = std::make_shared<Completion>();
+    System()->SubmitFile(absolute, completion, wait, preload);
+    if (!wait) return;
+    while (!completion->done.load(std::memory_order_acquire)) {
+        QCoreApplication::processEvents();
+        QThread::msleep(1);
+    }
+    if (completion->error) std::rethrow_exception(completion->error);
+}
+
 }
 
 namespace small_detail
@@ -273,6 +379,9 @@ void ShutdownAudio()
 }
 }
 
+void preload_sound(const String& path) { PlayFile(path, true, true); }
+void play_sound(const String& path) { PlayFile(path, false, false); }
+void play_sound_and_wait(const String& path) { PlayFile(path, true, false); }
 void play_sound(Sound sound) { Play(Preset(sound), false); }
 void play_sound_and_wait(Sound sound) { Play(Preset(sound), true); }
 void beep(double frequency, double seconds) { Play({frequency, seconds, 0.25}, false); }

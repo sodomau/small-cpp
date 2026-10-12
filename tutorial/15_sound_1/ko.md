@@ -61,3 +61,19 @@ beep_and_wait를 사용해 서로 다른 주파수의 음 세 개를 차례대�
 예를 들어 440, 550, 660 Hz를 각각 0.2초 정도 사용할 수 있습니다.
 
 @solution sound_2_exercise2_solution.cpp
+
+## 직접 준비한 WAV 소리
+
+`play_sound("sound.wav");`처럼 파일 경로도 전달할 수 있습니다. 16비트 PCM WAV 파일(모노 또는 스테레오)을 프로그램 폴더에 놓으세요. 배포할 때는 Publish → Add Files로 함께 넣습니다. 처음에는 뒤에서 로딩하고, 다음부터는 캐시를 재사용합니다. 타이밍이 중요한 효과음은 게임 시작 전에 `preload_sound("sound.wav");`로 미리 준비할 수 있습니다. 이 함수는 로딩이 끝날 때까지 기다리지만 소리는 재생하지 않습니다. `play_sound_and_wait("sound.wav");`는 재생이 끝날 때까지 기다립니다.
+
+```cpp
+void small_main()
+{
+    preload_sound("sound.wav"); // Optional
+    play_sound("sound.wav");
+    print("The program keeps running.");
+    sleep(1);
+    play_sound_and_wait("sound.wav");
+}
+```
+직접 실행할 수 있는 프로젝트와 자체 제작 sound.wav는 `examples/projects/WavSound`에 들어 있습니다. 해당 폴더를 프로젝트로 여세요.
