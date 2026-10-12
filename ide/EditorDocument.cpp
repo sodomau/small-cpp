@@ -73,11 +73,21 @@ EditorDocument::EditorDocument(const QString& text, const QString& path,
     setObjectName("codeEditor");
     document_ = KTextEditor::Editor::instance()->createDocument(this);
     view_ = document_->createView(this);
-    // File identity and saving belong to MainWindow, not the embedded view.
-    // Duplicate native bindings otherwise make Qt reject Ctrl+S as ambiguous.
-    for (const auto* name : {"file_save", "file_save_as"})
-        if (auto* action = view_->actionCollection()->action(name))
-            action->setShortcuts({});
+    // MainWindow owns saving and execution/debugging shortcuts. The embedded
+    // editor also binds function keys (for example F5 reload), which makes Qt
+    // reject the host shortcut as ambiguous while the editor has focus.
+    const QList<QKeySequence> hostKeys = {
+        QKeySequence::Save, QKeySequence::SaveAs,
+        QKeySequence(Qt::Key_F5), QKeySequence(Qt::Key_F6),
+        QKeySequence(Qt::Key_F10), QKeySequence(Qt::Key_F11),
+        QKeySequence(Qt::SHIFT | Qt::Key_F5),
+        QKeySequence(Qt::SHIFT | Qt::Key_F11)
+    };
+    for (auto* action : view_->actionCollection()->actions()) {
+        auto shortcuts = action->shortcuts();
+        for (const auto& key : hostKeys) shortcuts.removeAll(key);
+        action->setShortcuts(shortcuts);
+    }
     auto* layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(view_);

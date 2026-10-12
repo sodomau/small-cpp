@@ -671,6 +671,25 @@ private slots:
         QCOMPARE(first->toPlainText(), text);
     }
 
+    void functionKeysReachHostActions()
+    {
+        MainWindow window;
+        OpenNewProgram(window);
+        window.show();
+        window.activateWindow();
+        auto* editor = current(window);
+        editor->setFocus();
+        QTest::qWait(50);
+        for (const auto* name : {"actionRun", "actionDebug"}) {
+            auto* command = action(window, name);
+            disconnect(command, nullptr, &window, nullptr);
+            QSignalSpy triggered(command, &QAction::triggered);
+            const auto key = QString(name) == "actionRun" ? Qt::Key_F5 : Qt::Key_F6;
+            QTest::keyClick(editor->editorView(), key);
+            QTRY_COMPARE(triggered.count(), 1);
+        }
+    }
+
     void shortcutsSwitchWithoutEditing()
     {
         MainWindow window;
